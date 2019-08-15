@@ -1,0 +1,103 @@
+#################################################################
+# New account set-up: a new account is set up just to maintain
+# consistency across the RPI & WLANPi platforms
+#################################################################
+1. SSH to RPI
+2. Add new user 'wlanpi' with command: sudo adduser wlanpi
+3. Add new user to sudoers file to allow wlanpi additional root-like rights to manipulate interface state:
+    sudo visudo
+    (add following line at very end of file & save: 'wlanpi  ALL=(ALL) NOPASSWD: ALL')
+4. Login as wlanpi user for rest of the setup
+
+#################################################################
+# Setup RPI
+#################################################################
+
+1. Extract required files & enter new dir:
+
+    cd ~
+    tar xvfz wiperf-v0.xx.tar.gz
+    cd ./wiperf
+
+2. Configure config.ini file for local device (only wlan interface & csv_file may need update)
+
+    nano ./config.ini
+
+3. Configure RPi to join a wireless network. Edit files 'sudo nano /etc/wpa_supplicant/wpa_supplicant.conf' and 'sudo nano /etc/network/interfaces'. The eth0 port is configured as static IP below, but can be left as dhcp if wlan0 & eth0 are on different networks (otherwise Speedtest traffic goes out of eth0 port)
+  (note: wpa_supplicant.conf must have root:root ownership - 'chown root:root /etc/wpa_supplicant/wpa_supplicant.conf' if required)
+
+    *** Sample '/etc/wpa_supplicant/wpa_supplicant.conf':
+    
+        ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+        update_config=1
+        country=GB
+        ap_scan=1
+
+        network={
+                ssid="My_SSID"
+                psk="My_SSID_Key"
+                priority=1
+                #freq_list=2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472
+                freq_list=5180 5200 5220 5240 5260 5280 5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5680 5700 5720 5745 5765 5785 5805 5625
+        }
+    
+    *** Sample '/etc/network/interfaces':
+    
+        # interfaces(5) file used by ifup(8) and ifdown(8)
+
+        # Please note that this file is written to be used with dhcpcd
+        # For static IP, consult /etc/dhcpcd.conf and 'man dhcpcd.conf'
+
+        auto wlan0
+        allow-hotplug wlan0
+        iface wlan0 inet dhcp
+        wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+
+        # Note eth0 has been set to a static address to avoid routing issues 
+        # when both eth0 and wlan0 are on same network (traffic goes out of 
+        # eth0 rather than wlan0). If they are on different networks, it's
+        # OK to set eth0 to DHCP, but may still need a static route to force
+        # Internet-bound traffic to use wlan0 rather than eth0
+        auto eth0
+        allow-hotplug eth0 
+        # iface eth0 inet dhcp 
+        iface eth0 inet static
+        address 192.168.254.1
+        netmask 255.255.255.0
+
+        # Local loopback
+        auto lo
+        iface lo inet loopback
+
+        # Include files from /etc/network/interfaces.d:
+        source-directory /etc/network/interfaces.d/*
+
+4. Reboot RPi & verify the RPi has joined the wireless network with iwconfig/ifconfig       
+
+5. Install required python packages (Internet access required for this):
+
+    sudo apt-get update
+    sudo apt-get install python-pip
+    sudo pip install --upgrade pip
+    sudo pip install ConfigParser speedtest-cli
+
+6. Test the script by running the following command (takes around 30 secs to complete):
+
+    /usr/bin/python /home/wlanpi/wiperf/wi-perf.py
+    
+   If no errors are observed when running it then check the following files to check for no errors & data generated:
+    
+    cat /home/wlanpi/wiperf/agent.log
+    cat /home/wlanpi/wiperf/wiperf-splunk.csv
+
+7. Add crontab entry to run script every 5 mins and dump data in to /home/wlanpi/wiperf/wiperf-splunk.csv:
+       
+        crontab -e (as wlanpi user, add line below)
+        
+            */5 * * * * /usr/bin/python /home/wlanpi/wiperf/wi-perf.py >> /home/wlanpi/wiperf/wi-perf.log 2>&1
+    
+    (to monitor, userm  'tail -f /home/wlanpi/wiperf/agent.log' - should be log every 5 mins)
+
+
+
+
