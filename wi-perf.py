@@ -18,7 +18,7 @@ import csv
 
 # our local modules...
 from wirelessadapter import *
-#from simplelogger import *
+from pinger import *
 from filelogger import *
 
 # define useful system files
@@ -40,20 +40,26 @@ def read_config(debug):
     config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"
     config.read(config_file)
 
-    # csv file name
-    config_vars['csv_file'] = config.get('General', 'csv_file')
-
+    ### Get general config params
     # WLAN interface name
     config_vars['wlan_if'] = config.get('General', 'wlan_if')
-
     # Get platform architecture
     config_vars['platform'] = config.get('General', 'platform')
-    
-    # Get result url
-    config_vars['result_api_url'] = config.get('General', 'result_api_url')
-    
+      
     if debug:    
-        print("Platform = " + config_vars['platform'])
+        print("Platform = {}".format(config_vars.get('General', 'platform')))
+
+    ### Get Speedtest config params
+    config_vars['speedtest_enabled'] = config.get('Speedtest', 'enabled')
+    config_vars['speedtest_csv_file'] = config.get('Speedtest', 'speedtest_csv_file')
+
+    ### Get Ping config params
+    config_vars['ping_enabled'] = config.get('Ping_Test', 'enabled')
+    config_vars['ping_csv_file'] = config.get('Ping_Test', 'ping_csv_file')
+    config_vars['ping_host'] = config.get('Ping_Test', 'ping_host')
+    config_vars['ping_count'] = config.get('Ping_Test', 'ping_count')
+
+
 
     # Figure out our machine_id
     machine_id = subprocess.check_output("cat /etc/machine-id", shell=True)
@@ -65,14 +71,12 @@ def read_config(debug):
     return config_vars
 
 
-def send_results_to_csv(csv_file, dict_data, file_logger, debug):
-
-    csv_columns = ['timestamp', 'server_name', 'ping_time', 'download_rate', 'upload_rate', 'ssid', 'bssid', 'freq', 'bit_rate', 'signal_level', 'ip_address']
+def send_results_to_csv(csv_file, dict_data, column_headers, file_logger, debug):
 
     try:
         with open(csv_file, 'w') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
-            writer.writeheader()
+            writer = csv.DictWriter(csvfile, fieldnames=column_headers)
+            #writer.writeheader()
             writer.writerow(dict_data)
     except IOError:
         file_logger.error("CSV I/O error") 
@@ -149,34 +153,98 @@ def main():
         file_logger.error("DNS seems to be failing, bouncing wireless interface. Err msg: {}".format(ex))
         bounce_error_exit(adapter, file_logger,  DEBUG) # exit here
 
-    # run speedtest
-    speedtest_results = ooklaspeedtest(file_logger)
-    
-    if DEBUG:
-        print("Main: Speedtest results:")
-        print(speedtest_results)
-    
-    # hold all results in one place
-    results_dict = {}
-    
-    # speedtest results
-    results_dict['ping_time'] = int(speedtest_results['ping_time'])
-    results_dict['download_rate'] = float(speedtest_results['download_rate'])
-    results_dict['upload_rate'] = float(speedtest_results['upload_rate'])
-    results_dict['server_name'] = str(speedtest_results['server_name'])
-    
-    results_dict['ssid'] = str(adapter.get_ssid())
-    results_dict['bssid'] = str(adapter.get_bssid())
-    results_dict['freq'] = str(adapter.get_freq())
-    results_dict['bit_rate'] = float(adapter.get_bit_rate())
-    results_dict['signal_level'] = int(adapter.get_signal_level())
-    results_dict['ip_address'] = str(adapter.get_ipaddr())
-    
-    results_dict['timestamp'] = int(time.time())
+    #############################
+    # Run speedtest (if enabled)
+    #############################
+    if config_vars['speedtest_enabled'] == 'yes':
 
-    # dump the results to csv
-    send_results_to_csv(config_vars['csv_file'], results_dict, file_logger, DEBUG)
+        file_logger.info("Starting speedtest...")
 
+        speedtest_results = ooklaspeedtest(file_logger)
+        
+        if DEBUG:
+            print("Main: Speedtest results:")
+            print(speedtest_results)
+        
+        # hold all results in one place
+        results_dict = {}
+
+        # define column headers
+        column_headers = ['timestamp', 'server_name', 'ping_time', 'download_rate', 'upload_rate', 'ssid', 'bssid', 'freq', 'bit_rate', 'signal_level', 'ip_address']
+        
+        # speedtest results
+        results_dict['ping_time'] = int(speedtest_results['ping_time'])
+        results_dict['download_rate'] = float(speedtest_results['download_rate'])
+        results_dict['upload_rate'] = float(speedtest_results['upload_rate'])
+        results_dict['server_name'] = str(speedtest_results['server_name'])
+        
+        results_dict['ssid'] = str(adapter.get_ssid())
+        results_dict['bssid'] = str(adapter.get_bssid())
+        results_dict['freq'] = str(adapter.get_freq())
+        results_dict['bit_rate'] = float(adapter.get_bit_rate())
+        results_dict['signal_level'] = int(adapter.get_signal_level())
+        results_dict['ip_address'] = str(adapter.get_ipaddr())
+        
+        results_dict['timestamp'] = int(time.time())
+
+        # dump the results to csv
+        send_results_to_csv(config_vars['speedtest_csv_file'], results_dict, column_headers, file_logger, DEBUG)
+
+        file_logger.info("Speedtest ended.")
+
+    else:
+        file_logger.info("Speedtest not enabled in config file, bypassing this test...")
+
+    #############################
+    # Run ping test (if enabled)
+    #############################
+    if config_vars['ping_enabled'] == 'yes':
+
+        file_logger.info("Starting ping test...")
+          
+        # run ping test
+        ping_obj = Pinger(file_logger, platform = platform, debug = DEBUG)
+
+        ping_host = config_vars['ping_host']
+        ping_count = config_vars['ping_count']
+
+        # define colum headers for CSV
+        column_headers = ['ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time', 'rtt_min', 'rtt_avg', 'rtt_max', 'rtt_mdev']
+            
+        # initial ping to populate arp cache and avoid arp timeput for first test ping
+        ping_obj.ping_host(ping_host, 1)
+            
+        # ping test
+        ping_result = ping_obj.ping_host(ping_host, ping_count)
+
+        results_dict = {}
+            
+        # ping results
+        if ping_result:
+            results_dict['ping_host'] =  ping_result['host']
+            results_dict['pkts_tx'] =  ping_result['pkts_tx']
+            results_dict['pkts_rx'] =  ping_result['pkts_rx']
+            results_dict['percent_loss'] =  ping_result['pkt_loss']
+            results_dict['test_time'] =  ping_result['test_time']
+            results_dict['rtt_min'] =  ping_result['rtt_min']
+            results_dict['rtt_avg'] =  ping_result['rtt_avg']
+            results_dict['rtt_max'] =  ping_result['rtt_max']
+            results_dict['rtt_mdev'] =  ping_result['rtt_mdev']
+
+            # dump the results to csv
+            send_results_to_csv(config_vars['ping_csv_file'], results_dict, column_headers, file_logger, DEBUG)
+
+            file_logger.info("Ping test ended.")
+
+            if DEBUG:
+                print("Main: Ping test results:")
+                print(ping_result)
+
+        else:
+            file_logger.error("Ping test failed.")
+
+    else:
+        file_logger.info("Ping test not enabled in config file, bypassing this test...")
         
 ###############################################################################
 # End main

@@ -9,10 +9,11 @@ class Pinger(object):
     A class to ping a host - a basic wrapper around a CLI ping command
     '''
 
-    def __init__(self, platform="rpi", debug=False):
+    def __init__(self, file_logger, platform="rpi", debug=False):
 
         self.platform = platform
         self.debug = debug
+        self.file_logger = file_logger
 
         self.host = ''
         self.pkts_tx = ''
@@ -127,6 +128,8 @@ class Pinger(object):
             print("rtt_avg : " + str(self.rtt_avg))
             print("rtt_max : " + str(self.rtt_max))
             print("rtt_mdev : " + str(self.rtt_mdev))
+
+        self.file_logger.info('ping_host: {}, pkts_tx: {}, pkts_rx: {}, pkt_loss: {}, rtt_avg: {}'.format(self.host, self.pkts_tx, self.pkts_rx, self.pkt_loss, self.rtt_avg))
 
         return {
             'host': self.host,
