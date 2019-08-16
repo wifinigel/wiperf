@@ -74,23 +74,27 @@
 
 4. Reboot RPi & verify the RPi has joined the wireless network with iwconfig/ifconfig       
 
-5. Install required python packages (Internet access required for this):
+5. Install required packages (Internet access required for this):
 
     sudo apt-get update
+    sudo apt-get iper3
     sudo apt-get install python-pip
     sudo pip install --upgrade pip
-    sudo pip install ConfigParser speedtest-cli
+    sudo pip install ConfigParser speedtest-cli iperf3
 
-6. Test the script by running the following command (takes around 30 secs to complete):
+6. Test the script by running the following command (takes around 1 minute to complete, depending on tests enabled):
 
     /usr/bin/python /home/wlanpi/wiperf/wi-perf.py
     
    If no errors are observed when running it then check the following files to check for no errors & data generated:
     
     cat /home/wlanpi/wiperf/agent.log
-    cat /home/wlanpi/wiperf/wiperf-splunk.csv
+    cat /home/wlanpi/wiperf/data/wiperf-speedtest-splunk.csv
+    cat /home/wlanpi/wiperf/data/wiperf-ping-splunk.csv
+    cat /home/wlanpi/wiperf/data/wiperf-iperf3-udp-splunk.csv
+    cat /home/wlanpi/wiperf/data/wiperf-iperf3-tcp-splunk.csv
 
-7. Add crontab entry to run script every 5 mins and dump data in to /home/wlanpi/wiperf/wiperf-splunk.csv:
+7. Add crontab entry to run script every 5 mins and dump data:
        
         crontab -e (as wlanpi user, add line below)
         

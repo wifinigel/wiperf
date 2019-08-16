@@ -20,6 +20,7 @@ import csv
 from wirelessadapter import *
 from pinger import *
 from filelogger import *
+from iperf3_tester import tcp_iperf_client_test, udp_iperf_client_test
 
 # define useful system files
 config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"
@@ -59,9 +60,22 @@ def read_config(debug):
     config_vars['ping_host'] = config.get('Ping_Test', 'ping_host')
     config_vars['ping_count'] = config.get('Ping_Test', 'ping_count')
 
+    ### Get iperf3 tcp test params
+    config_vars['iperf3_tcp_enabled'] = config.get('Iperf3_tcp_test', 'enabled')
+    config_vars['iperf3_tcp_csv_file'] = config.get('Iperf3_tcp_test', 'iperf3_tcp_csv_file')
+    config_vars['iperf3_tcp_server_hostname'] = config.get('Iperf3_tcp_test', 'server_hostname')
+    config_vars['iperf3_tcp_port'] = config.get('Iperf3_tcp_test', 'port')
+    config_vars['iperf3_tcp_duration'] = config.get('Iperf3_tcp_test', 'duration')
 
+    ### Get iperf3 udp test params
+    config_vars['iperf3_udp_enabled'] = config.get('Iperf3_udp_test', 'enabled')
+    config_vars['iperf3_udp_csv_file'] = config.get('Iperf3_udp_test', 'iperf3_udp_csv_file')
+    config_vars['iperf3_udp_server_hostname'] = config.get('Iperf3_udp_test', 'server_hostname')
+    config_vars['iperf3_udp_port'] = config.get('Iperf3_udp_test', 'port')
+    config_vars['iperf3_udp_duration'] = config.get('Iperf3_udp_test', 'duration')
+    config_vars['iperf3_udp_bandwidth'] = config.get('Iperf3_udp_test', 'bandwidth')
 
-    # Figure out our machine_id
+    # Figure out our machine_id (provides unique device id if required)
     machine_id = subprocess.check_output("cat /etc/machine-id", shell=True)
     config_vars['machine_id'] = machine_id.strip()
     
@@ -245,6 +259,88 @@ def main():
 
     else:
         file_logger.info("Ping test not enabled in config file, bypassing this test...")
+    
+    ###################################
+    # Run iperf3 tcp test (if enabled)
+    ###################################
+    if config_vars['iperf3_tcp_enabled'] == 'yes':
+
+        file_logger.info("Starting iperf3 tcp test...")
+
+        duration = int(config_vars['iperf3_tcp_duration'])
+        port = int(config_vars['iperf3_tcp_port'])
+        server_hostname = config_vars['iperf3_tcp_server_hostname']
+
+        result = tcp_iperf_client_test(file_logger, server_hostname, duration=duration, port=port, debug=False)
+
+        if result.error == None:
+
+            results_dict = {}
+            
+            column_headers = ['sent_mbps', 'received_mbps', 'sent_bytes', 'received_bytes', 'retransmits']
+
+            results_dict['sent_mbps'] =  result.sent_Mbps
+            results_dict['received_mbps']   =  result.received_Mbps
+            results_dict['sent_bytes'] =  result.sent_bytes
+            results_dict['received_bytes'] =  result.received_bytes
+            results_dict['retransmits'] =  result.retransmits
+
+            # drop abbreviated results in log file
+            file_logger.info("Iperf3 tcp results - rx_mbps: {}, tx_bps: {}, retransmits: {}".format(results_dict['received_mbps'], results_dict['sent_mbps'], results_dict['retransmits']))
+
+            # dump the results to csv
+            send_results_to_csv(config_vars['iperf3_tcp_csv_file'], results_dict, column_headers, file_logger, DEBUG)
+
+            file_logger.info("Iperf3 tcp test ended.")
+
+        else:
+            file_logger.error("Error with iperf3 tcp test: {}".format(result.error))
+
+    
+    else:
+        file_logger.info("Iperf3 tcp test not enabled in config file, bypassing this test...")
+    
+    ###################################
+    # Run iperf3 udp test (if enabled)
+    ###################################
+    if config_vars['iperf3_udp_enabled'] == 'yes':
+
+        file_logger.info("Starting iperf3 udp test...")
+
+        duration = int(config_vars['iperf3_udp_duration'])
+        port = int(config_vars['iperf3_udp_port'])
+        server_hostname = config_vars['iperf3_udp_server_hostname']
+        bandwidth = int(config_vars['iperf3_udp_bandwidth'])
+
+        result = udp_iperf_client_test(file_logger, server_hostname, duration=duration, port=port, bandwidth=bandwidth, debug=False)
+
+        if result.error == None:
+
+            results_dict = {}
+            
+            column_headers = ['bytes', 'mbps', 'jitter_ms', 'packets', 'lost_packets', 'lost_percent']
+
+            results_dict['bytes'] =  result.bytes
+            results_dict['mbps']   =  result.Mbps
+            results_dict['jitter_ms'] =  result.jitter_ms
+            results_dict['packets'] =  result.packets
+            results_dict['lost_packets'] =  result.lost_packets
+            results_dict['lost_percent'] =  result.lost_percent
+
+            # drop abbreviated results in log file
+            file_logger.info("Iperf3 udp results - mbps: {}, packets: {}, lost_packets: {}, lost_percent: {}".format(results_dict['mbps'], results_dict['packets'], results_dict['lost_packets'], results_dict['lost_percent']))
+
+            # dump the results to csv
+            send_results_to_csv(config_vars['iperf3_udp_csv_file'], results_dict, column_headers, file_logger, DEBUG)
+
+            file_logger.info("Iperf3 udp test ended.")
+
+        else:
+            file_logger.error("Error with iperf3 udp test: {}".format(result.error))
+
+    
+    else:
+        file_logger.info("Iperf3 udp test not enabled in config file, bypassing this test...")
         
 ###############################################################################
 # End main
