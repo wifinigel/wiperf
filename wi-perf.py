@@ -15,6 +15,7 @@ import csv
 import os.path
 import logging
 import csv
+import json
 
 # our local modules...
 from wirelessadapter import *
@@ -52,24 +53,24 @@ def read_config(debug):
 
     ### Get Speedtest config params
     config_vars['speedtest_enabled'] = config.get('Speedtest', 'enabled')
-    config_vars['speedtest_csv_file'] = config.get('Speedtest', 'speedtest_csv_file')
+    config_vars['speedtest_data_file'] = config.get('Speedtest', 'speedtest_data_file')
 
     ### Get Ping config params
     config_vars['ping_enabled'] = config.get('Ping_Test', 'enabled')
-    config_vars['ping_csv_file'] = config.get('Ping_Test', 'ping_csv_file')
+    config_vars['ping_data_file'] = config.get('Ping_Test', 'ping_data_file')
     config_vars['ping_host'] = config.get('Ping_Test', 'ping_host')
     config_vars['ping_count'] = config.get('Ping_Test', 'ping_count')
 
     ### Get iperf3 tcp test params
     config_vars['iperf3_tcp_enabled'] = config.get('Iperf3_tcp_test', 'enabled')
-    config_vars['iperf3_tcp_csv_file'] = config.get('Iperf3_tcp_test', 'iperf3_tcp_csv_file')
+    config_vars['iperf3_tcp_data_file'] = config.get('Iperf3_tcp_test', 'iperf3_tcp_data_file')
     config_vars['iperf3_tcp_server_hostname'] = config.get('Iperf3_tcp_test', 'server_hostname')
     config_vars['iperf3_tcp_port'] = config.get('Iperf3_tcp_test', 'port')
     config_vars['iperf3_tcp_duration'] = config.get('Iperf3_tcp_test', 'duration')
 
     ### Get iperf3 udp test params
     config_vars['iperf3_udp_enabled'] = config.get('Iperf3_udp_test', 'enabled')
-    config_vars['iperf3_udp_csv_file'] = config.get('Iperf3_udp_test', 'iperf3_udp_csv_file')
+    config_vars['iperf3_udp_data_file'] = config.get('Iperf3_udp_test', 'iperf3_udp_data_file')
     config_vars['iperf3_udp_server_hostname'] = config.get('Iperf3_udp_test', 'server_hostname')
     config_vars['iperf3_udp_port'] = config.get('Iperf3_udp_test', 'port')
     config_vars['iperf3_udp_duration'] = config.get('Iperf3_udp_test', 'duration')
@@ -85,15 +86,23 @@ def read_config(debug):
     return config_vars
 
 
-def send_results_to_csv(csv_file, dict_data, column_headers, file_logger, debug):
+def send_results_to_csv(data_file, dict_data, column_headers, file_logger, debug):
 
     try:
-        with open(csv_file, 'w') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=column_headers)
-            #writer.writeheader()
+        with open(data_file, 'w') as csvfile:
+            writer = csv.DictWriter(csvfile, lineterminator='\n', fieldnames=column_headers)
+            writer.writeheader()
             writer.writerow(dict_data)
     except IOError:
-        file_logger.error("CSV I/O error") 
+        file_logger.error("CSV I/O error")
+
+def send_results_to_json(data_file, dict_data, file_logger, debug):
+
+    try:
+        with open(data_file, 'w') as json_file:
+            json.dump(dict_data, json_file)
+    except IOError:
+        file_logger.error("JSON I/O error")
 
 def bounce_error_exit(adapter, file_logger, debug=False): 
     '''
@@ -202,7 +211,8 @@ def main():
         results_dict['timestamp'] = int(time.time())
 
         # dump the results to csv
-        send_results_to_csv(config_vars['speedtest_csv_file'], results_dict, column_headers, file_logger, DEBUG)
+        #send_results_to_csv(config_vars['speedtest_data_file'], results_dict, column_headers, file_logger, DEBUG)
+        send_results_to_json(config_vars['speedtest_data_file'], results_dict, file_logger, DEBUG)
 
         file_logger.info("Speedtest ended.")
 
@@ -246,7 +256,8 @@ def main():
             results_dict['rtt_mdev'] =  ping_result['rtt_mdev']
 
             # dump the results to csv
-            send_results_to_csv(config_vars['ping_csv_file'], results_dict, column_headers, file_logger, DEBUG)
+            #send_results_to_csv(config_vars['ping_data_file'], results_dict, column_headers, file_logger, DEBUG)
+            send_results_to_json(config_vars['ping_data_file'], results_dict, file_logger, DEBUG)
 
             file_logger.info("Ping test ended.")
 
@@ -289,7 +300,8 @@ def main():
             file_logger.info("Iperf3 tcp results - rx_mbps: {}, tx_bps: {}, retransmits: {}".format(results_dict['received_mbps'], results_dict['sent_mbps'], results_dict['retransmits']))
 
             # dump the results to csv
-            send_results_to_csv(config_vars['iperf3_tcp_csv_file'], results_dict, column_headers, file_logger, DEBUG)
+            #send_results_to_csv(config_vars['iperf3_tcp_data_file'], results_dict, column_headers, file_logger, DEBUG)
+            send_results_to_json(config_vars['iperf3_tcp_data_file'], results_dict, file_logger, DEBUG)
 
             file_logger.info("Iperf3 tcp test ended.")
 
@@ -331,7 +343,8 @@ def main():
             file_logger.info("Iperf3 udp results - mbps: {}, packets: {}, lost_packets: {}, lost_percent: {}".format(results_dict['mbps'], results_dict['packets'], results_dict['lost_packets'], results_dict['lost_percent']))
 
             # dump the results to csv
-            send_results_to_csv(config_vars['iperf3_udp_csv_file'], results_dict, column_headers, file_logger, DEBUG)
+            #send_results_to_csv(config_vars['iperf3_udp_data_file'], results_dict, column_headers, file_logger, DEBUG)
+            send_results_to_json(config_vars['iperf3_udp_data_file'], results_dict, file_logger, DEBUG)
 
             file_logger.info("Iperf3 udp test ended.")
 

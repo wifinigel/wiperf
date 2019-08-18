@@ -77,7 +77,7 @@
 5. Install required packages (Internet access required for this):
 
     sudo apt-get update
-    sudo apt-get iper3
+    sudo apt-get install iperf3
     sudo apt-get install python-pip
     sudo pip install --upgrade pip
     sudo pip install ConfigParser speedtest-cli iperf3
