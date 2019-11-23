@@ -113,7 +113,7 @@ def send_results_to_json(data_file, dict_data, file_logger, debug):
         if os.path.exists(data_file):
             file_mode = 'a'
 
-        with open(data_file, mode) as json_file:
+        with open(data_file, file_mode) as json_file:
             json.dump(dict_data, json_file)
     except IOError:
         file_logger.error("JSON I/O error: {}".format(err))
