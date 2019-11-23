@@ -48,7 +48,7 @@ class WirelessAdapter(object):
         
         # Get wireless interface IP address info
         try:
-            self.iwconfig_info = subprocess.check_output("/sbin/iwconfig " + self.wlan_if_name + " 2>&1", shell=True)
+            self.iwconfig_info = subprocess.check_output("/sbin/iwconfig " + self.wlan_if_name + " 2>&1", shell=True).decode()
         except Exception as ex:
             error_descr = "Issue getting interface info using iwconfig command"
             if self.debug:
@@ -138,7 +138,7 @@ class WirelessAdapter(object):
         
         # Get interface info
         try:            
-            self.ifconfig_info = subprocess.check_output("/sbin/ifconfig " + str(self.wlan_if_name) + " 2>&1", shell=True)
+            self.ifconfig_info = subprocess.check_output("/sbin/ifconfig " + str(self.wlan_if_name) + " 2>&1", shell=True).decode()
         except Exception as ex:
             error_descr = "Issue getting interface info using ifconfig command"
             if self.debug:
@@ -185,7 +185,7 @@ class WirelessAdapter(object):
         
         # Get route info (used to figure out default gateway)
         try:
-            self.route_info = subprocess.check_output("/sbin/route -n | grep ^0.0.0.0 | grep " + self.wlan_if_name + " 2>&1", shell=True)
+            self.route_info = subprocess.check_output("/sbin/route -n | grep ^0.0.0.0 | grep " + self.wlan_if_name + " 2>&1", shell=True).decode()
         except Exception as ex:
             error_descr = "Issue getting default gateway info using route command (Prob due to multiple interfaces being up or wlan interface being wrong)"
             if self.debug:
@@ -234,7 +234,7 @@ class WirelessAdapter(object):
             print(if_down_cmd)
 
         try:        
-            if_down = subprocess.check_output(if_down_cmd, stderr=subprocess.STDOUT, shell=True)
+            if_down = subprocess.check_output(if_down_cmd, stderr=subprocess.STDOUT, shell=True).decode()
         except Exception as ex:
             error_descr = "ifdown command appears to have failed"
             if self.debug:
@@ -264,7 +264,7 @@ class WirelessAdapter(object):
             print(if_up_cmd)
             
         try:
-            if_up = subprocess.check_output(if_up_cmd, stderr=subprocess.STDOUT, shell=True)
+            if_up = subprocess.check_output(if_up_cmd, stderr=subprocess.STDOUT, shell=True).decode()
         except Exception as ex:
             error_descr = "ifup command appears to have failed"
             if self.debug:
