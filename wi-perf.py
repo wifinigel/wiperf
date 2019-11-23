@@ -22,6 +22,7 @@ from modules.wirelessadapter import *
 from modules.pinger import *
 from modules.filelogger import *
 from modules.iperf3_tester import tcp_iperf_client_test, udp_iperf_client_test
+from modules.dnstester import *
 
 # define useful system files
 config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"
@@ -80,8 +81,15 @@ def read_config(debug):
     config_vars['iperf3_udp_duration'] = config.get('Iperf3_udp_test', 'duration')
     config_vars['iperf3_udp_bandwidth'] = config.get('Iperf3_udp_test', 'bandwidth')
 
+    ### Get DNS test params
+    config_vars['dns_test_enabled'] = config.get('DNS_test', 'enabled')
+    config_vars['dns_data_file'] = config.get('DNS_test', 'dns_data_file')
+    config_vars['dns_target1'] = config.get('DNS_test', 'dns_target1')
+    config_vars['dns_target2'] = config.get('DNS_test', 'dns_target2')
+    config_vars['dns_target3'] = config.get('DNS_test', 'dns_target3')
+
     # Figure out our machine_id (provides unique device id if required)
-    machine_id = subprocess.check_output("cat /etc/machine-id", shell=True)
+    machine_id = subprocess.check_output("cat /etc/machine-id", shell=True).decode()
     config_vars['machine_id'] = machine_id.strip()
     
     if debug:    
@@ -205,7 +213,7 @@ def main():
         results_dict = {}
 
         # define column headers
-        column_headers = ['timestamp', 'server_name', 'ping_time', 'download_rate', 'upload_rate', 'ssid', 'bssid', 'freq', 'bit_rate', 'signal_level', 'ip_address']
+        column_headers = ['timestamp', 'server_name', 'ping_time', 'download_rate', 'upload_rate', 'ssid', 'bssid', 'freq', 'bit_rate', 'signal_level', 'tx_retries', 'ip_address']
         
         # speedtest results
         results_dict['ping_time'] = int(speedtest_results['ping_time'])
@@ -218,6 +226,7 @@ def main():
         results_dict['freq'] = str(adapter.get_freq())
         results_dict['bit_rate'] = float(adapter.get_bit_rate())
         results_dict['signal_level'] = int(adapter.get_signal_level())
+        results_dict['tx_retries'] = int(adapter.get_tx_retries())
         results_dict['ip_address'] = str(adapter.get_ipaddr())
         
         results_dict['timestamp'] = int(time.time())
@@ -382,6 +391,66 @@ def main():
     
     else:
         file_logger.info("Iperf3 udp test not enabled in config file, bypassing this test...")
+    
+    ###################################
+    # Run DNS lookup tests (if enabled)
+    ###################################
+    if config_vars['dns_test_enabled'] == 'yes':
+
+        file_logger.info("Starting DNS tests...")
+
+        dns_targets = [config_vars['dns_target1'], config_vars['dns_target2'], config_vars['dns_target3']]
+
+        dns_obj = DnsTester(file_logger, platform = platform, debug = DEBUG)
+
+        dns_result = dns_obj.dns_lookup(dns_targets)
+
+        if dns_result:
+ 
+            column_headers = ['DNS_Target1', 'Lookup_Time1', 'DNS_Target2', 'Lookup_Time2','DNS_Target3', 'Lookup_Time3']
+
+           # summarise results for log
+            result_str = ''
+            for key in dns_result.keys():
+
+                result_str += ' {}: {}ms'.format(key, dns_result[key])
+
+            # drop abbreviated results in log file
+            file_logger.info("DNS results: {}".format(result_str))
+
+            targets = list(dns_result.keys())
+            
+            target1 = targets[0]
+            result1 = dns_result[target1]
+            target2 = targets[1]
+            result2 = dns_result[target2]
+            target3 = targets[2]
+            result3 = dns_result[target3]
+
+            results_dict = { 'DNS_Target1': target1, 
+                            'Lookup_Time1': result1,
+                            'DNS_Target2': target2, 
+                            'Lookup_Time2': result2,
+                            'DNS_Target3': target3, 
+                            'Lookup_Time3': result3
+            }
+
+            # dump the results 
+            if config_vars['data_format'] == 'csv':
+                data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['dns_data_file'])
+                send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
+            else:
+                data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['dns_data_file'])
+                send_results_to_json(data_file, results_dict, file_logger, DEBUG)
+
+            file_logger.info("DNS test ended.")
+
+        else:
+            file_logger.error("DNS test error - no results (check logs)")
+
+    
+    else:
+        file_logger.info("DNS test not enabled in config file, bypassing this test...")
         
 ###############################################################################
 # End main

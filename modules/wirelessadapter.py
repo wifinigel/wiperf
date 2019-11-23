@@ -19,6 +19,7 @@ class WirelessAdapter(object):
         self.freq = ''
         self.bit_rate = ''
         self.signal_level = ''
+        self.tx_retries = ''
         
         self.ip_addr = ''
         self.def_gw = ''
@@ -114,8 +115,18 @@ class WirelessAdapter(object):
             
         if self.debug:
             print("Signal level = " + self.signal_level)
+
+        # Extract tx retries
+        ssid_re = re.search('Tx excessive retries[\=|\:](\d+?) ', self.iwconfig_info)
+        if ssid_re is None:
+            self.tx_retries = "NA"
+        else:
+            self.tx_retries = ssid_re.group(1)
+            
+        if self.debug:
+            print("Excessive Tx Retries = " + self.tx_retries)
         
-        results_list = [self.ssid, self.bssid, self.freq, self.bit_rate, self.signal_level]
+        results_list = [self.ssid, self.bssid, self.freq, self.bit_rate, self.signal_level, self.tx_retries]
 
         if self.debug:
             print("Results list:")
@@ -298,6 +309,9 @@ class WirelessAdapter(object):
     
     def get_signal_level(self):
         return self.signal_level
+
+    def get_tx_retries(self):
+        return self.tx_retries
 
     def get_ipaddr(self):
         return self.ip_addr
