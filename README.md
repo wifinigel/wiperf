@@ -10,12 +10,15 @@ Update existing Linux packages:
 
 - sudo apt-get update
 - sudo apt-get upgrade
+- sudo reboot
 
 Install required Linux packages:
 
+- sudo apt-get update
 - sudo apt-get install python3-pip
 - sudo apt-get install iperf3
 - sudo apt-get install git
+- sudo reboot
 
 Install required python3 modules
 
@@ -98,7 +101,7 @@ With the RPi connected to the Internet, login using the wlanpi user and clone th
 - cd ~
 - git clone https://github.com/wifinigel/wiperf.git
 
-Edit the config file to customize the operation of the script:
+Edit the config file to customize the operation of the script:cd
 
 - nano /home/wlanpi/wiperf/config.ini
 
@@ -122,6 +125,13 @@ Create a cronjob to run the script very 5 mins:
 
 - crontab -e
 - add line: */5 * * * * sudo /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1
+
+## Account Tidy-up
+
+If this has been built using a new RPI image, remember to either update the default 'pi' username with a new password, or remove the account. Make sure you have successfully logged in with the 'wlanpi' user and are using it to perform the operations shown below.
+
+- Change password : sudo passwd pi
+- Remove account: sudo userdel pi
 
 ## Troubleshooting:
 
