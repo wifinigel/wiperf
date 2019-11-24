@@ -26,7 +26,7 @@ from modules.dnstester import *
 
 # define useful system files
 config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"
-log_file = os.path.dirname(os.path.realpath(__file__)) + "/agent.log"
+log_file = os.path.dirname(os.path.realpath(__file__)) + "/logs/agent.log"
 
 # Enable debugs or create some dummy data for testing
 DEBUG = 0

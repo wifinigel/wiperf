@@ -51,7 +51,12 @@ def ooklaspeedtest(file_logger, DUMMY_DATA=False, DEBUG=False):
         import sys
         
         # perform Speedtest
-        st = speedtest.Speedtest()
+        try:
+            st = speedtest.Speedtest()
+        except Exception as error:
+            file_logger.error("Speedtest error: {}".format(error))
+            sys.exit()
+
         st.get_best_server()
         
         try:
