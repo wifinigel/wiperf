@@ -93,7 +93,7 @@ Reboot RPi & verify the RPi has joined the wireless network with iwconfig/ifconf
 
 ## Installation
 
-With the RPi connected to the Internet, loing usin ghte wlanpi user and clone this project:
+With the RPi connected to the Internet, login using the wlanpi user and clone this project:
 
 - cd ~
 - git clone https://github.com/wifinigel/wiperf.git
@@ -104,7 +104,7 @@ Edit the config file to customize the operation of the script:
 
 ### Testing
 
-Test the script by running the following command (takes around 1 minute to complete, depending on tests enabled):
+Test the script by running the following command (takes around 2 minutes to complete, depending on tests enabled):
 
     sudo /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py
     
