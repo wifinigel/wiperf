@@ -133,6 +133,15 @@ If this has been built using a new RPI image, remember to either update the defa
 - Change password : sudo passwd pi
 - Remove account: sudo userdel pi
 
+## Updating
+
+To get the latest updates from the GitHub repo , use the following commands when logged in as the wlanpi user:
+
+- cd ~/wiperf
+- git pull https://github.com/wifinigel/wiperf.git
+
+(note that this will overwrite files, which may include the config file if that has been updated on GitHub. Backup you config.ini files before the pull operation, or remember to re-edit it after a pull if required)
+
 ## Troubleshooting:
 
 If things seem to be going wrong, try the following:
