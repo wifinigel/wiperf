@@ -23,6 +23,7 @@ from modules.pinger import *
 from modules.filelogger import *
 from modules.iperf3_tester import tcp_iperf_client_test, udp_iperf_client_test
 from modules.dnstester import *
+from modules.dhcptester import *
 
 # define useful system files
 config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"
@@ -87,6 +88,10 @@ def read_config(debug):
     config_vars['dns_target1'] = config.get('DNS_test', 'dns_target1')
     config_vars['dns_target2'] = config.get('DNS_test', 'dns_target2')
     config_vars['dns_target3'] = config.get('DNS_test', 'dns_target3')
+
+    ### Get DHCP test params
+    config_vars['dhcp_test_enabled'] = config.get('DHCP_test', 'enabled')
+    config_vars['dhcp_data_file'] = config.get('DHCP_test', 'dhcp_data_file')
 
     # Figure out our machine_id (provides unique device id if required)
     machine_id = subprocess.check_output("cat /etc/machine-id", shell=True).decode()
@@ -258,7 +263,7 @@ def main():
         ping_count = config_vars['ping_count']
 
         # define colum headers for CSV
-        column_headers = ['ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time', 'rtt_min', 'rtt_avg', 'rtt_max', 'rtt_mdev']
+        column_headers = ['timestamp', 'ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time', 'rtt_min', 'rtt_avg', 'rtt_max', 'rtt_mdev']
             
         # initial ping to populate arp cache and avoid arp timeput for first test ping
         ping_obj.ping_host(ping_host, 1)
@@ -270,6 +275,7 @@ def main():
             
         # ping results
         if ping_result:
+            results_dict['timestamp'] = int(time.time())
             results_dict['ping_host'] =  ping_result['host']
             results_dict['pkts_tx'] =  ping_result['pkts_tx']
             results_dict['pkts_rx'] =  ping_result['pkts_rx']
@@ -317,8 +323,9 @@ def main():
 
             results_dict = {}
             
-            column_headers = ['sent_mbps', 'received_mbps', 'sent_bytes', 'received_bytes', 'retransmits']
+            column_headers = ['timestamp', 'sent_mbps', 'received_mbps', 'sent_bytes', 'received_bytes', 'retransmits']
 
+            results_dict['timestamp'] = int(time.time())
             results_dict['sent_mbps'] =  result.sent_Mbps
             results_dict['received_mbps']   =  result.received_Mbps
             results_dict['sent_bytes'] =  result.sent_bytes
@@ -363,8 +370,9 @@ def main():
 
             results_dict = {}
             
-            column_headers = ['bytes', 'mbps', 'jitter_ms', 'packets', 'lost_packets', 'lost_percent']
+            column_headers = ['timestamp', 'bytes', 'mbps', 'jitter_ms', 'packets', 'lost_packets', 'lost_percent']
 
+            results_dict['timestamp'] = int(time.time())
             results_dict['bytes'] =  result.bytes
             results_dict['mbps']   =  result.Mbps
             results_dict['jitter_ms'] =  result.jitter_ms
@@ -407,7 +415,7 @@ def main():
 
         if dns_result:
  
-            column_headers = ['DNS_Target1', 'Lookup_Time1', 'DNS_Target2', 'Lookup_Time2','DNS_Target3', 'Lookup_Time3']
+            column_headers = ['timestamp', 'dns_target1', 'lookup_time1', 'dns_target2', 'lookup_time2','dns_target3', 'lookup_time3']
 
            # summarise results for log
             result_str = ''
@@ -427,12 +435,14 @@ def main():
             target3 = targets[2]
             result3 = dns_result[target3]
 
-            results_dict = { 'DNS_Target1': target1, 
-                            'Lookup_Time1': result1,
-                            'DNS_Target2': target2, 
-                            'Lookup_Time2': result2,
-                            'DNS_Target3': target3, 
-                            'Lookup_Time3': result3
+            results_dict = { 
+                    'timestamp':int(time.time()),
+                    'dns_target1': target1, 
+                    'lookup_time1': result1,
+                    'dns_target2': target2, 
+                    'lookup_time2': result2,
+                    'dns_target3': target3, 
+                    'lookup_time3': result3
             }
 
             # dump the results 
@@ -452,6 +462,43 @@ def main():
     else:
         file_logger.info("DNS test not enabled in config file, bypassing this test...")
         
+    
+    #####################################
+    # Run DHCP renewal test (if enabled)
+    #####################################
+    if config_vars['dhcp_test_enabled'] == 'yes':
+
+        file_logger.info("Starting DHCP renewal test...")
+
+        dhcp_obj = DhcpTester(file_logger, platform = platform, debug = DEBUG)
+
+        renewal_result = dhcp_obj.dhcp_renewal(wlan_if)
+
+        if renewal_result:
+ 
+            column_headers = ['timestamp', 'dhcp_renewal_time']
+
+            results_dict = { 
+                    'timestamp':int(time.time()),
+                    'dhcp_renewal_time': renewal_result, 
+            }
+
+            # dump the results 
+            if config_vars['data_format'] == 'csv':
+                data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['dhcp_data_file'])
+                send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
+            else:
+                data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['dhcp_data_file'])
+                send_results_to_json(data_file, results_dict, file_logger, DEBUG)
+
+            file_logger.info("DHCP test ended.")
+
+        else:
+            file_logger.error("DHCP test error - no results (check logs)")
+
+    
+    else:
+        file_logger.info("DHCP test not enabled in config file, bypassing this test...")
 ###############################################################################
 # End main
 ###############################################################################
