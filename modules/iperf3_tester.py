@@ -2,10 +2,11 @@
 A simple class to perform an iperf3 test and return a number of
 result characteristics
 '''
-from __future__ import print_function
 from iperf3 import Client
 
 def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, debug=False):
+
+    # TODO: Handle iperf test failures - return False
 
     protocol = 'tcp'
 
@@ -26,6 +27,8 @@ def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
 
 
 def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, bandwidth=100000000, debug=False):
+
+    # TODO: Handle iperf test failures - return False
 
     protocol = 'udp'
 

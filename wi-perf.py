@@ -44,6 +44,8 @@ def read_config(debug):
     config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"
     config.read(config_file)
 
+    # TODO: add checking logic for values in config.ini file
+
     ### Get general config params
     # WLAN interface name
     config_vars['wlan_if'] = config.get('General', 'wlan_if')

@@ -36,6 +36,8 @@ class DnsTester(object):
             'bbc.co.uk': 33,
         }
         '''
+        # TODO: How do we handle empty targets & lookup failures (e.g. bad name)
+
         self.targets = targets
 
         if self.debug:
