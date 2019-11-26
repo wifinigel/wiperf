@@ -52,7 +52,7 @@ class DnsTester(object):
             try:
                 socket.gethostbyname(target)
             except Exception as ex:
-                file_logger.error("DNS test lookup to {} failed. Err msg: {}".format(target, ex))
+                self.file_logger.error("DNS test lookup to {} failed. Err msg: {}".format(target, ex))
                 self.dns_results[target] = ''
                 if self.debug:
                     print("DNS lookup for: {} failed! - err: {}".format(target, ex))
