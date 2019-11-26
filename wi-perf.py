@@ -66,7 +66,9 @@ def read_config(debug):
     ### Get Ping config params
     config_vars['ping_enabled'] = config.get('Ping_Test', 'enabled')
     config_vars['ping_data_file'] = config.get('Ping_Test', 'ping_data_file')
-    config_vars['ping_host'] = config.get('Ping_Test', 'ping_host')
+    config_vars['ping_host1'] = config.get('Ping_Test', 'ping_host1')
+    config_vars['ping_host2'] = config.get('Ping_Test', 'ping_host2')
+    config_vars['ping_host3'] = config.get('Ping_Test', 'ping_host3')
     config_vars['ping_count'] = config.get('Ping_Test', 'ping_count')
 
     ### Get iperf3 tcp test params
@@ -261,49 +263,61 @@ def main():
         # run ping test
         ping_obj = Pinger(file_logger, platform = platform, debug = DEBUG)
 
-        ping_host = config_vars['ping_host']
+        ping_host1 = config_vars['ping_host1']
+        ping_host2 = config_vars['ping_host2']
+        ping_host3 = config_vars['ping_host3']
+        ping_hosts = [ping_host1, ping_host2, ping_host3]
+
         ping_count = config_vars['ping_count']
 
         # define colum headers for CSV
         column_headers = ['timestamp', 'ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time', 'rtt_min', 'rtt_avg', 'rtt_max', 'rtt_mdev']
             
         # initial ping to populate arp cache and avoid arp timeput for first test ping
-        ping_obj.ping_host(ping_host, 1)
+        for ping_host in ping_hosts:
+            if ping_host == '':
+                continue
+            else:
+                ping_obj.ping_host(ping_host, 1)
             
         # ping test
-        ping_result = ping_obj.ping_host(ping_host, ping_count)
-
-        results_dict = {}
-            
-        # ping results
-        if ping_result:
-            results_dict['timestamp'] = int(time.time())
-            results_dict['ping_host'] =  ping_result['host']
-            results_dict['pkts_tx'] =  ping_result['pkts_tx']
-            results_dict['pkts_rx'] =  ping_result['pkts_rx']
-            results_dict['percent_loss'] =  ping_result['pkt_loss']
-            results_dict['test_time'] =  ping_result['test_time']
-            results_dict['rtt_min'] =  ping_result['rtt_min']
-            results_dict['rtt_avg'] =  ping_result['rtt_avg']
-            results_dict['rtt_max'] =  ping_result['rtt_max']
-            results_dict['rtt_mdev'] =  ping_result['rtt_mdev']
-
-            # dump the results 
-            if config_vars['data_format'] == 'csv':
-                data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['ping_data_file'])
-                send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
+        for ping_host in ping_hosts:
+            if ping_host == '':
+                    continue
             else:
-                data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['ping_data_file'])
-                send_results_to_json(data_file, results_dict, file_logger, DEBUG)
+                ping_result = ping_obj.ping_host(ping_host, ping_count)
 
-            file_logger.info("Ping test ended.")
+            results_dict = {}
+                
+            # ping results
+            if ping_result:
+                results_dict['timestamp'] = int(time.time())
+                results_dict['ping_host'] =  ping_result['host']
+                results_dict['pkts_tx'] =  ping_result['pkts_tx']
+                results_dict['pkts_rx'] =  ping_result['pkts_rx']
+                results_dict['percent_loss'] =  ping_result['pkt_loss']
+                results_dict['test_time'] =  ping_result['test_time']
+                results_dict['rtt_min'] =  ping_result['rtt_min']
+                results_dict['rtt_avg'] =  ping_result['rtt_avg']
+                results_dict['rtt_max'] =  ping_result['rtt_max']
+                results_dict['rtt_mdev'] =  ping_result['rtt_mdev']
 
-            if DEBUG:
-                print("Main: Ping test results:")
-                print(ping_result)
+                # dump the results 
+                if config_vars['data_format'] == 'csv':
+                    data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['ping_data_file'])
+                    send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
+                else:
+                    data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['ping_data_file'])
+                    send_results_to_json(data_file, results_dict, file_logger, DEBUG)
 
-        else:
-            file_logger.error("Ping test failed.")
+                file_logger.info("Ping test ended.")
+
+                if DEBUG:
+                    print("Main: Ping test results:")
+                    print(ping_result)
+
+            else:
+                file_logger.error("Ping test failed.")
 
     else:
         file_logger.info("Ping test not enabled in config file, bypassing this test...")

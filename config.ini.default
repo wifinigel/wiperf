@@ -19,8 +19,12 @@ speedtest_data_file: wiperf-speedtest-splunk
 enabled: yes
 ; location of ping test file for Splunk forwarder to read (do not add file extension)
 ping_data_file: wiperf-ping-splunk
-; host we'd like to ping
-ping_host: bbc.co.uk
+; first host we'd like to ping
+ping_host1: bbc.co.uk
+; first host we'd like to ping
+ping_host2: cisco.com
+; third host we'd like to ping
+ping_host3: 127.0.0.1
 ; number of pings to send
 ping_count: 10
 
