@@ -18,7 +18,9 @@ class DnsTester(object):
         self.file_logger = file_logger
 
         self.targets = []
+        self.target = []
         self.dns_results = {}
+        self.dns_result = 0
 
     def dns_lookup(self, targets):
         '''
@@ -66,9 +68,53 @@ class DnsTester(object):
                     print("DNS lookup for: {} succeeded.".format(target))
 
         return self.dns_results
+    
+    def dns_single_lookup(self, target):
+        '''
+        This function will run a series of DNS lookups against the targets supplied
+        and return the results in a dictionary.
+
+        Usage:
+            tester_obj.dns_lookup(bbc.co.uk')
+        
+        If the lookup fails, a False condition is returned with no further
+        information. The lookup time is returned (results are in mS):
+
+        '''
+        # TODO: How do we handle empty targets & lookup failures (e.g. bad name)
+
+        self.target = target
+
+        if self.debug:
+            print("DNS test target: {}".format(self.target))
+
+        if self.debug:
+            print("Performing DNS lookup for: {}".format(target))
+
+        start = time.time()
+        try:
+            socket.gethostbyname(target)
+        except Exception as ex:
+            self.file_logger.error("DNS test lookup to {} failed. Err msg: {}".format(target, ex))
+            self.dns_result= False
+            if self.debug:
+                print("DNS lookup for: {} failed! - err: {}".format(target, ex))
+
+        end = time.time()
+        time_taken = int(round((end - start) * 1000))
+        self.dns_result = time_taken
+
+        if self.debug:
+                    print("DNS lookup for: {} succeeded.".format(target))
+
+        return self.dns_result
 
 
     def get_dns_results(self):
         ''' Get DNS lookup results '''
         return self.dns_results
+    
+    def get_dns_result(self):
+        ''' Get DNS single lookup result '''
+        return self.dns_result
 

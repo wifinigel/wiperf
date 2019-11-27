@@ -69,6 +69,8 @@ def read_config(debug):
     config_vars['ping_host1'] = config.get('Ping_Test', 'ping_host1')
     config_vars['ping_host2'] = config.get('Ping_Test', 'ping_host2')
     config_vars['ping_host3'] = config.get('Ping_Test', 'ping_host3')
+    config_vars['ping_host4'] = config.get('Ping_Test', 'ping_host4')
+    config_vars['ping_host5'] = config.get('Ping_Test', 'ping_host5')
     config_vars['ping_count'] = config.get('Ping_Test', 'ping_count')
 
     ### Get iperf3 tcp test params
@@ -92,6 +94,8 @@ def read_config(debug):
     config_vars['dns_target1'] = config.get('DNS_test', 'dns_target1')
     config_vars['dns_target2'] = config.get('DNS_test', 'dns_target2')
     config_vars['dns_target3'] = config.get('DNS_test', 'dns_target3')
+    config_vars['dns_target4'] = config.get('DNS_test', 'dns_target4')
+    config_vars['dns_target5'] = config.get('DNS_test', 'dns_target5')
 
     ### Get DHCP test params
     config_vars['dhcp_test_enabled'] = config.get('DHCP_test', 'enabled')
@@ -266,12 +270,14 @@ def main():
         ping_host1 = config_vars['ping_host1']
         ping_host2 = config_vars['ping_host2']
         ping_host3 = config_vars['ping_host3']
-        ping_hosts = [ping_host1, ping_host2, ping_host3]
+        ping_host4 = config_vars['ping_host4']
+        ping_host5 = config_vars['ping_host5']
+        ping_hosts = [ping_host1, ping_host2, ping_host3, ping_host4, ping_host5]
 
         ping_count = config_vars['ping_count']
 
         # define colum headers for CSV
-        column_headers = ['timestamp', 'ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time', 'rtt_min', 'rtt_avg', 'rtt_max', 'rtt_mdev']
+        column_headers = ['timestamp', 'ping_index', 'ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time', 'rtt_min', 'rtt_avg', 'rtt_max', 'rtt_mdev']
             
         # initial ping to populate arp cache and avoid arp timeput for first test ping
         for ping_host in ping_hosts:
@@ -281,7 +287,10 @@ def main():
                 ping_obj.ping_host(ping_host, 1)
             
         # ping test
+        ping_index = 0
         for ping_host in ping_hosts:
+            ping_index += 1
+
             if ping_host == '':
                     continue
             else:
@@ -292,6 +301,7 @@ def main():
             # ping results
             if ping_result:
                 results_dict['timestamp'] = int(time.time())
+                results_dict['ping_index'] =  ping_index
                 results_dict['ping_host'] =  ping_result['host']
                 results_dict['pkts_tx'] =  ping_result['pkts_tx']
                 results_dict['pkts_rx'] =  ping_result['pkts_rx']
@@ -423,56 +433,51 @@ def main():
 
         file_logger.info("Starting DNS tests...")
 
-        dns_targets = [config_vars['dns_target1'], config_vars['dns_target2'], config_vars['dns_target3']]
+        dns_targets = [ config_vars['dns_target1'], config_vars['dns_target2'], config_vars['dns_target3'], config_vars['dns_target4'], config_vars['dns_target5'] ]
 
-        dns_obj = DnsTester(file_logger, platform = platform, debug = DEBUG)
+        dns_index = 0
 
-        dns_result = dns_obj.dns_lookup(dns_targets)
+        for dns_target in dns_targets:
 
-        if dns_result:
- 
-            column_headers = ['timestamp', 'dns_target1', 'lookup_time1', 'dns_target2', 'lookup_time2','dns_target3', 'lookup_time3']
+            dns_index += 1
 
-           # summarise results for log
-            result_str = ''
-            for key in dns_result.keys():
+            # move on to next if no DNS entry data
+            if dns_target == '':
+                continue
 
-                result_str += ' {}: {}ms'.format(key, dns_result[key])
+            dns_obj = DnsTester(file_logger, platform = platform, debug = DEBUG)
 
-            # drop abbreviated results in log file
-            file_logger.info("DNS results: {}".format(result_str))
+            dns_result = dns_obj.dns_single_lookup(dns_target)
 
-            targets = list(dns_result.keys())
-            
-            target1 = targets[0]
-            result1 = dns_result[target1]
-            target2 = targets[1]
-            result2 = dns_result[target2]
-            target3 = targets[2]
-            result3 = dns_result[target3]
+            if dns_result:
+    
+                column_headers = ['timestamp', 'dns_index', 'dns_target', 'lookup_time']
 
-            results_dict = { 
-                    'timestamp':int(time.time()),
-                    'dns_target1': target1, 
-                    'lookup_time1': result1,
-                    'dns_target2': target2, 
-                    'lookup_time2': result2,
-                    'dns_target3': target3, 
-                    'lookup_time3': result3
-            }
+                # summarise result for log
+                result_str = ' {}: {}ms'.format(dns_target, dns_result)
 
-            # dump the results 
-            if config_vars['data_format'] == 'csv':
-                data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['dns_data_file'])
-                send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
+                # drop abbreviated results in log file
+                file_logger.info("DNS results: {}".format(result_str))
+
+                results_dict = { 
+                        'timestamp':int(time.time()),
+                        'dns_index': dns_index,
+                        'dns_target': dns_target, 
+                        'lookup_time': dns_result
+                }
+
+                # dump the results 
+                if config_vars['data_format'] == 'csv':
+                    data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['dns_data_file'])
+                    send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
+                else:
+                    data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['dns_data_file'])
+                    send_results_to_json(data_file, results_dict, file_logger, DEBUG)
+
+                file_logger.info("DNS test ended.")
+
             else:
-                data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['dns_data_file'])
-                send_results_to_json(data_file, results_dict, file_logger, DEBUG)
-
-            file_logger.info("DNS test ended.")
-
-        else:
-            file_logger.error("DNS test error - no results (check logs)")
+                file_logger.error("DNS test error - no results (check logs)")
 
     
     else:
