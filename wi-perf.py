@@ -111,11 +111,11 @@ def read_config(debug):
     return config_vars
 
 
-def send_results_to_csv(data_file, dict_data, column_headers, file_logger, debug):
+def send_results_to_csv(data_file, dict_data, column_headers, file_logger, debug, delete_data_file=True):
 
     try:
-        if False:
-        #if os.path.exists(data_file):
+        #if False:
+        if os.path.exists(data_file) and (delete_data_file == False):
             with open(data_file, 'a') as csvfile:
                 writer = csv.DictWriter(csvfile, fieldnames=column_headers)
                 writer.writerow(dict_data)
@@ -127,13 +127,13 @@ def send_results_to_csv(data_file, dict_data, column_headers, file_logger, debug
     except IOError as err:
         file_logger.error("CSV I/O error: {}".format(err))
 
-def send_results_to_json(data_file, dict_data, file_logger, debug):
+def send_results_to_json(data_file, dict_data, file_logger, debug, delete_data_file=True):
 
     try:
         # change write/append mode depending on whether data file exists
         file_mode = 'w'
-        # if os.path.exists(data_file):
-        #    file_mode = 'a'
+        if os.path.exists(data_file) and (delete_data_file == False):
+            file_mode = 'a'
 
         with open(data_file, file_mode) as json_file:
             json.dump(dict_data, json_file)
@@ -294,6 +294,8 @@ def main():
             
         # ping test
         ping_index = 0
+        delete_file = True
+
         for ping_host in ping_hosts:
             ping_index += 1
 
@@ -325,12 +327,15 @@ def main():
                 # dump the results 
                 if config_vars['data_format'] == 'csv':
                     data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['ping_data_file'])
-                    send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
+                    send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG, delete_data_file=delete_file)
                 else:
                     data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['ping_data_file'])
-                    send_results_to_json(data_file, results_dict, file_logger, DEBUG)
+                    send_results_to_json(data_file, results_dict, file_logger, DEBUG, delete_data_file=delete_file)
 
                 file_logger.info("Ping test ended.")
+                
+                # Make sure we don't delete data file next time around
+                delete_file = False
 
                 if DEBUG:
                     print("Main: Ping test results:")
@@ -446,6 +451,7 @@ def main():
         dns_targets = [ config_vars['dns_target1'], config_vars['dns_target2'], config_vars['dns_target3'], config_vars['dns_target4'], config_vars['dns_target5'] ]
 
         dns_index = 0
+        delete_file = True
 
         for dns_target in dns_targets:
 
@@ -479,12 +485,15 @@ def main():
                 # dump the results 
                 if config_vars['data_format'] == 'csv':
                     data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['dns_data_file'])
-                    send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
+                    send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG ,delete_data_file=delete_file)
                 else:
                     data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['dns_data_file'])
-                    send_results_to_json(data_file, results_dict, file_logger, DEBUG)
+                    send_results_to_json(data_file, results_dict, file_logger, DEBUG, delete_data_file=delete_file)
 
                 file_logger.info("DNS test ended.")
+
+                # Make sure we don't delete data file next time around
+                delete_file = False
 
             else:
                 file_logger.error("DNS test error - no results (check logs)")
