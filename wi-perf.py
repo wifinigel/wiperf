@@ -114,7 +114,8 @@ def read_config(debug):
 def send_results_to_csv(data_file, dict_data, column_headers, file_logger, debug):
 
     try:
-        if os.path.exists(data_file):
+        if False:
+        #if os.path.exists(data_file):
             with open(data_file, 'a') as csvfile:
                 writer = csv.DictWriter(csvfile, fieldnames=column_headers)
                 writer.writerow(dict_data)
@@ -131,8 +132,8 @@ def send_results_to_json(data_file, dict_data, file_logger, debug):
     try:
         # change write/append mode depending on whether data file exists
         file_mode = 'w'
-        if os.path.exists(data_file):
-            file_mode = 'a'
+        # if os.path.exists(data_file):
+        #    file_mode = 'a'
 
         with open(data_file, file_mode) as json_file:
             json.dump(dict_data, json_file)
