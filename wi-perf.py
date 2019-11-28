@@ -191,11 +191,12 @@ def main():
         file_logger.error("Unable to get wireless adapter IP info")
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
     
-
+    '''
     if adapter.get_route_info() == False:
         file_logger.error("Unable to get wireless adapter route info - maybe you have multiple interfaces enabled that are stopping the wlan interface being used?")
-        #bounce_error_exit(adapter, file_logger, DEBUG) # exit here
-
+        bounce_error_exit(adapter, file_logger, DEBUG) # exit here
+    '''
+    
     if adapter.get_ipaddr() == 'NA':
         file_logger.error("Problem with wireless connection: no valid IP address")
         file_logger.error("Attempting to recover by bouncing wireless interface...")
