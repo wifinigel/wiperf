@@ -8,38 +8,48 @@ Wi-Fi performance probe
 
 Update existing Linux packages:
 
-- sudo apt-get update
-- sudo apt-get upgrade
-- sudo reboot
+```
+        sudo apt-get update && sudo apt-get upgrade -y
+        sudo reboot
+```
 
 Install required Linux packages:
 
-- sudo apt-get update
-- sudo apt-get install python3-pip
-- sudo apt-get install iperf3
-- sudo apt-get install git
-- sudo reboot
-
+```
+        sudo apt-get update
+        sudo apt-get install python3-pip iperf3 git -y
+        sudo reboot
+```
+     
 Install required python3 modules
 
-- sudo pip3 install iperf3
-- sudo pip3 install speedtest-cli
-- sudo pip3 install configparser
+```
+        sudo pip3 install iperf3 speedtest-cli configparser
+```
 
 ### User Account
 
 Create the wlanpi user:
-
-- sudo adduser wlanpi
+```
+        sudo adduser wlanpi
+```
 
 Edit the sudoers file to enable the wlanpi user to run some commands that require elevated privilege:
 
-- sudo visudo
-- Add following line to bottom of file: wlanpi  ALL=(ALL) NOPASSWD: ALL
+```
+        sudo visudo
+```
+
+- Add following line to bottom of file: 
+```
+        wlanpi  ALL=(ALL) NOPASSWD: ALL
+```
 
 Reboot and log back in with the wlanpi user:
 
-- sudo reboot
+```
+        sudo reboot
+```
 
 ### Wireless Configuration
 
@@ -98,34 +108,47 @@ Reboot RPi & verify the RPi has joined the wireless network with iwconfig/ifconf
 
 With the RPi connected to the Internet, login using the wlanpi user and clone this project:
 
-- cd ~
-- git clone https://github.com/wifinigel/wiperf.git
+```
+        cd ~
+        git clone https://github.com/wifinigel/wiperf.git
+```
 
 Edit the config file to customize the operation of the script:cd
 
-- nano /home/wlanpi/wiperf/config.ini
+```
+        cp /home/wlanpi/wiperf/config.default.ini config.ini
+        nano /home/wlanpi/wiperf/config.ini
+```
 
 ### Testing
 
 Test the script by running the following command (takes around 2 minutes to complete, depending on tests enabled):
 
-    sudo /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py
-    
+```
+        sudo /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py
+```
+
 If no errors are observed when running it then check the following files to check for no errors & that data is generated:
-    
-    cat /home/wlanpi/wiperf/logs/agent.log
-    cat /home/wlanpi/wiperf/data/wiperf-speedtest-splunk.csv
-    cat /home/wlanpi/wiperf/data/wiperf-ping-splunk.csv
-    cat /home/wlanpi/wiperf/data/wiperf-iperf3-udp-splunk.csv
-    cat /home/wlanpi/wiperf/data/wiperf-iperf3-tcp-splunk.csv
+```    
+        cat /home/wlanpi/wiperf/logs/agent.log
+        cat /home/wlanpi/wiperf/data/wiperf-speedtest-splunk.csv
+        cat /home/wlanpi/wiperf/data/wiperf-ping-splunk.csv
+        cat /home/wlanpi/wiperf/data/wiperf-iperf3-udp-splunk.csv
+        cat /home/wlanpi/wiperf/data/wiperf-iperf3-tcp-splunk.csv
+```
 
 ## Running: Schedule Regular Job
 
 Create a cronjob to run the script very 5 mins:
 
-- crontab -e
-- add line: */5 * * * * sudo /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1
+```
+        sudo crontab -e
+```
 
+- add line: 
+```
+        */5 * * * * sudo /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1
+```
 ## Account Tidy-up
 
 If this has been built using a new RPI image, remember to either update the default 'pi' username with a new password, or remove the account. Make sure you have successfully logged in with the 'wlanpi' user and are using it to perform the operations shown below.
@@ -137,10 +160,12 @@ If this has been built using a new RPI image, remember to either update the defa
 
 To get the latest updates from the GitHub repo , use the following commands when logged in as the wlanpi user:
 
-- cd ~/wiperf
-- git pull https://github.com/wifinigel/wiperf.git
+```
+        cd ~/wiperf
+        git pull https://github.com/wifinigel/wiperf.git
+```
 
-(note that this will overwrite files, which may include the config file if that has been updated on GitHub. Backup you config.ini files before the pull operation, or remember to re-edit it after a pull if required)
+(note that this will update config.default.ini but not config.ini, or remember to re-edit it after a pull if the format changes)
 
 ## Troubleshooting:
 
