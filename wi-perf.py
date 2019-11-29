@@ -14,13 +14,13 @@ import csv
 import os.path
 import logging
 import json
-#import unicodecsv as csv
 
 # our local modules...
 from modules.ooklaspeedtest import ooklaspeedtest
 from modules.wirelessadapter import *
 from modules.pinger import *
 from modules.filelogger import *
+from modules.heclogger import *
 from modules.iperf3_tester import tcp_iperf_client_test, udp_iperf_client_test
 from modules.dnstester import *
 from modules.dhcptester import *
@@ -55,6 +55,14 @@ def read_config(debug):
     config_vars['data_format'] = config.get('General', 'data_format')
     # directory where data dumped
     config_vars['data_dir'] = config.get('General', 'data_dir')
+    # data transport
+    config_vars['data_transport'] = config.get('General', 'data_transport')
+    # host where to send logs
+    config_vars['data_host'] = config.get('General', 'data_host')
+    # host port
+    config_vars['data_port'] = config.get('General', 'data_port')
+    # Splunk HEC token
+    config_vars['splunk_token'] = config.get('General', 'splunk_token')
       
     if debug:    
         print("Platform = {}".format(config_vars.get('General', 'platform')))
@@ -139,6 +147,15 @@ def send_results_to_json(data_file, dict_data, file_logger, debug, delete_data_f
             json.dump(dict_data, json_file)
     except IOError:
         file_logger.error("JSON I/O error: {}".format(err))
+
+def send_results_to_hec(host, token, port, dict_data, source, debug=False):
+
+    # add time to data
+    dict_data['time'] = time.time()
+
+    hec_logger = HecLogger(host, token, port, source, debug)
+    hec_logger.info(dict_data)
+
 
 def bounce_error_exit(adapter, file_logger, debug=False): 
     '''
@@ -247,12 +264,18 @@ def main():
         results_dict['timestamp'] = int(time.time())
 
         # dump the results 
-        if config_vars['data_format'] == 'csv':
+        if config_vars['data_transport'] == 'hec':
+            send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
+                results_dict, config_vars['speedtest_data_file'], DEBUG)
+        elif config_vars['data_format'] == 'csv':
             data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['speedtest_data_file'])
             send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
-        else:
+        elif config_vars['data_format'] == 'json':
             data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['speedtest_data_file'])
             send_results_to_json(data_file, results_dict, file_logger, DEBUG)
+        else:
+            file_logger.info("Unknown format type in config file: {}".format(config_vars['data_format']))
+            exit()
 
         file_logger.info("Speedtest ended.")
 
@@ -324,13 +347,19 @@ def main():
                 results_dict['rtt_max'] =  ping_result['rtt_max']
                 results_dict['rtt_mdev'] =  ping_result['rtt_mdev']
 
-                # dump the results 
-                if config_vars['data_format'] == 'csv':
+                # dump the results
+                if config_vars['data_transport'] == 'hec':
+                    send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
+                        results_dict, config_vars['ping_data_file'], DEBUG)
+                elif config_vars['data_format'] == 'csv':
                     data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['ping_data_file'])
                     send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG, delete_data_file=delete_file)
-                else:
+                elif config_vars['data_format'] == 'json':
                     data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['ping_data_file'])
                     send_results_to_json(data_file, results_dict, file_logger, DEBUG, delete_data_file=delete_file)
+                else:
+                    file_logger.info("Unknown format type in config file: {}".format(config_vars['data_format']))
+                    exit()
 
                 file_logger.info("Ping test ended.")
                 
@@ -376,13 +405,19 @@ def main():
             # drop abbreviated results in log file
             file_logger.info("Iperf3 tcp results - rx_mbps: {}, tx_bps: {}, retransmits: {}".format(results_dict['received_mbps'], results_dict['sent_mbps'], results_dict['retransmits']))
 
-            # dump the results 
-            if config_vars['data_format'] == 'csv':
+            # dump the results
+            if config_vars['data_transport'] == 'hec':
+                    send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
+                        results_dict, config_vars['iperf3_tcp_data_file'], DEBUG)
+            elif config_vars['data_format'] == 'csv':
                 data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['iperf3_tcp_data_file'])
                 send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
-            else:
+            elif config_vars['data_format'] == 'json':
                 data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['iperf3_tcp_data_file'])
                 send_results_to_json(data_file, results_dict, file_logger, DEBUG)
+            else:
+                file_logger.info("Unknown format type in config file: {}".format(config_vars['data_format']))
+                exit()
 
             file_logger.info("Iperf3 tcp test ended.")
 
@@ -424,13 +459,19 @@ def main():
             # drop abbreviated results in log file
             file_logger.info("Iperf3 udp results - mbps: {}, packets: {}, lost_packets: {}, lost_percent: {}".format(results_dict['mbps'], results_dict['packets'], results_dict['lost_packets'], results_dict['lost_percent']))
 
-            # dump the results 
-            if config_vars['data_format'] == 'csv':
+            # dump the results
+            if config_vars['data_transport'] == 'hec':
+                send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
+                    results_dict, config_vars['iperf3_udp_data_file'], DEBUG)
+            elif config_vars['data_format'] == 'csv':
                 data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['iperf3_udp_data_file'])
                 send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
-            else:
+            elif config_vars['data_format'] == 'json':
                 data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['iperf3_udp_data_file'])
                 send_results_to_json(data_file, results_dict, file_logger, DEBUG)
+            else:
+                file_logger.info("Unknown format type in config file: {}".format(config_vars['data_format']))
+                exit()
 
             file_logger.info("Iperf3 udp test ended.")
 
@@ -483,12 +524,18 @@ def main():
                 }
 
                 # dump the results 
-                if config_vars['data_format'] == 'csv':
+                if config_vars['data_transport'] == 'hec':
+                    send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
+                        results_dict, config_vars['dns_data_file'], DEBUG)
+                elif config_vars['data_format'] == 'csv':
                     data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['dns_data_file'])
                     send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG ,delete_data_file=delete_file)
-                else:
+                elif config_vars['data_format'] == 'json':
                     data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['dns_data_file'])
                     send_results_to_json(data_file, results_dict, file_logger, DEBUG, delete_data_file=delete_file)
+                else:
+                    file_logger.info("Unknown format type in config file: {}".format(config_vars['data_format']))
+                    exit()
 
                 file_logger.info("DNS test ended.")
 
@@ -524,12 +571,18 @@ def main():
             }
 
             # dump the results 
-            if config_vars['data_format'] == 'csv':
+            if config_vars['data_transport'] == 'hec':
+                send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
+                    results_dict, config_vars['dhcp_data_file'], DEBUG)
+            elif config_vars['data_format'] == 'csv':
                 data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['dhcp_data_file'])
                 send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
-            else:
+            elif config_vars['data_format'] == 'json':
                 data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['dhcp_data_file'])
                 send_results_to_json(data_file, results_dict, file_logger, DEBUG)
+            else:
+                file_logger.info("Unknown format type in config file: {}".format(config_vars['data_format']))
+                exit()
 
             file_logger.info("DHCP test ended.")
 
