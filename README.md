@@ -24,7 +24,7 @@ Install required Linux packages:
 Install required python3 modules
 
 ```
-        sudo pip3 install iperf3 speedtest-cli configparser
+        sudo pip3 install iperf3 speedtest-cli configparser splunk-hec-handler
 ```
 
 ### User Account
