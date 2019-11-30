@@ -113,9 +113,10 @@ With the RPi connected to the Internet, login using the wlanpi user and clone th
         git clone https://github.com/wifinigel/wiperf.git
 ```
 
-Edit the config file to customize the operation of the script:cd
+Edit the config file to customize the operation of the script:
 
 ```
+        cd ~
         cp /home/wlanpi/wiperf/config.default.ini config.ini
         nano /home/wlanpi/wiperf/config.ini
 ```
@@ -131,10 +132,14 @@ Test the script by running the following command (takes around 2 minutes to comp
 If no errors are observed when running it then check the following files to check for no errors & that data is generated:
 ```    
         cat /home/wlanpi/wiperf/logs/agent.log
-        cat /home/wlanpi/wiperf/data/wiperf-speedtest-splunk.csv
-        cat /home/wlanpi/wiperf/data/wiperf-ping-splunk.csv
-        cat /home/wlanpi/wiperf/data/wiperf-iperf3-udp-splunk.csv
-        cat /home/wlanpi/wiperf/data/wiperf-iperf3-tcp-splunk.csv
+        # (Note: none of the files below are created when using the HEC forwarder )
+        cat /home/wlanpi/wiperf/data/wiperf-speedtest-splunk.json
+        cat /home/wlanpi/wiperf/data/wiperf-ping-splunk.json
+        cat /home/wlanpi/wiperf/data/wiperf-iperf3-udp-splunk.json
+        cat /home/wlanpi/wiperf/data/wiperf-iperf3-tcp-splunk.json
+        .
+        .
+        etc...
 ```
 
 ## Running: Schedule Regular Job

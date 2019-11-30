@@ -148,12 +148,12 @@ def send_results_to_json(data_file, dict_data, file_logger, debug, delete_data_f
     except IOError:
         file_logger.error("JSON I/O error: {}".format(err))
 
-def send_results_to_hec(host, token, port, dict_data, source, debug=False):
+def send_results_to_hec(host, token, port, dict_data, file_logger, source, debug=False):
 
     # add time to data
     dict_data['time'] = time.time()
-
-    hec_logger = HecLogger(host, token, port, source, debug)
+    file_logger.info("Sending even to HEC: {}".format(source))
+    hec_logger = HecLogger(host, token, port, source, file_logger, debug)
     hec_logger.info(dict_data)
 
 
@@ -265,8 +265,9 @@ def main():
 
         # dump the results 
         if config_vars['data_transport'] == 'hec':
+            file_logger.info("HEC update: Speedtest, source={}".format(config_vars['speedtest_data_file']))
             send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
-                results_dict, config_vars['speedtest_data_file'], DEBUG)
+                results_dict, file_logger, config_vars['speedtest_data_file'], DEBUG)
         elif config_vars['data_format'] == 'csv':
             data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['speedtest_data_file'])
             send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
@@ -349,8 +350,9 @@ def main():
 
                 # dump the results
                 if config_vars['data_transport'] == 'hec':
+                    file_logger.info("HEC update: Ping, source={}".format(config_vars['ping_data_file']))
                     send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
-                        results_dict, config_vars['ping_data_file'], DEBUG)
+                        results_dict, file_logger, config_vars['ping_data_file'], DEBUG)
                 elif config_vars['data_format'] == 'csv':
                     data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['ping_data_file'])
                     send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG, delete_data_file=delete_file)
@@ -407,8 +409,9 @@ def main():
 
             # dump the results
             if config_vars['data_transport'] == 'hec':
-                    send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
-                        results_dict, config_vars['iperf3_tcp_data_file'], DEBUG)
+                file_logger.info("HEC update: iperf3 tcp, source={}".format(config_vars['iperf3_tcp_data_file']))
+                send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
+                        results_dict, file_logger, config_vars['iperf3_tcp_data_file'], DEBUG)
             elif config_vars['data_format'] == 'csv':
                 data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['iperf3_tcp_data_file'])
                 send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
@@ -461,8 +464,9 @@ def main():
 
             # dump the results
             if config_vars['data_transport'] == 'hec':
+                file_logger.info("HEC update: iperf3 udp, source={}".format(config_vars['iperf3_udp_data_file']))
                 send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
-                    results_dict, config_vars['iperf3_udp_data_file'], DEBUG)
+                    results_dict, file_logger, config_vars['iperf3_udp_data_file'], DEBUG)
             elif config_vars['data_format'] == 'csv':
                 data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['iperf3_udp_data_file'])
                 send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
@@ -525,8 +529,9 @@ def main():
 
                 # dump the results 
                 if config_vars['data_transport'] == 'hec':
+                    file_logger.info("HEC update: DNS, source={}".format(config_vars['dns_data_file']))
                     send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
-                        results_dict, config_vars['dns_data_file'], DEBUG)
+                        results_dict, file_logger, config_vars['dns_data_file'], DEBUG)
                 elif config_vars['data_format'] == 'csv':
                     data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['dns_data_file'])
                     send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG ,delete_data_file=delete_file)
@@ -572,8 +577,9 @@ def main():
 
             # dump the results 
             if config_vars['data_transport'] == 'hec':
+                file_logger.info("HEC update: DHCP, source={}".format(config_vars['dhcp_data_file']))
                 send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
-                    results_dict, config_vars['dhcp_data_file'], DEBUG)
+                    results_dict, file_logger, config_vars['dhcp_data_file'], DEBUG)
             elif config_vars['data_format'] == 'csv':
                 data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['dhcp_data_file'])
                 send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
