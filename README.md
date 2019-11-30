@@ -25,6 +25,8 @@ Install required python3 modules
 
 ```
         sudo pip3 install iperf3 speedtest-cli configparser splunk-hec-handler
+        sudo pip3 install git+git://github.com/georgestarcher/Splunk-Class-httpevent.git
+
 ```
 
 ### User Account

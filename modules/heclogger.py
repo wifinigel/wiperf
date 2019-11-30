@@ -3,11 +3,33 @@ A class to perform logging to Splunk using the HTTP event logger (HEC).
 '''
 import logging
 from splunk_hec_handler import SplunkHecHandler
+from splunk_http_event_collector import http_event_collector
 
-def HecLogger(host, token, port, source, file_logger, debug):
+def HecLogger(host, token, port, dict_data, source, file_logger, debug):
     '''
     A class to perform logging to Splunk using the HTTP event logger (HEC).
     '''
+
+    #event_logger = http_event_collector(token, host, input_type='json', host='probe6', http_event_port=port, http_event_server_ssl=True)
+    event_logger = http_event_collector(token, host)
+
+    payload = {}
+    #payload.update({"index":"test"})
+    payload.update({"sourcetype":"_json"})
+    payload.update({"source":source})
+    #payload.update({"host":"probe6"})
+    #payload.popNullFields = True
+    payload.update({"event": dict_data})
+    event_logger.sendEvent(payload)
+    event_logger.flushBatch()
+    
+    #event_logger.sourcetype = '_json'
+    #event_logger.index = 'history'
+    #event_logger.debug = True
+
+    return True
+    '''
+
     logger = logging.getLogger('SplunkHecHandler')
     logger.setLevel(logging.INFO)
 
@@ -21,5 +43,7 @@ def HecLogger(host, token, port, source, file_logger, debug):
     logger.addHandler(splunk_handler)
     
     return logger
+    '''
+
     
 

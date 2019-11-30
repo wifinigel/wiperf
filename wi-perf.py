@@ -150,11 +150,16 @@ def send_results_to_json(data_file, dict_data, file_logger, debug, delete_data_f
 
 def send_results_to_hec(host, token, port, dict_data, file_logger, source, debug=False):
 
+    #print("HEC data: ")
+    #print(dict_data)
+
     # add time to data
     dict_data['time'] = time.time()
     file_logger.info("Sending even to HEC: {}".format(source))
-    hec_logger = HecLogger(host, token, port, source, file_logger, debug)
-    hec_logger.info(dict_data)
+    #hec_logger = HecLogger(host, token, port, source, file_logger, debug)
+    HecLogger(host, token, port, dict_data, source, file_logger, debug)
+    #hec_logger.info(dict_data)
+    #hec_logger.sendEvent(dict_data, eventtime='')
 
 
 def bounce_error_exit(adapter, file_logger, debug=False): 
