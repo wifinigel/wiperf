@@ -17,7 +17,7 @@ def HecLogger(host, token, port, dict_data, source, file_logger, debug):
     #payload.update({"index":"test"})
     payload.update({"sourcetype":"_json"})
     payload.update({"source":source})
-    #payload.update({"host":"probe6"})
+    #payload.update({"host":"wlanpi_probe6"})
     #payload.popNullFields = True
     payload.update({"event": dict_data})
     event_logger.sendEvent(payload)

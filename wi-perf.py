@@ -250,7 +250,7 @@ def main():
         results_dict = {}
 
         # define column headers
-        column_headers = ['timestamp', 'server_name', 'ping_time', 'download_rate', 'upload_rate', 'ssid', 'bssid', 'freq', 'bit_rate', 'signal_level', 'tx_retries', 'ip_address']
+        column_headers = ['time', 'server_name', 'ping_time', 'download_rate', 'upload_rate', 'ssid', 'bssid', 'freq', 'bit_rate', 'signal_level', 'tx_retries', 'ip_address']
         
         # speedtest results
         results_dict['ping_time'] = int(speedtest_results['ping_time'])
@@ -266,7 +266,7 @@ def main():
         results_dict['tx_retries'] = int(adapter.get_tx_retries())
         results_dict['ip_address'] = str(adapter.get_ipaddr())
         
-        results_dict['timestamp'] = int(time.time())
+        results_dict['time'] = int(time.time())
 
         # dump the results 
         if config_vars['data_transport'] == 'hec':
@@ -308,7 +308,7 @@ def main():
         ping_count = config_vars['ping_count']
 
         # define colum headers for CSV
-        column_headers = ['timestamp', 'ping_index', 'ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time', 'rtt_min', 'rtt_avg', 'rtt_max', 'rtt_mdev']
+        column_headers = ['time', 'ping_index', 'ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time', 'rtt_min', 'rtt_avg', 'rtt_max', 'rtt_mdev']
             
         # initial ping to populate arp cache and avoid arp timeput for first test ping
         for ping_host in ping_hosts:
@@ -341,7 +341,7 @@ def main():
                 
             # ping results
             if ping_result:
-                results_dict['timestamp'] = int(time.time())
+                results_dict['time'] = int(time.time())
                 results_dict['ping_index'] =  ping_index
                 results_dict['ping_host'] =  ping_result['host']
                 results_dict['pkts_tx'] =  ping_result['pkts_tx']
@@ -400,9 +400,9 @@ def main():
 
             results_dict = {}
             
-            column_headers = ['timestamp', 'sent_mbps', 'received_mbps', 'sent_bytes', 'received_bytes', 'retransmits']
+            column_headers = ['time', 'sent_mbps', 'received_mbps', 'sent_bytes', 'received_bytes', 'retransmits']
 
-            results_dict['timestamp'] = int(time.time())
+            results_dict['time'] = int(time.time())
             results_dict['sent_mbps'] =  result.sent_Mbps
             results_dict['received_mbps']   =  result.received_Mbps
             results_dict['sent_bytes'] =  result.sent_bytes
@@ -454,9 +454,9 @@ def main():
 
             results_dict = {}
             
-            column_headers = ['timestamp', 'bytes', 'mbps', 'jitter_ms', 'packets', 'lost_packets', 'lost_percent']
+            column_headers = ['time', 'bytes', 'mbps', 'jitter_ms', 'packets', 'lost_packets', 'lost_percent']
 
-            results_dict['timestamp'] = int(time.time())
+            results_dict['time'] = int(time.time())
             results_dict['bytes'] =  result.bytes
             results_dict['mbps']   =  result.Mbps
             results_dict['jitter_ms'] =  result.jitter_ms
@@ -517,7 +517,7 @@ def main():
 
             if dns_result:
     
-                column_headers = ['timestamp', 'dns_index', 'dns_target', 'lookup_time']
+                column_headers = ['time', 'dns_index', 'dns_target', 'lookup_time']
 
                 # summarise result for log
                 result_str = ' {}: {}ms'.format(dns_target, dns_result)
@@ -526,7 +526,7 @@ def main():
                 file_logger.info("DNS results: {}".format(result_str))
 
                 results_dict = { 
-                        'timestamp':int(time.time()),
+                        'time':int(time.time()),
                         'dns_index': dns_index,
                         'dns_target': dns_target, 
                         'lookup_time': dns_result
@@ -573,10 +573,10 @@ def main():
 
         if renewal_result:
  
-            column_headers = ['timestamp', 'dhcp_renewal_time']
+            column_headers = ['time', 'dhcp_renewal_time']
 
             results_dict = { 
-                    'timestamp':int(time.time()),
+                    'time':int(time.time()),
                     'dhcp_renewal_time': renewal_result, 
             }
 
