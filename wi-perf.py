@@ -299,7 +299,7 @@ def main():
         ping_count = config_vars['ping_count']
 
         # define colum headers for CSV
-        column_headers = ['time', 'ping_index', 'ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time_ms', 'rtt_min', 'rtt_avg', 'rtt_max', 'rtt_mdev']
+        column_headers = ['time', 'ping_index', 'ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time_ms', 'rtt_min_ms', 'rtt_avg_ms', 'rtt_max_ms', 'rtt_mdev_ms']
             
         # initial ping to populate arp cache and avoid arp timeput for first test ping
         for ping_host in ping_hosts:
@@ -339,10 +339,10 @@ def main():
                 results_dict['pkts_rx'] =  ping_result['pkts_rx']
                 results_dict['percent_loss'] =  ping_result['pkt_loss']
                 results_dict['test_time_ms'] =  ping_result['test_time']
-                results_dict['rtt_min'] =  ping_result['rtt_min']
-                results_dict['rtt_avg'] =  ping_result['rtt_avg']
-                results_dict['rtt_max'] =  ping_result['rtt_max']
-                results_dict['rtt_mdev'] =  ping_result['rtt_mdev']
+                results_dict['rtt_min_ms'] =  ping_result['rtt_min']
+                results_dict['rtt_avg_ms'] =  ping_result['rtt_avg']
+                results_dict['rtt_max_ms'] =  ping_result['rtt_max']
+                results_dict['rtt_mdev_ms'] =  ping_result['rtt_mdev']
 
                 # dump the results
                 if config_vars['data_transport'] == 'hec':
