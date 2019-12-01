@@ -339,10 +339,10 @@ def main():
                 results_dict['pkts_rx'] =  ping_result['pkts_rx']
                 results_dict['percent_loss'] =  ping_result['pkt_loss']
                 results_dict['test_time_ms'] =  ping_result['test_time']
-                results_dict['rtt_min_ms'] =  ping_result['rtt_min']
-                results_dict['rtt_avg_ms'] =  ping_result['rtt_avg']
-                results_dict['rtt_max_ms'] =  ping_result['rtt_max']
-                results_dict['rtt_mdev_ms'] =  ping_result['rtt_mdev']
+                results_dict['rtt_min_ms'] =  round(float(ping_result['rtt_min']), 2)
+                results_dict['rtt_avg_ms'] =  round(float(ping_result['rtt_avg']), 2)
+                results_dict['rtt_max_ms'] =  round(float(ping_result['rtt_max']), 2)
+                results_dict['rtt_mdev_ms'] =  round(float(ping_result['rtt_mdev']), 2)
 
                 # dump the results
                 if config_vars['data_transport'] == 'hec':
@@ -394,8 +394,8 @@ def main():
             column_headers = ['time', 'sent_mbps', 'received_mbps', 'sent_bytes', 'received_bytes', 'retransmits']
 
             results_dict['time'] = int(time.time())
-            results_dict['sent_mbps'] =  result.sent_Mbps
-            results_dict['received_mbps']   =  result.received_Mbps
+            results_dict['sent_mbps'] =  round(result.sent_Mbps, 1)
+            results_dict['received_mbps']   =  round(result.received_Mbps, 1)
             results_dict['sent_bytes'] =  result.sent_bytes
             results_dict['received_bytes'] =  result.received_bytes
             results_dict['retransmits'] =  result.retransmits
@@ -449,11 +449,11 @@ def main():
 
             results_dict['time'] = int(time.time())
             results_dict['bytes'] =  result.bytes
-            results_dict['mbps']   =  result.Mbps
+            results_dict['mbps']   =  round(result.Mbps, 1)
             results_dict['jitter_ms'] =  result.jitter_ms
             results_dict['packets'] =  result.packets
             results_dict['lost_packets'] =  result.lost_packets
-            results_dict['lost_percent'] =  result.lost_percent
+            results_dict['lost_percent'] =  round(result.lost_percent, 1)
 
             # drop abbreviated results in log file
             file_logger.info("Iperf3 udp results - mbps: {}, packets: {}, lost_packets: {}, lost_percent: {}".format(results_dict['mbps'], results_dict['packets'], results_dict['lost_packets'], results_dict['lost_percent']))
