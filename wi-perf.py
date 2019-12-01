@@ -241,19 +241,19 @@ def main():
         results_dict = {}
 
         # define column headers
-        column_headers = ['time', 'server_name', 'ping_time', 'download_rate', 'upload_rate', 'ssid', 'bssid', 'freq', 'bit_rate', 'signal_level', 'tx_retries', 'ip_address']
+        column_headers = ['time', 'server_name', 'ping_time', 'download_rate_mbps', 'upload_rate_mbps', 'ssid', 'bssid', 'freq_ghz', 'phy_rate_mbps', 'signal_level_dbm', 'tx_retries', 'ip_address']
         
         # speedtest results
         results_dict['ping_time'] = int(speedtest_results['ping_time'])
-        results_dict['download_rate'] = float(speedtest_results['download_rate'])
-        results_dict['upload_rate'] = float(speedtest_results['upload_rate'])
+        results_dict['download_rate_mbps'] = float(speedtest_results['download_rate'])
+        results_dict['upload_rate_mbps'] = float(speedtest_results['upload_rate'])
         results_dict['server_name'] = str(speedtest_results['server_name'])
         
         results_dict['ssid'] = str(adapter.get_ssid())
         results_dict['bssid'] = str(adapter.get_bssid())
-        results_dict['freq'] = str(adapter.get_freq())
-        results_dict['bit_rate'] = float(adapter.get_bit_rate())
-        results_dict['signal_level'] = int(adapter.get_signal_level())
+        results_dict['freq_ghz'] = str(adapter.get_freq())
+        results_dict['phy_rate_mbps'] = float(adapter.get_bit_rate())
+        results_dict['signal_level_dbm'] = int(adapter.get_signal_level())
         results_dict['tx_retries'] = int(adapter.get_tx_retries())
         results_dict['ip_address'] = str(adapter.get_ipaddr())
         
@@ -299,7 +299,7 @@ def main():
         ping_count = config_vars['ping_count']
 
         # define colum headers for CSV
-        column_headers = ['time', 'ping_index', 'ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time', 'rtt_min', 'rtt_avg', 'rtt_max', 'rtt_mdev']
+        column_headers = ['time', 'ping_index', 'ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time_ms', 'rtt_min', 'rtt_avg', 'rtt_max', 'rtt_mdev']
             
         # initial ping to populate arp cache and avoid arp timeput for first test ping
         for ping_host in ping_hosts:
@@ -338,7 +338,7 @@ def main():
                 results_dict['pkts_tx'] =  ping_result['pkts_tx']
                 results_dict['pkts_rx'] =  ping_result['pkts_rx']
                 results_dict['percent_loss'] =  ping_result['pkt_loss']
-                results_dict['test_time'] =  ping_result['test_time']
+                results_dict['test_time_ms'] =  ping_result['test_time']
                 results_dict['rtt_min'] =  ping_result['rtt_min']
                 results_dict['rtt_avg'] =  ping_result['rtt_avg']
                 results_dict['rtt_max'] =  ping_result['rtt_max']
@@ -508,7 +508,7 @@ def main():
 
             if dns_result:
     
-                column_headers = ['time', 'dns_index', 'dns_target', 'lookup_time']
+                column_headers = ['time', 'dns_index', 'dns_target', 'lookup_time_ms']
 
                 # summarise result for log
                 result_str = ' {}: {}ms'.format(dns_target, dns_result)
@@ -520,7 +520,7 @@ def main():
                         'time':int(time.time()),
                         'dns_index': dns_index,
                         'dns_target': dns_target, 
-                        'lookup_time': dns_result
+                        'lookup_time_ms': dns_result
                 }
 
                 # dump the results 
@@ -564,11 +564,11 @@ def main():
 
         if renewal_result:
  
-            column_headers = ['time', 'dhcp_renewal_time']
+            column_headers = ['time', 'renewal_time_ms']
 
             results_dict = { 
                     'time':int(time.time()),
-                    'dhcp_renewal_time': renewal_result, 
+                    'renewal_time_ms': renewal_result, 
             }
 
             # dump the results 
