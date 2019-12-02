@@ -28,6 +28,7 @@ from modules.dhcptester import *
 # define useful system files
 config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"
 log_file = os.path.dirname(os.path.realpath(__file__)) + "/logs/agent.log"
+lock_file = '/tmp/wiperf.lock'
 
 # Enable debugs or create some dummy data for testing
 DEBUG = 0
@@ -155,7 +156,7 @@ def send_results_to_hec(host, token, port, dict_data, file_logger, source, debug
     file_logger.info("Sending event to HEC: {}".format(source))
     HecLogger(host, token, port, dict_data, source, file_logger, debug)
 
-def send_results(results_dict, column_headers, data_file, file_logger, debug, delete_data_file=False):
+def send_results(results_dict, column_headers, data_file, test_name, file_logger, debug, delete_data_file=False):
 
     global config_vars
 
@@ -163,7 +164,7 @@ def send_results(results_dict, column_headers, data_file, file_logger, debug, de
 
     # Check if we are using the Splunk HEC (https transport)
     if config_vars['data_transport'] == 'hec':
-        file_logger.info("HEC update: {}, source={}".format(data_file, data_file))
+        file_logger.info("HEC update: {}, source={}".format(data_file, test_name))
         send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
             results_dict, file_logger, data_file, debug)
     # Create files if we are using the Splunk universal forwarder
@@ -193,9 +194,10 @@ def bounce_error_exit(adapter, file_logger, debug=False):
     '''
     import sys
     
+    file_logger.error("Attempting to recover by bouncing wireless interface...")
     file_logger.error("Bouncing WLAN interface")
     adapter.bounce_wlan_interface()
-    file_logger.error("Exiting...")
+    file_logger.error("Bounce completed. Exiting script.")
     
     sys.exit()   
     
@@ -220,8 +222,41 @@ def main():
     # set up our error_log file & initialize
     file_logger = FileLogger(log_file)
     file_logger.info("Starting logging...")
+
+    ###################################
+    # Check if script already running
+    ###################################
+    if os.path.exists(lock_file):
+            # read lock file contents & check how old timestamp is..
+            file_logger.error("Existing lock file found...")
+            print("Existing lock file found...check agent.log")
+            with open(lock_file, 'r') as lockf:
+                lock_timestamp = int(lock_file.read())
+            # if timestamp older than 10 mins, break lock by
+            # creating a new file
+            now = int(time.time())
+            if (now - lock_timestamp) > 600:
+                file_logger.error("Existing lock stale, breaking lock...")
+                file_logger.error("Current time: {}, lock file time: {}".format(now, lock_timestamp))
+                lock_file.close()
+
+                # create new lock file
+                with open(lock_file, 'w') as lockf:
+                    file_logger.error("Creating refreshed lock file.")
+                    lock_file.write(now)
+    else:
+        # create lockfile with current timestamp
+        with open(lock_file, 'w') as lockf:
+            file_logger.info("No lock file found. Creating lock file.")
+            current_time = time.time()
+            lock_file.write(current_time)
     
+    # close lock file
+    lockf.close()
+
+    #####################
     # get wireless info
+    #####################
     adapter = WirelessAdapter(wlan_if, file_logger, platform=platform, debug=DEBUG)   
 
     # if we have no network connection (i.e. no bssid), no point in proceeding...
@@ -231,7 +266,6 @@ def main():
         
     if adapter.get_bssid() == 'NA':
         file_logger.error("Problem with wireless connection: not associated to network")
-        file_logger.error("Attempting to recover by bouncing wireless interface...")
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
     
     # if we have no IP address, no point in proceeding...
@@ -239,6 +273,7 @@ def main():
         file_logger.error("Unable to get wireless adapter IP info")
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
     
+    # TODO: Fix this. Currently breaks wehn we have Eh & Wireless ports both up
     '''
     if adapter.get_route_info() == False:
         file_logger.error("Unable to get wireless adapter route info - maybe you have multiple interfaces enabled that are stopping the wlan interface being used?")
@@ -247,7 +282,6 @@ def main():
     
     if adapter.get_ipaddr() == 'NA':
         file_logger.error("Problem with wireless connection: no valid IP address")
-        file_logger.error("Attempting to recover by bouncing wireless interface...")
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
     
     # final connectivity check: see if we can resolve an address 
@@ -295,7 +329,8 @@ def main():
 
         # dump the results 
         data_file = config_vars['speedtest_data_file']
-        send_results(results_dict, column_headers, data_file, file_logger, DEBUG)
+        test_name = "Speedtest"
+        send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
 
         file_logger.info("Speedtest ended.")
 
@@ -369,7 +404,8 @@ def main():
 
                 # dump the results
                 data_file = config_vars['ping_data_file']
-                send_results(results_dict, column_headers, data_file, file_logger, DEBUG, delete_data_file=delete_file)
+                test_name = "Ping"
+                send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG, delete_data_file=delete_file)
 
                 file_logger.info("Ping test ended.")
                 
@@ -417,7 +453,8 @@ def main():
 
             # dump the results
             data_file = config_vars['iperf3_tcp_data_file']
-            send_results(results_dict, column_headers, data_file, file_logger, DEBUG)
+            test_name = "iperf3_tcp"
+            send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
 
             file_logger.info("Iperf3 tcp test ended.")
 
@@ -461,7 +498,8 @@ def main():
 
             # dump the results
             data_file = config_vars['iperf3_udp_data_file']
-            send_results(results_dict, column_headers, data_file, file_logger, DEBUG)
+            test_name = "iperf_udp"
+            send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
 
             file_logger.info("Iperf3 udp test ended.")
 
@@ -515,7 +553,8 @@ def main():
 
                 # dump the results 
                 data_file = config_vars['dns_data_file']
-                send_results(results_dict, column_headers, data_file, file_logger, DEBUG, delete_data_file=delete_file)
+                test_name = "DNS"
+                send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG, delete_data_file=delete_file)
 
                 file_logger.info("DNS test ended.")
 
@@ -552,7 +591,8 @@ def main():
 
             # dump the results 
             data_file = config_vars['dhcp_data_file']
-            send_results(results_dict, column_headers, data_file, file_logger, DEBUG)
+            test_name = "DHCP"
+            send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
 
             file_logger.info("DHCP test ended.")
 
