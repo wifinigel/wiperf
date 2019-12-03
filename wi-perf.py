@@ -264,7 +264,7 @@ def main():
             # if timestamp older than 10 mins, break lock by
             # creating a new file
             time_now = time.time()
-            if (time_now - int(lock_timestamp)) > 600:
+            if (time_now - int(lock_timestamp)) > 540:
                 file_logger.error("Existing lock stale, breaking lock...")
                 file_logger.error("Current time: {}, lock file time: {}".format(time_now, lock_timestamp))
                 write_lock_file(lock_file, file_logger)
