@@ -118,9 +118,9 @@ With the RPi connected to the Internet, login using the wlanpi user and clone th
 Edit the config file to customize the operation of the script:
 
 ```
-        cd ~
-        cp /home/wlanpi/wiperf/config.default.ini config.ini
-        nano /home/wlanpi/wiperf/config.ini
+        cd /home/wlanpi
+        cp ./config.default.ini ./config.ini
+        nano ./config.ini
 ```
 
 ### Testing
