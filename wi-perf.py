@@ -112,13 +112,15 @@ def read_config(debug):
     config_vars['dhcp_test_enabled'] = config.get('DHCP_test', 'enabled')
     config_vars['dhcp_data_file'] = config.get('DHCP_test', 'dhcp_data_file')
 
+    '''
     # Figure out our machine_id (provides unique device id if required)
     machine_id = subprocess.check_output("cat /etc/machine-id", shell=True).decode()
     config_vars['machine_id'] = machine_id.strip()
-    
+
     if debug:    
         print("Machine ID = " + config_vars['machine_id'])
-   
+    '''
+
     return config_vars
 
 
@@ -199,7 +201,35 @@ def bounce_error_exit(adapter, file_logger, debug=False):
     adapter.bounce_wlan_interface()
     file_logger.error("Bounce completed. Exiting script.")
     
-    sys.exit()   
+    sys.exit()
+
+def read_lock_file(filename, file_logger):
+    
+    try :
+        with open(lock_file, 'r') as lockf:
+            lock_timestamp = lockf.read()
+        return lock_timestamp
+    except Exception as ex:
+        file_logger.error("Issue reading lock file: {}, exiting...".format(ex))
+        sys.exit()
+
+def write_lock_file(filename, file_logger):
+    try :
+        time_now = int(time.time())
+        with open(lock_file, 'w') as lockf:
+            lockf.write(str(time_now))
+        return True
+    except Exception as ex:
+        file_logger.error("Issue writing lock file: {}, exiting...".format(ex))
+        sys.exit()
+
+def delete_lock_file(lock_file, file_logger):
+    try :
+        os.remove(lock_file)
+        return True
+    except Exception as ex:
+        file_logger.error("Issue deleting lock file: {}, exiting...".format(ex))
+        sys.exit()
     
     
 ###############################################################################
@@ -229,30 +259,23 @@ def main():
     if os.path.exists(lock_file):
             # read lock file contents & check how old timestamp is..
             file_logger.error("Existing lock file found...")
-            print("Existing lock file found...check agent.log")
-            with open(lock_file, 'r') as lockf:
-                lock_timestamp = int(lock_file.read())
+            lock_timestamp = read_lock_file(lock_file, file_logger)
+
             # if timestamp older than 10 mins, break lock by
             # creating a new file
-            now = int(time.time())
-            if (now - lock_timestamp) > 600:
+            time_now = time.time()
+            if (time_now - int(lock_timestamp)) > 600:
                 file_logger.error("Existing lock stale, breaking lock...")
-                file_logger.error("Current time: {}, lock file time: {}".format(now, lock_timestamp))
-                lock_file.close()
-
-                # create new lock file
-                with open(lock_file, 'w') as lockf:
-                    file_logger.error("Creating refreshed lock file.")
-                    lock_file.write(now)
+                file_logger.error("Current time: {}, lock file time: {}".format(time_now, lock_timestamp))
+                write_lock_file(lock_file, file_logger)
+            else:
+                file_logger.error("Exiting due to lock file indicating script running.")
+                file_logger.error("(Delete {} if you are sure script not running".format(lock_file))
+                sys.exit()
     else:
         # create lockfile with current timestamp
-        with open(lock_file, 'w') as lockf:
-            file_logger.info("No lock file found. Creating lock file.")
-            current_time = time.time()
-            lock_file.write(current_time)
-    
-    # close lock file
-    lockf.close()
+          file_logger.info("No lock file found. Creating lock file.")
+          write_lock_file(lock_file, file_logger)
 
     #####################
     # get wireless info
@@ -273,7 +296,7 @@ def main():
         file_logger.error("Unable to get wireless adapter IP info")
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
     
-    # TODO: Fix this. Currently breaks wehn we have Eh & Wireless ports both up
+    # TODO: Fix this. Currently breaks when we have Eh & Wireless ports both up
     '''
     if adapter.get_route_info() == False:
         file_logger.error("Unable to get wireless adapter route info - maybe you have multiple interfaces enabled that are stopping the wlan interface being used?")
@@ -488,7 +511,7 @@ def main():
             results_dict['time'] = int(time.time())
             results_dict['bytes'] =  result.bytes
             results_dict['mbps']   =  round(result.Mbps, 1)
-            results_dict['jitter_ms'] =  result.jitter_ms
+            results_dict['jitter_ms'] =  round(result.jitter_ms, 1)
             results_dict['packets'] =  result.packets
             results_dict['lost_packets'] =  result.lost_packets
             results_dict['lost_percent'] =  round(result.lost_percent, 1)
@@ -602,6 +625,11 @@ def main():
     
     else:
         file_logger.info("DHCP test not enabled in config file, bypassing this test...")
+
+    # get rid of log file
+    file_logger.info("Removing lock file.")
+    delete_lock_file(lock_file, file_logger)
+
 ###############################################################################
 # End main
 ###############################################################################

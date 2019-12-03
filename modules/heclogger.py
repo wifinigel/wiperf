@@ -2,7 +2,7 @@
 A class to perform logging to Splunk using the HTTP event logger (HEC).
 '''
 import logging
-from splunk_hec_handler import SplunkHecHandler
+#from splunk_hec_handler import SplunkHecHandler
 from splunk_http_event_collector import http_event_collector
 
 def HecLogger(host, token, port, dict_data, source, file_logger, debug):
