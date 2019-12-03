@@ -270,7 +270,7 @@ def main():
                 write_lock_file(lock_file, file_logger)
             else:
                 file_logger.error("Exiting due to lock file indicating script running.")
-                file_logger.error("(Delete {} if you are sure script not running".format(lock_file))
+                file_logger.error("(Delete {} if you are sure script not running)".format(lock_file))
                 sys.exit()
     else:
         # create lockfile with current timestamp
@@ -515,6 +515,11 @@ def main():
             results_dict['packets'] =  result.packets
             results_dict['lost_packets'] =  result.lost_packets
             results_dict['lost_percent'] =  round(result.lost_percent, 1)
+
+            # workaround for crazy jitter figures sometimes seen
+            if results_dict['jitter_ms'] > 2000:
+                results_dict['jitter_ms'] = None
+                file_logger.error("Received very high jitter value({}), set to none".format(results_dict['jitter_ms']))
 
             # drop abbreviated results in log file
             file_logger.info("Iperf3 udp results - mbps: {}, packets: {}, lost_packets: {}, lost_percent: {}".format(results_dict['mbps'], results_dict['packets'], results_dict['lost_packets'], results_dict['lost_percent']))
