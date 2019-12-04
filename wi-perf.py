@@ -14,13 +14,13 @@ import csv
 import os.path
 import logging
 import json
-#import unicodecsv as csv
 
 # our local modules...
 from modules.ooklaspeedtest import ooklaspeedtest
 from modules.wirelessadapter import *
 from modules.pinger import *
 from modules.filelogger import *
+from modules.heclogger import *
 from modules.iperf3_tester import tcp_iperf_client_test, udp_iperf_client_test
 from modules.dnstester import *
 from modules.dhcptester import *
@@ -28,17 +28,20 @@ from modules.dhcptester import *
 # define useful system files
 config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"
 log_file = os.path.dirname(os.path.realpath(__file__)) + "/logs/agent.log"
+lock_file = '/tmp/wiperf.lock'
 
 # Enable debugs or create some dummy data for testing
 DEBUG = 0
 DUMMY_DATA = False
+
+config_vars = {}
 
 def read_config(debug):
     '''
     Read in the config file variables. 
     '''
 
-    config_vars = {}
+    global config_vars
     
     config = configparser.ConfigParser()
     config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"
@@ -55,6 +58,14 @@ def read_config(debug):
     config_vars['data_format'] = config.get('General', 'data_format')
     # directory where data dumped
     config_vars['data_dir'] = config.get('General', 'data_dir')
+    # data transport
+    config_vars['data_transport'] = config.get('General', 'data_transport')
+    # host where to send logs
+    config_vars['data_host'] = config.get('General', 'data_host')
+    # host port
+    config_vars['data_port'] = config.get('General', 'data_port')
+    # Splunk HEC token
+    config_vars['splunk_token'] = config.get('General', 'splunk_token')
       
     if debug:    
         print("Platform = {}".format(config_vars.get('General', 'platform')))
@@ -101,13 +112,15 @@ def read_config(debug):
     config_vars['dhcp_test_enabled'] = config.get('DHCP_test', 'enabled')
     config_vars['dhcp_data_file'] = config.get('DHCP_test', 'dhcp_data_file')
 
+    '''
     # Figure out our machine_id (provides unique device id if required)
     machine_id = subprocess.check_output("cat /etc/machine-id", shell=True).decode()
     config_vars['machine_id'] = machine_id.strip()
-    
+
     if debug:    
         print("Machine ID = " + config_vars['machine_id'])
-   
+    '''
+
     return config_vars
 
 
@@ -140,17 +153,83 @@ def send_results_to_json(data_file, dict_data, file_logger, debug, delete_data_f
     except IOError:
         file_logger.error("JSON I/O error: {}".format(err))
 
+def send_results_to_hec(host, token, port, dict_data, file_logger, source, debug=False):
+
+    file_logger.info("Sending event to HEC: {}".format(source))
+    HecLogger(host, token, port, dict_data, source, file_logger, debug)
+
+def send_results(results_dict, column_headers, data_file, test_name, file_logger, debug, delete_data_file=False):
+
+    global config_vars
+
+    # dump the results to appropriate destination
+
+    # Check if we are using the Splunk HEC (https transport)
+    if config_vars['data_transport'] == 'hec':
+        file_logger.info("HEC update: {}, source={}".format(data_file, test_name))
+        send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'], 
+            results_dict, file_logger, data_file, debug)
+    # Create files if we are using the Splunk universal forwarder
+    elif  config_vars['data_transport'] == 'forwarder':
+
+        # CSV file format for forwarder
+        if config_vars['data_format'] == 'csv':
+            data_file = "{}/{}.csv".format(config_vars['data_dir'], data_file)
+            send_results_to_csv(data_file, results_dict, column_headers, file_logger, debug, delete_data_file=delete_data_file)
+        # JSON format for the forwarder
+        elif config_vars['data_format'] == 'json':
+            data_file = "{}/{}.json".format(config_vars['data_dir'], data_file)
+            send_results_to_json(data_file, results_dict, file_logger, debug, delete_data_file=delete_data_file)
+        else:
+            file_logger.info("Unknown file format type in config file: {}".format(config_vars['data_format']))
+            exit()
+    # Transport type which is not know has been configured in the ini file
+    else:
+        file_logger.info("Unknown transport type in config file: {}".format(config_vars['data_transport']))
+        exit()
+    
+    return True
+
 def bounce_error_exit(adapter, file_logger, debug=False): 
     '''
     Log an error before bouncing the wlan interface and then exiting as we have an unrecoverable error with the network connection
     '''
     import sys
     
+    file_logger.error("Attempting to recover by bouncing wireless interface...")
     file_logger.error("Bouncing WLAN interface")
     adapter.bounce_wlan_interface()
-    file_logger.error("Exiting...")
+    file_logger.error("Bounce completed. Exiting script.")
     
-    sys.exit()   
+    sys.exit()
+
+def read_lock_file(filename, file_logger):
+    
+    try :
+        with open(lock_file, 'r') as lockf:
+            lock_timestamp = lockf.read()
+        return lock_timestamp
+    except Exception as ex:
+        file_logger.error("Issue reading lock file: {}, exiting...".format(ex))
+        sys.exit()
+
+def write_lock_file(filename, file_logger):
+    try :
+        time_now = int(time.time())
+        with open(lock_file, 'w') as lockf:
+            lockf.write(str(time_now))
+        return True
+    except Exception as ex:
+        file_logger.error("Issue writing lock file: {}, exiting...".format(ex))
+        sys.exit()
+
+def delete_lock_file(lock_file, file_logger):
+    try :
+        os.remove(lock_file)
+        return True
+    except Exception as ex:
+        file_logger.error("Issue deleting lock file: {}, exiting...".format(ex))
+        sys.exit()
     
     
 ###############################################################################
@@ -173,8 +252,34 @@ def main():
     # set up our error_log file & initialize
     file_logger = FileLogger(log_file)
     file_logger.info("Starting logging...")
-    
+
+    ###################################
+    # Check if script already running
+    ###################################
+    if os.path.exists(lock_file):
+            # read lock file contents & check how old timestamp is..
+            file_logger.error("Existing lock file found...")
+            lock_timestamp = read_lock_file(lock_file, file_logger)
+
+            # if timestamp older than 10 mins, break lock by
+            # creating a new file
+            time_now = time.time()
+            if (time_now - int(lock_timestamp)) > 540:
+                file_logger.error("Existing lock stale, breaking lock...")
+                file_logger.error("Current time: {}, lock file time: {}".format(time_now, lock_timestamp))
+                write_lock_file(lock_file, file_logger)
+            else:
+                file_logger.error("Exiting due to lock file indicating script running.")
+                file_logger.error("(Delete {} if you are sure script not running)".format(lock_file))
+                sys.exit()
+    else:
+        # create lockfile with current timestamp
+          file_logger.info("No lock file found. Creating lock file.")
+          write_lock_file(lock_file, file_logger)
+
+    #####################
     # get wireless info
+    #####################
     adapter = WirelessAdapter(wlan_if, file_logger, platform=platform, debug=DEBUG)   
 
     # if we have no network connection (i.e. no bssid), no point in proceeding...
@@ -184,7 +289,6 @@ def main():
         
     if adapter.get_bssid() == 'NA':
         file_logger.error("Problem with wireless connection: not associated to network")
-        file_logger.error("Attempting to recover by bouncing wireless interface...")
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
     
     # if we have no IP address, no point in proceeding...
@@ -192,6 +296,7 @@ def main():
         file_logger.error("Unable to get wireless adapter IP info")
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
     
+    # TODO: Fix this. Currently breaks when we have Eh & Wireless ports both up
     '''
     if adapter.get_route_info() == False:
         file_logger.error("Unable to get wireless adapter route info - maybe you have multiple interfaces enabled that are stopping the wlan interface being used?")
@@ -200,7 +305,6 @@ def main():
     
     if adapter.get_ipaddr() == 'NA':
         file_logger.error("Problem with wireless connection: no valid IP address")
-        file_logger.error("Attempting to recover by bouncing wireless interface...")
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
     
     # final connectivity check: see if we can resolve an address 
@@ -228,31 +332,28 @@ def main():
         results_dict = {}
 
         # define column headers
-        column_headers = ['timestamp', 'server_name', 'ping_time', 'download_rate', 'upload_rate', 'ssid', 'bssid', 'freq', 'bit_rate', 'signal_level', 'tx_retries', 'ip_address']
+        column_headers = ['time', 'server_name', 'ping_time', 'download_rate_mbps', 'upload_rate_mbps', 'ssid', 'bssid', 'freq_ghz', 'phy_rate_mbps', 'signal_level_dbm', 'tx_retries', 'ip_address']
         
         # speedtest results
         results_dict['ping_time'] = int(speedtest_results['ping_time'])
-        results_dict['download_rate'] = float(speedtest_results['download_rate'])
-        results_dict['upload_rate'] = float(speedtest_results['upload_rate'])
+        results_dict['download_rate_mbps'] = float(speedtest_results['download_rate'])
+        results_dict['upload_rate_mbps'] = float(speedtest_results['upload_rate'])
         results_dict['server_name'] = str(speedtest_results['server_name'])
         
         results_dict['ssid'] = str(adapter.get_ssid())
         results_dict['bssid'] = str(adapter.get_bssid())
-        results_dict['freq'] = str(adapter.get_freq())
-        results_dict['bit_rate'] = float(adapter.get_bit_rate())
-        results_dict['signal_level'] = int(adapter.get_signal_level())
+        results_dict['freq_ghz'] = str(adapter.get_freq())
+        results_dict['phy_rate_mbps'] = float(adapter.get_bit_rate())
+        results_dict['signal_level_dbm'] = int(adapter.get_signal_level())
         results_dict['tx_retries'] = int(adapter.get_tx_retries())
         results_dict['ip_address'] = str(adapter.get_ipaddr())
         
-        results_dict['timestamp'] = int(time.time())
+        results_dict['time'] = int(time.time())
 
         # dump the results 
-        if config_vars['data_format'] == 'csv':
-            data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['speedtest_data_file'])
-            send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
-        else:
-            data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['speedtest_data_file'])
-            send_results_to_json(data_file, results_dict, file_logger, DEBUG)
+        data_file = config_vars['speedtest_data_file']
+        test_name = "Speedtest"
+        send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
 
         file_logger.info("Speedtest ended.")
 
@@ -279,7 +380,7 @@ def main():
         ping_count = config_vars['ping_count']
 
         # define colum headers for CSV
-        column_headers = ['timestamp', 'ping_index', 'ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time', 'rtt_min', 'rtt_avg', 'rtt_max', 'rtt_mdev']
+        column_headers = ['time', 'ping_index', 'ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time_ms', 'rtt_min_ms', 'rtt_avg_ms', 'rtt_max_ms', 'rtt_mdev_ms']
             
         # initial ping to populate arp cache and avoid arp timeput for first test ping
         for ping_host in ping_hosts:
@@ -312,25 +413,22 @@ def main():
                 
             # ping results
             if ping_result:
-                results_dict['timestamp'] = int(time.time())
+                results_dict['time'] = int(time.time())
                 results_dict['ping_index'] =  ping_index
                 results_dict['ping_host'] =  ping_result['host']
                 results_dict['pkts_tx'] =  ping_result['pkts_tx']
                 results_dict['pkts_rx'] =  ping_result['pkts_rx']
                 results_dict['percent_loss'] =  ping_result['pkt_loss']
-                results_dict['test_time'] =  ping_result['test_time']
-                results_dict['rtt_min'] =  ping_result['rtt_min']
-                results_dict['rtt_avg'] =  ping_result['rtt_avg']
-                results_dict['rtt_max'] =  ping_result['rtt_max']
-                results_dict['rtt_mdev'] =  ping_result['rtt_mdev']
+                results_dict['test_time_ms'] =  ping_result['test_time']
+                results_dict['rtt_min_ms'] =  round(float(ping_result['rtt_min']), 2)
+                results_dict['rtt_avg_ms'] =  round(float(ping_result['rtt_avg']), 2)
+                results_dict['rtt_max_ms'] =  round(float(ping_result['rtt_max']), 2)
+                results_dict['rtt_mdev_ms'] =  round(float(ping_result['rtt_mdev']), 2)
 
-                # dump the results 
-                if config_vars['data_format'] == 'csv':
-                    data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['ping_data_file'])
-                    send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG, delete_data_file=delete_file)
-                else:
-                    data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['ping_data_file'])
-                    send_results_to_json(data_file, results_dict, file_logger, DEBUG, delete_data_file=delete_file)
+                # dump the results
+                data_file = config_vars['ping_data_file']
+                test_name = "Ping"
+                send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG, delete_data_file=delete_file)
 
                 file_logger.info("Ping test ended.")
                 
@@ -364,11 +462,11 @@ def main():
 
             results_dict = {}
             
-            column_headers = ['timestamp', 'sent_mbps', 'received_mbps', 'sent_bytes', 'received_bytes', 'retransmits']
+            column_headers = ['time', 'sent_mbps', 'received_mbps', 'sent_bytes', 'received_bytes', 'retransmits']
 
-            results_dict['timestamp'] = int(time.time())
-            results_dict['sent_mbps'] =  result.sent_Mbps
-            results_dict['received_mbps']   =  result.received_Mbps
+            results_dict['time'] = int(time.time())
+            results_dict['sent_mbps'] =  round(result.sent_Mbps, 1)
+            results_dict['received_mbps']   =  round(result.received_Mbps, 1)
             results_dict['sent_bytes'] =  result.sent_bytes
             results_dict['received_bytes'] =  result.received_bytes
             results_dict['retransmits'] =  result.retransmits
@@ -376,13 +474,10 @@ def main():
             # drop abbreviated results in log file
             file_logger.info("Iperf3 tcp results - rx_mbps: {}, tx_bps: {}, retransmits: {}".format(results_dict['received_mbps'], results_dict['sent_mbps'], results_dict['retransmits']))
 
-            # dump the results 
-            if config_vars['data_format'] == 'csv':
-                data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['iperf3_tcp_data_file'])
-                send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
-            else:
-                data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['iperf3_tcp_data_file'])
-                send_results_to_json(data_file, results_dict, file_logger, DEBUG)
+            # dump the results
+            data_file = config_vars['iperf3_tcp_data_file']
+            test_name = "iperf3_tcp"
+            send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
 
             file_logger.info("Iperf3 tcp test ended.")
 
@@ -411,26 +506,28 @@ def main():
 
             results_dict = {}
             
-            column_headers = ['timestamp', 'bytes', 'mbps', 'jitter_ms', 'packets', 'lost_packets', 'lost_percent']
+            column_headers = ['time', 'bytes', 'mbps', 'jitter_ms', 'packets', 'lost_packets', 'lost_percent']
 
-            results_dict['timestamp'] = int(time.time())
+            results_dict['time'] = int(time.time())
             results_dict['bytes'] =  result.bytes
-            results_dict['mbps']   =  result.Mbps
-            results_dict['jitter_ms'] =  result.jitter_ms
+            results_dict['mbps']   =  round(result.Mbps, 1)
+            results_dict['jitter_ms'] =  round(result.jitter_ms, 1)
             results_dict['packets'] =  result.packets
             results_dict['lost_packets'] =  result.lost_packets
-            results_dict['lost_percent'] =  result.lost_percent
+            results_dict['lost_percent'] =  round(result.lost_percent, 1)
+
+            # workaround for crazy jitter figures sometimes seen
+            if results_dict['jitter_ms'] > 2000:
+                results_dict['jitter_ms'] = None
+                file_logger.error("Received very high jitter value({}), set to none".format(results_dict['jitter_ms']))
 
             # drop abbreviated results in log file
             file_logger.info("Iperf3 udp results - mbps: {}, packets: {}, lost_packets: {}, lost_percent: {}".format(results_dict['mbps'], results_dict['packets'], results_dict['lost_packets'], results_dict['lost_percent']))
 
-            # dump the results 
-            if config_vars['data_format'] == 'csv':
-                data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['iperf3_udp_data_file'])
-                send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
-            else:
-                data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['iperf3_udp_data_file'])
-                send_results_to_json(data_file, results_dict, file_logger, DEBUG)
+            # dump the results
+            data_file = config_vars['iperf3_udp_data_file']
+            test_name = "iperf_udp"
+            send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
 
             file_logger.info("Iperf3 udp test ended.")
 
@@ -467,7 +564,7 @@ def main():
 
             if dns_result:
     
-                column_headers = ['timestamp', 'dns_index', 'dns_target', 'lookup_time']
+                column_headers = ['time', 'dns_index', 'dns_target', 'lookup_time_ms']
 
                 # summarise result for log
                 result_str = ' {}: {}ms'.format(dns_target, dns_result)
@@ -476,19 +573,16 @@ def main():
                 file_logger.info("DNS results: {}".format(result_str))
 
                 results_dict = { 
-                        'timestamp':int(time.time()),
+                        'time':int(time.time()),
                         'dns_index': dns_index,
                         'dns_target': dns_target, 
-                        'lookup_time': dns_result
+                        'lookup_time_ms': dns_result
                 }
 
                 # dump the results 
-                if config_vars['data_format'] == 'csv':
-                    data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['dns_data_file'])
-                    send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG ,delete_data_file=delete_file)
-                else:
-                    data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['dns_data_file'])
-                    send_results_to_json(data_file, results_dict, file_logger, DEBUG, delete_data_file=delete_file)
+                data_file = config_vars['dns_data_file']
+                test_name = "DNS"
+                send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG, delete_data_file=delete_file)
 
                 file_logger.info("DNS test ended.")
 
@@ -516,20 +610,17 @@ def main():
 
         if renewal_result:
  
-            column_headers = ['timestamp', 'dhcp_renewal_time']
+            column_headers = ['time', 'renewal_time_ms']
 
             results_dict = { 
-                    'timestamp':int(time.time()),
-                    'dhcp_renewal_time': renewal_result, 
+                    'time':int(time.time()),
+                    'renewal_time_ms': renewal_result, 
             }
 
             # dump the results 
-            if config_vars['data_format'] == 'csv':
-                data_file = "{}/{}.csv".format(config_vars['data_dir'], config_vars['dhcp_data_file'])
-                send_results_to_csv(data_file, results_dict, column_headers, file_logger, DEBUG)
-            else:
-                data_file = "{}/{}.json".format(config_vars['data_dir'], config_vars['dhcp_data_file'])
-                send_results_to_json(data_file, results_dict, file_logger, DEBUG)
+            data_file = config_vars['dhcp_data_file']
+            test_name = "DHCP"
+            send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
 
             file_logger.info("DHCP test ended.")
 
@@ -539,6 +630,11 @@ def main():
     
     else:
         file_logger.info("DHCP test not enabled in config file, bypassing this test...")
+
+    # get rid of log file
+    file_logger.info("Removing lock file.")
+    delete_lock_file(lock_file, file_logger)
+
 ###############################################################################
 # End main
 ###############################################################################
