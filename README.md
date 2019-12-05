@@ -132,7 +132,7 @@ With the WLANPi/RPi connected to the Internet, login using the wlanpi user and c
 Edit the config file to customize the operation of the script:
 
 ```
-        cd /home/wlanpi
+        cd /home/wlanpi/wiperf
         cp ./config.default.ini ./config.ini
         nano ./config.ini
 ```
@@ -142,7 +142,7 @@ Edit the config file to customize the operation of the script:
 Test the script by running the following command (takes around 2 minutes to complete, depending on tests enabled):
 
 ```
-        sudo /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py
+        /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py
 ```
 
 If no errors are observed when running it then check the following files to check for no errors & that data is generated:
@@ -163,7 +163,7 @@ If no errors are observed when running it then check the following files to chec
 Create a cronjob to run the script very 5 mins:
 
 ```
-        sudo crontab -e
+        crontab -e
 ```
 
 - add line: 
