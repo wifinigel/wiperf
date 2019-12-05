@@ -196,4 +196,6 @@ If things seem to be going wrong, try the following:
 - SSH to the device & tail the log files in real-time: tail -f /home/wlanpi/wiperf/logs/agent.log
 - Try disabling tests & see if one specific test is causing an issue
 - Make sure all pre-reqs have definitely been fulfilled
+
+**Known Issue:** There seems to be an issue with the Comfast CF-912 adapter when using it with the WLANPi and associating as a client to SSIDs that use 80MHz width channels. If you hit an issue where the WLANPi seems to lock up or does not boot correctly, try a different adapter or a network that does not use 8Mhz channels.
   
