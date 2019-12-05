@@ -4,6 +4,7 @@ Check config.ini field values to check if valid
 
 import re
 
+# TODO: Need to check only mandatory fields
 def FieldCheck(field, value, debug=False):
     '''
     Check config.ini field values to check if valid

@@ -134,7 +134,6 @@ def read_config(debug):
             print(err_msg + "...exiting")
             sys.exit()
 
-
     # Figure out our machine_id (provides unique device id if required)
     machine_id = subprocess.check_output("cat /etc/machine-id", shell=True).decode()
     config_vars['machine_id'] = machine_id.strip()
@@ -144,7 +143,6 @@ def read_config(debug):
     '''
 
     return config_vars
-
 
 def send_results_to_csv(data_file, dict_data, column_headers, file_logger, debug, delete_data_file=True):
 

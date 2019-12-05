@@ -1,6 +1,6 @@
 # wiperf
 
-Wi-Fi performance probe
+Wi-Fi performance probe for RPi & WLANPi
 
 ## Pre-requisites
 
