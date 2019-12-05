@@ -17,6 +17,9 @@ Install required Linux packages:
 
 ```
         sudo apt-get update
+        # WLANPi only: re-install python3 and python3-pip (not req on RPi)
+        sudo apt-get --reinstall install python3
+        sudo apt-get --reinstall install python3-pip
         sudo apt-get install python3-pip iperf3 git -y
         sudo reboot
 ```
@@ -31,12 +34,12 @@ Install required python3 modules
 
 ### User Account
 
-Create the wlanpi user:
+Create the wlanpi user (only required on the RPi):
 ```
         sudo adduser wlanpi
 ```
 
-Edit the sudoers file to enable the wlanpi user to run some commands that require elevated privilege:
+**RPi Only**: Edit the sudoers file to enable the wlanpi user to run some commands that require elevated privilege:
 
 ```
         sudo visudo
@@ -47,7 +50,23 @@ Edit the sudoers file to enable the wlanpi user to run some commands that requir
         wlanpi  ALL=(ALL) NOPASSWD: ALL
 ```
 
-Reboot and log back in with the wlanpi user:
+**WLANPi Only**: Edit the sudoers file to enable the wlanpi user to run some commands that require elevated privilege:
+
+```
+        cd /etc/sudoers.d/
+        sudo nano ./wlanpidump
+```
+
+change: 
+```
+        wlanpi ALL = (root) NOPASSWD: /sbin/iwconfig, /usr/sbin/iw
+```
+to:
+```
+        wlanpi ALL = (root) NOPASSWD: /sbin/iwconfig, /usr/sbin/iw, /sbin/dhclient
+```
+
+**Both platforms**: Reboot and log back in with the wlanpi user:
 
 ```
         sudo reboot
@@ -62,7 +81,6 @@ Configure RPi to join a wireless network. Edit files 'sudo nano /etc/wpa_supplic
     
         ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
         update_config=1
-        country=GB
         ap_scan=1
 
         network={
@@ -154,7 +172,7 @@ Create a cronjob to run the script very 5 mins:
 
 - add line: 
 ```
-        */5 * * * * sudo /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1
+        */5 * * * * /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1
 ```
 ## Account Tidy-up
 

@@ -24,6 +24,7 @@ from modules.heclogger import *
 from modules.iperf3_tester import tcp_iperf_client_test, udp_iperf_client_test
 from modules.dnstester import *
 from modules.dhcptester import *
+from modules.fieldchecker import *
 
 # define useful system files
 config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"
@@ -35,6 +36,14 @@ DEBUG = 0
 DUMMY_DATA = False
 
 config_vars = {}
+
+###################################
+# File logger
+###################################
+        
+# set up our error_log file & initialize
+file_logger = FileLogger(log_file)
+file_logger.info("Starting logging...")
 
 def read_config(debug):
     '''
@@ -113,6 +122,19 @@ def read_config(debug):
     config_vars['dhcp_data_file'] = config.get('DHCP_test', 'dhcp_data_file')
 
     '''
+    # Check all entered config.ini values to see if valid
+    for key in config_vars: 
+
+        field = key
+        value = config_vars[field]   
+
+        if FieldCheck(field, value, DEBUG) == False:
+            err_msg = "Config.ini field error: {} (value = [{}])".format(field, value)
+            file_logger.error(err_msg)
+            print(err_msg + "...exiting")
+            sys.exit()
+
+
     # Figure out our machine_id (provides unique device id if required)
     machine_id = subprocess.check_output("cat /etc/machine-id", shell=True).decode()
     config_vars['machine_id'] = machine_id.strip()
@@ -244,14 +266,8 @@ def main():
     
     wlan_if = config_vars['wlan_if']
     platform = config_vars['platform']
-  
-    ###################################
-    # File logger
-    ###################################
-        
-    # set up our error_log file & initialize
-    file_logger = FileLogger(log_file)
-    file_logger.info("Starting logging...")
+
+    global file_logger
 
     ###################################
     # Check if script already running
