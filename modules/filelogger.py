@@ -17,7 +17,7 @@ def FileLogger(log_file):
     logger.setLevel(logging.INFO)
  
     # add a rotating handler
-    handler = RotatingFileHandler(log_file, maxBytes=102400, backupCount=5)
+    handler = RotatingFileHandler(log_file, maxBytes=521000, backupCount=5)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     
     handler.setFormatter(formatter)

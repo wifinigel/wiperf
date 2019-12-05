@@ -26,7 +26,7 @@ def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
     return result
 
 
-def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, bandwidth=100000000, debug=False):
+def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, bandwidth=10000000, debug=False):
 
     # TODO: Handle iperf test failures - return False
 

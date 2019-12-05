@@ -1,6 +1,6 @@
 # wiperf
 
-Wi-Fi performance probe
+Wi-Fi performance probe for RPi & WLANPi
 
 ## Pre-requisites
 
@@ -17,6 +17,9 @@ Install required Linux packages:
 
 ```
         sudo apt-get update
+        # WLANPi only: re-install python3 and python3-pip (not req on RPi)
+        sudo apt-get --reinstall install python3
+        sudo apt-get --reinstall install python3-pip
         sudo apt-get install python3-pip iperf3 git -y
         sudo reboot
 ```
@@ -24,17 +27,19 @@ Install required Linux packages:
 Install required python3 modules
 
 ```
-        sudo pip3 install iperf3 speedtest-cli configparser splunk-hec-handler
+        sudo pip3 install iperf3 speedtest-cli configparser
+        sudo pip3 install git+git://github.com/georgestarcher/Splunk-Class-httpevent.git
+
 ```
 
 ### User Account
 
-Create the wlanpi user:
+Create the wlanpi user (only required on the RPi):
 ```
         sudo adduser wlanpi
 ```
 
-Edit the sudoers file to enable the wlanpi user to run some commands that require elevated privilege:
+**RPi Only**: Edit the sudoers file to enable the wlanpi user to run some commands that require elevated privilege:
 
 ```
         sudo visudo
@@ -45,7 +50,23 @@ Edit the sudoers file to enable the wlanpi user to run some commands that requir
         wlanpi  ALL=(ALL) NOPASSWD: ALL
 ```
 
-Reboot and log back in with the wlanpi user:
+**WLANPi Only**: Edit the sudoers file to enable the wlanpi user to run some commands that require elevated privilege:
+
+```
+        cd /etc/sudoers.d/
+        sudo nano ./wlanpidump
+```
+
+change: 
+```
+        wlanpi ALL = (root) NOPASSWD: /sbin/iwconfig, /usr/sbin/iw
+```
+to:
+```
+        wlanpi ALL = (root) NOPASSWD: /sbin/iwconfig, /usr/sbin/iw, /sbin/dhclient
+```
+
+**Both platforms**: Reboot and log back in with the wlanpi user:
 
 ```
         sudo reboot
@@ -60,7 +81,6 @@ Configure RPi to join a wireless network. Edit files 'sudo nano /etc/wpa_supplic
     
         ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
         update_config=1
-        country=GB
         ap_scan=1
 
         network={
@@ -113,11 +133,12 @@ With the RPi connected to the Internet, login using the wlanpi user and clone th
         git clone https://github.com/wifinigel/wiperf.git
 ```
 
-Edit the config file to customize the operation of the script:cd
+Edit the config file to customize the operation of the script:
 
 ```
-        cp /home/wlanpi/wiperf/config.default.ini config.ini
-        nano /home/wlanpi/wiperf/config.ini
+        cd /home/wlanpi
+        cp ./config.default.ini ./config.ini
+        nano ./config.ini
 ```
 
 ### Testing
@@ -131,10 +152,14 @@ Test the script by running the following command (takes around 2 minutes to comp
 If no errors are observed when running it then check the following files to check for no errors & that data is generated:
 ```    
         cat /home/wlanpi/wiperf/logs/agent.log
-        cat /home/wlanpi/wiperf/data/wiperf-speedtest-splunk.csv
-        cat /home/wlanpi/wiperf/data/wiperf-ping-splunk.csv
-        cat /home/wlanpi/wiperf/data/wiperf-iperf3-udp-splunk.csv
-        cat /home/wlanpi/wiperf/data/wiperf-iperf3-tcp-splunk.csv
+        # (Note: none of the files below are created when using the HEC forwarder )
+        cat /home/wlanpi/wiperf/data/wiperf-speedtest-splunk.json
+        cat /home/wlanpi/wiperf/data/wiperf-ping-splunk.json
+        cat /home/wlanpi/wiperf/data/wiperf-iperf3-udp-splunk.json
+        cat /home/wlanpi/wiperf/data/wiperf-iperf3-tcp-splunk.json
+        .
+        .
+        etc...
 ```
 
 ## Running: Schedule Regular Job
@@ -147,7 +172,7 @@ Create a cronjob to run the script very 5 mins:
 
 - add line: 
 ```
-        */5 * * * * sudo /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1
+        */5 * * * * /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1
 ```
 ## Account Tidy-up
 
