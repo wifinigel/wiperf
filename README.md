@@ -73,7 +73,7 @@ to:
 
 ### Wireless Configuration
 
-Configure RPi to join a wireless network. Edit files 'sudo nano /etc/wpa_supplicant/wpa_supplicant.conf' and 'sudo nano /etc/network/interfaces'. The eth0 port is configured as static IP below, but can be left as dhcp if wlan0 & eth0 are on different networks (otherwise Speedtest traffic goes out of eth0 port)
+Configure WLANPi/RPi to join a wireless network. Edit files 'sudo nano /etc/wpa_supplicant/wpa_supplicant.conf' and 'sudo nano /etc/network/interfaces'. The eth0 port is configured as static IP below, but can be left as dhcp if wlan0 & eth0 are on different networks (otherwise Speedtest traffic goes out of eth0 port)
 (note: wpa_supplicant.conf must have root:root ownership - 'chown root:root /etc/wpa_supplicant/wpa_supplicant.conf' if required)
 
     *** Sample '/etc/wpa_supplicant/wpa_supplicant.conf':
@@ -85,9 +85,6 @@ Configure RPi to join a wireless network. Edit files 'sudo nano /etc/wpa_supplic
         network={
                 ssid="My_SSID"
                 psk="My_SSID_Key"
-                priority=1
-                #freq_list=2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472
-                freq_list=5180 5200 5220 5240 5260 5280 5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5680 5700 5720 5745 5765 5785 5805 5625
         }
     
     *** Sample '/etc/network/interfaces':
@@ -121,11 +118,11 @@ Configure RPi to join a wireless network. Edit files 'sudo nano /etc/wpa_supplic
         # Include files from /etc/network/interfaces.d:
         source-directory /etc/network/interfaces.d/*
 
-Reboot RPi & verify the RPi has joined the wireless network with iwconfig/ifconfig 
+Reboot WLANPi/RPi & verify the it has joined the wireless network with iwconfig/ifconfig 
 
 ## Installation
 
-With the RPi connected to the Internet, login using the wlanpi user and clone this project:
+With the WLANPi/RPi connected to the Internet, login using the wlanpi user and clone this project:
 
 ```
         cd ~
