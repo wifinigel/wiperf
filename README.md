@@ -192,7 +192,7 @@ To get the latest updates from the GitHub repo , use the following commands when
 
 If things seem to be going wrong, try the following:
 
-- Run the script from the command line and watch for errors (sudo /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py)
+- Run the script from the command line and watch for errors (/usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py)
 - SSH to the device & tail the log files in real-time: tail -f /home/wlanpi/wiperf/logs/agent.log
 - Try disabling tests & see if one specific test is causing an issue
 - Make sure all pre-reqs have definitely been fulfilled
