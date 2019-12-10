@@ -139,7 +139,7 @@ Edit the config file to customize the operation of the script:
 
 ### Testing
 
-Test the script by running the following command (takes around 2 minutes to complete, depending on tests enabled):
+Test the script by running the following command as the wlanpi user (takes around 2 minutes to complete, depending on tests enabled):
 
 ```
         /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py
