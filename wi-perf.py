@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
  
-from __future__ import print_function
 import time
 import datetime
 import subprocess
@@ -30,6 +29,7 @@ from modules.fieldchecker import *
 config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"
 log_file = os.path.dirname(os.path.realpath(__file__)) + "/logs/agent.log"
 lock_file = '/tmp/wiperf.lock'
+mode_active = os.path.dirname(os.path.realpath(__file__)) + "/wiperf_mode.on"
 
 # Enable debugs or create some dummy data for testing
 DEBUG = 0
@@ -59,67 +59,77 @@ def read_config(debug):
     # TODO: add checking logic for values in config.ini file
 
     ### Get general config params
+    gen_sect = config['General']
     # WLAN interface name
-    config_vars['wlan_if'] = config.get('General', 'wlan_if')
+    config_vars['wlan_if'] = gen_sect.get('wlan_if')
+    # Interface name to send mgt traffic over (default wlan0)
+    config_vars['mgt_if'] = gen_sect.get('mgt_if', 'wlan0')
     # Get platform architecture
-    config_vars['platform'] = config.get('General', 'platform')
+    config_vars['platform'] = gen_sect.get('platform')
     # format of output data (csv/json)
-    config_vars['data_format'] = config.get('General', 'data_format')
+    config_vars['data_format'] = gen_sect.get('data_format')
     # directory where data dumped
-    config_vars['data_dir'] = config.get('General', 'data_dir')
+    config_vars['data_dir'] = gen_sect.get('data_dir')
     # data transport
-    config_vars['data_transport'] = config.get('General', 'data_transport')
+    config_vars['data_transport'] = gen_sect.get('data_transport')
     # host where to send logs
-    config_vars['data_host'] = config.get('General', 'data_host')
+    config_vars['data_host'] = gen_sect.get('data_host')
     # host port
-    config_vars['data_port'] = config.get('General', 'data_port')
+    config_vars['data_port'] = gen_sect.get('data_port')
     # Splunk HEC token
-    config_vars['splunk_token'] = config.get('General', 'splunk_token')
+    config_vars['splunk_token'] = gen_sect.get('splunk_token')
       
     if debug:    
         print("Platform = {}".format(config_vars.get('General', 'platform')))
 
     ### Get Speedtest config params
-    config_vars['speedtest_enabled'] = config.get('Speedtest', 'enabled')
-    config_vars['speedtest_data_file'] = config.get('Speedtest', 'speedtest_data_file')
+    speed_sect = config['Speedtest']
+    config_vars['speedtest_enabled'] = speed_sect.get('enabled')
+    config_vars['speedtest_data_file'] = speed_sect.get('speedtest_data_file')
 
     ### Get Ping config params
-    config_vars['ping_enabled'] = config.get('Ping_Test', 'enabled')
-    config_vars['ping_data_file'] = config.get('Ping_Test', 'ping_data_file')
-    config_vars['ping_host1'] = config.get('Ping_Test', 'ping_host1')
-    config_vars['ping_host2'] = config.get('Ping_Test', 'ping_host2')
-    config_vars['ping_host3'] = config.get('Ping_Test', 'ping_host3')
-    config_vars['ping_host4'] = config.get('Ping_Test', 'ping_host4')
-    config_vars['ping_host5'] = config.get('Ping_Test', 'ping_host5')
-    config_vars['ping_count'] = config.get('Ping_Test', 'ping_count')
+    ping_sect = config['Ping_Test']
+    config_vars['ping_enabled'] = ping_sect.get('enabled')
+    config_vars['ping_data_file'] = ping_sect.get('ping_data_file')
+    config_vars['ping_host1'] = ping_sect.get('ping_host1')
+    config_vars['ping_host2'] = ping_sect.get('ping_host2')
+    config_vars['ping_host3'] = ping_sect.get('ping_host3')
+    config_vars['ping_host4'] = ping_sect.get('ping_host4')
+    config_vars['ping_host5'] = ping_sect.get('ping_host5')
+    config_vars['ping_count'] = ping_sect.get('ping_count')
 
     ### Get iperf3 tcp test params
-    config_vars['iperf3_tcp_enabled'] = config.get('Iperf3_tcp_test', 'enabled')
-    config_vars['iperf3_tcp_data_file'] = config.get('Iperf3_tcp_test', 'iperf3_tcp_data_file')
-    config_vars['iperf3_tcp_server_hostname'] = config.get('Iperf3_tcp_test', 'server_hostname')
-    config_vars['iperf3_tcp_port'] = config.get('Iperf3_tcp_test', 'port')
-    config_vars['iperf3_tcp_duration'] = config.get('Iperf3_tcp_test', 'duration')
+    iperft_sect = config['Iperf3_tcp_test']
+    config_vars['iperf3_tcp_enabled'] = iperft_sect.get('enabled')
+    config_vars['iperf3_tcp_data_file'] = iperft_sect.get('iperf3_tcp_data_file')
+    config_vars['iperf3_tcp_server_hostname'] = iperft_sect.get('server_hostname')
+    config_vars['iperf3_tcp_port'] = iperft_sect.get('port')
+    config_vars['iperf3_tcp_duration'] = iperft_sect.get('duration')
 
     ### Get iperf3 udp test params
-    config_vars['iperf3_udp_enabled'] = config.get('Iperf3_udp_test', 'enabled')
-    config_vars['iperf3_udp_data_file'] = config.get('Iperf3_udp_test', 'iperf3_udp_data_file')
-    config_vars['iperf3_udp_server_hostname'] = config.get('Iperf3_udp_test', 'server_hostname')
-    config_vars['iperf3_udp_port'] = config.get('Iperf3_udp_test', 'port')
-    config_vars['iperf3_udp_duration'] = config.get('Iperf3_udp_test', 'duration')
-    config_vars['iperf3_udp_bandwidth'] = config.get('Iperf3_udp_test', 'bandwidth')
+    iperfu_sect = config['Iperf3_udp_test']
+    config_vars['iperf3_udp_enabled'] = iperfu_sect.get('enabled')
+    config_vars['iperf3_udp_data_file'] = iperfu_sect.get('iperf3_udp_data_file')
+    config_vars['iperf3_udp_server_hostname'] = iperfu_sect.get('server_hostname')
+    config_vars['iperf3_udp_port'] = iperfu_sect.get('port')
+    config_vars['iperf3_udp_duration'] = iperfu_sect.get('duration')
+    config_vars['iperf3_udp_bandwidth'] = iperfu_sect.get('bandwidth')
 
     ### Get DNS test params
-    config_vars['dns_test_enabled'] = config.get('DNS_test', 'enabled')
-    config_vars['dns_data_file'] = config.get('DNS_test', 'dns_data_file')
-    config_vars['dns_target1'] = config.get('DNS_test', 'dns_target1')
-    config_vars['dns_target2'] = config.get('DNS_test', 'dns_target2')
-    config_vars['dns_target3'] = config.get('DNS_test', 'dns_target3')
-    config_vars['dns_target4'] = config.get('DNS_test', 'dns_target4')
-    config_vars['dns_target5'] = config.get('DNS_test', 'dns_target5')
+    dns_sect = config['DNS_test']
+    config_vars['dns_test_enabled'] = dns_sect.get('enabled')
+    config_vars['dns_data_file'] = dns_sect.get('dns_data_file')
+    config_vars['dns_target1'] = dns_sect.get('dns_target1')
+    config_vars['dns_target2'] = dns_sect.get('dns_target2')
+    config_vars['dns_target3'] = dns_sect.get('dns_target3')
+    config_vars['dns_target4'] = dns_sect.get('dns_target4')
+    config_vars['dns_target5'] = dns_sect.get('dns_target5')
 
     ### Get DHCP test params
-    config_vars['dhcp_test_enabled'] = config.get('DHCP_test', 'enabled')
-    config_vars['dhcp_data_file'] = config.get('DHCP_test', 'dhcp_data_file')
+    dhcp_sect = config['DHCP_test']
+    config_vars['dhcp_test_enabled'] = dhcp_sect.get('enabled')
+    config_vars['dhcp_test_mode'] = dhcp_sect.get('mode', 'passive')
+    config_vars['dhcp_data_file'] = dhcp_sect.get('dhcp_data_file')
 
     '''
     # Check all entered config.ini values to see if valid
@@ -532,9 +542,9 @@ def main():
 
             # workaround for crazy jitter figures sometimes seen
             if results_dict['jitter_ms'] > 2000:
-                results_dict['jitter_ms'] = None
                 file_logger.error("Received very high jitter value({}), set to none".format(results_dict['jitter_ms']))
-
+                results_dict['jitter_ms'] = None
+                
             # drop abbreviated results in log file
             file_logger.info("Iperf3 udp results - mbps: {}, packets: {}, lost_packets: {}, lost_percent: {}".format(results_dict['mbps'], results_dict['packets'], results_dict['lost_packets'], results_dict['lost_percent']))
 
@@ -620,7 +630,7 @@ def main():
 
         dhcp_obj = DhcpTester(file_logger, platform = platform, debug = DEBUG)
 
-        renewal_result = dhcp_obj.dhcp_renewal(wlan_if)
+        renewal_result = dhcp_obj.dhcp_renewal(wlan_if, mode=config_vars['dhcp_test_mode'])
 
         if renewal_result:
  

@@ -62,7 +62,7 @@ change:
 ```
 to:
 ```
-        wlanpi ALL = (root) NOPASSWD: /sbin/iwconfig, /usr/sbin/iw, /sbin/dhclient
+        wlanpi ALL = (root) NOPASSWD: /sbin/iwconfig, /usr/sbin/iw, /bin/date, /sbin/dhclient, /sbin/ifconfig
 ```
 
 **Both platforms**: Reboot and log back in with the wlanpi user:

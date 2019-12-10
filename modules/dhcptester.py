@@ -36,7 +36,7 @@ class DhcpTester(object):
         # exit as something bad must have happened...
         sys.exit()
 
-    def dhcp_renewal(self, interface):
+    def dhcp_renewal(self, interface, mode='passive'):
         '''
         This function will release the current DHCP address and request a renewal.
         The renewal duration is timed and the result (in mS) returned
@@ -50,31 +50,37 @@ class DhcpTester(object):
 
         self.interface = interface
 
-        if self.debug:
-            print("Releasing dhcp address...")
+        if mode == 'active':
 
-        self.file_logger.info("Releasing dhcp address...")
-        try:
-            release_output = subprocess.check_output("sudo /sbin/dhclient -r -v {} 2>&1".format(self.interface), shell=True).decode()
-            # TODO: pattern search of: "DHCPRELEASE of 192.168.1.89 on wlan0"
-            self.file_logger.info("Address released.")
+            # only do this is running active test
             if self.debug:
-                print("Address released.")
-        except Exception as ex:
-            self.file_logger.error("Issue releasing IP address: {}".format(ex))
-            if self.debug:
-                print("Issue releasing IP address: {}".format(ex))
-            # If release fails, bounce interface to recover - script will exit
-            self.bounce_interface(self.interface, self.file_logger, self.debug)
+                print("Releasing dhcp address...")
 
-        start = time.time()
+            self.file_logger.info("Releasing dhcp address...")
+            try:
+                release_output = subprocess.check_output("sudo /sbin/dhclient -r -v {} 2>&1".format(self.interface), shell=True).decode()
+                # TODO: pattern search of: "DHCPRELEASE of 192.168.1.89 on wlan0"
+                self.file_logger.info("Address released.")
+                if self.debug:
+                    print("Address released.")
+            except Exception as ex:
+                self.file_logger.error("Issue releasing IP address: {}".format(ex))
+                if self.debug:
+                    print("Issue releasing IP address: {}".format(ex))
+                # If release fails, bounce interface to recover - script will exit
+                self.bounce_interface(self.interface, self.file_logger, self.debug)
+
+        start = 0.0
+        end = 0.0
 
         if self.debug:
-            print("Renewing dhcp address...")
+            print("Renewing dhcp address...(mode = {})".format(mode))
 
-        self.file_logger.info("Renewing dhcp address...")
+        self.file_logger.info("Renewing dhcp address...(mode = {})".format(mode))
         try:
+            start = time.time()
             subprocess.check_output("sudo /sbin/dhclient -v {} 2>&1".format(self.interface), shell=True).decode()
+            end = time.time()
             # TODO: pattern search for "bound to 192.168.1.89"
             self.file_logger.info("Address renewed.")
             if self.debug:
@@ -86,7 +92,6 @@ class DhcpTester(object):
             # If renewal fails, bounce interface to recover - script will exit
             self.bounce_interface(self.interface, self.file_logger, self.debug)
 
-        end = time.time()
         self.duration = int(round((end - start) * 1000))
 
         self.file_logger.info("Renewal time: {}mS".format(self.duration))

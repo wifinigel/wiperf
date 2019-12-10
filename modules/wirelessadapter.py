@@ -237,8 +237,7 @@ class WirelessAdapter(object):
         
         self.file_logger.error("Bouncing interface (platform type = " + self.platform + ")")
         
-        #if_down_cmd = "sudo ifdown " + str(self.wlan_if_name)
-        if_down_cmd = "sudo ifconfig {} down".format(self.wlan_if_name)
+        if_down_cmd = "sudo /sbin/ifconfig {} down".format(self.wlan_if_name)
         
         
         if self.debug:
@@ -270,7 +269,7 @@ class WirelessAdapter(object):
         time.sleep(5)
         
         #if_up_cmd = "sudo ifup " + str(self.wlan_if_name)
-        if_up_cmd = "sudo ifconfig {} up".format(self.wlan_if_name)
+        if_up_cmd = "sudo /bin/ifconfig {} up".format(self.wlan_if_name)
         
         if self.debug:
             print("if up command:")

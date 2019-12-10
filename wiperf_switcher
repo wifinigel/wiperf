@@ -1,0 +1,184 @@
+#! /bin/bash
+#
+# wiperf_switcher       script to switch wiperf on/off
+#
+# Written by Nigel Bowden <wifinigel@gmail.com>.
+#
+# History:
+#
+# v0.01 - 8th Dec 2019 - Initial version
+
+set -e
+
+NAME=wiperf_switcher
+DESC="Script to switch wiperf on/off"
+VERSION=0.01
+STATUS_FILE="/home/wlanpi/wiperf/wiperf.on"
+CFG_FILE="/home/wlanpi/wiperf/config.ini"
+
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 
+   exit 1
+fi
+
+###############################################################################
+#
+# Activate wiperf:
+#
+# 1. Backup various existing files to allow restoration when wiperf
+#    deactivated
+# 2. Remove a number of existing files that need to be replaced
+# 3. Create links from deleted file locations to wiperf config files
+# 4. Create status file to indicate wiperf is active
+# 5. Reboot the wlanpi to ensure clean activation
+#
+# Note: /etc/sysctl.conf only included to ensure forwarding
+#       cannot be accidentally be enabled in probe mode
+#
+###############################################################################
+wiperf_on () {
+  echo "Enabling wiperf..."
+  #Backup existing config files
+  cp /etc/network/interfaces /etc/network/interfaces.probe
+  cp /etc/sysctl.conf /etc/sysctl.conf.probe
+  cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.probe
+  #cp /etc/default/isc-dhcp-server /etc/default/isc-dhcp-server.hspt
+  #cp /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf.hspt
+  #cp /etc/default/ufw /etc/default/ufw.hspt
+  #cp /etc/ufw/before.rules /etc/ufw/before.rules.hspt
+
+  # Remove existing config files
+  rm /etc/network/interfaces
+  rm /etc/sysctl.conf
+  rm /etc/wpa_supplicant/wpa_supplicant.conf
+  #rm /etc/default/isc-dhcp-server
+  #rm /etc/dhcp/dhcpd.conf
+  #rm /etc/default/ufw
+  #rm /etc/ufw/before.rules
+
+  # Link to wiperf config files
+  ln -s /home/wlanpi/wiperf/conf/etc/network/interfaces /etc/network/interfaces
+  ln -s /home/wlanpi/wiperf/conf/etc/sysctl.conf /etc/sysctl.conf
+  ln -s /home/wlanpi/wiperf/conf/etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
+  #ln -s /etc/wlanpiwiperf/default/isc-dhcp-server /etc/default/isc-dhcp-server 
+  #ln -s /etc/wlanpiwiperf/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf
+  #ln -s /etc/wlanpiwiperf/conf/hostapd.conf /etc/hostapd.conf
+  #ln -s /etc/wlanpiwiperf/default/ufw /etc/default/ufw
+  #ln -s /etc/wlanpiwiperf/ufw/before.rules /etc/ufw/before.rules
+
+  # If we're using Splunk via eth0, set up static route
+  MGT_IF=`cat /home/wlanpi/wiperf/config.ini | grep mgt_if | awk '{print $2}'`
+
+  if [ "$MGT_IF" == "eth0" ]; then
+    # Using eth0 - need to set static route back to Splunk
+    ETH_DEF_ROUTE=`ip route | grep eth0 | grep default | awk '{print $3}'`
+    SPLUNK_IP=`cat /home/wlanpi/wiperf/config.ini | grep data_host | awk '{print $2}'`
+
+    # add static route to interfaces file
+    STATIC_CMD="post-up ip route add $SPLUNK_IP via $ETH_DEF_ROUTE dev eth0 "
+    echo $STATIC_CMD >> /home/wlanpi/wiperf/conf/etc/network/interfaces
+
+  fi
+
+  # Add crontab entry
+  line="*/5 * * * * /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1"
+ (crontab -u wlanpi -l; echo "$line" ) | crontab -u wlanpi -
+
+  touch $STATUS_FILE
+
+  echo "WLANPi will now reboot"
+  sleep 1
+  reboot
+}
+
+###############################################################################
+#
+# Deactivate wiperf:
+#
+# 1. Remove links created during activation
+# 2. Restore config files backed up during activation
+# 3. Remove firewall rules added during activation
+# 4. Remove status file to indicate wiperf no longer active
+# 5. Reboot wlanpi to provide clean restoration of services
+#
+###############################################################################
+wiperf_off () {
+  echo "Disabling wiperf..."
+  # Remove links to config files
+
+  unlink /etc/network/interfaces
+  unlink /etc/sysctl.conf
+  unlink /etc/wpa_supplicant/wpa_supplicant.conf
+  #unlink /etc/hostapd.conf
+  #unlink /etc/default/isc-dhcp-server
+  #unlink /etc/dhcp/dhcpd.conf
+  #unlink /etc/default/ufw
+  #unlink /etc/ufw/before.rules
+ 
+  # Restore original config files
+  cp /etc/network/interfaces.probe /etc/network/interfaces 
+  cp /etc/sysctl.conf.probe /etc/sysctl.conf
+  cp /etc/wpa_supplicant/wpa_supplicant.conf.probe /etc/wpa_supplicant/wpa_supplicant.conf
+  # cp /etc/default/isc-dhcp-server.hspt /etc/default/isc-dhcp-server
+  # cp /etc/dhcp/dhcpd.conf.hspt /etc/dhcp/dhcpd.conf
+  # cp /etc/default/ufw.hspt /etc/default/ufw
+  # cp /etc/ufw/before.rules.hspt /etc/ufw/before.rules
+
+# If we're using Splunk via eth0, remove static route
+  MGT_IF=`cat /home/wlanpi/wiperf/config.ini | grep mgt_if | awk '{print $2}'`
+
+  if [ "$MGT_IF" == "eth0" ]; then
+    # Using eth0 - need to remove static route back to Splunk
+    sed -i '$ d' /home/wlanpi/wiperf/conf/etc/network/interfaces
+  fi
+
+  echo "WLANPi will now reboot"
+  if [ -e "$STATUS_FILE" ]; then
+    rm $STATUS_FILE
+  fi
+
+  # Remove crontab entry
+ crontab -u wlanpi -l | grep -v 'wi-perf.py'  | crontab -u wlanpi -
+
+  sleep 1
+  reboot
+}
+
+status () {
+  if [ -e "$STATUS_FILE" ]; then
+    echo "wiperf is currently enabled"
+    exit 0
+  else
+    echo "wiperf is currently disabled"
+    exit 0
+  fi
+
+}
+
+version () {
+    N=/etc/wlanpiwiperf/$NAME
+        echo "Version: $N $VERSION" >&2
+        exit 1
+
+}
+
+case "$1" in
+  on)
+        wiperf_on
+        ;;
+  off)
+        wiperf_off
+        ;;
+  status)
+        status
+        ;;
+  version)
+        version;;
+  *)
+        N=/etc/wlanpiwiperf/$NAME
+        echo "Usage: $N {on|off|status|version}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
