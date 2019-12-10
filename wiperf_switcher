@@ -42,29 +42,16 @@ wiperf_on () {
   cp /etc/network/interfaces /etc/network/interfaces.probe
   cp /etc/sysctl.conf /etc/sysctl.conf.probe
   cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.probe
-  #cp /etc/default/isc-dhcp-server /etc/default/isc-dhcp-server.hspt
-  #cp /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf.hspt
-  #cp /etc/default/ufw /etc/default/ufw.hspt
-  #cp /etc/ufw/before.rules /etc/ufw/before.rules.hspt
 
   # Remove existing config files
   rm /etc/network/interfaces
   rm /etc/sysctl.conf
   rm /etc/wpa_supplicant/wpa_supplicant.conf
-  #rm /etc/default/isc-dhcp-server
-  #rm /etc/dhcp/dhcpd.conf
-  #rm /etc/default/ufw
-  #rm /etc/ufw/before.rules
 
   # Link to wiperf config files
   ln -s /home/wlanpi/wiperf/conf/etc/network/interfaces /etc/network/interfaces
   ln -s /home/wlanpi/wiperf/conf/etc/sysctl.conf /etc/sysctl.conf
   ln -s /home/wlanpi/wiperf/conf/etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
-  #ln -s /etc/wlanpiwiperf/default/isc-dhcp-server /etc/default/isc-dhcp-server 
-  #ln -s /etc/wlanpiwiperf/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf
-  #ln -s /etc/wlanpiwiperf/conf/hostapd.conf /etc/hostapd.conf
-  #ln -s /etc/wlanpiwiperf/default/ufw /etc/default/ufw
-  #ln -s /etc/wlanpiwiperf/ufw/before.rules /etc/ufw/before.rules
 
   # If we're using Splunk via eth0, set up static route
   MGT_IF=`cat /home/wlanpi/wiperf/config.ini | grep mgt_if | awk '{print $2}'`
@@ -79,6 +66,14 @@ wiperf_on () {
     echo $STATIC_CMD >> /home/wlanpi/wiperf/conf/etc/network/interfaces
 
   fi
+
+  # Harden eth0 by adding fw rules
+  SPLUNK_IP=`cat /home/wlanpi/wiperf/config.ini | grep data_host | awk '{print $2}'`
+
+  ufw insert 1 allow in on eth0 from $SPLUNK_IP
+  ufw insert 2 allow out on eth0 to $SPLUNK_IP
+  ufw insert 3 deny in on eth0
+  ufw insert 4 deny out on eth0
 
   # Add crontab entry
   line="*/5 * * * * /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1"
@@ -109,20 +104,11 @@ wiperf_off () {
   unlink /etc/network/interfaces
   unlink /etc/sysctl.conf
   unlink /etc/wpa_supplicant/wpa_supplicant.conf
-  #unlink /etc/hostapd.conf
-  #unlink /etc/default/isc-dhcp-server
-  #unlink /etc/dhcp/dhcpd.conf
-  #unlink /etc/default/ufw
-  #unlink /etc/ufw/before.rules
  
   # Restore original config files
   cp /etc/network/interfaces.probe /etc/network/interfaces 
   cp /etc/sysctl.conf.probe /etc/sysctl.conf
   cp /etc/wpa_supplicant/wpa_supplicant.conf.probe /etc/wpa_supplicant/wpa_supplicant.conf
-  # cp /etc/default/isc-dhcp-server.hspt /etc/default/isc-dhcp-server
-  # cp /etc/dhcp/dhcpd.conf.hspt /etc/dhcp/dhcpd.conf
-  # cp /etc/default/ufw.hspt /etc/default/ufw
-  # cp /etc/ufw/before.rules.hspt /etc/ufw/before.rules
 
 # If we're using Splunk via eth0, remove static route
   MGT_IF=`cat /home/wlanpi/wiperf/config.ini | grep mgt_if | awk '{print $2}'`
@@ -131,6 +117,14 @@ wiperf_off () {
     # Using eth0 - need to remove static route back to Splunk
     sed -i '$ d' /home/wlanpi/wiperf/conf/etc/network/interfaces
   fi
+
+  # Remove eth0 fw rules
+  SPLUNK_IP=`cat /home/wlanpi/wiperf/config.ini | grep data_host | awk '{print $2}'`
+
+  ufw delete allow in on eth0 from $SPLUNK_IP
+  ufw delete allow out on eth0 to $SPLUNK_IP
+  ufw delete deny in on eth0
+  ufw delete deny out on eth0
 
   echo "WLANPi will now reboot"
   if [ -e "$STATUS_FILE" ]; then
