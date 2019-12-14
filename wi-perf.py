@@ -30,6 +30,7 @@ config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"
 log_file = os.path.dirname(os.path.realpath(__file__)) + "/logs/agent.log"
 lock_file = '/tmp/wiperf.lock'
 mode_active = os.path.dirname(os.path.realpath(__file__)) + "/wiperf_mode.on"
+status_file = '/tmp/wiperf_status.txt'
 
 # Enable debugs or create some dummy data for testing
 DEBUG = 0
@@ -78,6 +79,9 @@ def read_config(debug):
     config_vars['data_port'] = gen_sect.get('data_port')
     # Splunk HEC token
     config_vars['splunk_token'] = gen_sect.get('splunk_token')
+    
+    config_vars['test_interval'] = gen_sect.get('test_interval')
+    config_vars['test_offset'] = gen_sect.get('test_offset')
       
     if debug:    
         print("Platform = {}".format(config_vars.get('General', 'platform')))
@@ -260,7 +264,44 @@ def delete_lock_file(lock_file, file_logger):
     except Exception as ex:
         file_logger.error("Issue deleting lock file: {}, exiting...".format(ex))
         sys.exit()
-    
+
+def check_route_to_dest(ip_address, file_logger):
+
+    # If ip address is a hostname rather than an IP, do a lookup and substitute IP
+    if re.search(r'[a-z]|[A-Z]', ip_address):
+        ip_address = gethostbyname(ip_address)
+
+    ip_route_cmd = "/bin/ip route show to match " + ip_address + " | head -n 1 | awk '{print $NF}'"
+
+    try :
+        interface_name = subprocess.check_output(ip_route_cmd, shell=True).decode()
+        file_logger.info("Checked interface route to : {}. Result: {}".format(ip_address, interface_name))
+        return interface_name.strip()
+    except Exception as ex:
+        file_logger.error("Issue looking up route (route cmd syntax?): {} (command used: )".format(ex, ip_route_cmd))
+        return ''
+
+def write_status_file(text="", status_file=status_file, file_logger=file_logger):
+
+    if text=='':
+
+        # if no text sent, delete file
+        if os.path.exists(status_file):
+            try :
+                os.remove(status_file)
+            except Exception as ex:
+                file_logger.error("Issue deleting status file: {}.".format(ex))
+    else:
+        # write status message to file
+        try :
+            with open(status_file, 'w') as statusf:
+                statusf.write(str(text))
+        except Exception as ex:
+            file_logger.error("Issue writing status file: {}.".format(ex))
+
+    time.sleep(1)
+    return True
+
     
 ###############################################################################
 # Main
@@ -345,51 +386,58 @@ def main():
     if config_vars['speedtest_enabled'] == 'yes':
 
         file_logger.info("Starting speedtest...")
+        write_status_file("speedtest")
 
-        speedtest_results = ooklaspeedtest(file_logger)
-        
-        if DEBUG:
-            print("Main: Speedtest results:")
-            print(speedtest_results)
-        
-        # hold all results in one place
-        results_dict = {}
+        # check test to Intenet will go via wlan interface
+        if check_route_to_dest('8.8.8.8', file_logger) == config_vars['wlan_if']:
 
-        # define column headers
-        column_headers = ['time', 'server_name', 'ping_time', 'download_rate_mbps', 'upload_rate_mbps', 'ssid', 'bssid', 'freq_ghz', 'phy_rate_mbps', 'signal_level_dbm', 'tx_retries', 'ip_address']
-        
-        # speedtest results
-        results_dict['ping_time'] = int(speedtest_results['ping_time'])
-        results_dict['download_rate_mbps'] = float(speedtest_results['download_rate'])
-        results_dict['upload_rate_mbps'] = float(speedtest_results['upload_rate'])
-        results_dict['server_name'] = str(speedtest_results['server_name'])
-        
-        results_dict['ssid'] = str(adapter.get_ssid())
-        results_dict['bssid'] = str(adapter.get_bssid())
-        results_dict['freq_ghz'] = str(adapter.get_freq())
-        results_dict['phy_rate_mbps'] = float(adapter.get_bit_rate())
-        results_dict['signal_level_dbm'] = int(adapter.get_signal_level())
-        results_dict['tx_retries'] = int(adapter.get_tx_retries())
-        results_dict['ip_address'] = str(adapter.get_ipaddr())
-        
-        results_dict['time'] = int(time.time())
+            speedtest_results = ooklaspeedtest(file_logger)
+            
+            if DEBUG:
+                print("Main: Speedtest results:")
+                print(speedtest_results)
+            
+            # hold all results in one place
+            results_dict = {}
 
-        # dump the results 
-        data_file = config_vars['speedtest_data_file']
-        test_name = "Speedtest"
-        send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
+            # define column headers
+            column_headers = ['time', 'server_name', 'ping_time', 'download_rate_mbps', 'upload_rate_mbps', 'ssid', 'bssid', 'freq_ghz', 'phy_rate_mbps', 'signal_level_dbm', 'tx_retries', 'ip_address']
+            
+            # speedtest results
+            results_dict['ping_time'] = int(speedtest_results['ping_time'])
+            results_dict['download_rate_mbps'] = float(speedtest_results['download_rate'])
+            results_dict['upload_rate_mbps'] = float(speedtest_results['upload_rate'])
+            results_dict['server_name'] = str(speedtest_results['server_name'])
+            
+            results_dict['ssid'] = str(adapter.get_ssid())
+            results_dict['bssid'] = str(adapter.get_bssid())
+            results_dict['freq_ghz'] = str(adapter.get_freq())
+            results_dict['phy_rate_mbps'] = float(adapter.get_bit_rate())
+            results_dict['signal_level_dbm'] = int(adapter.get_signal_level())
+            results_dict['tx_retries'] = int(adapter.get_tx_retries())
+            results_dict['ip_address'] = str(adapter.get_ipaddr())
+            
+            results_dict['time'] = int(time.time())
 
-        file_logger.info("Speedtest ended.")
+            # dump the results 
+            data_file = config_vars['speedtest_data_file']
+            test_name = "Speedtest"
+            send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
+
+            file_logger.info("Speedtest ended.")
+        else:
+            file_logger.error("Unable to run Speedtest as route to Internet not via wireless interface.")
 
     else:
         file_logger.info("Speedtest not enabled in config file, bypassing this test...")
-
+    
     #############################
     # Run ping test (if enabled)
     #############################
     if config_vars['ping_enabled'] == 'yes':
 
         file_logger.info("Starting ping test...")
+        write_status_file("Ping tests")
           
         # run ping test
         ping_obj = Pinger(file_logger, platform = platform, debug = DEBUG)
@@ -415,7 +463,12 @@ def main():
                 if ping_host == 'def_gw':
                     ping_host = adapter.get_def_gw()
                 
-                ping_obj.ping_host(ping_host, 1)
+                # check test to Intenet will go via wlan interface
+                if check_route_to_dest(ping_host, file_logger) == config_vars['wlan_if']:
+                    ping_obj.ping_host(ping_host, 1)
+                else:
+                    file_logger.error("Unable to ping {} as route to destination not over wireless interface...bypassing test".format(ping_host))
+                    continue
             
         # ping test
         ping_index = 0
@@ -465,49 +518,56 @@ def main():
 
             else:
                 file_logger.error("Ping test failed.")
-
+         
     else:
         file_logger.info("Ping test not enabled in config file, bypassing this test...")
-    
+
     ###################################
     # Run iperf3 tcp test (if enabled)
     ###################################
     if config_vars['iperf3_tcp_enabled'] == 'yes':
 
         file_logger.info("Starting iperf3 tcp test...")
+        write_status_file("iperf3 tcp")
 
         duration = int(config_vars['iperf3_tcp_duration'])
         port = int(config_vars['iperf3_tcp_port'])
         server_hostname = config_vars['iperf3_tcp_server_hostname']
 
-        result = tcp_iperf_client_test(file_logger, server_hostname, duration=duration, port=port, debug=False)
+        # check test to iperf3 server will go via wlan interface
+        if check_route_to_dest(server_hostname, file_logger) == config_vars['wlan_if']:
 
-        if result.error == None:
+            # run iperf test
+            result = tcp_iperf_client_test(file_logger, server_hostname, duration=duration, port=port, debug=False)
 
-            results_dict = {}
-            
-            column_headers = ['time', 'sent_mbps', 'received_mbps', 'sent_bytes', 'received_bytes', 'retransmits']
+            if result.error == None:
 
-            results_dict['time'] = int(time.time())
-            results_dict['sent_mbps'] =  round(result.sent_Mbps, 1)
-            results_dict['received_mbps']   =  round(result.received_Mbps, 1)
-            results_dict['sent_bytes'] =  result.sent_bytes
-            results_dict['received_bytes'] =  result.received_bytes
-            results_dict['retransmits'] =  result.retransmits
+                results_dict = {}
+                
+                column_headers = ['time', 'sent_mbps', 'received_mbps', 'sent_bytes', 'received_bytes', 'retransmits']
 
-            # drop abbreviated results in log file
-            file_logger.info("Iperf3 tcp results - rx_mbps: {}, tx_bps: {}, retransmits: {}".format(results_dict['received_mbps'], results_dict['sent_mbps'], results_dict['retransmits']))
+                results_dict['time'] = int(time.time())
+                results_dict['sent_mbps'] =  round(result.sent_Mbps, 1)
+                results_dict['received_mbps']   =  round(result.received_Mbps, 1)
+                results_dict['sent_bytes'] =  result.sent_bytes
+                results_dict['received_bytes'] =  result.received_bytes
+                results_dict['retransmits'] =  result.retransmits
 
-            # dump the results
-            data_file = config_vars['iperf3_tcp_data_file']
-            test_name = "iperf3_tcp"
-            send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
+                # drop abbreviated results in log file
+                file_logger.info("Iperf3 tcp results - rx_mbps: {}, tx_bps: {}, retransmits: {}".format(results_dict['received_mbps'], results_dict['sent_mbps'], results_dict['retransmits']))
 
-            file_logger.info("Iperf3 tcp test ended.")
+                # dump the results
+                data_file = config_vars['iperf3_tcp_data_file']
+                test_name = "iperf3_tcp"
+                send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
 
+                file_logger.info("Iperf3 tcp test ended.")
+
+            else:
+                file_logger.error("Error with iperf3 tcp test: {}".format(result.error))
+        
         else:
-            file_logger.error("Error with iperf3 tcp test: {}".format(result.error))
-
+            file_logger.error("Unable to run iperf test to {} as route to destination not over wireless interface...bypassing test".format(server_hostname))
     
     else:
         file_logger.info("Iperf3 tcp test not enabled in config file, bypassing this test...")
@@ -518,46 +578,51 @@ def main():
     if config_vars['iperf3_udp_enabled'] == 'yes':
 
         file_logger.info("Starting iperf3 udp test...")
+        write_status_file("iperf3 udp")
 
         duration = int(config_vars['iperf3_udp_duration'])
         port = int(config_vars['iperf3_udp_port'])
         server_hostname = config_vars['iperf3_udp_server_hostname']
         bandwidth = int(config_vars['iperf3_udp_bandwidth'])
 
-        result = udp_iperf_client_test(file_logger, server_hostname, duration=duration, port=port, bandwidth=bandwidth, debug=False)
+        if check_route_to_dest(server_hostname, file_logger) == config_vars['wlan_if']:
 
-        if result.error == None:
+            result = udp_iperf_client_test(file_logger, server_hostname, duration=duration, port=port, bandwidth=bandwidth, debug=False)
 
-            results_dict = {}
-            
-            column_headers = ['time', 'bytes', 'mbps', 'jitter_ms', 'packets', 'lost_packets', 'lost_percent']
+            if result.error == None:
 
-            results_dict['time'] = int(time.time())
-            results_dict['bytes'] =  result.bytes
-            results_dict['mbps']   =  round(result.Mbps, 1)
-            results_dict['jitter_ms'] =  round(result.jitter_ms, 1)
-            results_dict['packets'] =  result.packets
-            results_dict['lost_packets'] =  result.lost_packets
-            results_dict['lost_percent'] =  round(result.lost_percent, 1)
-
-            # workaround for crazy jitter figures sometimes seen
-            if results_dict['jitter_ms'] > 2000:
-                file_logger.error("Received very high jitter value({}), set to none".format(results_dict['jitter_ms']))
-                results_dict['jitter_ms'] = None
+                results_dict = {}
                 
-            # drop abbreviated results in log file
-            file_logger.info("Iperf3 udp results - mbps: {}, packets: {}, lost_packets: {}, lost_percent: {}".format(results_dict['mbps'], results_dict['packets'], results_dict['lost_packets'], results_dict['lost_percent']))
+                column_headers = ['time', 'bytes', 'mbps', 'jitter_ms', 'packets', 'lost_packets', 'lost_percent']
 
-            # dump the results
-            data_file = config_vars['iperf3_udp_data_file']
-            test_name = "iperf_udp"
-            send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
+                results_dict['time'] = int(time.time())
+                results_dict['bytes'] =  result.bytes
+                results_dict['mbps']   =  round(result.Mbps, 1)
+                results_dict['jitter_ms'] =  round(result.jitter_ms, 1)
+                results_dict['packets'] =  result.packets
+                results_dict['lost_packets'] =  result.lost_packets
+                results_dict['lost_percent'] =  round(result.lost_percent, 1)
 
-            file_logger.info("Iperf3 udp test ended.")
+                # workaround for crazy jitter figures sometimes seen
+                if results_dict['jitter_ms'] > 2000:
+                    file_logger.error("Received very high jitter value({}), set to none".format(results_dict['jitter_ms']))
+                    results_dict['jitter_ms'] = None
+                    
+                # drop abbreviated results in log file
+                file_logger.info("Iperf3 udp results - mbps: {}, packets: {}, lost_packets: {}, lost_percent: {}".format(results_dict['mbps'], results_dict['packets'], results_dict['lost_packets'], results_dict['lost_percent']))
+
+                # dump the results
+                data_file = config_vars['iperf3_udp_data_file']
+                test_name = "iperf_udp"
+                send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
+
+                file_logger.info("Iperf3 udp test ended.")
+
+            else:
+                file_logger.error("Error with iperf3 udp test: {}".format(result.error))
 
         else:
-            file_logger.error("Error with iperf3 udp test: {}".format(result.error))
-
+            file_logger.error("Unable to run iperf test to {} as route to destination not over wireless interface...bypassing test".format(server_hostname))
     
     else:
         file_logger.info("Iperf3 udp test not enabled in config file, bypassing this test...")
@@ -568,6 +633,7 @@ def main():
     if config_vars['dns_test_enabled'] == 'yes':
 
         file_logger.info("Starting DNS tests...")
+        write_status_file("DNS tests")
 
         dns_targets = [ config_vars['dns_target1'], config_vars['dns_target2'], config_vars['dns_target3'], config_vars['dns_target4'], config_vars['dns_target5'] ]
 
@@ -627,6 +693,7 @@ def main():
     if config_vars['dhcp_test_enabled'] == 'yes':
 
         file_logger.info("Starting DHCP renewal test...")
+        write_status_file("DHCP renew")
 
         dhcp_obj = DhcpTester(file_logger, platform = platform, debug = DEBUG)
 
@@ -657,6 +724,7 @@ def main():
 
     # get rid of log file
     file_logger.info("Removing lock file.")
+    write_status_file("")
     delete_lock_file(lock_file, file_logger)
 
 ###############################################################################
