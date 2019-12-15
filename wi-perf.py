@@ -80,8 +80,8 @@ def read_config(debug):
     # Splunk HEC token
     config_vars['splunk_token'] = gen_sect.get('splunk_token')
     
-    config_vars['test_interval'] = gen_sect.get('test_interval')
-    config_vars['test_offset'] = gen_sect.get('test_offset')
+    config_vars['test_interval'] = gen_sect.get('test_interval', 5)
+    config_vars['test_offset'] = gen_sect.get('test_offset', 0)
       
     if debug:    
         print("Platform = {}".format(config_vars.get('General', 'platform')))
