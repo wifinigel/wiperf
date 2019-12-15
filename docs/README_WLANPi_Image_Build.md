@@ -4,7 +4,7 @@ Wi-Fi performance probe for RPi & WLANPi
 
 ## Pre-requisites
 
-These are the build instuctions for the v1.8.5 WLANPi image:
+These are the build instuctions for the v1.8.5 WLANPi image (*NOTE* these instructions are only required by the developers creating the WLANPi image....you do not need these):
 
 ### Package Updates
 
