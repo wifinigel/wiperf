@@ -269,7 +269,7 @@ class WirelessAdapter(object):
         time.sleep(5)
         
         #if_up_cmd = "sudo ifup " + str(self.wlan_if_name)
-        if_up_cmd = "sudo /bin/ifconfig {} up".format(self.wlan_if_name)
+        if_up_cmd = "sudo /sbin/ifconfig {} up".format(self.wlan_if_name)
         
         if self.debug:
             print("if up command:")
