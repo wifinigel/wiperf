@@ -88,7 +88,6 @@ wiperf_on () {
 
   # figure out the Splunk IP
   SPLUNK_IP=`cat /home/wlanpi/wiperf/config.ini | grep data_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
-  echo $SPLUNK_IP
   # check if we have a Splunk IP
   if [ -z "$SPLUNK_IP" ]; then
     echo "No Splunk IP config" | tee $LOG_FILE 
@@ -107,7 +106,8 @@ wiperf_on () {
     fi
 
     # get def gw of eth0
-    ETH_DEF_ROUTE=`ip route | grep eth0 | grep default | awk '{print $3}'` || true
+    #ETH_DEF_ROUTE=`ip route | grep eth0 | grep default | awk '{print $3}'` || true
+    ETH_DEF_ROUTE=`cat /var/lib/dhcp/dhclient.eth0.leases | grep 'option routers' | head -n1 | awk  '{print $3}' | sed 's/.$//'` || true
     # check if we got gateway OK
     if [ -z "$ETH_DEF_ROUTE" ]; then
       echo "Eth0 cannot get def gw" | tee $LOG_FILE 
