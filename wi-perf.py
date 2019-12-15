@@ -62,26 +62,35 @@ def read_config(debug):
     ### Get general config params
     gen_sect = config['General']
     # WLAN interface name
-    config_vars['wlan_if'] = gen_sect.get('wlan_if')
+    config_vars['wlan_if'] = gen_sect.get('wlan_if', 'wlan0')
     # Interface name to send mgt traffic over (default wlan0)
     config_vars['mgt_if'] = gen_sect.get('mgt_if', 'wlan0')
     # Get platform architecture
-    config_vars['platform'] = gen_sect.get('platform')
+    config_vars['platform'] = gen_sect.get('platform', 'wlanpi')
     # format of output data (csv/json)
-    config_vars['data_format'] = gen_sect.get('data_format')
+    config_vars['data_format'] = gen_sect.get('data_format', 'json')
     # directory where data dumped
     config_vars['data_dir'] = gen_sect.get('data_dir')
     # data transport
-    config_vars['data_transport'] = gen_sect.get('data_transport')
+    config_vars['data_transport'] = gen_sect.get('data_transport', 'hec')
     # host where to send logs
     config_vars['data_host'] = gen_sect.get('data_host')
     # host port
-    config_vars['data_port'] = gen_sect.get('data_port')
+    config_vars['data_port'] = gen_sect.get('data_port', '8088')
     # Splunk HEC token
     config_vars['splunk_token'] = gen_sect.get('splunk_token')
     
-    config_vars['test_interval'] = gen_sect.get('test_interval', 5)
-    config_vars['test_offset'] = gen_sect.get('test_offset', 0)
+    config_vars['test_interval'] = gen_sect.get('test_interval', '5')
+    config_vars['test_offset'] = gen_sect.get('test_offset', '0')
+
+    # do some basic checks that mandatory fields are present
+    for field in ['data_host', 'splunk_token']:
+
+        if config_vars[field] == '':
+            err_msg = "No value in config.ini for field value: {} - exiting...".format(field)
+            file_logger.error(err_msg)
+            print(err_msg)
+            sys.exit()
       
     if debug:    
         print("Platform = {}".format(config_vars.get('General', 'platform')))
