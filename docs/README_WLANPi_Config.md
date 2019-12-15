@@ -2,13 +2,13 @@
 
 This instruction paper assumes you are running Wiperf on a WLANPi on an image verison of v1.8.5 or later (which has Wiperf installed and avaiable as part of the image.)
 
-The Wiperf probe is activate via the front panel menu system (FPMS) of the WLANPi. But, before flipping in to the Wiperf mode, a few configuration steps need to be completed:
+The Wiperf probe is activated via the front panel menu system (FPMS) of the WLANPi. But, before flipping in to the Wiperf mode, a few configuration steps need to be completed:
 
 # Configuration File (config.ini)
 
-The operation of Wiperf is configured using the file '/home/wanpi/wiperf/conig.ini' This needs to be edited prior to entering Wiperf mode.
+The operation of Wiperf is configured using the file `'/home/wanpi/wiperf/config.ini'` This needs to be edited prior to entering Wiperf mode.
 
-Prior to the first use of Wiperf, the config.ini file does not exist in the requried WLANPi directory. However, a default template config file (config.default.ini) is supplied that can be used to create the config.ini file. Here is the suggested wokflow:
+Prior to the first use of Wiperf, the config.ini file does not exist in the requried WLANPi directory. However, a default template config file (`config.default.ini`) is supplied that can be used to create the `config.ini` file. Here is the suggested wokflow:
 
 Connect to the WLANPi, create a copy of the config template file and edit the newly created config (as the wlanpi user):
 
@@ -32,26 +32,28 @@ Edit the following file with the configuration and credentials that will be used
 Once the required edits have been made to configure Wiperf mode, flip the WLANPi in to Wiperf mode using the following FPMS options:
 
 ```
-        /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py
-```
-
-If no errors are observed when running it then check the following files to double-check for errors & verify that data is generated (as indicated in the ):
-```    
         Actions > Wiperf > Confirm
 ```
+
+If no errors are observed on the FPMS during flip-over, following files to double-check for errors & verify that test data is generated (as indicated in the log messages):
+```    
+    cat /home/wlanpi/wiperf/logs/agent.log
+    cat /home/wlanpi/wiperf/wiperf.log 
+```
+Note that by default the tests are run every 5 mins unless the interval has been changed in the `config.ini` file. Wait at least this interval before determining that there is an issue - the test cycle will not begin immdediately upon entering Wiperf mode.
 
 Check your instance of Splunk and verify that data is being received.
 
 # Updating
 
-To get the latest updates from the GitHub repo, use the following commands when logged in as the wlanpi user:
+To get the latest updates from the GitHub repo (whe available), use the following commands when logged in as the wlanpi user:
 
 ```
         cd ~/wiperf
         git pull https://github.com/wifinigel/wiperf.git
 ```
 
-(note that this will update config.default.ini but not config.ini, or remember to re-edit it after a pull if the format changes)
+(note that this will update config.default.ini but not config.ini, so remember to re-edit it after a pull if the config file format changes)
 
 # Troubleshooting:
 
@@ -66,6 +68,7 @@ If things seem to be going wrong, try the following:
 - SSH to the device & tail the log files in real-time, wtaching for errors and dumps of test results being performed: tail -f /home/wlanpi/wiperf/logs/agent.log
 - Try disabling tests & see if one specific test is causing an issue
 - Make sure all pre-reqs have definitely been fulfilled
+- Flip bac to classic mode and re-check the edits made to the config.ini & wpa_supplicant files
 
 # Known Issue:
 

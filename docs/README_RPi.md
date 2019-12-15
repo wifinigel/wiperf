@@ -1,4 +1,4 @@
-# Wiperf
+# Wiperf - Raspberry Pi (RPI)
 
 Wi-Fi performance probe for RPi & WLANPi
 
