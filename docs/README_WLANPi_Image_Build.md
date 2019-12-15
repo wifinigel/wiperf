@@ -1,4 +1,4 @@
-# Wiperf - Image Build Instructions
+# Wiperf - Image Build Instructions for the WLANPi
 
 Wi-Fi performance probe for RPi & WLANPi
 
