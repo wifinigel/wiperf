@@ -1,0 +1,143 @@
+<dashboard>
+  <label>WLANPi (default) Overview - 24 Hours</label>
+  <row>
+    <panel>
+      <chart>
+        <title>Speedtest</title>
+        <search>
+          <query>host=wlanpi source="wiperf-speedtest-splunk"| timechart avg(download_rate_mbps) as "Avg Download" avg(upload_rate_mbps) as "Avg Upload" by host</query>
+          <earliest>-24h@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleY.text">Mbps</option>
+        <option name="charting.axisY.minimumNumber">0</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="charting.legend.placement">top</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>Wireless Connection</title>
+        <search>
+          <query>host=wlanpi source="wiperf-speedtest-splunk"| timechart avg(phy_rate_mbps) as "PHY Rate" avg(signal_level_dbm) as "Signal Level (dBm)"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.axisY.maximumNumber">-20</option>
+        <option name="charting.axisY.minimumNumber">-85</option>
+        <option name="charting.axisY2.enabled">1</option>
+        <option name="charting.axisY2.minimumNumber">20</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.overlayFields">"PHY Rate"</option>
+        <option name="charting.drilldown">none</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>DNS Lookup Time (mS)</title>
+        <search>
+          <query>host=wlanpi source="wiperf-dns-splunk" dns_target=*| timechart avg(lookup_time_ms) by dns_target</query>
+          <earliest>-24h@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>DHCP Renewal</title>
+        <search>
+          <query>host=wlanpi source="wiperf-dhcp-splunk"| timechart avg(renewal_time_ms) as "DHCP Renewal (mS)"</query>
+          <earliest>-24h@m</earliest>
+          <latest>now</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisY.minimumNumber">0</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="charting.legend.placement">top</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>TCP iPerf Rate</title>
+        <search>
+          <query>host=wlanpi source="wiperf-iperf3-tcp-splunk"| timechart avg(sent_mbps) as "Avg Sent Mbps" avg(received_mbps) as "Avg Rec Mbps"</query>
+          <earliest>-24h@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisY.minimumNumber">0</option>
+        <option name="charting.axisY2.enabled">1</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.overlayFields">"Avg Rec Mbps"</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="charting.legend.placement">top</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>RTT Avg Times</title>
+        <search>
+          <query>host=wlanpi source="wiperf-ping-splunk" ping_host=*| timechart avg(rtt_avg_ms) by ping_host</query>
+          <earliest>-24h@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>UDP iPerf (Speed)</title>
+        <search>
+          <query>host=wlanpi source="wiperf-iperf3-udp-splunk"| timechart avg(mbps) as "Avg Mbps"</query>
+          <earliest>-24h@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.axisY.abbreviation">none</option>
+        <option name="charting.axisY.minimumNumber">0</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>iPerf UDP (Jitter/Loss)</title>
+        <search>
+          <query>host=wlanpi source="wiperf-iperf3-udp-splunk"| timechart avg(lost_percent) as "% Loss" avg(jitter_ms) as "Jitter (mS)"</query>
+          <earliest>-24h@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.axisY2.enabled">1</option>
+        <option name="charting.axisY2.minimumNumber">0</option>
+        <option name="charting.chart">area</option>
+        <option name="charting.chart.overlayFields">"% Loss"</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+</dashboard>
