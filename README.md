@@ -10,6 +10,7 @@ The documentation for Wiperf is currently under developement. Please check back 
 
 - [WLANPi Image Build Guide][wlanpi_build]
 - [WLANPi initial config & test guide][wlanpi_config]
+- [Splunk build guide][splunk_build]
 
 
 ## RPI Docs
@@ -20,3 +21,4 @@ The documentation for Wiperf is currently under developement. Please check back 
 [rpi_readme]: docs/README_RPi.md
 [wlanpi_build]: docs/README_WLANPi_Image_Build.md
 [wlanpi_config]: docs/README_WLANPi_Config.md
+[splunk_build]: https://docs.google.com/document/d/1zr0A75eKOU1VhLC5PwrSsfZL9CEeCgvoFip06T8DTy4/edit?usp=sharing
