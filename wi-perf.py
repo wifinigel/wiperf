@@ -31,6 +31,7 @@ log_file = os.path.dirname(os.path.realpath(__file__)) + "/logs/agent.log"
 lock_file = '/tmp/wiperf.lock'
 mode_active = os.path.dirname(os.path.realpath(__file__)) + "/wiperf_mode.on"
 status_file = '/tmp/wiperf_status.txt'
+watchdog_file = '/tmp/wiperf.watchdog'
 
 # Enable debugs or create some dummy data for testing
 DEBUG = 0
@@ -290,6 +291,7 @@ def check_route_to_dest(ip_address, file_logger):
         file_logger.error("Issue looking up route (route cmd syntax?): {} (command used: )".format(ex, ip_route_cmd))
         return ''
 
+# write current status msg to file in /tmp for display on FPMS
 def write_status_file(text="", status_file=status_file, file_logger=file_logger):
 
     if text=='':
@@ -311,6 +313,67 @@ def write_status_file(text="", status_file=status_file, file_logger=file_logger)
     time.sleep(1)
     return True
 
+###################################################
+# Watchdog
+###################################################
+def write_watchdog_count(watchdog_count, watchdog_file=watchdog_file, file_logger=file_logger):
+
+    try :
+        with open(watchdog_file, 'w') as watchf:
+            watchf.write(str(watchdog_count))
+        return True
+    except Exception as ex:
+        file_logger.error("Issue writing watchdog file: {}.".format(ex))
+
+    return False
+
+def get_watchdog_count(watchdog_file=watchdog_file, file_logger=file_logger):
+
+    if os.path.exists(watchdog_file):
+        try :
+            with open(watchdog_file, 'r') as watchf:
+                watchdog_count = watchf.read()
+                return int(watchdog_count)
+        except Exception as ex:
+            file_logger.error("Issue reading watchdog file: {}.".format(ex))
+
+    return False
+
+# create watchdog file if doesn't exist 
+def create_watchdog(watchdog_file=watchdog_file, file_logger=file_logger):
+
+    if not os.path.exists(watchdog_file):
+        try :
+            with open(watchdog_file, 'w') as watchf:
+                watchf.write(str('0'))
+            return True
+        except Exception as ex:
+            file_logger.error("Issue creating watchdog file: {}.".format(ex))
+    
+    return False
+
+# increment watchdog counter due to issue
+def inc_watchdog_count(watchdog_file=watchdog_file, file_logger=file_logger):
+
+    watchdog_count = get_watchdog_count(watchdog_file, file_logger=file_logger)
+    watchdog_count += 1
+    write_watchdog_count(watchdog_count, watchdog_file, file_logger=file_logger)
+
+    return True
+
+# decrement watchdog counter as test cycle successful
+def dec_watchdog_count(watchdog_file=watchdog_file, file_logger=file_logger):
+
+    watchdog_count = get_watchdog_count(watchdog_file, file_logger=file_logger)
+
+    # already zero? Do nothing & return
+    if watchdog_count == 0:
+        return True
+    
+    watchdog_count -= 1
+    write_watchdog_count(watchdog_count, watchdog_file, file_logger=file_logger)
+
+    return True
     
 ###############################################################################
 # Main
@@ -327,6 +390,16 @@ def main():
 
     global file_logger
 
+    # create watchdog if doesn't exist
+    create_watchdog()
+
+    # check watchdog count...if higher than 5, time for a reboot
+    watchdog_count = get_watchdog_count()
+    if watchdog_count > 3:
+        file_logger.error("Watchdog count exceeded...rebooting")
+        reboot_output = subprocess.check_output('/sbin/reboot', stderr=subprocess.STDOUT, shell=True).decode()
+        file_logger.error("Reboot output: {}".format(reboot_output))
+
     ###################################
     # Check if script already running
     ###################################
@@ -334,6 +407,7 @@ def main():
             # read lock file contents & check how old timestamp is..
             file_logger.error("Existing lock file found...")
             lock_timestamp = read_lock_file(lock_file, file_logger)
+            inc_watchdog_count()
 
             # if timestamp older than 10 mins, break lock by
             # creating a new file
@@ -359,15 +433,18 @@ def main():
     # if we have no network connection (i.e. no bssid), no point in proceeding...
     if adapter.get_wireless_info() == False:
         file_logger.error("Unable to get wireless info due to failure with ifconfig command")
+        inc_watchdog_count()
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
         
     if adapter.get_bssid() == 'NA':
         file_logger.error("Problem with wireless connection: not associated to network")
+        inc_watchdog_count()
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
     
     # if we have no IP address, no point in proceeding...
     if adapter.get_adapter_ip() == False:
         file_logger.error("Unable to get wireless adapter IP info")
+        inc_watchdog_count()
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
     
     # TODO: Fix this. Currently breaks when we have Eh & Wireless ports both up
@@ -379,6 +456,7 @@ def main():
     
     if adapter.get_ipaddr() == 'NA':
         file_logger.error("Problem with wireless connection: no valid IP address")
+        inc_watchdog_count()
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
     
     # final connectivity check: see if we can resolve an address 
@@ -387,6 +465,7 @@ def main():
         gethostbyname('bbc.co.uk')
     except Exception as ex:
         file_logger.error("DNS seems to be failing, bouncing wireless interface. Err msg: {}".format(ex))
+        inc_watchdog_count()
         bounce_error_exit(adapter, file_logger,  DEBUG) # exit here
 
     #############################
@@ -735,6 +814,10 @@ def main():
     file_logger.info("Removing lock file.")
     write_status_file("")
     delete_lock_file(lock_file, file_logger)
+
+    # decrement watchdog as we ran OK
+    dec_watchdog_count()
+    
 
 ###############################################################################
 # End main
