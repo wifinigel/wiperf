@@ -58,6 +58,7 @@ class Pinger(object):
             ping_output = (subprocess.check_output(["/bin/ping", "-q", "-c " \
             + str(count), host])).decode().splitlines()
         except Exception as error:
+            self.file_logger.error("Hit an error with ping: {}".format(error))
             if self.debug:
                 print("Hit an error with ping: ")
                 print(error)
