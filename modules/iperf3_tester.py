@@ -20,8 +20,10 @@ def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
     if debug:
         file_logger.debug("TCP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}".format(server_hostname, port, protocol, duration))
 
-    result = iperf_client.run()
-    # del iperf_client
+    try:
+        result = iperf_client.run()
+    except Exception as ex:
+        file_logger.error("iperf TCP test error: {}".format(ex))
 
     return result
 
@@ -43,7 +45,9 @@ def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
     if debug:
         file_logger.debug("UDP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}, bandwidth: {}".format(server_hostname, port, protocol, duration, bandwidth))
 
-    result = iperf_client.run()
-    # del iperf_client
+    try:
+        result = iperf_client.run()
+    except Exception as ex:
+        file_logger.error("iperf UDP test error: {}".format(ex))
 
     return result
