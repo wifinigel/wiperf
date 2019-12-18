@@ -24,6 +24,7 @@ def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
         result = iperf_client.run()
     except Exception as ex:
         file_logger.error("iperf TCP test error: {}".format(ex))
+        return False
 
     return result
 
@@ -49,5 +50,6 @@ def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
         result = iperf_client.run()
     except Exception as ex:
         file_logger.error("iperf UDP test error: {}".format(ex))
+        return False
 
     return result
