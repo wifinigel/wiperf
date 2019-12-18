@@ -54,9 +54,9 @@ class DhcpTester(object):
 
             # only do this is running active test
             if self.debug:
-                print("Releasing dhcp address...")
+                print("Releasing dhcp address on {}...".format(self.interface))
 
-            self.file_logger.info("Releasing dhcp address...")
+            self.file_logger.info("Releasing dhcp address on {}...".format(self.interface))
             try:
                 release_output = subprocess.check_output("sudo /sbin/dhclient -r -v {} 2>&1".format(self.interface), shell=True).decode()
                 # TODO: pattern search of: "DHCPRELEASE of 192.168.1.89 on wlan0"
@@ -64,7 +64,7 @@ class DhcpTester(object):
                 if self.debug:
                     print("Address released.")
             except Exception as ex:
-                self.file_logger.error("Issue releasing IP address: {}".format(ex))
+                self.file_logger.error("Issue releasing IP on interface: {}, issue {}".format(self.interface, ex))
                 if self.debug:
                     print("Issue releasing IP address: {}".format(ex))
                 # If release fails, bounce interface to recover - script will exit
@@ -76,7 +76,7 @@ class DhcpTester(object):
         if self.debug:
             print("Renewing dhcp address...(mode = {})".format(mode))
 
-        self.file_logger.info("Renewing dhcp address...(mode = {})".format(mode))
+        self.file_logger.info("Renewing dhcp address...(mode = {}, interface= {})".format(mode, self.interface))
         try:
             start = time.time()
             subprocess.check_output("sudo /sbin/dhclient -v {} 2>&1".format(self.interface), shell=True).decode()
