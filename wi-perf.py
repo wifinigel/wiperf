@@ -199,7 +199,7 @@ def send_results_to_json(data_file, dict_data, file_logger, debug, delete_data_f
 
 def send_results_to_hec(host, token, port, dict_data, file_logger, source, debug=False):
 
-    file_logger.info("Sending event to HEC: {}".format(source))
+    file_logger.info("Sending event to HEC: {} (dest host: {}, dest port: {})".format(source, host, port))
     HecLogger(host, token, port, dict_data, source, file_logger, debug)
 
 def send_results(results_dict, column_headers, data_file, test_name, file_logger, debug, delete_data_file=False):
@@ -289,7 +289,7 @@ def check_route_to_dest(ip_address, file_logger):
             return False
         
 
-    ip_route_cmd = "/bin/ip route show to match " + ip_address + " | head -n 1 | awk '{print $NF}'"
+    ip_route_cmd = "/bin/ip route show to match " + ip_address + " | head -n 1 | awk '{print $5}'"
 
     try :
         interface_name = subprocess.check_output(ip_route_cmd, shell=True).decode()
