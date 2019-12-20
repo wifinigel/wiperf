@@ -455,7 +455,7 @@ def main():
         inc_watchdog_count()
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
     
-    # TODO: Fix this. Currently breaks when we have Eh & Wireless ports both up
+    # TODO: Fix this. Currently breaks when we have Eth & Wireless ports both up
     '''
     if adapter.get_route_info() == False:
         file_logger.error("Unable to get wireless adapter route info - maybe you have multiple interfaces enabled that are stopping the wlan interface being used?")
@@ -476,9 +476,31 @@ def main():
         inc_watchdog_count()
         bounce_error_exit(adapter, file_logger,  DEBUG) # exit here
 
-    #############################
+    #############################################
     # Run speedtest (if enabled)
-    #############################
+    # (If not enabled, dump adapter info anyway)
+    #############################################
+    # hold all results in one place
+    results_dict = {}
+
+    # define column headers
+    column_headers = ['time', 'server_name', 'ping_time', 'download_rate_mbps', 'upload_rate_mbps', 'ssid', 'bssid', 'freq_ghz', 'phy_rate_mbps', 'signal_level_dbm', 'tx_retries', 'ip_address']
+    
+    results_dict['ssid'] = str(adapter.get_ssid())
+    results_dict['bssid'] = str(adapter.get_bssid())
+    results_dict['freq_ghz'] = str(adapter.get_freq())
+    results_dict['phy_rate_mbps'] = float(adapter.get_bit_rate())
+    results_dict['signal_level_dbm'] = int(adapter.get_signal_level())
+    results_dict['tx_retries'] = int(adapter.get_tx_retries())
+    results_dict['ip_address'] = str(adapter.get_ipaddr())      
+    results_dict['time'] = int(time.time())
+
+    # Pre-populate speedtest results vars
+    results_dict['ping_time'] = None
+    results_dict['download_rate_mbps'] = None
+    results_dict['upload_rate_mbps'] = None
+    results_dict['server_name'] = None
+
     if config_vars['speedtest_enabled'] == 'yes':
 
         file_logger.info("Starting speedtest...")
@@ -493,39 +515,22 @@ def main():
                 print("Main: Speedtest results:")
                 print(speedtest_results)
             
-            # hold all results in one place
-            results_dict = {}
-
-            # define column headers
-            column_headers = ['time', 'server_name', 'ping_time', 'download_rate_mbps', 'upload_rate_mbps', 'ssid', 'bssid', 'freq_ghz', 'phy_rate_mbps', 'signal_level_dbm', 'tx_retries', 'ip_address']
-            
             # speedtest results
             results_dict['ping_time'] = int(speedtest_results['ping_time'])
             results_dict['download_rate_mbps'] = float(speedtest_results['download_rate'])
             results_dict['upload_rate_mbps'] = float(speedtest_results['upload_rate'])
-            results_dict['server_name'] = str(speedtest_results['server_name'])
-            
-            results_dict['ssid'] = str(adapter.get_ssid())
-            results_dict['bssid'] = str(adapter.get_bssid())
-            results_dict['freq_ghz'] = str(adapter.get_freq())
-            results_dict['phy_rate_mbps'] = float(adapter.get_bit_rate())
-            results_dict['signal_level_dbm'] = int(adapter.get_signal_level())
-            results_dict['tx_retries'] = int(adapter.get_tx_retries())
-            results_dict['ip_address'] = str(adapter.get_ipaddr())
-            
-            results_dict['time'] = int(time.time())
-
-            # dump the results 
-            data_file = config_vars['speedtest_data_file']
-            test_name = "Speedtest"
-            send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
+            results_dict['server_name'] = str(speedtest_results['server_name'])  
 
             file_logger.info("Speedtest ended.")
         else:
             file_logger.error("Unable to run Speedtest as route to Internet not via wireless interface.")
-
     else:
-        file_logger.info("Speedtest not enabled in config file, bypassing this test...")
+        file_logger.info("Speedtest not enabled in config file, just dumping adapter info instead...")
+
+    # dump the results 
+    data_file = config_vars['speedtest_data_file']
+    test_name = "Speedtest"
+    send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG)
     
     #############################
     # Run ping test (if enabled)
