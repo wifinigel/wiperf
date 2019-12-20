@@ -58,7 +58,8 @@ class DhcpTester(object):
 
             self.file_logger.info("Releasing dhcp address on {}...".format(self.interface))
             try:
-                release_output = subprocess.check_output("sudo /sbin/dhclient -r -v {} 2>&1".format(self.interface), shell=True).decode()
+                # also includes zombie process tidy-up
+                release_output = subprocess.check_output("sudo /sbin/dhclient -r -v {} -pf /tmp/dhclient.pid 2>&1 && sudo kill $(cat /tmp/dhclient.pid) 2> /dev/null".format(self.interface), shell=True).decode()
                 # TODO: pattern search of: "DHCPRELEASE of 192.168.1.89 on wlan0"
                 self.file_logger.info("Address released.")
                 if self.debug:
@@ -78,8 +79,9 @@ class DhcpTester(object):
 
         self.file_logger.info("Renewing dhcp address...(mode = {}, interface= {})".format(mode, self.interface))
         try:
+            # includes zombie process cleanup
             start = time.time()
-            subprocess.check_output("sudo /sbin/dhclient -v {} 2>&1".format(self.interface), shell=True).decode()
+            subprocess.check_output("sudo /sbin/dhclient -v {} -pf /tmp/dhclient.pid 2>&1 && sudo kill $(cat /tmp/dhclient.pid) 2> /dev/null".format(self.interface), shell=True).decode()
             end = time.time()
             # TODO: pattern search for "bound to 192.168.1.89"
             self.file_logger.info("Address renewed.")
