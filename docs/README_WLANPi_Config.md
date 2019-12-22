@@ -39,7 +39,7 @@ server_hostname: 192.168.0.14
 server_hostname: 192.168.0.14
 ```
 
-For a full description of the configuration file parameters, please review the following page: TBA
+For a full description of the configuration file parameters, please review the following page: [config.ini reference guide](README_Config.ini.md)
 
 # Wireless Client Configuration (wpa_supplicant.conf)
 
