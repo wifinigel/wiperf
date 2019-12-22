@@ -2,19 +2,19 @@
 
 ## Background
 
-The config.ini file controls the operation of the Wiperf utility. It has many options available for maximm flexiblity, but some may need some clarification.
+The config.ini file controls the operation of the Wiperf utility. It has many options available for maximum flexiblity, but some may need some clarification.
 
-Many options will be fine using the defaults that are supplied with the installed package. However some will definitely require configuration as they are IP addresses and port numbers which will vary in each instance where Wiperf is used.
+Many options will be fine using the defaults that are supplied with the installed package. However, some will definitely require configuration as they may require values such as IP addresses and port numbers which will vary in each instance where Wiperf is used.
 
 The config.ini file is located in the directory : /home/wlanpi/wiperf
 
-The fiile is organised in a number of sections that relate to different areas of operation. Each section begins with a name enclosed is square brackets, like this:
+The file is organised in a number of sections that relate to different areas of operation. Each section begins with a name enclosed is square brackets, like this:
 
 ```
 [Speedtest]
 ```
 
-Within each section are a number of configurble parameters that are in the format:
+Within each section are a number of configurable parameters that are in the format:
 
 ```
 parameter: value
@@ -28,7 +28,7 @@ You may also see some lines that begin with a semi-colon. These are comments and
 
 We'll take a look at each section of the config file and provide some guidance on suitable parameter values:
 
-## General Section
+## [General] Section
 
 Note: any changes to this section on the WLANPi should only be made when it is running in classic mode (not while in Wiperf mode).
 
@@ -43,19 +43,19 @@ wlan_if: wlan0
 
 ### mgt_if
 
-When performance tests have been completed, the result data needs to be sent to a reporting server. This parameter configures the interface over which management traffic needs to be sent. 
+When performance tests have been completed, the results data needs to be sent to a Splunk reporting server. This parameter configures the interface over which this management traffic needs to be sent. 
 
-Getting ths parameter correct for your environment is very important to ensure that the test result data makes it back to your Splunk server.
+Getting ths parameter correct for your environment is very important to ensure that test results data makes it back to your Splunk server.
 
 The available options are:
 
 - wlan0 (the first available WLAN port - usually a USB dongle plugged in to the WLANPi)
 - eth0 (the internal Ethernet port of the WLANPi)
-- zt  (Zerotier (the virtual network service) is installed and used to connect back to the Splunk server)
+- zt  (Zerotier (the virtual network service) is installed and used to connect to the Splunk server)
 
 The WANPi is configured to assign a higher cost default route to eth0 by default so that all traffic (tests & test results) will choose the default route provided by wlan0. If eth0 is used as the path to return test results to the Splunk server, then a static route is injected in to the WLANPi route table on start-up to ensure correct routing.
 
-If this parameter is not correctly set, then results data may not make it bac to the Splunk server.
+If this parameter is not correctly set, then results data may not make it back to the Splunk server.
 
 Default setting:
 ```
@@ -76,7 +76,7 @@ platform: wlanpi
 
 ### data host
 
-This is the hostname or IP address of the Splunk platform where test result data is sent to. If the hostname is used, it must be resolvable by the WANPi
+This is the hostname or IP address of the Splunk platform where test result data is sent to. If the hostname of the Splunk server is used, it must be resolvable by the WLANPi
 
 Default setting (none):
 ```
