@@ -1,6 +1,6 @@
 # Wiperf - Configuration on the WLANPi
 
-This instruction paper assumes you are running Wiperf on a WLANPi on an image verison of v1.8.5 or later (which has Wiperf installed and available as part of the image.)
+This instruction paper assumes you are running Wiperf on a WLANPi on an image verison of v1.9 or later (which has Wiperf installed and available as part of the image.)
 
 The Wiperf probe is activated via the front panel menu system (FPMS) of the WLANPi. But, before flipping in to the Wiperf mode, a few configuration steps need to be completed:
 
@@ -18,7 +18,32 @@ Connect to the WLANPi, create a copy of the config template file and edit the ne
         nano ./config.ini
 ```
 
-When the WLANPi is flipped in to Wiperf mode, it will need to join the SSID under test and run the configured tests. We need to provide a configuration (that is only used in Wiperf mode) to allow the WLANPi to join a WLAN.
+By default the configuration fie is set to run all tests. However, there is a minimum configuration that must be applied for Wiperf mode to run out-of-the-box. Here are the minimum configuration parameters you need to configure (just to get you going...):
+
+```
+[General]
+; interface name over which mgt traffic is sent (i.e. how we get to Splunk) - options: wlan0, eth0, zt
+mgt_if: wlan0
+
+; Splunk host IP/name
+data_host: 192.168.0.99
+
+; Splunk token to access Splunk server created by Splunk (example token: 84adb9ca-071c-48ad-8aa1-b1903c60310d)
+splunk_token: 84adb9ca-071c-48ad-8aa1-b1903c60310d
+
+[Iperf3_tcp_test]
+; IP address of iperf3 server
+server_hostname: 192.168.0.14
+
+; IP address of iperf3 server
+server_hostname: 192.168.0.14
+```
+
+For a full description of the configuration file parameters, please review the following page: TBA
+
+# Wireless Client Configuration (wpa_supplicant.conf)
+
+When the WLANPi is flipped in to Wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in Wiperf mode) to allow the WLANPi to join a WLAN.
 
 Edit the following file with the configuration and credentials that will be used by the WLANPi to join the SSID under test once it is switched in to Wiperf mode (make edits logged in as the wlanpi user):
 
