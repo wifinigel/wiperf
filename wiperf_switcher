@@ -54,45 +54,49 @@ fi
 #
 ###############################################################################
 wiperf_on () {
-  #echo "Enabling wiperf..."
+  echo "Enabling wiperf..." | tee $LOG_FILE
 
   # Check if wlan0 available before we start changing things 
   WLAN_IF=`ip a | grep wlan0` || true
   if  [ -z "$WLAN_IF" ]; then
-    echo "No WLAN Interface" | tee $LOG_FILE 
+    echo "No WLAN Interface" | tee -a $LOG_FILE 
     exit 0
   fi
+  echo "WLAN Interface ${WLAN_IF} is available" >> $LOG_FILE
 
   # get test interval
   TEST_INTERVAL=`cat /home/wlanpi/wiperf/config.ini | grep test_interval | awk -F'[:][[:space:]]*' '{print $2}'` || true
   if  [ -z "TEST_INTERVAL" ]; then
-    echo "No test interval in config" | tee $LOG_FILE 
+    echo "No test interval in config" | tee -a $LOG_FILE 
     exit 0
   fi
 
   # get test offset value
   TEST_OFFSET=`cat /home/wlanpi/wiperf/config.ini | grep test_offset | awk -F'[:][[:space:]]*' '{print $2}'` || true
   if  [ -z "TEST_OFFSET" ]; then
-    echo "No test offset in config" | tee $LOG_FILE 
+    echo "No test offset in config" | tee -a $LOG_FILE 
     exit 0
   fi
+  echo "Test offset from config file: ${TEST_OFFSET}" >> $LOG_FILE
 
 
   # figure out the interface we send mgt traffic over
   MGT_IF=`cat /home/wlanpi/wiperf/config.ini | grep mgt_if | awk -F'[:][[:space:]]*' '{print $2}'` || true
   # check if we have a mgt interface
   if [ -z "$MGT_IF" ]; then
-    echo "No mgt interface config" | tee $LOG_FILE 
+    echo "No mgt interface config" | tee -a $LOG_FILE 
     exit 0
   fi
+  echo "Mgt interface from config file: ${MGT_IF}" >> $LOG_FILE
 
   # figure out the Splunk IP
   SPLUNK_IP=`cat /home/wlanpi/wiperf/config.ini | grep data_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
   # check if we have a Splunk IP
   if [ -z "$SPLUNK_IP" ]; then
-    echo "No Splunk IP config" | tee $LOG_FILE 
+    echo "No Splunk IP config" | tee -a $LOG_FILE 
     exit 0
   fi
+  echo "Splunk server IP from config file: ${SPLUNK_IP}" >> $LOG_FILE
 
   # If we're using Splunk via eth0, set up static route
   if [ "$MGT_IF" == "eth0" ]; then
@@ -101,23 +105,26 @@ wiperf_on () {
     # is eth0 up...fail if not
     ETH_STATUS=`ip a | grep eth0 | grep 'state UP'` || true
     if  [ -z "$ETH_STATUS" ]; then
-      echo "eth0 is down..." | tee $LOG_FILE 
+      echo "eth0 is down..." | tee -a $LOG_FILE 
       exit 0
     fi
+    echo "Ethernet status: ${ETH_STATUS}" >> $LOG_FILE
 
     # get def gw of eth0
     #ETH_DEF_ROUTE=`ip route | grep eth0 | grep default | awk '{print $3}'` || true
     ETH_DEF_ROUTE=`cat /var/lib/dhcp/dhclient.eth0.leases | grep 'option routers' | head -n1 | awk  '{print $3}' | sed 's/.$//'` || true
     # check if we got gateway OK
     if [ -z "$ETH_DEF_ROUTE" ]; then
-      echo "Eth0 cannot get def gw" | tee $LOG_FILE 
+      echo "Eth0 cannot get def gw" | tee -a $LOG_FILE 
       exit 0
-    fi  
+    fi
+    echo "Ethernet default route: ${ETH_DEF_ROUTE}" >> $LOG_FILE
 
     # add static route to end of interfaces file
     STATIC_CMD="post-up ip route add $SPLUNK_IP via $ETH_DEF_ROUTE dev eth0 "
     echo -e "\n" >> /home/wlanpi/wiperf/conf/etc/network/interfaces
     echo $STATIC_CMD >> /home/wlanpi/wiperf/conf/etc/network/interfaces
+    echo "Static route command: ${STATIC_CMD}" >> $LOG_FILE
 
   fi
 
@@ -126,9 +133,10 @@ wiperf_on () {
   (crontab -u wlanpi -l; echo "$line" ) | crontab -u wlanpi -
   LAST_RESULT=$?
   if [ $LAST_RESULT -ne 0 ]; then
-    echo "Cron add failed" | tee $LOG_FILE 
+    echo "Cron add failed" | tee -a $LOG_FILE 
     exit 0
   fi
+  echo "Cron command added: ${line}" >> $LOG_FILE
 
   # Harden eth0 & wlan0 by adding fw rules - allow only ssh in on eth0 & wlan0
   ufw insert 1 allow in on eth0 to any port ssh
@@ -153,7 +161,7 @@ wiperf_on () {
 
   touch $STATUS_FILE
 
-  echo "WLANPi will now reboot"
+  echo "WLANPi will now reboot" | tee -a $LOG_FILE
   sleep 1
   reboot
 }
