@@ -296,7 +296,7 @@ def check_route_to_dest(ip_address, file_logger):
         file_logger.info("Checked interface route to : {}. Result: {}".format(ip_address, interface_name))
         return interface_name.strip()
     except Exception as ex:
-        file_logger.error("Issue looking up route (route cmd syntax?): {} (command used: )".format(ex, ip_route_cmd))
+        file_logger.error("Issue looking up route (route cmd syntax?): {} (command used: {})".format(ex, ip_route_cmd))
         return ''
 
 # write current status msg to file in /tmp for display on FPMS
@@ -475,7 +475,19 @@ def main():
         file_logger.error("DNS seems to be failing, bouncing wireless interface. Err msg: {}".format(ex))
         inc_watchdog_count()
         bounce_error_exit(adapter, file_logger,  DEBUG) # exit here
+    
+    # if we are using hec, make sure we can access the hec network port, otherwise we are wasting our time
+    if config_vars['data_transport'] == 'hec':
+        file_logger.info("Checking port connection to server {}, port: {}".format(config_vars['data_host'], config_vars['data_port']))
 
+        try:
+            portcheck_output = subprocess.check_output('/bin/nc -zvw10 {} {}'.format(config_vars['data_host'], config_vars['data_port']), stderr=subprocess.STDOUT, shell=True).decode()
+            file_logger.info("Port connection to server {}, port: {} checked OK.".format(config_vars['data_host'], config_vars['data_port']))
+        except Exception as ex:
+            file_logger.error("Port check to server failed. Err msg: {} (Exiting...)".format(ex))
+            inc_watchdog_count()
+            sys.exit()
+    
     #############################################
     # Run speedtest (if enabled)
     # (If not enabled, dump adapter info anyway)
@@ -509,19 +521,23 @@ def main():
         # check test to Intenet will go via wlan interface
         if check_route_to_dest('8.8.8.8', file_logger) == config_vars['wlan_if']:
 
+            # speedtest returns false if there are any issues
             speedtest_results = ooklaspeedtest(file_logger)
+            if not speedtest_results == False:
             
-            if DEBUG:
-                print("Main: Speedtest results:")
-                print(speedtest_results)
-            
-            # speedtest results
-            results_dict['ping_time'] = int(speedtest_results['ping_time'])
-            results_dict['download_rate_mbps'] = float(speedtest_results['download_rate'])
-            results_dict['upload_rate_mbps'] = float(speedtest_results['upload_rate'])
-            results_dict['server_name'] = str(speedtest_results['server_name'])  
+                if DEBUG:
+                    print("Main: Speedtest results:")
+                    print(speedtest_results)
+                
+                # speedtest results
+                results_dict['ping_time'] = int(speedtest_results['ping_time'])
+                results_dict['download_rate_mbps'] = float(speedtest_results['download_rate'])
+                results_dict['upload_rate_mbps'] = float(speedtest_results['upload_rate'])
+                results_dict['server_name'] = str(speedtest_results['server_name'])  
 
-            file_logger.info("Speedtest ended.")
+                file_logger.info("Speedtest ended.")
+            else:
+                file_logger.error("Error running speedtest - check logs for info.")
         else:
             file_logger.error("Unable to run Speedtest as route to Internet not via wireless interface.")
     else:
@@ -641,21 +657,23 @@ def main():
             # run iperf test
             result = tcp_iperf_client_test(file_logger, server_hostname, duration=duration, port=port, debug=False)
 
-            if result.error == None:
+            if not result == False:
 
                 results_dict = {}
                 
                 column_headers = ['time', 'sent_mbps', 'received_mbps', 'sent_bytes', 'received_bytes', 'retransmits']
 
                 results_dict['time'] = int(time.time())
-                results_dict['sent_mbps'] =  round(result.sent_Mbps, 1)
-                results_dict['received_mbps']   =  round(result.received_Mbps, 1)
-                results_dict['sent_bytes'] =  result.sent_bytes
-                results_dict['received_bytes'] =  result.received_bytes
-                results_dict['retransmits'] =  result.retransmits
+                results_dict['sent_mbps'] =  round(result['sent_mbps'], 1)
+                results_dict['received_mbps']   =  round(result['received_mbps'], 1)
+                results_dict['sent_bytes'] =  result['sent_bytes']
+                results_dict['received_bytes'] =  result['received_bytes']
+                results_dict['retransmits'] =  result['retransmits']
 
                 # drop abbreviated results in log file
-                file_logger.info("Iperf3 tcp results - rx_mbps: {}, tx_bps: {}, retransmits: {}".format(results_dict['received_mbps'], results_dict['sent_mbps'], results_dict['retransmits']))
+                file_logger.info("Iperf3 tcp results - rx_mbps: {}, tx_mbps: {}, retransmits: {}, sent_bytes: {}, rec_bytes: {}".format(
+                    results_dict['received_mbps'], results_dict['sent_mbps'], results_dict['retransmits'], results_dict['sent_bytes'], 
+                    results_dict['received_bytes']))
 
                 # dump the results
                 data_file = config_vars['iperf3_tcp_data_file']
@@ -665,7 +683,7 @@ def main():
                 file_logger.info("Iperf3 tcp test ended.")
 
             else:
-                file_logger.error("Error with iperf3 tcp test: {}".format(result.error))
+                file_logger.error("Error with iperf3 tcp test, check logs")
         
         else:
             file_logger.error("Unable to run iperf test to {} as route to destination not over wireless interface...bypassing test".format(server_hostname))
@@ -690,27 +708,29 @@ def main():
 
             result = udp_iperf_client_test(file_logger, server_hostname, duration=duration, port=port, bandwidth=bandwidth, debug=False)
 
-            if result.error == None:
+            if not result == False:
 
                 results_dict = {}
                 
                 column_headers = ['time', 'bytes', 'mbps', 'jitter_ms', 'packets', 'lost_packets', 'lost_percent']
 
                 results_dict['time'] = int(time.time())
-                results_dict['bytes'] =  result.bytes
-                results_dict['mbps']   =  round(result.Mbps, 1)
-                results_dict['jitter_ms'] =  round(result.jitter_ms, 1)
-                results_dict['packets'] =  result.packets
-                results_dict['lost_packets'] =  result.lost_packets
-                results_dict['lost_percent'] =  round(result.lost_percent, 1)
+                results_dict['bytes'] =  result['bytes']
+                results_dict['mbps']   =  round(result['mbps'], 1)
+                results_dict['jitter_ms'] =  round(result['jitter_ms'], 1)
+                results_dict['packets'] =  result['packets']
+                results_dict['lost_packets'] =  result['lost_packets']
+                results_dict['lost_percent'] =  round(result['lost_percent'], 1)
 
                 # workaround for crazy jitter figures sometimes seen
                 if results_dict['jitter_ms'] > 2000:
                     file_logger.error("Received very high jitter value({}), set to none".format(results_dict['jitter_ms']))
                     results_dict['jitter_ms'] = None
                     
-                # drop abbreviated results in log file
-                file_logger.info("Iperf3 udp results - mbps: {}, packets: {}, lost_packets: {}, lost_percent: {}".format(results_dict['mbps'], results_dict['packets'], results_dict['lost_packets'], results_dict['lost_percent']))
+                # drop results in log file
+                file_logger.info("Iperf3 udp results - mbps: {}, packets: {}, lost_packets: {}, lost_percent: {}, jitter: {}, bytes: {}".format(
+                    results_dict['mbps'], results_dict['packets'], results_dict['lost_packets'], results_dict['lost_percent'],
+                    results_dict['jitter_ms'], results_dict['bytes']))
 
                 # dump the results
                 data_file = config_vars['iperf3_udp_data_file']
@@ -720,7 +740,7 @@ def main():
                 file_logger.info("Iperf3 udp test ended.")
 
             else:
-                file_logger.error("Error with iperf3 udp test: {}".format(result.error))
+                file_logger.error("Error with iperf3 udp test, check logs")
 
         else:
             file_logger.error("Unable to run iperf test to {} as route to destination not over wireless interface...bypassing test".format(server_hostname))
