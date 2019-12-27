@@ -28,6 +28,9 @@ You may also see some lines that begin with a semi-colon. These are comments and
 
 We'll take a look at each section of the config file and provide some guidance on suitable parameter values:
 
+- [[General] Section]([general]-section)
+    - [wlan_if](wlan_if)
+
 ## [General] Section
 
 Note: any changes to this section on the WLANPi should only be made when it is running in classic mode (not while in Wiperf mode).
