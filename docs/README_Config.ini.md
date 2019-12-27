@@ -76,22 +76,40 @@ platform: wlanpi
 
 ### data host
 
-This is the hostname or IP address of the Splunk platform where test result data is sent to. If the hostname of the Splunk server is used, it must be resolvable by the WLANPi
+This is the hostname or IP address of the Splunk platform where test result data is sent to. If the hostname of the Splunk server is used,it must be resolvable by the WLANPi. 
+
+(Note: If using Zerotier, make sure this is the address of the IP assigned to your Splunk server in the Zerotier dashboard for your network)
 
 Default setting (none):
 ```
 data_host: 
 ```
 
+### data_port
+
+The network port used to send updates to the Splunk server. By default this is 8088, but this may be changed within the Splunk application if an alternative port is required for your environment
+
+Default setting:
+```
+data_port: 8088
+```
+
+### splunk_token
+
+Splunk will only receive HEC updates from devices that are authorised to send it data. Splunk uses tokens to decide if an update is from a valid device. To view available (or create) tokens within Splunk, view the menu option: "Settings > Data > Data Inputs > HTTP Event Collector"
+
+Here is example token: 84adb9ca-071c-48ad-8aa1-b1903c60310d
+
+Default setting (none):
+```
+splunk_token: 
+```
+
+
+
 ##########################################################
 ...edit in progress - nothing below here is complete yet.
 ##########################################################
-
-; Splunk event collector port (8088 by default)
-data_port: 8088
-
-; Splunk token to access Splunk server created by Splunk (example token: 84adb9ca-071c-48ad-8aa1-b1903c60310d)
-splunk_token: 
 
 ; test interval (mins) - how often we want to run the tests (5 is the recommended minimum)
 test_interval: 5
