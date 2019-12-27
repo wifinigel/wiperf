@@ -55,7 +55,7 @@ def ooklaspeedtest(file_logger, DUMMY_DATA=False, DEBUG=False):
             st = speedtest.Speedtest()
         except Exception as error:
             file_logger.error("Speedtest error: {}".format(error))
-            sys.exit()
+            return False
 
         st.get_best_server()
         
@@ -66,7 +66,7 @@ def ooklaspeedtest(file_logger, DUMMY_DATA=False, DEBUG=False):
                 print("Download rate = " + str(download_rate) + " Mbps")
         except Exception as error:
             file_logger.error("Download test error: {}".format(error))
-            sys.exit()
+            return False
         
         try:
             upload_rate = '%.2f' % (st.upload(pre_allocate=False)/1024000)
@@ -74,7 +74,7 @@ def ooklaspeedtest(file_logger, DUMMY_DATA=False, DEBUG=False):
                 print("Upload rate = " + str(upload_rate) + " Mbps")
         except Exception as error:
             file_logger.error("Upload test error: {}".format(error))
-            sys.exit()
+            return False
 
         results_dict = st.results.dict()
         ping_time = int(results_dict['ping'])
