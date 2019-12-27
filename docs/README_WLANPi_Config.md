@@ -93,6 +93,7 @@ If things seem to be going wrong, try the following:
 - SSH to the device & tail the log files in real-time, wtaching for errors and dumps of test results being performed:`tail -f /home/wlanpi/wiperf/logs/agent.log`
 - Try disabling tests & see if one specific test is causing an issue
 - Make sure all pre-reqs have definitely been fulfilled
+- Make sure your WLANPi and Splunk servers are NTP sync'ed
 - Flip back to classic mode and re-check the edits made to the `config.ini` & `wpa_supplicant.conf` files
 
 # Known Issue:
