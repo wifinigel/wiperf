@@ -28,13 +28,14 @@ You may also see some lines that begin with a semi-colon. These are comments and
 
 We'll take a look at each section of the config file and provide some guidance on suitable parameter values:
 
-- [General Section](#[general]-section)
+- [General Section](#general-section)
     - [wlan_if](#wlan_if)
     - [mgt_if](#mgt_if)
     - [platform](#platform)
     - [data_host](#data_host)
     - [data_port](#data-port)
     - [splunk_token](#splunk_token)
+    - [test_interval](#test_interval)
 
 ## [General] Section
 
@@ -113,14 +114,20 @@ Default setting (none):
 splunk_token: 
 ```
 
+### test_interval
 
+(WLANPi only) This is the interval (in minutes) at which we would like to run the performance tests. The recommened minimum is 5, which is also the default.
+
+(Note: if this setting is too low, scheduled tests may try to run before the previous test sequence has completed, which could cause gaps in your data)
+
+Default setting:
+```
+test_interval: 5
+```
 
 ##########################################################
 ...edit in progress - nothing below here is complete yet.
 ##########################################################
-
-; test interval (mins) - how often we want to run the tests (5 is the recommended minimum)
-test_interval: 5
 
 ; test offset from top of hour (must be less than test interval) - 0 = top of hour, 1 = 1 min after top of hour etc.
 test_offset: 0
