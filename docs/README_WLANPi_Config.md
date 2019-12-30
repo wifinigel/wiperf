@@ -8,7 +8,7 @@ The Wiperf probe is activated via the front panel menu system (FPMS) of the WLAN
 
 The operation of Wiperf is configured using the file `'/home/wanpi/wiperf/config.ini'` This needs to be edited prior to entering Wiperf mode.
 
-Prior to the first use of Wiperf, the config.ini file does not exist in the requered WLANPi directory. However, a default template config file (`config.default.ini`) is supplied that can be used to create the `config.ini` file. Here is the suggested wokflow:
+Prior to the first use of Wiperf, the config.ini file does not exist in the required WLANPi directory. However, a default template config file (`config.default.ini`) is supplied that can be used to create the `config.ini` file. Here is the suggested workflow:
 
 Connect to the WLANPi, create a copy of the config template file and edit the newly created config (as the wlanpi user):
 
@@ -18,7 +18,7 @@ Connect to the WLANPi, create a copy of the config template file and edit the ne
         nano ./config.ini
 ```
 
-By default the configuration fie is set to run all tests. However, there is a minimum configuration that must be applied for Wiperf mode to run out-of-the-box. Here are the minimum configuration parameters you need to configure (just to get you going...):
+By default, the configuration file is set to run all tests. However, there is a minimum configuration that must be applied for Wiperf mode to run out-of-the-box. Here are the minimum configuration parameters you need to configure (just to get you going...):
 
 ```
 [General]
@@ -39,7 +39,7 @@ server_hostname: 192.168.0.14
 server_hostname: 192.168.0.14
 ```
 
-For a full description of the configuration file parameters, please review the following page: [config.ini reference guide](README_Config.ini.md)
+For a full description of the configuration file parameters, please review the following page: [config.ini reference guide](README_Config.ini.md). The Splunk token is obtained from your Splunk server (see [Splunk build guide][splunk_build]). 
 
 # Wireless Client Configuration (wpa_supplicant.conf)
 
@@ -87,10 +87,10 @@ If things seem to be going wrong, try the following:
 - Connect to the WLANPi using the USB OTG connection to check log files: 
     - `cat /home/wlanpi/wiperf/logs/agent.log`
     - `cat /home/wlanpi/wiperf/wiperf.log`
+- SSH to the device & tail the agent log file in real-time, watching for errors and dumps of test results being performed:`tail -f /home/wlanpi/wiperf/logs/agent.log`
 - Flip back in to classic mode and activate Wiperf mode from the CLI of the WLANPi, watching for errors:
     - `cd /home/wlanpi/wiperf`
     - `sudo ./wiperf_switcher`
-- SSH to the device & tail the log files in real-time, wtaching for errors and dumps of test results being performed:`tail -f /home/wlanpi/wiperf/logs/agent.log`
 - Try disabling tests & see if one specific test is causing an issue
 - Make sure all pre-reqs have definitely been fulfilled
 - Make sure your WLANPi and Splunk servers are NTP sync'ed
@@ -99,4 +99,9 @@ If things seem to be going wrong, try the following:
 # Known Issue:
 
 There seems to be an issue with the Comfast CF-912 adapter when using it with the WLANPi and associating as a client to SSIDs that use 80MHz width channels. If you hit an issue where the WLANPi seems to lock up or does not boot correctly, try a different adapter or a network that does not use 8Mhz channels.
-  
+
+<!-- link list -->
+[wlanpi_build]: docs/README_WLANPi_Image_Build.md
+[wlanpi_config]: docs/README_WLANPi_Config.md
+[config_ini]: docs/README_Config.ini.md
+[splunk_build]: https://github.com/wifinigel/wiperf/raw/master/docs/WLANPi%20Wiperf%20Probe%20-%20Splunk%20Build.pdf
