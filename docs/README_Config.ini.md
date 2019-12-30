@@ -102,6 +102,7 @@ Default setting (none):
 ```
 data_host: 
 ```
+[top](#paraneter-reference-guide)
 
 ### data_port
 
@@ -111,6 +112,7 @@ Default setting:
 ```
 data_port: 8088
 ```
+[top](#paraneter-reference-guide)
 
 ### splunk_token
 
@@ -122,6 +124,7 @@ Default setting (none):
 ```
 splunk_token: 
 ```
+[top](#paraneter-reference-guide)
 
 ### test_interval
 
@@ -133,6 +136,7 @@ Default setting:
 ```
 test_interval: 5
 ```
+[top](#paraneter-reference-guide)
 
 ### test_offset
 
@@ -144,6 +148,7 @@ Default setting:
 ```
 test_offset: 0
 ```
+[top](#paraneter-reference-guide)
 
 ### data_format
 (Not currently operational) Wiperf has the capability to output data in a number of formats. The current options are: csv or json
@@ -154,6 +159,7 @@ Default setting:
 ```
 data_format: json
 ```
+[top](#paraneter-reference-guide)
 
 ### data_dir
 
@@ -163,6 +169,7 @@ Default setting:
 ```
 data_dir: /home/wlanpi/wiperf/data
 ```
+[top](#paraneter-reference-guide)
 
 ### data_transport
 
@@ -174,6 +181,7 @@ Default setting:
 ```
 data_transport: hec
 ```
+[top](#paraneter-reference-guide)
 
 ## [Speedtest] Section
 ##########################################################
