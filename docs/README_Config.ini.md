@@ -25,6 +25,7 @@ You may also see some lines that begin with a semi-colon. These are comments and
 ```
 ; wlan interface name set this as per the output of an iwconfig command (usually wlan0)
 ```
+## Paraneter Reference Guide
 
 We'll take a look at each section of the config file and provide some guidance on suitable parameter values:
 
@@ -54,6 +55,7 @@ Default setting:
 ```
 wlan_if: wlan0
 ```
+[top](#paraneter-reference-guide)
 
 ### mgt_if
 
@@ -75,6 +77,7 @@ Default setting:
 ```
 mgt_if: wlan0
 ```
+[top](#paraneter-reference-guide)
 
 ### platform
 
@@ -87,6 +90,7 @@ Default setting:
 ```
 platform: wlanpi
 ```
+[top](#paraneter-reference-guide)
 
 ### data host
 
