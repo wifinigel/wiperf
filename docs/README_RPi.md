@@ -26,6 +26,11 @@ Install required python3 modules
 ```
         sudo pip3 install iperf3 speedtest-cli configparser
         sudo pip3 install git+git://github.com/georgestarcher/Splunk-Class-httpevent.git
+
+        # I've had the Splunk-Class-httpevent install fail a couple of times, you can 
+        # try this as a workaround if you hit a similar issue, but this is a bit of a kludge:
+        
+        sudo wget -P /usr/local/lib/python3.7/dist-packages/ https://raw.githubusercontent.com/georgestarcher/Splunk-Class-httpevent/master/splunk_http_event_collector.py)
 ```
 
 ### User Account
