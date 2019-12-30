@@ -8,10 +8,10 @@ The documentation for Wiperf is currently under developement. Please check back 
 
 ## WLANPi Docs
 
-- [WLANPi Image Build Guide][wlanpi_build]
 - [WLANPi initial config & test guide][wlanpi_config]
 - [config.ini reference guide][config_ini]
 - [Splunk build guide][splunk_build]
+- [WLANPi Image Build Guide for Wiperf (image devs only)][wlanpi_build]
 
 
 ## RPI Docs
