@@ -36,6 +36,11 @@ We'll take a look at each section of the config file and provide some guidance o
     - [data_port](#data-port)
     - [splunk_token](#splunk_token)
     - [test_interval](#test_interval)
+    - [test_offset](#test_offset)
+    - [data_format](#data_format)
+    - [data_dir](#data_dir)
+    - [date_transport](#data_transport)
+- [Speetest Section](#speedtest-section)
 
 ## [General] Section
 
@@ -125,23 +130,52 @@ Default setting:
 test_interval: 5
 ```
 
+### test_offset
+
+(WLANPi only) By default test run at the interval specified by the ```test_interval``` parameter, which is referenced to the to of the hours (e.g. 5 mins interval will run at 5, 10, 15, 20, 25...etc. mins past the hour). If multiple proes are running, it mau be useful to stagger their start times. By setting ```test_offset``` to a value of one, this will offset all test start times by 1 minutes (i.e. 6,11,16,21,26...etc. mins past the hour)
+
+The default value is zero which means that the default 5,10,15,20... run pattern will be used.
+
+Default setting:
+```
+test_offset: 0
+```
+
+### data_format
+(Not currently operational) Wiperf has the capability to output data in a number of formats. The current options are: csv or json
+
+However this field is not currently used, as selecting the 'hec' transport mode (the only supported transport currently) over-rides this field. The value in this filed is currently irrelevant, but it s recommended to leave it at the default setting of ```json```
+
+Default setting:
+```
+data_format: json
+```
+
+### data_dir
+
+This is the directory on the WLANPi/RPi where test result data is dumped. __Do not change this value from the default__. This field is provided for future configuration options if required.
+
+Default setting:
+```
+data_dir: /home/wlanpi/wiperf/data
+```
+
+### data_transport
+
+The currently supported data transport mode is ```hec```. This is the HTTP Event Collector supported natively within the Splunk server. Other transport modes will be suported in the future, but currently this should be left at the default setting of ```hec``.
+
+(Note: the transport method ```forwarder``` is also a valid transport method which provides support for very early versions of this code which used the Splunk Univeral Forwarder. Use of this method is deprecated and will be removed in the near future. Anyone still using the UF should move to using hec ASAP)
+
+Default setting:
+```
+data_transport: hec
+```
+
+## [Speedtest] Section
 ##########################################################
 ...edit in progress - nothing below here is complete yet.
 ##########################################################
 
-; test offset from top of hour (must be less than test interval) - 0 = top of hour, 1 = 1 min after top of hour etc.
-test_offset: 0
-;
-; ------------- Advanced settings for General section, do not change ----------------
-; output data format: valid values: csv or json (not required for hec mode)
-data_format: json
-
-; data dump location
-data_dir: /home/wlanpi/wiperf/data
-
-; Transport methods for data (options: hec, forwarder (Splunk universal forwarder))
-data_transport: hec
-;------------------------------------------------------------------------------------
 
 ; ====================================================================
 ;  Speedtest test settings
