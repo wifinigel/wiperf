@@ -42,6 +42,17 @@ We'll take a look at each section of the config file and provide some guidance o
     - [data_dir](#data_dir)
     - [date_transport](#data_transport)
 - [Speetest Section](#speedtest-section)
+    - [enabled](#enabled)
+    - [speedtest_data_file](#speedtest_data_file)
+- [Ping_Test](#ping_test)
+    - [enabled](#enabled)
+    - [ping_host1](#ping_host1)
+    - [ping_host2](#ping_host2)
+    - [ping_host3](#ping_host3)
+    - [ping_host4](#ping_host4)
+    - [ping_host5](#ping_host5)
+    - [ping_count](#ping_count)
+    - [ping_data_file](#ping_data_file)
 
 ## [General] Section
 
@@ -184,56 +195,112 @@ data_transport: hec
 [top](#paraneter-reference-guide)
 
 ## [Speedtest] Section
+
+### enabled
+
+Options: yes or no. If set to no, entire section is ignored and no Speedtest is run. When enabled, a speedtest to the Ookla speedtest service is run each test cycle.
+
+Default setting:
+```
+enabled: yes
+```
+[top](#paraneter-reference-guide)
+
+### speedtest_data_file
+
+(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for Speedtests in Splunk 
+
+Default setting:
+```
+speedtest_data_file: wiperf-speedtest-splunk
+```
+[top](#paraneter-reference-guide)
+
+## [Ping_Test] Section
+
+### enabled
+
+Options: yes or no. If set to no, entire section is ignored and no ping tests are run. When enabled, up to 5 entries will be targetted with an ICMP ping and the RRT times recorded
+
+Default setting:
+```
+enabled: yes
+```
+[top](#paraneter-reference-guide)
+
+### ping_host1
+
+IP address or hostname of first ping target. No target details = no test run
+
+Default setting:
+```
+ping_host1: bbc.co.uk
+```
+[top](#paraneter-reference-guide)
+
+### ping_host2
+
+IP address or hostname of second ping target. No target details = no test run
+
+Default setting:
+```
+ping_host2: cisco.com
+```
+[top](#paraneter-reference-guide)
+
+### ping_host3
+
+IP address or hostname of third ping target. No target details = no test run
+
+Default setting:
+```
+ping_host3: google.com
+```
+[top](#paraneter-reference-guide)
+
+### ping_host4
+
+IP address or hostname of fourth ping target. No target details = no test run
+
+Default setting:
+```
+ping_host4:
+```
+[top](#paraneter-reference-guide)
+
+### ping_host5
+
+IP address or hostname of fifth ping target. No target details = no test run
+
+Default setting:
+```
+ping_host2: 
+```
+[top](#paraneter-reference-guide)
+
+### ping_count
+
+The number of pings to send for each ping target
+
+Default setting:
+```
+ping_count: 10
+```
+[top](#paraneter-reference-guide)
+
+### ping_data_file
+
+(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for ping tests in Splunk 
+
+Default setting:
+```
+ping_data_file: wiperf-ping-splunk
+```
+[top](#paraneter-reference-guide)
+
 ##########################################################
 ...edit in progress - nothing below here is complete yet.
 ##########################################################
-
-
-; ====================================================================
-;  Speedtest test settings
-;  (Changes made in this section will be used in next test cycle
-;   and may be made while in Wiperf mode on the WLANPi)
-; ====================================================================
-[Speedtest]
-; yes = enabled, no = disabled
-enabled: yes
-; 
-; ------------- Advanced settings for Speedtest section, do not change --------------
-; Location of speedtest file for Splunk forwarder to read (do not add file extension)
-speedtest_data_file: wiperf-speedtest-splunk
-;------------------------------------------------------------------------------------
-
-; ====================================================================
-;  Ping tests settings
-;  (Changes made in this section will be used in next test cycle
-;   and may be made while in Wiperf mode on the WLANPi)
-; ====================================================================
-[Ping_Test]
-; yes = enabled, no = disabled
-enabled: yes
-
-; first host we'd like to ping
-ping_host1: bbc.co.uk
-
-; first host we'd like to ping
-ping_host2: cisco.com
-
-; third host we'd like to ping
-ping_host3: google.com
-
-; fourth host we'd like to ping
-ping_host4:
-
-; fifth host we'd like to ping
-ping_host5:
-
-; number of pings to send
-ping_count: 10
-;
-; ------------ Advanced settings for Ping tests section, do not change --------------
-; location of ping test file for Splunk forwarder to read (do not add file extension)
-ping_data_file: wiperf-ping-splunk
-;------------------------------------------------------------------------------------
 
 
 ; ====================================================================
