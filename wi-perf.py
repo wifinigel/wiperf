@@ -405,8 +405,11 @@ def main():
     watchdog_count = get_watchdog_count()
     if watchdog_count > 3:
         file_logger.error("Watchdog count exceeded...rebooting")
-        reboot_output = subprocess.check_output('/sbin/reboot', stderr=subprocess.STDOUT, shell=True).decode()
-        file_logger.error("Reboot output: {}".format(reboot_output))
+        try:
+            reboot_output = subprocess.check_output('sudo /sbin/reboot', stderr=subprocess.STDOUT, shell=True).decode()
+            file_logger.error("Reboot output: {}".format(reboot_output))
+        except Exception as ex:
+            file_logger.error("Reboot command had issue: {}.".format(ex))
 
     ###################################
     # Check if script already running
