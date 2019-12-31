@@ -44,8 +44,8 @@ We'll take a look at each section of the config file and provide some guidance o
 - [Speetest Section](#speedtest-section)
     - [enabled](#enabled)
     - [speedtest_data_file](#speedtest_data_file)
-- [Ping_Test](#ping_test)
-    - [enabled](#enabled)
+- [Ping_Test Section](#ping_test-section)
+    - [enabled](#enabled-1)
     - [ping_host1](#ping_host1)
     - [ping_host2](#ping_host2)
     - [ping_host3](#ping_host3)
@@ -53,6 +53,19 @@ We'll take a look at each section of the config file and provide some guidance o
     - [ping_host5](#ping_host5)
     - [ping_count](#ping_count)
     - [ping_data_file](#ping_data_file)
+- [Iperf3_tcp_test Section](#iperf3_tcp_test-section)
+    - [enabled](#enabled-2)
+    - [server_hostname](#server_hostname)
+    - [port](#port)
+    - [duration](#duration)
+    - [iperf3_tcp_data_file](#iperf3_tcp_data_file)
+- [Iperf3_udp_test Section](#iperf3_udp_test-section)
+    - [enabled](#enabled-3)
+    - [server_hostname](#server_hostname-1)
+    - [port](#port-1)
+    - [duration](#duration-1)
+    - [bandwidth](#bandwidth)
+    - [iperf3_udp_data_file](#iperf3_udp_data_file)
 
 ## [General] Section
 
@@ -298,60 +311,124 @@ ping_data_file: wiperf-ping-splunk
 ```
 [top](#paraneter-reference-guide)
 
+## [Iperf3_tcp_test] Section
+
+### enabled
+
+Options: yes or no. If set to no, entire section is ignored and no tcp iperf3 test is run. When enabled, a tcp iperf3 test will be run to the iperf3 server defined in ```server_hostname``` to the ```port``` network port for the ```duration``` period (in secs) 
+
+Default setting:
+```
+enabled: yes
+```
+[top](#paraneter-reference-guide)
+
+### server_hostname
+
+The IP address or (resolvable) name of the server running the iperf3 service.
+
+Default setting:
+```
+server_hostname: 192.168.0.14
+```
+[top](#paraneter-reference-guide)
+
+### port
+
+The network port on the server running iperf3 where the iperf3 service is available (5201 by default).
+
+Default setting:
+```
+port: 5201
+```
+[top](#paraneter-reference-guide)
+
+### duration
+
+The duration (in seconds) that the iperf3 test will be run for
+
+Default setting:
+```
+duration: 20
+```
+[top](#paraneter-reference-guide)
+
+### iperf3_tcp_data_file
+
+(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for tcp iperf3 tests in Splunk 
+
+Default setting:
+```
+iperf3_tcp_data_file: wiperf-iperf3-tcp-splunk
+```
+[top](#paraneter-reference-guide)
+
+## [Iperf3_udp_test] Section
+
+### enabled
+
+Options: yes or no. If set to no, entire section is ignored and no udp iperf3 test is run. When enabled, a udp iperf3 test will be run to the iperf3 server defined in ```server_hostname``` to the ```port``` network port for the ```duration``` period (in secs), attempting to achieve a data transfer rate of ```bandwidth``` bps. 
+
+Default setting:
+```
+enabled: yes
+```
+[top](#paraneter-reference-guide)
+
+### server_hostname
+
+The IP address or (resolvable) name of the server running the iperf3 service.
+
+Default setting:
+```
+server_hostname: 192.168.0.14
+```
+[top](#paraneter-reference-guide)
+
+### port
+
+The network port on the server running iperf3 where the iperf3 service is available (5201 by default).
+
+Default setting:
+```
+port: 5201
+```
+[top](#paraneter-reference-guide)
+
+### duration
+
+The duration (in seconds) that the iperf3 test will be run for
+
+Default setting:
+```
+duration: 20
+```
+[top](#paraneter-reference-guide)
+
+### bandwidth
+
+The data rate that will be attempted for the UDP iperf3 test in bps
+
+Default setting:
+```
+bandwidth: 20000000
+```
+[top](#paraneter-reference-guide)
+
+### iperf3_udp_data_file
+
+(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for tcp iperf3 tests in Splunk 
+
+Default setting:
+```
+iperf3_tcp_data_file: wiperf-iperf3-tcp-splunk
+```
+[top](#paraneter-reference-guide)
+
 ##########################################################
 ...edit in progress - nothing below here is complete yet.
 ##########################################################
 
-
-; ====================================================================
-;  TCP iperf3 tests settings
-;  (Changes made in this section will be used in next test cycle
-;   and may be made while in Wiperf mode on the WLANPi)
-; ====================================================================
-[Iperf3_tcp_test]
-; yes = enabled, no = disabled
-enabled: yes
-
-; IP address of iperf3 server
-server_hostname: 192.168.0.14
-
-; iperf server port
-port: 5201
-
-; test duration in secs
-duration: 20
-;
-; --------- Advanced settings for TCP iperf3 tests section, do not change -----------
-; location of iperf3 tcp file for Splunk forwarder to read (do not add file extension)
-iperf3_tcp_data_file: wiperf-iperf3-tcp-splunk
-;------------------------------------------------------------------------------------
-
-
-; ====================================================================
-;  UDP iperf3 tests settings
-;  (Changes made in this section will be used in next test cycle
-;   and may be made while in Wiperf mode on the WLANPi)
-; ====================================================================
-[Iperf3_udp_test]
-; yes = enabled, no = disabled
-enabled: yes
-
-; IP address of iperf3 server
-server_hostname: 192.168.0.14
-
-; iperf server port
-port: 5201
-
-; test duration in secs
-duration: 20
-
-; bandwidth in bps
-bandwidth: 20000000
-;
-; --------- Advanced settings for UDP iperf3 tests section, do not change -----------
-; location of iperf3 udp file for Splunk forwarder to read (do not add file extension)
-iperf3_udp_data_file: wiperf-iperf3-udp-splunk
-;------------------------------------------------------------------------------------
 
 
 ; ====================================================================
