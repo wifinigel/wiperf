@@ -25,7 +25,7 @@ You may also see some lines that begin with a semi-colon. These are comments and
 ```
 ; wlan interface name set this as per the output of an iwconfig command (usually wlan0)
 ```
-## Paraneter Reference Guide
+## Parameter Reference Guide
 
 We'll take a look at each section of the config file and provide some guidance on suitable parameter values:
 
@@ -66,6 +66,14 @@ We'll take a look at each section of the config file and provide some guidance o
     - [duration](#duration-1)
     - [bandwidth](#bandwidth)
     - [iperf3_udp_data_file](#iperf3_udp_data_file)
+- [DNS_test Section](#dns_test-section)
+    - [enabled](#enabled-4)
+    - [dns_target1](#dns_target1)
+    - [dns_target2](#dns_target2)
+    - [dns_target3](#dns_target3)
+    - [dns_target4](#dns_target4)
+    - [dns_target5](#dns_target5)
+    - [dns_data_file](#dns_data_file)
 
 ## [General] Section
 
@@ -79,7 +87,7 @@ Default setting:
 ```
 wlan_if: wlan0
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### mgt_if
 
@@ -101,7 +109,7 @@ Default setting:
 ```
 mgt_if: wlan0
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### platform
 
@@ -114,7 +122,7 @@ Default setting:
 ```
 platform: wlanpi
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### data host
 
@@ -126,7 +134,7 @@ Default setting (none):
 ```
 data_host: 
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### data_port
 
@@ -136,7 +144,7 @@ Default setting:
 ```
 data_port: 8088
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### splunk_token
 
@@ -148,7 +156,7 @@ Default setting (none):
 ```
 splunk_token: 
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### test_interval
 
@@ -160,7 +168,7 @@ Default setting:
 ```
 test_interval: 5
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### test_offset
 
@@ -172,7 +180,7 @@ Default setting:
 ```
 test_offset: 0
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### data_format
 (Not currently operational) Wiperf has the capability to output data in a number of formats. The current options are: csv or json
@@ -183,7 +191,7 @@ Default setting:
 ```
 data_format: json
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### data_dir
 
@@ -193,7 +201,7 @@ Default setting:
 ```
 data_dir: /home/wlanpi/wiperf/data
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### data_transport
 
@@ -205,9 +213,11 @@ Default setting:
 ```
 data_transport: hec
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ## [Speedtest] Section
+
+(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
 
 ### enabled
 
@@ -217,7 +227,7 @@ Default setting:
 ```
 enabled: yes
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### speedtest_data_file
 
@@ -227,9 +237,11 @@ Default setting:
 ```
 speedtest_data_file: wiperf-speedtest-splunk
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ## [Ping_Test] Section
+
+(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
 
 ### enabled
 
@@ -239,7 +251,7 @@ Default setting:
 ```
 enabled: yes
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### ping_host1
 
@@ -249,7 +261,7 @@ Default setting:
 ```
 ping_host1: bbc.co.uk
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### ping_host2
 
@@ -259,7 +271,7 @@ Default setting:
 ```
 ping_host2: cisco.com
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### ping_host3
 
@@ -269,7 +281,7 @@ Default setting:
 ```
 ping_host3: google.com
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### ping_host4
 
@@ -279,7 +291,7 @@ Default setting:
 ```
 ping_host4:
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### ping_host5
 
@@ -289,7 +301,7 @@ Default setting:
 ```
 ping_host2: 
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### ping_count
 
@@ -299,7 +311,7 @@ Default setting:
 ```
 ping_count: 10
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### ping_data_file
 
@@ -309,9 +321,11 @@ Default setting:
 ```
 ping_data_file: wiperf-ping-splunk
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ## [Iperf3_tcp_test] Section
+
+(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
 
 ### enabled
 
@@ -321,7 +335,7 @@ Default setting:
 ```
 enabled: yes
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### server_hostname
 
@@ -331,7 +345,7 @@ Default setting:
 ```
 server_hostname: 192.168.0.14
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### port
 
@@ -341,7 +355,7 @@ Default setting:
 ```
 port: 5201
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### duration
 
@@ -351,7 +365,7 @@ Default setting:
 ```
 duration: 20
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### iperf3_tcp_data_file
 
@@ -361,9 +375,11 @@ Default setting:
 ```
 iperf3_tcp_data_file: wiperf-iperf3-tcp-splunk
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ## [Iperf3_udp_test] Section
+
+(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
 
 ### enabled
 
@@ -373,7 +389,7 @@ Default setting:
 ```
 enabled: yes
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### server_hostname
 
@@ -383,7 +399,7 @@ Default setting:
 ```
 server_hostname: 192.168.0.14
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### port
 
@@ -393,7 +409,7 @@ Default setting:
 ```
 port: 5201
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### duration
 
@@ -403,7 +419,7 @@ Default setting:
 ```
 duration: 20
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### bandwidth
 
@@ -413,52 +429,96 @@ Default setting:
 ```
 bandwidth: 20000000
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
 
 ### iperf3_udp_data_file
 
-(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for tcp iperf3 tests in Splunk 
+(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for udp iperf3 tests in Splunk 
 
 Default setting:
 ```
-iperf3_tcp_data_file: wiperf-iperf3-tcp-splunk
+iperf3_udp_data_file: wiperf-iperf3-udp-splunk
 ```
-[top](#paraneter-reference-guide)
+[top](#parameter-reference-guide)
+
+## [DNS_test] Section
+
+(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
+
+### enabled
+
+Options: yes or no. If set to no, entire section is ignored and no DNS tests are run. When enabled, DNS tests are run for each of the ```dns_target``` paramters defined in this section. Any targets that have no value entered will be ignored.
+
+Default setting:
+```
+enabled: yes
+```
+[top](#parameter-reference-guide)
+
+### dns_target1
+
+Hostname of first DNS target. No target details = no test run
+
+Default setting:
+```
+dns_target1: bbc.co.uk
+```
+[top](#parameter-reference-guide)
+
+### dns_target2
+
+Hostname of second DNS target. No target details = no test run
+
+Default setting:
+```
+dns_target2: cisco.com
+```
+[top](#parameter-reference-guide)
+
+### dns_target3
+
+Hostname of third DNS target. No target details = no test run
+
+Default setting:
+```
+dns_target3: google.com
+```
+[top](#parameter-reference-guide)
+
+### dns_target4
+
+Hostname of fourth DNS target. No target details = no test run
+
+Default setting:
+```
+dns_target4: 
+```
+[top](#parameter-reference-guide)
+
+### dns_target5
+
+Hostname of fifth DNS target. No target details = no test run
+
+Default setting:
+```
+dns_target5: 
+```
+[top](#parameter-reference-guide)
+
+### dns_data_file
+
+(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for DNS tests in Splunk 
+
+Default setting:
+```
+dns_data_file: wiperf-dns-splunk
+```
+[top](#parameter-reference-guide)
 
 ##########################################################
 ...edit in progress - nothing below here is complete yet.
 ##########################################################
 
-
-
-; ====================================================================
-;  DNS tests settings
-;  (Changes made in this section will be used in next test cycle
-;   and may be made while in Wiperf mode on the WLANPi)
-; ====================================================================
-[DNS_test]
-; yes = enabled, no = disabled
-enabled: yes
-
-; First DNS target
-dns_target1: bbc.co.uk
-
-; Second DNS target
-dns_target2: cisco.com
-
-; Third DNS target
-dns_target3: google.com
-
-; Fourth DNS target
-dns_target4:
-
-; Fifth DNS target
-dns_target5:
-;
-; -------------- Advanced settings for DNS tests section, do not change ----------------
-; location of DNS results file for Splunk forwarder to read (do not add file extension)
-dns_data_file: wiperf-dns-splunk
-;---------------------------------------------------------------------------------------
 
 ; ====================================================================
 ;  DHCP tests settings
