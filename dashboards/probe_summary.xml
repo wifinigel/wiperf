@@ -51,6 +51,7 @@
           <earliest>-4h@h</earliest>
           <latest>now</latest>
         </search>
+        <option name="charting.axisTitleX.text">Time</option>
         <option name="charting.axisY.maximumNumber">-20</option>
         <option name="charting.axisY.minimumNumber">-85</option>
         <option name="charting.axisY2.enabled">1</option>
@@ -71,6 +72,8 @@
           <earliest>-4h@m</earliest>
           <latest>now</latest>
         </search>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleY.text">DNS Lookup (mS)</option>
         <option name="charting.chart">line</option>
         <option name="charting.drilldown">none</option>
         <option name="refresh.display">progressbar</option>
@@ -125,6 +128,8 @@
           <earliest>-4h@m</earliest>
           <latest>now</latest>
         </search>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleY.text">Ping RTT (mS)</option>
         <option name="charting.chart">line</option>
         <option name="charting.drilldown">none</option>
         <option name="refresh.display">progressbar</option>
@@ -140,6 +145,7 @@
           <earliest>-4h@m</earliest>
           <latest>now</latest>
         </search>
+        <option name="charting.axisTitleX.text">Time</option>
         <option name="charting.axisY.abbreviation">none</option>
         <option name="charting.axisY.minimumNumber">0</option>
         <option name="charting.chart">line</option>
