@@ -499,11 +499,12 @@ def main():
     results_dict = {}
 
     # define column headers
-    column_headers = ['time', 'server_name', 'ping_time', 'download_rate_mbps', 'upload_rate_mbps', 'ssid', 'bssid', 'freq_ghz', 'phy_rate_mbps', 'signal_level_dbm', 'tx_retries', 'ip_address']
+    column_headers = ['time', 'server_name', 'ping_time', 'download_rate_mbps', 'upload_rate_mbps', 'ssid', 'bssid', 'freq_ghz', 'channel', 'phy_rate_mbps', 'signal_level_dbm', 'tx_retries', 'ip_address']
     
     results_dict['ssid'] = str(adapter.get_ssid())
     results_dict['bssid'] = str(adapter.get_bssid())
     results_dict['freq_ghz'] = str(adapter.get_freq())
+    results_dict['channel'] = str(adapter.get_channel())
     results_dict['phy_rate_mbps'] = float(adapter.get_bit_rate())
     results_dict['signal_level_dbm'] = int(adapter.get_signal_level())
     results_dict['tx_retries'] = int(adapter.get_tx_retries())
