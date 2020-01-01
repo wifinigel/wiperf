@@ -48,7 +48,7 @@ When the WLANPi is flipped in to Wiperf mode, it will need to join the SSID unde
 Edit the following file with the configuration and credentials that will be used by the WLANPi to join the SSID under test once it is switched in to Wiperf mode (make edits logged in as the wlanpi user):
 
 ```
-        cd /home/wlanpi/wiperf/etc/wpa_supplicant
+        cd /home/wlanpi/wiperf/conf/etc/wpa_supplicant
         nano ./wpa_supplicant.conf
 ```
 
