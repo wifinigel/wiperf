@@ -4,7 +4,7 @@ Wi-Fi performance probe for RPi & WLANPi
 
 # Documentation
 
-The documentation for Wiperf is currently under developement. Please check back regularly for updates.
+The current documentation for Wiperf is available below. This dcumentation is subject to regular updates as new features are added.
 
 ## WLANPi Docs
 
