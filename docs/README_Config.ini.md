@@ -1,4 +1,4 @@
-# Wiperf - config.ini reference guide (work-in-progress)
+# Wiperf - config.ini reference guide
 
 ## Background
 
@@ -74,6 +74,10 @@ We'll take a look at each section of the config file and provide some guidance o
     - [dns_target4](#dns_target4)
     - [dns_target5](#dns_target5)
     - [dns_data_file](#dns_data_file)
+- [DHCP_test Section](#dhcp_test-section)
+    - [enabled](#enabled-5)
+    - [mode](#mode)
+    - [dhcp_data_file](#dhcp_data_file)
 
 ## [General] Section
 
@@ -515,24 +519,47 @@ dns_data_file: wiperf-dns-splunk
 ```
 [top](#parameter-reference-guide)
 
-##########################################################
-...edit in progress - nothing below here is complete yet.
-##########################################################
+## [DHCP_test] Section
 
+(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
 
-; ====================================================================
-;  DHCP tests settings
-;  (Changes made in this section will be used in next test cycle
-;   and may be made while in Wiperf mode on the WLANPi)
-; ====================================================================
-[DHCP_test]
-; yes = enabled, no = disabled
+### enabled
+
+Options: yes or no. If set to no, entire section is ignored and no DHCP test is run.  Note that the DHCP test has 2 modes :
+
+- passive: only a renewal request is sent (no release of IP)
+- active: a release and renew request is performed.
+
+Note that the active setting has shown varying degrees of usefulness in esting. In some scenarios (e.g. when connected via ZeroTier), it has caused connectivity issues, hence the passive setting is a better choice. Obviously, the passive setting does not perform such a rigorous DHCP test and is completed much quicker than the active mode. However, it still provides a useful comparative measure of the reponsivemess of DHCP servers.
+
+Default setting:
+```
 enabled: yes
+```
+[top](#parameter-reference-guide)
 
-; mode: passive or active (active is full release/request but may be disruptve to connectivity - use with caution)
+### mode
+
+Available options:
+
+- passive
+- active
+
+The active settings performs a full release/request and may be disruptve to connectivity - use with caution. The passive setting is the recommended option for most situations.
+
+
+Default setting:
+```
 mode: passive
-;
-; -------------- Advanced settings for DHCP tests section, do not change ---------------
-; location of DHCP results file for Splunk forwarder to read (do not add file extension)
+```
+[top](#parameter-reference-guide)
+
+### dhcp_data_file
+
+(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for DHCP tests in Splunk 
+
+Default setting:
+```
 dhcp_data_file: wiperf-dhcp-splunk
-;---------------------------------------------------------------------------------------
+```
+[top](#parameter-reference-guide)
