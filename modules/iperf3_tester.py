@@ -14,15 +14,24 @@ def get_iperf(file_logger):
     '''
      Find the iperf program
     '''
+    # This is a little clunky, but the 'which' cmd stopped
+    # working in WLANPi image 1.9...after many hours of diagnosing,
+    # finally gave up and put this in...
+    locations = [
+        '/usr/local/bin/iperf3',
+        '/usr/bin/iperf3',
+        '/bin/iperf3',
+        '/sbin/iperf3',
+    ]
 
-    try:
-        iperf = subprocess.check_output(
-            '/usr/bin/which iperf3', shell=True).decode()
-        return iperf.strip()
-    except Exception as ex:
-        file_logger.error(
-            "Issue looking iperf command on local system: {}".format(ex))
-        return False
+    for location in locations:
+
+        if os.path.exists(location):
+            file_logger.info("Found iperf3 program: {}".format(location))
+            return location
+
+    file_logger.error("Unable to find iperf3 program")
+    return False
 
 
 def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, debug=False):
