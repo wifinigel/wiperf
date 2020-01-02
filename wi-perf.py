@@ -99,6 +99,7 @@ def read_config(debug):
     ### Get Speedtest config params
     speed_sect = config['Speedtest']
     config_vars['speedtest_enabled'] = speed_sect.get('enabled')
+    config_vars['server_id'] = speed_sect.get('server_id', '')
     config_vars['speedtest_data_file'] = speed_sect.get('speedtest_data_file')
 
     ### Get Ping config params
@@ -526,7 +527,7 @@ def main():
         if check_route_to_dest('8.8.8.8', file_logger) == config_vars['wlan_if']:
 
             # speedtest returns false if there are any issues
-            speedtest_results = ooklaspeedtest(file_logger)
+            speedtest_results = ooklaspeedtest(file_logger, config_vars['server_id'])
             if not speedtest_results == False:
             
                 if DEBUG:
