@@ -9,17 +9,19 @@ import os
 import json
 import subprocess
 
-def get_iperf(file_logger):
 
+def get_iperf(file_logger):
     '''
      Find the iperf program
     '''
 
     try:
-        iperf = subprocess.check_output('which iperf3', shell=True).decode()
+        iperf = subprocess.check_output(
+            '/usr/bin/which iperf3', shell=True).decode()
         return iperf.strip()
     except Exception as ex:
-        file_logger.error("Issue looking iperf command on local system: {}".format(ex))
+        file_logger.error(
+            "Issue looking iperf command on local system: {}".format(ex))
         return False
 
 
@@ -32,17 +34,20 @@ def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
 
     protocol = 'tcp'
 
-    iperf_cmd_string = "{} -c {} -t {} -p {} -J".format(iperf, server_hostname, duration, port)
+    iperf_cmd_string = "{} -c {} -t {} -p {} -J".format(
+        iperf, server_hostname, duration, port)
 
     if debug:
-        file_logger.debug("TCP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}".format(server_hostname, port, protocol, duration))
+        file_logger.debug("TCP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}".format(
+            server_hostname, port, protocol, duration))
 
     try:
-        iperf_output = subprocess.check_output(iperf_cmd_string, shell=True).decode()
+        iperf_output = subprocess.check_output(
+            iperf_cmd_string, shell=True).decode()
     except Exception as ex:
         file_logger.error("iperf TCP test error: {}".format(ex))
         return False
-    
+
     iperf_json = json.loads(iperf_output)
 
     # extract data
@@ -50,29 +55,29 @@ def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
     recv_json = iperf_json['end']['sum_received']
 
     # bps
-    sent_bps =  sent_json['bits_per_second']
+    sent_bps = sent_json['bits_per_second']
     received_bps = recv_json['bits_per_second']
 
     sent_kbps = sent_bps / 1000
-    sent_Mbps = sent_kbps / 1000 # use this
+    sent_Mbps = sent_kbps / 1000  # use this
 
     received_kbps = received_bps / 1000
-    received_Mbps = received_kbps / 1000 # use this
+    received_Mbps = received_kbps / 1000  # use this
 
     # bytes
-    received_bytes = recv_json['bytes'] # use this
-    sent_bytes = sent_json['bytes'] # use this
+    received_bytes = recv_json['bytes']  # use this
+    sent_bytes = sent_json['bytes']  # use this
 
     # retransmits
-    retransmits = sent_json.get('retransmits') # use this
+    retransmits = sent_json.get('retransmits')  # use this
 
     result = {}
-    result['sent_mbps']       = sent_Mbps
-    result['received_mbps']  =  received_Mbps
-    result['sent_bytes']     = sent_bytes 
+    result['sent_mbps'] = sent_Mbps
+    result['received_mbps'] = received_Mbps
+    result['sent_bytes'] = sent_bytes
     result['received_bytes'] = received_bytes
-    result['retransmits']    = retransmits  
-    
+    result['retransmits'] = retransmits
+
     return result
 
 
@@ -82,21 +87,24 @@ def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
 
     if not iperf:
         return False
-    
+
     protocol = 'udp'
 
     if debug:
-        file_logger.debug("UDP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}, bandwidth: {}".format(server_hostname, port, protocol, duration, bandwidth))
+        file_logger.debug("UDP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}, bandwidth: {}".format(
+            server_hostname, port, protocol, duration, bandwidth))
 
-    iperf_cmd_string = "{} -c {} -u -t {} -p {} -b {} -J".format(iperf, server_hostname, duration, port, bandwidth)
+    iperf_cmd_string = "{} -c {} -u -t {} -p {} -b {} -J".format(
+        iperf, server_hostname, duration, port, bandwidth)
 
     # run the test
     try:
-        iperf_output = subprocess.check_output(iperf_cmd_string, shell=True).decode()
+        iperf_output = subprocess.check_output(
+            iperf_cmd_string, shell=True).decode()
     except Exception as ex:
         file_logger.error("iperf TCP test error: {}".format(ex))
         return False
-    
+
     iperf_json = json.loads(iperf_output)
 
     # extract data
@@ -113,12 +121,12 @@ def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
     seconds = iperf_json['end']['sum']['seconds']
 
     result = {}
-    
-    result['bytes'] =  bytes
-    result['mbps']   =  Mbps
-    result['jitter_ms'] =  jitter_ms
-    result['packets'] =  packets
-    result['lost_packets'] =  lost_packets
-    result['lost_percent'] =  lost_percent
+
+    result['bytes'] = bytes
+    result['mbps'] = Mbps
+    result['jitter_ms'] = jitter_ms
+    result['packets'] = packets
+    result['lost_packets'] = lost_packets
+    result['lost_percent'] = lost_percent
 
     return result
