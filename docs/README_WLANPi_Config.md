@@ -96,9 +96,10 @@ If things seem to be going wrong, try the following:
 - Make sure your WLANPi and Splunk servers are NTP sync'ed
 - Flip back to classic mode and re-check the edits made to the `config.ini` & `wpa_supplicant.conf` files
 
-# Known Issue:
+# Known Issues:
 
-There seems to be an issue with the Comfast CF-912 adapter when using it with the WLANPi and associating as a client to SSIDs that use 80MHz width channels. If you hit an issue where the WLANPi seems to lock up or does not boot correctly, try a different adapter or a network that does not use 8Mhz channels.
+- There is an issue with the v1.9.0 WLANPi image that means that the iperf tests fail when running in Wiperf mode. To get the fixed version, follow the update process detailed in the [Updating](#updating) section of this document (3rd Jan 2020)
+- There seems to be an issue with the Comfast CF-912 adapter when using it with the WLANPi and associating as a client to SSIDs that use 80MHz width channels. If you hit an issue where the WLANPi seems to lock up or does not boot correctly, try a different adapter or a network that does not use 8Mhz channels.
 
 <!-- link list -->
 [wlanpi_build]: docs/README_WLANPi_Image_Build.md
