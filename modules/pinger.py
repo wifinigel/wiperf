@@ -4,6 +4,7 @@ result characteristics
 '''
 from __future__ import print_function
 
+
 class Pinger(object):
     '''
     A class to ping a host - a basic wrapper around a CLI ping command
@@ -24,7 +25,6 @@ class Pinger(object):
         self.rtt_avg = ''
         self.rtt_max = ''
         self.rtt_mdev = ''
-
 
     def ping_host(self, host, count):
         '''
@@ -51,12 +51,12 @@ class Pinger(object):
         self.host = host
 
         if self.debug:
-            print("Pinging host: " + str(host) + " (count=" + str(count) +")")
+            print("Pinging host: " + str(host) + " (count=" + str(count) + ")")
 
         # Execute the ping
         try:
-            ping_output = (subprocess.check_output(["/bin/ping", "-q", "-c " \
-            + str(count), host])).decode().splitlines()
+            ping_output = (subprocess.check_output(["/bin/ping", "-q", "-c "
+                                                    + str(count), host])).decode().splitlines()
         except Exception as error:
             self.file_logger.error("Hit an error with ping: {}".format(error))
             if self.debug:
@@ -68,7 +68,6 @@ class Pinger(object):
             # Things have gone bad - we just return a false status
             return False
 
-
         if self.debug:
             print("Ping command output:")
             print(ping_output)
@@ -76,7 +75,8 @@ class Pinger(object):
         packets_summary_str = ping_output[3]
 
         # Extract packets transmitted
-        pkts_tx_re = re.search('(\d+) packets transmitted', packets_summary_str)
+        pkts_tx_re = re.search(
+            '(\d+) packets transmitted', packets_summary_str)
         if pkts_tx_re is None:
             self.pkts_tx = "NA"
         else:
@@ -110,8 +110,8 @@ class Pinger(object):
             print("Test duration (mS): " + str(self.test_time))
 
         perf_summary_str = ping_output[4]
-        perf_data_re = re.search('= ([\d\.]+?)\/([\d\.]+?)\/([\d\.]+?)\/([\d\.]+)', \
-        perf_summary_str)
+        perf_data_re = re.search('= ([\d\.]+?)\/([\d\.]+?)\/([\d\.]+?)\/([\d\.]+)',
+                                 perf_summary_str)
 
         if test_time_re is None:
             self.rtt_min = "NA"
@@ -130,7 +130,8 @@ class Pinger(object):
             print("rtt_max : " + str(self.rtt_max))
             print("rtt_mdev : " + str(self.rtt_mdev))
 
-        self.file_logger.info('ping_host: {}, pkts_tx: {}, pkts_rx: {}, pkt_loss: {}, rtt_avg: {}'.format(self.host, self.pkts_tx, self.pkts_rx, self.pkt_loss, self.rtt_avg))
+        self.file_logger.info('ping_host: {}, pkts_tx: {}, pkts_rx: {}, pkt_loss: {}, rtt_avg: {}'.format(
+            self.host, self.pkts_tx, self.pkts_rx, self.pkt_loss, self.rtt_avg))
 
         return {
             'host': self.host,

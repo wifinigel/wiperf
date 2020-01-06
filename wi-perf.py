@@ -80,9 +80,13 @@ def read_config(debug):
     config_vars['data_port'] = gen_sect.get('data_port', '8088')
     # Splunk HEC token
     config_vars['splunk_token'] = gen_sect.get('splunk_token')
-    
+
+    # test cycle timing parameters
     config_vars['test_interval'] = gen_sect.get('test_interval', '5')
     config_vars['test_offset'] = gen_sect.get('test_offset', '0')
+
+    # location
+    config_vars['location'] = gen_sect.get('location', '')
 
     # do some basic checks that mandatory fields are present
     for field in ['data_host', 'splunk_token']:
@@ -104,7 +108,7 @@ def read_config(debug):
 
     ### Get Ping config params
     ping_sect = config['Ping_Test']
-    config_vars['ping_enabled'] = ping_sect.get('enabled')
+    config_vars['ping_enabled'] = ping_sect.get('enabled', 'no')
     config_vars['ping_data_file'] = ping_sect.get('ping_data_file')
     config_vars['ping_host1'] = ping_sect.get('ping_host1')
     config_vars['ping_host2'] = ping_sect.get('ping_host2')
@@ -115,7 +119,7 @@ def read_config(debug):
 
     ### Get iperf3 tcp test params
     iperft_sect = config['Iperf3_tcp_test']
-    config_vars['iperf3_tcp_enabled'] = iperft_sect.get('enabled')
+    config_vars['iperf3_tcp_enabled'] = iperft_sect.get('enabled', 'no')
     config_vars['iperf3_tcp_data_file'] = iperft_sect.get('iperf3_tcp_data_file')
     config_vars['iperf3_tcp_server_hostname'] = iperft_sect.get('server_hostname')
     config_vars['iperf3_tcp_port'] = iperft_sect.get('port')
@@ -123,7 +127,7 @@ def read_config(debug):
 
     ### Get iperf3 udp test params
     iperfu_sect = config['Iperf3_udp_test']
-    config_vars['iperf3_udp_enabled'] = iperfu_sect.get('enabled')
+    config_vars['iperf3_udp_enabled'] = iperfu_sect.get('enabled', 'no')
     config_vars['iperf3_udp_data_file'] = iperfu_sect.get('iperf3_udp_data_file')
     config_vars['iperf3_udp_server_hostname'] = iperfu_sect.get('server_hostname')
     config_vars['iperf3_udp_port'] = iperfu_sect.get('port')
@@ -132,7 +136,7 @@ def read_config(debug):
 
     ### Get DNS test params
     dns_sect = config['DNS_test']
-    config_vars['dns_test_enabled'] = dns_sect.get('enabled')
+    config_vars['dns_test_enabled'] = dns_sect.get('enabled', 'no')
     config_vars['dns_data_file'] = dns_sect.get('dns_data_file')
     config_vars['dns_target1'] = dns_sect.get('dns_target1')
     config_vars['dns_target2'] = dns_sect.get('dns_target2')
@@ -142,7 +146,7 @@ def read_config(debug):
 
     ### Get DHCP test params
     dhcp_sect = config['DHCP_test']
-    config_vars['dhcp_test_enabled'] = dhcp_sect.get('enabled')
+    config_vars['dhcp_test_enabled'] = dhcp_sect.get('enabled', 'no')
     config_vars['dhcp_test_mode'] = dhcp_sect.get('mode', 'passive')
     config_vars['dhcp_data_file'] = dhcp_sect.get('dhcp_data_file')
 
@@ -500,7 +504,7 @@ def main():
     results_dict = {}
 
     # define column headers
-    column_headers = ['time', 'server_name', 'ping_time', 'download_rate_mbps', 'upload_rate_mbps', 'ssid', 'bssid', 'freq_ghz', 'channel', 'phy_rate_mbps', 'signal_level_dbm', 'tx_retries', 'ip_address']
+    column_headers = ['time', 'server_name', 'ping_time', 'download_rate_mbps', 'upload_rate_mbps', 'ssid', 'bssid', 'freq_ghz', 'channel', 'phy_rate_mbps', 'signal_level_dbm', 'tx_retries', 'ip_address', 'location']
     
     results_dict['ssid'] = str(adapter.get_ssid())
     results_dict['bssid'] = str(adapter.get_bssid())
@@ -511,6 +515,8 @@ def main():
     results_dict['tx_retries'] = int(adapter.get_tx_retries())
     results_dict['ip_address'] = str(adapter.get_ipaddr())      
     results_dict['time'] = int(time.time())
+    #results_dict['tags'] = [x.strip() for x in config_vars['tags'].split(',')]
+    results_dict['location'] = config_vars['location']
 
     # Pre-populate speedtest results vars
     results_dict['ping_time'] = None
