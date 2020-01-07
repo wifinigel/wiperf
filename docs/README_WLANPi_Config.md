@@ -2,6 +2,8 @@
 
 This instruction paper assumes you are running Wiperf on a WLAN Pi on an image verison of v1.9 or later (which has Wiperf installed and available as part of the image.)
 
+(**Special note for WLAN Pi image v1.9.0:** please see the [Known Issues](#known-issues)) section of this document)
+
 The Wiperf probe is activated via the front panel menu system (FPMS) of the WLAN Pi. But, before flipping in to the Wiperf mode, a few configuration steps need to be completed:
 
 # Configuration File (config.ini)
