@@ -27,19 +27,29 @@ By default, the configuration file is set to run all tests. However, there is a 
 ; interface name over which mgt traffic is sent (i.e. how we get to Splunk) - options: wlan0, eth0, zt
 mgt_if: wlan0
 
-; Splunk host IP/name
+; Splunk host IP/name - set this to the address of your Splunk server
 data_host: 192.168.0.99
 
 ; Splunk token to access Splunk server created by Splunk (example token: 84adb9ca-071c-48ad-8aa1-b1903c60310d)
+; (you need to have your Splunk server up & configure to get this)
 splunk_token: 84adb9ca-071c-48ad-8aa1-b1903c60310d
 
 [Iperf3_tcp_test]
-; IP address of iperf3 server
+; IP address of iperf3 server - set this to your iperf3 server (if you have one)
 server_hostname: 192.168.0.14
 
-; IP address of iperf3 server
+[Iperf3_udp_test]
+; IP address of iperf3 server - set this to your iperf3 server (if you have one)
 server_hostname: 192.168.0.14
 ```
+
+If there are some tests you'd like to disable (e.g. if you don't have an iperf3 server set up), then you'll need to open up the config.ini file and look through each section for the "enabled" parameter for that test and set it to "no". For example, to disable the iperf tcp test: 
+
+```
+[Iperf3_tcp_test]
+; yes = enabled, no = disabled
+enabled: no
+``
 
 For a full description of the configuration file parameters, please review the following page: [config.ini reference guide](README_Config.ini.md). The Splunk token is obtained from your Splunk server (see [Splunk build guide][splunk_build]). 
 
