@@ -1,16 +1,16 @@
-# Wiperf - Configuration on the WLANPi
+# Wiperf - Configuration on the WLAN Pi
 
-This instruction paper assumes you are running Wiperf on a WLANPi on an image verison of v1.9 or later (which has Wiperf installed and available as part of the image.)
+This instruction paper assumes you are running Wiperf on a WLAN Pi on an image verison of v1.9 or later (which has Wiperf installed and available as part of the image.)
 
-The Wiperf probe is activated via the front panel menu system (FPMS) of the WLANPi. But, before flipping in to the Wiperf mode, a few configuration steps need to be completed:
+The Wiperf probe is activated via the front panel menu system (FPMS) of the WLAN Pi. But, before flipping in to the Wiperf mode, a few configuration steps need to be completed:
 
 # Configuration File (config.ini)
 
 The operation of Wiperf is configured using the file `'/home/wanpi/wiperf/config.ini'` This needs to be edited prior to entering Wiperf mode.
 
-Prior to the first use of Wiperf, the config.ini file does not exist in the required WLANPi directory. However, a default template config file (`config.default.ini`) is supplied that can be used to create the `config.ini` file. Here is the suggested workflow:
+Prior to the first use of Wiperf, the config.ini file does not exist in the required WLAN Pi directory. However, a default template config file (`config.default.ini`) is supplied that can be used to create the `config.ini` file. Here is the suggested workflow:
 
-Connect to the WLANPi, create a copy of the config template file and edit the newly created config (as the wlanpi user):
+Connect to the WLAN Pi, create a copy of the config template file and edit the newly created config (as the wlanpi user):
 
 ```
         cd /home/wlanpi/wiperf
@@ -43,9 +43,9 @@ For a full description of the configuration file parameters, please review the f
 
 # Wireless Client Configuration (wpa_supplicant.conf)
 
-When the WLANPi is flipped in to Wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in Wiperf mode) to allow the WLANPi to join a WLAN.
+When the WLAN Pi is flipped in to Wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in Wiperf mode) to allow the WLAN Pi to join a WLAN.
 
-Edit the following file with the configuration and credentials that will be used by the WLANPi to join the SSID under test once it is switched in to Wiperf mode (make edits logged in as the wlanpi user):
+Edit the following file with the configuration and credentials that will be used by the WLAN Pi to join the SSID under test once it is switched in to Wiperf mode (make edits logged in as the wlanpi user):
 
 ```
         cd /home/wlanpi/wiperf/conf/etc/wpa_supplicant
@@ -54,7 +54,7 @@ Edit the following file with the configuration and credentials that will be used
 
 # Testing
 
-Once the required edits have been made to configure Wiperf mode, flip the WLANPi in to Wiperf mode using the following FPMS options:
+Once the required edits have been made to configure Wiperf mode, flip the WLAN Pi in to Wiperf mode using the following FPMS options:
 
 ```
         Actions > Wiperf > Confirm
@@ -84,22 +84,43 @@ To get the latest updates from the GitHub repo (when available), use the followi
 
 If things seem to be going wrong, try the following:
 
-- Connect to the WLANPi using the USB OTG connection to check log files: 
+- Connect to the WLAN Pi using the USB OTG connection to check log files: 
     - `cat /home/wlanpi/wiperf/logs/agent.log`
     - `cat /home/wlanpi/wiperf/wiperf.log`
 - SSH to the device & tail the agent log file in real-time, watching for errors and dumps of test results being performed:`tail -f /home/wlanpi/wiperf/logs/agent.log`
-- Flip back in to classic mode and activate Wiperf mode from the CLI of the WLANPi, watching for errors:
+- Flip back in to classic mode and activate Wiperf mode from the CLI of the WLAN Pi, watching for errors:
     - `cd /home/wlanpi/wiperf`
     - `sudo ./wiperf_switcher`
 - Try disabling tests & see if one specific test is causing an issue
 - Make sure all pre-reqs have definitely been fulfilled
-- Make sure your WLANPi and Splunk servers are NTP sync'ed
+- Make sure your WLAN Pi and Splunk servers are NTP sync'ed
 - Flip back to classic mode and re-check the edits made to the `config.ini` & `wpa_supplicant.conf` files
+
+# Additional Features:
+
+## Watchdog
+
+Wiperf has a watchdog feature that it uses to try to reset things when it is having connectivity related difficulties.
+
+There may be instances when tests are continualy failing or wireless connectivity is intermiitent due to perhaps being stuck on a remote AP that is sub-optimal from a connecvitity perspective.
+
+If persistent issues are detected, then Wiperf will reboot the WLAN Pi to try to remediate the issue. This will provide the opportunity to the resest all network connectivity and internal processes.
+
+Note that this is a last ditch mechanism. Wiperf will try bouncing the WLAN interface to remediate any short-term connectivity issues, which will likely fixe many issues without the need for a full reboot.
+
+If you observe your WLAN Pi rebooting on a regular basis (e.g. a couple of times a hour), then check its logs as it is very unhappy about something.
+
+## Security
+
+Wiperf employs the following security mechanisms in an atempt to harden the WLAN Pi when deployed in Wiperf mode:
+
+- No forwarding is allowed between interfaces
+- The internal UFW firewall is configured to only allow incoming connectivity on port 22 on the wlan0 & eth0 interfaces
 
 # Known Issues:
 
-- There is an issue with the v1.9.0 WLANPi image that means that the iperf tests fail when running in Wiperf mode. To get the fixed version, follow the update process detailed in the [Updating](#updating) section of this document (3rd Jan 2020)
-- There seems to be an issue with the Comfast CF-912 adapter when using it with the WLANPi and associating as a client to SSIDs that use 80MHz width channels. If you hit an issue where the WLANPi seems to lock up or does not boot correctly, try a different adapter or a network that does not use 8Mhz channels.
+- There is an issue with the v1.9.0 WLAN Pi image that means that the iperf tests fail when running in Wiperf mode. To get the fixed version, follow the update process detailed in the [Updating](#updating) section of this document (3rd Jan 2020)
+- There seems to be an issue with the Comfast CF-912 adapter when using it with the WLAN Pi and associating as a client to SSIDs that use 80MHz width channels. If you hit an issue where the WLAN Pi seems to lock up or does not boot correctly, try a different adapter or a network that does not use 80Mhz channels.
 
 <!-- link list -->
 [wlanpi_build]: docs/README_WLANPi_Image_Build.md
