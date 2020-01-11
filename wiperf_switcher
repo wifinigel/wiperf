@@ -9,12 +9,13 @@
 # v0.01 - 8th Dec 2019 - Initial version
 # v0.02 - 11th Dec 2019 - Fixed awk for multiple spaces, command ordrering, ufw rules 
 # v0.03 - 14th Dec 2019 - Lots of updates for eth0 static routes, wlan0 check etc.
+# v0.04 - 11th Jan 2020 - Fixed WLANPi name to WLAN Pi.
 
 set -e
 
 NAME=wiperf_switcher
 DESC="Script to switch wiperf on/off"
-VERSION=0.01
+VERSION=0.04
 STATUS_FILE="/home/wlanpi/wiperf/wiperf.on"
 CFG_FILE="/home/wlanpi/wiperf/config.ini"
 LOG_FILE="/home/wlanpi/wiperf/switcher.log"
@@ -161,7 +162,7 @@ wiperf_on () {
 
   touch $STATUS_FILE
 
-  echo "WLANPi will now reboot" | tee -a $LOG_FILE
+  echo "WLAN Pi will now reboot" | tee -a $LOG_FILE
   sleep 1
   reboot
 }
@@ -220,7 +221,7 @@ wiperf_off () {
   cp /etc/sysctl.conf.probe /etc/sysctl.conf
   cp /etc/wpa_supplicant/wpa_supplicant.conf.probe /etc/wpa_supplicant/wpa_supplicant.conf
 
-  echo "WLANPi will now reboot"
+  echo "WLAN Pi will now reboot"
   if [ -e "$STATUS_FILE" ]; then
     rm $STATUS_FILE
   fi
