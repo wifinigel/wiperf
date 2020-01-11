@@ -129,6 +129,27 @@ Wiperf employs the following security mechanisms in an atempt to harden the WLAN
 - No forwarding is allowed between interfaces
 - The internal UFW firewall is configured to only allow incoming connectivity on port 22 on the wlan0 & eth0 interfaces
 
+## CLI Mode Switch
+
+If you are remote from your WLAN Pi you may not be able to flip it in to Wiperf mode using the front panel buttons. However, it is possible to flip it in to Wiperf mode using the CLI (via an SSH session).
+
+To flip in to Wipef mode using the CLI, SSH to your WLAN Pi and execute the following on the CLI (**CAVEAT:** make sure you have correctly configured the /home/wlanpi/wiperf/conf/etc/wpa_suplicant/wpa_supplicant.conf file before do this...otherwise you may lose comms with the WLAN Pi after it reboots if you rely on the WLAN connection for access):
+
+```
+ # performed as the wlanpi user
+ cd ~/wiperf
+ sudo ./wiperf_switcher on
+ ```
+ After executing this command, the WLAN Pi will reboot in to the Wiperf mode.
+ 
+If you'd like to fip back from Wiperf mode, SSH to the WLAN Pi and execute:
+
+```
+ # performed as the wlanpi user
+ cd ~/wiperf
+ sudo ./wiperf_switcher off
+ ```
+
 # Known Issues:
 
 - There is an issue with the v1.9.0 WLAN Pi image that means that the iperf tests fail when running in Wiperf mode. To get the fixed version, follow the update process detailed in the [Updating](#updating) section of this document (3rd Jan 2020)
