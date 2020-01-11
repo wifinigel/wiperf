@@ -518,6 +518,11 @@ def main():
     #results_dict['tags'] = [x.strip() for x in config_vars['tags'].split(',')]
     results_dict['location'] = config_vars['location']
 
+    # drump out adapter info to log file
+    file_logger.info("Wireless connection: SSID:{}, BSSID:{}, Freq:{}, Channel: {}, Phy rate:{}, RSSI:{}, Tx retries:{}, IP address:{}".format(results_dict['ssid'], 
+        results_dict['bssid'], results_dict['freq_ghz'], results_dict['channel'], results_dict['phy_rate_mbps'], results_dict['signal_level_dbm'], results_dict['tx_retries'],
+        results_dict['ip_address'] ))
+
     # Pre-populate speedtest results vars
     results_dict['ping_time'] = None
     results_dict['download_rate_mbps'] = None
