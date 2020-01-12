@@ -199,7 +199,7 @@ def send_results_to_json(data_file, dict_data, file_logger, debug, delete_data_f
 
         with open(data_file, file_mode) as json_file:
             json.dump(dict_data, json_file)
-    except IOError:
+    except IOError as err:
         file_logger.error("JSON I/O error: {}".format(err))
 
 def send_results_to_hec(host, token, port, dict_data, file_logger, source, debug=False):

@@ -1,3 +1,8 @@
+import re
+import subprocess
+import sys
+import time
+
 
 class WirelessAdapter(object):
 
@@ -6,8 +11,6 @@ class WirelessAdapter(object):
     '''
 
     def __init__(self, wlan_if_name, file_logger, platform="rpi", debug=False):
-
-        import sys
 
         self.wlan_if_name = wlan_if_name
         self.file_logger = file_logger
@@ -19,7 +22,7 @@ class WirelessAdapter(object):
         self.freq = ''
         self.center_freq = ''
         self.channel = ''
-        self.channel_width
+        self.channel_width = ''
         self.tx_bit_rate = ''
         self.rx_bit_rate = ''
         self.tx_mcs = ''
@@ -41,7 +44,7 @@ class WirelessAdapter(object):
         re_result = re.search(pattern, cmd_output_text)
 
         if not re_result is None:
-            field_value = ssid_re.group(1)
+            field_value = re_result.group(1)
 
         if self.debug:
             print("{} = {}".format(field_name, field_value))
@@ -188,7 +191,7 @@ class WirelessAdapter(object):
         # Get wireless interface IP address info using the iw dev wlanX info command
         #############################################################################
         try:
-            self.iw_info = subprocess.check_output(
+            iw_info = subprocess.check_output(
                 "/sbin/iw " + self.wlan_if_name + " 2>&1", shell=True).decode()
         except Exception as ex:
             error_descr = "Issue getting interface info using iwconfig command"
@@ -201,28 +204,28 @@ class WirelessAdapter(object):
 
         if self.debug:
             print("Wireless interface config info (iw dev wlanX info): ")
-            print(self.iw_info)
+            print(iw_info)
 
         # Extract channel width
         if not self.channel_width:
             pattern = 'width\: (\d+) MHz'
             field_name = "channel_width"
-            self.channel_width = field_extractor(
-                self, field_name, pattern, self.iw_info)
+            self.channel_width = self.field_extractor(
+                field_name, pattern, iw_info)
 
         # Extract center freq
         if not self.center_freq:
             pattern = 'center1\: (\d+) MHz'
             field_name = "center_freq"
-            self.center_freq = field_extractor(
-                self, field_name, pattern, self.iw_info)
+            self.center_freq = self.field_extractor(
+                field_name, pattern, iw_info)
 
         # Extract frequency
         if not self.freq:
             pattern = 'channel \d+ \((\d+) MHz\)'
             field_name = "freq"
-            self.freq = field_extractor(
-                self, field_name, pattern, self.iw_info)
+            self.freq = self.field_extractor(
+                field_name, pattern, iw_info)
 
     def get_wireless_info(self):
         '''
@@ -244,17 +247,15 @@ class WirelessAdapter(object):
         provide info if they are available, otherwise replace with "NA"
 
         '''
-        import re
-        import subprocess
 
         if self.debug:
             print("Getting wireless adapter info...")
 
         # get info using iwconfig cmd
-        self.iwconfig(self)
+        self.iwconfig()
 
         # get info using iw info
-        self.iw_info(self)
+        self.iw_info()
 
         # get info using iw link
         # self.iw_link(self)
@@ -280,9 +281,6 @@ class WirelessAdapter(object):
         As this is a wrapper around a CLI command, it is likely to break at
         some stage
         '''
-
-        import re
-        import subprocess
 
         # Get interface info
         try:
@@ -329,9 +327,6 @@ class WirelessAdapter(object):
         some stage
         '''
 
-        import re
-        import subprocess
-
         # Get route info (used to figure out default gateway)
         try:
             self.route_info = subprocess.check_output(
@@ -369,7 +364,6 @@ class WirelessAdapter(object):
 
         Note: wlanpi must be added to sudoers group using visudo command on RPI
         '''
-        import subprocess
 
         if self.debug:
             print("Bouncing interface (platform type = " + self.platform + ")")
@@ -405,7 +399,6 @@ class WirelessAdapter(object):
         self.file_logger.error("sudo ifdown output: " + str(if_down))
 
         # have a sleep to allow time for wpa_supplicant to exit?
-        import time
         time.sleep(5)
 
         # if_up_cmd = "sudo ifup " + str(self.wlan_if_name)
