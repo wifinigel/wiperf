@@ -49,7 +49,7 @@ If there are some tests you'd like to disable (e.g. if you don't have an iperf3 
 [Iperf3_tcp_test]
 ; yes = enabled, no = disabled
 enabled: no
-``
+```
 
 For a full description of the configuration file parameters, please review the following page: [config.ini reference guide](README_Config.ini.md). The Splunk token is obtained from your Splunk server (see [Splunk build guide][splunk_build]). 
 
