@@ -192,7 +192,7 @@ class WirelessAdapter(object):
         #############################################################################
         try:
             iw_info = subprocess.check_output(
-                "/sbin/iw " + self.wlan_if_name + " 2>&1", shell=True).decode()
+                "/sbin/iw " + self.wlan_if_name + " info 2>&1", shell=True).decode()
         except Exception as ex:
             error_descr = "Issue getting interface info using iwconfig command"
             if self.debug:
