@@ -105,9 +105,9 @@ class WirelessAdapter(object):
         except Exception as ex:
             error_descr = "Issue getting interface info using iwconfig command"
             if self.debug:
-                print("{}: {}".format(error_descr, ex)
+                print("{}: {}".format(error_descr, ex))
 
-            self.file_logger.error("{}: {}".format(error_descr, ex)
+            self.file_logger.error("{}: {}".format(error_descr, ex))
             self.file_logger.error("Returning error...")
             return False
 
@@ -116,66 +116,66 @@ class WirelessAdapter(object):
             print(self.iwconfig_info)
 
         # Extract SSID
-        ssid_re=re.search('ESSID\:\"(.*?)\"', self.iwconfig_info)
+        ssid_re = re.search('ESSID\:\"(.*?)\"', self.iwconfig_info)
         if ssid_re is None:
-            self.ssid="NA"
+            self.ssid = "NA"
         else:
-            self.ssid=ssid_re.group(1)
+            self.ssid = ssid_re.group(1)
 
         if self.debug:
             print("SSID = " + self.ssid)
 
         # Extract BSSID (Note that if WLAN adapter not associated, "Access Point: Not-Associated")
-        ssid_re=re.search(
+        ssid_re = re.search(
             'Access Point[\=|\:] (..\:..\:..\:..\:..\:..)', self.iwconfig_info)
         if ssid_re is None:
-            self.bssid="NA"
+            self.bssid = "NA"
         else:
-            self.bssid=ssid_re.group(1)
+            self.bssid = ssid_re.group(1)
 
         if self.debug:
             print("BSSID = " + self.bssid)
 
         # Extract Frequency
-        ssid_re=re.search('Frequency[\:|\=](\d+\.\d+) ', self.iwconfig_info)
+        ssid_re = re.search('Frequency[\:|\=](\d+\.\d+) ', self.iwconfig_info)
         if ssid_re is None:
-            self.freq="NA"
+            self.freq = "NA"
         else:
-            self.freq=ssid_re.group(1)
+            self.freq = ssid_re.group(1)
 
         if self.debug:
             print("Frequency = " + self.freq)
 
         # lookup channel number
-        self.channel=self.channel_lookup(self.freq)
+        self.channel = self.channel_lookup(self.freq)
 
         # Extract Bit Rate (e.g. Bit Rate=144.4 Mb/s)
-        ssid_re=re.search('Bit Rate[\=|\:]([\d|\.]+) ', self.iwconfig_info)
+        ssid_re = re.search('Bit Rate[\=|\:]([\d|\.]+) ', self.iwconfig_info)
         if ssid_re is None:
-            self.tx_bit_rate="NA"
+            self.tx_bit_rate = "NA"
         else:
-            self.tx_bit_rate=ssid_re.group(1)
+            self.tx_bit_rate = ssid_re.group(1)
 
         if self.debug:
             print("Bit rate: " + self.tx_bit_rate)
 
         # Extract Signal Level
-        ssid_re=re.search('Signal level[\=|\:](.+?) ', self.iwconfig_info)
+        ssid_re = re.search('Signal level[\=|\:](.+?) ', self.iwconfig_info)
         if ssid_re is None:
-            self.signal_level="NA"
+            self.signal_level = "NA"
         else:
-            self.signal_level=ssid_re.group(1)
+            self.signal_level = ssid_re.group(1)
 
         if self.debug:
             print("Signal level = " + self.signal_level)
 
         # Extract tx retries
-        ssid_re=re.search(
+        ssid_re = re.search(
             'Tx excessive retries[\=|\:](\d+?) ', self.iwconfig_info)
         if ssid_re is None:
-            self.tx_retries="NA"
+            self.tx_retries = "NA"
         else:
-            self.tx_retries=ssid_re.group(1)
+            self.tx_retries = ssid_re.group(1)
 
         if self.debug:
             print("Excessive Tx Retries = " + self.tx_retries)
@@ -188,14 +188,14 @@ class WirelessAdapter(object):
         # Get wireless interface IP address info using the iw dev wlanX info command
         #############################################################################
         try:
-            self.iw_info=subprocess.check_output(
+            self.iw_info = subprocess.check_output(
                 "/sbin/iw " + self.wlan_if_name + " 2>&1", shell=True).decode()
         except Exception as ex:
-            error_descr="Issue getting interface info using iwconfig command"
+            error_descr = "Issue getting interface info using iwconfig command"
             if self.debug:
-                print("{}: {}".format(error_descr, ex)
+                print("{}: {}".format(error_descr, ex))
 
-            self.file_logger.error("{}: {}".format(error_descr, ex)
+            self.file_logger.error("{}: {}".format(error_descr, ex))
             self.file_logger.error("Returning error...")
             return False
 
@@ -205,27 +205,24 @@ class WirelessAdapter(object):
 
         # Extract channel width
         if not self.channel_width:
-            pattern='width\: (\d+) MHz'
-            field_name="channel_width"
-            self.channel_width=field_extractor(
+            pattern = 'width\: (\d+) MHz'
+            field_name = "channel_width"
+            self.channel_width = field_extractor(
                 self, field_name, pattern, self.iw_info)
 
         # Extract center freq
         if not self.center_freq:
-            pattern='center1\: (\d+) MHz'
-            field_name="center_freq"
-            self.center_freq=field_extractor(
+            pattern = 'center1\: (\d+) MHz'
+            field_name = "center_freq"
+            self.center_freq = field_extractor(
                 self, field_name, pattern, self.iw_info)
 
         # Extract frequency
         if not self.freq:
-            pattern='channel \d+ \((\d+) MHz\)'
-            field_name="freq"
-            self.freq=field_extractor(self, field_name, pattern, self.iw_info)
-
-
-
-
+            pattern = 'channel \d+ \((\d+) MHz\)'
+            field_name = "freq"
+            self.freq = field_extractor(
+                self, field_name, pattern, self.iw_info)
 
     def get_wireless_info(self):
         '''
@@ -266,7 +263,7 @@ class WirelessAdapter(object):
         # self.iw_link(self)
 
         # get the values extracted and return in a list
-         results_list=[self.ssid, self.bssid, self.freq, self.tx_bit_rate,
+        results_list = [self.ssid, self.bssid, self.freq, self.tx_bit_rate,
                         self.signal_level, self.tx_retries, self.channel]
 
         if self.debug:
@@ -274,7 +271,6 @@ class WirelessAdapter(object):
             print(results_list)
 
         return results_list
-
 
     def get_adapter_ip(self):
         '''
@@ -290,10 +286,10 @@ class WirelessAdapter(object):
 
         # Get interface info
         try:
-            self.ifconfig_info=subprocess.check_output(
+            self.ifconfig_info = subprocess.check_output(
                 "/sbin/ifconfig " + str(self.wlan_if_name) + " 2>&1", shell=True).decode()
         except Exception as ex:
-            error_descr="Issue getting interface info using ifconfig command"
+            error_descr = "Issue getting interface info using ifconfig command"
             if self.debug:
                 print(error_descr)
                 print(ex)
@@ -308,16 +304,16 @@ class WirelessAdapter(object):
             print(self.ifconfig_info)
 
         # Extract IP address info (e.g. inet 10.255.250.157)
-        ip_re=re.search('inet .*?(\d+\.\d+\.\d+\.\d+)', self.ifconfig_info)
+        ip_re = re.search('inet .*?(\d+\.\d+\.\d+\.\d+)', self.ifconfig_info)
         if ip_re is None:
-            self.ip_addr="NA"
+            self.ip_addr = "NA"
         else:
-            self.ip_addr=ip_re.group(1)
+            self.ip_addr = ip_re.group(1)
 
         # Check to see if IP address is APIPA (169.254.x.x)
-        apipa_re=re.search('169\.254', self.ip_addr)
+        apipa_re = re.search('169\.254', self.ip_addr)
         if not apipa_re is None:
-            self.ip_addr="NA"
+            self.ip_addr = "NA"
 
         if self.debug:
             print("IP Address = " + self.ip_addr)
@@ -338,10 +334,10 @@ class WirelessAdapter(object):
 
         # Get route info (used to figure out default gateway)
         try:
-            self.route_info=subprocess.check_output(
+            self.route_info = subprocess.check_output(
                 "/sbin/route -n | grep ^0.0.0.0 | grep " + self.wlan_if_name + " 2>&1", shell=True).decode()
         except Exception as ex:
-            error_descr="Issue getting default gateway info using route command (Prob due to multiple interfaces being up or wlan interface being wrong)"
+            error_descr = "Issue getting default gateway info using route command (Prob due to multiple interfaces being up or wlan interface being wrong)"
             if self.debug:
                 print(error_descr)
                 print(ex)
@@ -356,12 +352,12 @@ class WirelessAdapter(object):
             print(self.route_info)
 
         # Extract def gw
-        def_gw_re=re.search(
+        def_gw_re = re.search(
             '0\.0\.0\.0\s+(\d+\.\d+\.\d+\.\d+)\s', self.route_info)
         if def_gw_re is None:
-            self.def_gw="NA"
+            self.def_gw = "NA"
         else:
-            self.def_gw=def_gw_re.group(1)
+            self.def_gw = def_gw_re.group(1)
 
         if self.debug:
             print("Default GW = " + self.def_gw)
@@ -381,17 +377,17 @@ class WirelessAdapter(object):
         self.file_logger.error(
             "Bouncing interface (platform type = " + self.platform + ")")
 
-        if_down_cmd="sudo /sbin/ifconfig {} down".format(self.wlan_if_name)
+        if_down_cmd = "sudo /sbin/ifconfig {} down".format(self.wlan_if_name)
 
         if self.debug:
             print("if down command:")
             print(if_down_cmd)
 
         try:
-            if_down=subprocess.check_output(
+            if_down = subprocess.check_output(
                 if_down_cmd, stderr=subprocess.STDOUT, shell=True).decode()
         except Exception as ex:
-            error_descr="ifdown command appears to have failed"
+            error_descr = "ifdown command appears to have failed"
             if self.debug:
                 print(error_descr)
                 print(ex)
@@ -413,17 +409,17 @@ class WirelessAdapter(object):
         time.sleep(5)
 
         # if_up_cmd = "sudo ifup " + str(self.wlan_if_name)
-        if_up_cmd="sudo /sbin/ifconfig {} up".format(self.wlan_if_name)
+        if_up_cmd = "sudo /sbin/ifconfig {} up".format(self.wlan_if_name)
 
         if self.debug:
             print("if up command:")
             print(if_up_cmd)
 
         try:
-            if_up=subprocess.check_output(
+            if_up = subprocess.check_output(
                 if_up_cmd, stderr=subprocess.STDOUT, shell=True).decode()
         except Exception as ex:
-            error_descr="ifup command appears to have failed"
+            error_descr = "ifup command appears to have failed"
             if self.debug:
                 print(error_descr)
                 print(ex)
