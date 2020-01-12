@@ -103,7 +103,7 @@ class WirelessAdapter(object):
         # Get wireless interface IP address info using the iwconfig command
         ####################################################################
         try:
-            self.iwconfig_info = subprocess.check_output(
+            iwconfig_info = subprocess.check_output(
                 "/sbin/iwconfig " + self.wlan_if_name + " 2>&1", shell=True).decode()
         except Exception as ex:
             error_descr = "Issue getting interface info using iwconfig command"
@@ -116,44 +116,34 @@ class WirelessAdapter(object):
 
         if self.debug:
             print("Wireless interface config info: ")
-            print(self.iwconfig_info)
+            print(iwconfig_info)
 
         # Extract SSID
-        ssid_re = re.search('ESSID\:\"(.*?)\"', self.iwconfig_info)
-        if ssid_re is None:
-            self.ssid = "NA"
-        else:
-            self.ssid = ssid_re.group(1)
-
-        if self.debug:
-            print("SSID = " + self.ssid)
+        if not self.ssid:
+            pattern = 'ESSID\:\"(.*?)\"'
+            field_name = "ssid"
+            self.ssid = self.field_extractor(
+                field_name, pattern, iwconfig_info)
 
         # Extract BSSID (Note that if WLAN adapter not associated, "Access Point: Not-Associated")
-        ssid_re = re.search(
-            'Access Point[\=|\:] (..\:..\:..\:..\:..\:..)', self.iwconfig_info)
-        if ssid_re is None:
-            self.bssid = "NA"
-        else:
-            self.bssid = ssid_re.group(1)
-
-        if self.debug:
-            print("BSSID = " + self.bssid)
+        if not self.bssid:
+            pattern = 'Access Point[\=|\:] (..\:..\:..\:..\:..\:..)'
+            field_name = "bssid"
+            self.bssid = self.field_extractor(
+                field_name, pattern, iwconfig_info)
 
         # Extract Frequency
-        ssid_re = re.search('Frequency[\:|\=](\d+\.\d+) ', self.iwconfig_info)
-        if ssid_re is None:
-            self.freq = "NA"
-        else:
-            self.freq = ssid_re.group(1)
-
-        if self.debug:
-            print("Frequency = " + self.freq)
+        if not self.freq:
+            pattern = 'Frequency[\:|\=](\d+\.\d+) '
+            field_name = "freq"
+            self.freq = self.field_extractor(
+                field_name, pattern, iwconfig_info)
 
         # lookup channel number
         self.channel = self.channel_lookup(self.freq)
 
         # Extract Bit Rate (e.g. Bit Rate=144.4 Mb/s)
-        ssid_re = re.search('Bit Rate[\=|\:]([\d|\.]+) ', self.iwconfig_info)
+        ssid_re = re.search('Bit Rate[\=|\:]([\d|\.]+) ', iwconfig_info)
         if ssid_re is None:
             self.tx_bit_rate = "NA"
         else:
@@ -163,7 +153,7 @@ class WirelessAdapter(object):
             print("Bit rate: " + self.tx_bit_rate)
 
         # Extract Signal Level
-        ssid_re = re.search('Signal level[\=|\:](.+?) ', self.iwconfig_info)
+        ssid_re = re.search('Signal level[\=|\:](.+?) ', iwconfig_info)
         if ssid_re is None:
             self.signal_level = "NA"
         else:
@@ -174,7 +164,7 @@ class WirelessAdapter(object):
 
         # Extract tx retries
         ssid_re = re.search(
-            'Tx excessive retries[\=|\:](\d+?) ', self.iwconfig_info)
+            'Tx excessive retries[\=|\:](\d+?) ', iwconfig_info)
         if ssid_re is None:
             self.tx_retries = "NA"
         else:
@@ -226,6 +216,8 @@ class WirelessAdapter(object):
             field_name = "freq"
             self.freq = self.field_extractor(
                 field_name, pattern, iw_info)
+
+        return True
 
     def get_wireless_info(self):
         '''
@@ -452,13 +444,13 @@ class WirelessAdapter(object):
         return self.tx_bit_rate
 
     def get_rx_bit_rate(self):
-        return self.tx_bit_rate
+        return self.rx_bit_rate
 
     def get_tx_mcs(self):
         return self.tx_mcs
 
     def get_rx_mcs(self):
-        return self.tx_mcs
+        return self.rx_mcs
 
     def get_signal_level(self):
         return self.signal_level
