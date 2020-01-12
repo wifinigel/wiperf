@@ -23,13 +23,13 @@ class WirelessAdapter(object):
         self.center_freq = ''
         self.channel = ''
         self.channel_width = ''
-        self.tx_bit_rate = ''
-        self.rx_bit_rate = ''
-        self.tx_mcs = ''
-        self.rx_mcs = ''
+        self.tx_bit_rate = 0
+        self.rx_bit_rate = 0
+        self.tx_mcs = 0
+        self.rx_mcs = 0
 
-        self.signal_level = ''
-        self.tx_retries = ''
+        self.signal_level = 0
+        self.tx_retries = 0
 
         self.ip_addr = ''
         self.def_gw = ''
