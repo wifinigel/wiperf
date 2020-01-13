@@ -514,6 +514,8 @@ def main():
     results_dict['channel_width'] = str(adapter.get_channel_width())
     results_dict['tx_rate_mbps'] = float(adapter.get_tx_bit_rate())
     results_dict['rx_rate_mbps'] = float(adapter.get_rx_bit_rate())
+    results_dict['tx_mcs'] = int(adapter.get_tx_mcs())
+    results_dict['rx_mcs'] = int(adapter.get_rx_mcs())
     results_dict['signal_level_dbm'] = int(adapter.get_signal_level())
     results_dict['tx_retries'] = int(adapter.get_tx_retries())
     results_dict['ip_address'] = str(adapter.get_ipaddr())      
@@ -522,8 +524,8 @@ def main():
     results_dict['location'] = config_vars['location']
 
     # drump out adapter info to log file
-    file_logger.info("Wireless connection: SSID:{}, BSSID:{}, Freq:{}, Center Freq:{}, Channel: {}, Channel Width: {}, Tx Phy rate:{}, Rx Phy rate:{}, RSSI:{}, Tx retries:{}, IP address:{}".format(results_dict['ssid'], 
-        results_dict['bssid'], results_dict['freq_ghz'], results_dict['center_freq_ghz'], results_dict['channel'], results_dict['channel_width'], results_dict['tx_rate_mbps'], results_dict['rx_rate_mbps'], results_dict['signal_level_dbm'], results_dict['tx_retries'],
+    file_logger.info("Wireless connection: SSID:{}, BSSID:{}, Freq:{}, Center Freq:{}, Channel: {}, Channel Width: {}, Tx Phy rate:{}, Rx Phy rate:{}, Tx MCS: {}, Rx MCS: {}, RSSI:{}, Tx retries:{}, IP address:{}".format(results_dict['ssid'], 
+        results_dict['bssid'], results_dict['freq_ghz'], results_dict['center_freq_ghz'], results_dict['channel'], results_dict['channel_width'], results_dict['tx_rate_mbps'], results_dict['rx_rate_mbps'], results_dict['tx_mcs'], results_dict['rx_mcs'], results_dict['signal_level_dbm'], results_dict['tx_retries'],
         results_dict['ip_address'] ))
 
     # Pre-populate speedtest results vars
