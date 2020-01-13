@@ -142,7 +142,7 @@ class WirelessAdapter(object):
         # lookup channel number from freq
         self.channel = self.channel_lookup(self.freq)
 
-        # Extract Bit Rate (e.g. Bit Rate=144.4 Mb/s)
+        # Extract Tx Bit Rate (e.g. Bit Rate=144.4 Mb/s)
         if not self.tx_bit_rate:
             pattern = 'Bit Rate[\=|\:]([\d|\.]+) '
             field_name = "tx_bit_rate"
@@ -174,7 +174,7 @@ class WirelessAdapter(object):
             iw_info = subprocess.check_output(
                 "/sbin/iw " + self.wlan_if_name + " info 2>&1", shell=True).decode()
         except Exception as ex:
-            error_descr = "Issue getting interface info using iwconfig command"
+            error_descr = "Issue getting interface info using iw info command"
             if self.debug:
                 print("{}: {}".format(error_descr, ex))
 
@@ -209,6 +209,58 @@ class WirelessAdapter(object):
 
         return True
 
+
+def iw_link(self):
+
+         #############################################################################
+        # Get wireless interface IP address info using the iw dev wlanX link command
+        #############################################################################
+        try:
+            iw_info = subprocess.check_output(
+                "/sbin/iw " + self.wlan_if_name + " link 2>&1", shell=True).decode()
+        except Exception as ex:
+            error_descr = "Issue getting interface info using iw link command"
+            if self.debug:
+                print("{}: {}".format(error_descr, ex))
+
+            self.file_logger.error("{}: {}".format(error_descr, ex))
+            self.file_logger.error("Returning error...")
+            return False
+
+        if self.debug:
+            print("Wireless interface config info (iw dev wlanX link): ")
+            print(iw_info)
+
+        # Extract channel width
+        if not self.channel_width:
+            pattern = ' (\d+)MHZ '
+            field_name = "channel_width"
+            self.channel_width = self.field_extractor(
+                field_name, pattern, iw_info)
+
+        # Extract Signal Level
+        if not self.signal_level:
+            pattern = 'signal: (\-\d+) dBm
+            field_name = "signal_level"
+            self.signal_level = self.field_extractor(
+                field_name, pattern, iwconfig_info)
+
+        # Extract Tx Bit Rate (e.g. tx bitrate: 150.0 MBit/s)
+        if not self.tx_bit_rate:
+            pattern = 'tx bitrate: ([\d|\.]+) MBit/s'
+            field_name = "tx_bit_rate"
+            self.tx_bit_rate = self.field_extractor(
+                field_name, pattern, iwconfig_info)
+
+        # Extract MCS value (e.g. tx bitrate: 150.0 MBit/s MCS 7 40MHz short GI)
+        if not self.tx_mcs:
+            pattern = ' MCS (\d+) '
+            field_name = "tx_mcs"
+            self.tx_mcs = self.field_extractor(
+                field_name, pattern, iwconfig_info)
+
+        return True
+
     def get_wireless_info(self):
         '''
         This function will look for various pieces of information from the
@@ -240,7 +292,7 @@ class WirelessAdapter(object):
         self.iw_info()
 
         # get info using iw link
-        # self.iw_link(self)
+        # self.iw_link()
 
         # get info using iw station
         # self.iw_link(self)
