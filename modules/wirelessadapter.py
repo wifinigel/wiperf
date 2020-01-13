@@ -286,36 +286,41 @@ class WirelessAdapter(object):
         if not self.channel_width:
             pattern = 'rx bitrate: .*? (\d+)MHz'
             field_name = "channel_width"
-            self.channel_width = int(self.field_extractor(
-                field_name, pattern, iw_station))
+            extraction = self.field_extractor(field_name, pattern, iw_station)
+            if not extraction == None:
+                self.channel_width = int(extraction)
 
         # Extract Tx Bit Rate (e.g. tx bitrate:     72.2 MBit/s MCS 7 short GI)
         if not self.tx_bit_rate:
             pattern = 'tx bitrate: .*? ([\d|\.]+) MBit/s'
             field_name = "tx_bit_rate"
-            self.tx_bit_rate = float(self.field_extractor(
-                field_name, pattern, iw_station))
+            extraction = self.field_extractor(field_name, pattern, iw_station)
+            if not extraction == None:
+                self.tx_bit_rate = float(extraction)
 
         # Extract Rx Bit Rate (e.g. rx bitrate:     121.5 MBit/s MCS 6 40MHz)
         if not self.rx_bit_rate:
             pattern = 'rx bitrate: .*? ([\d|\.]+) MBit/s'
             field_name = "rx_bit_rate"
-            self.rx_bit_rate = float(self.field_extractor(
-                field_name, pattern, iw_station))
+            extraction = self.field_extractor(field_name, pattern, iw_station)
+            if not extraction == None:
+                self.rx_bit_rate = float(extraction)
 
         # Extract Tx MCS value (e.g. tx bitrate:     72.2 MBit/s MCS 7 short GI)
         if not self.tx_mcs:
             pattern = 'tx bitrate: .*? MCS (\d+) '
             field_name = "tx_mcs"
-            self.tx_mcs = int(self.field_extractor(
-                field_name, pattern, iw_station))
+            extraction = self.field_extractor(field_name, pattern, iw_station)
+            if not extraction == None:
+                self.tx_mcs = int(extraction)
 
         # Extract Rx MCS value (e.g. rx bitrate:     121.5 MBit/s MCS 6 40MHz)
         if not self.rx_mcs:
             pattern = 'rx bitrate: .*? MCS (\d+) '
             field_name = "rx_mcs"
-            self.rx_mcs = int(self.field_extractor(
-                field_name, pattern, iw_station))
+            extraction = self.field_extractor(field_name, pattern, iw_station)
+            if not extraction == None:
+                self.rx_mcs = int(extraction)
 
         return True
 
