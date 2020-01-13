@@ -139,39 +139,29 @@ class WirelessAdapter(object):
             self.freq = self.field_extractor(
                 field_name, pattern, iwconfig_info)
 
-        # lookup channel number
+        # lookup channel number from freq
         self.channel = self.channel_lookup(self.freq)
 
         # Extract Bit Rate (e.g. Bit Rate=144.4 Mb/s)
-        ssid_re = re.search('Bit Rate[\=|\:]([\d|\.]+) ', iwconfig_info)
-        if ssid_re is None:
-            self.tx_bit_rate = "NA"
-        else:
-            self.tx_bit_rate = ssid_re.group(1)
-
-        if self.debug:
-            print("Bit rate: " + self.tx_bit_rate)
+        if not self.tx_bit_rate:
+            pattern = 'Bit Rate[\=|\:]([\d|\.]+) '
+            field_name = "tx_bit_rate"
+            self.tx_bit_rate = self.field_extractor(
+                field_name, pattern, iwconfig_info)
 
         # Extract Signal Level
-        ssid_re = re.search('Signal level[\=|\:](.+?) ', iwconfig_info)
-        if ssid_re is None:
-            self.signal_level = "NA"
-        else:
-            self.signal_level = ssid_re.group(1)
-
-        if self.debug:
-            print("Signal level = " + self.signal_level)
+        if not self.signal_level:
+            pattern = 'Signal level[\=|\:](.+?) '
+            field_name = "signal_level"
+            self.signal_level = self.field_extractor(
+                field_name, pattern, iwconfig_info)
 
         # Extract tx retries
-        ssid_re = re.search(
-            'Tx excessive retries[\=|\:](\d+?) ', iwconfig_info)
-        if ssid_re is None:
-            self.tx_retries = "NA"
-        else:
-            self.tx_retries = ssid_re.group(1)
-
-        if self.debug:
-            print("Excessive Tx Retries = " + self.tx_retries)
+        if not self.tx_retries:
+            pattern = 'Tx excessive retries[\=|\:](\d+?) '
+            field_name = "tx_retries"
+            self.tx_retries = self.field_extractor(
+                field_name, pattern, iwconfig_info)
 
         return True
 
