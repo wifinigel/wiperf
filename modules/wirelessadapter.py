@@ -399,14 +399,14 @@ class WirelessAdapter(object):
             print(self.ifconfig_info)
 
         # Extract IP address info (e.g. inet 10.255.250.157)
-        ip_re = re.search('inet .*?(\d+\.\d+\.\d+\.\d+)', self.ifconfig_info)
+        ip_re = re.search(r'inet .*?(\d+\.\d+\.\d+\.\d+)', self.ifconfig_info)
         if ip_re is None:
             self.ip_addr = "NA"
         else:
             self.ip_addr = ip_re.group(1)
 
         # Check to see if IP address is APIPA (169.254.x.x)
-        apipa_re = re.search('169\.254', self.ip_addr)
+        apipa_re = re.search(r'169\.254', self.ip_addr)
         if not apipa_re is None:
             self.ip_addr = "NA"
 
@@ -445,7 +445,7 @@ class WirelessAdapter(object):
 
         # Extract def gw
         def_gw_re = re.search(
-            '0\.0\.0\.0\s+(\d+\.\d+\.\d+\.\d+)\s', self.route_info)
+            r'0\.0\.0\.0\s+(\d+\.\d+\.\d+\.\d+)\s', self.route_info)
         if def_gw_re is None:
             self.def_gw = "NA"
         else:
