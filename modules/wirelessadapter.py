@@ -260,6 +260,64 @@ class WirelessAdapter(object):
 
         return True
 
+    def iw_station(self):
+
+         #####################################################################################
+        # Get wireless interface IP address info using the iw dev wlanX station dump command
+        ######################################################################################
+        try:
+            iw_station = subprocess.check_output(
+                "/sbin/iw " + self.wlan_if_name + " station dump 2>&1", shell=True).decode()
+        except Exception as ex:
+            error_descr = "Issue getting interface info using iw link command"
+            if self.debug:
+                print("{}: {}".format(error_descr, ex))
+
+            self.file_logger.error("{}: {}".format(error_descr, ex))
+            self.file_logger.error("Returning error...")
+            return False
+
+        if self.debug:
+            print("Wireless interface config info (iw dev wlanX station dump): ")
+            print(iw_station)
+
+        # Extract channel width
+        if not self.channel_width:
+            pattern = 'rx bitrate: .*? (\d+)MHz'
+            field_name = "channel_width"
+            self.channel_width = int(self.field_extractor(
+                field_name, pattern, iw_station))
+
+        # Extract Tx Bit Rate (e.g. tx bitrate:     72.2 MBit/s MCS 7 short GI)
+        if not self.tx_bit_rate:
+            pattern = 'tx bitrate: .*? ([\d|\.]+) MBit/s'
+            field_name = "tx_bit_rate"
+            self.tx_bit_rate = float(self.field_extractor(
+                field_name, pattern, iw_station))
+
+        # Extract Rx Bit Rate (e.g. rx bitrate:     121.5 MBit/s MCS 6 40MHz)
+        if not self.rx_bit_rate:
+            pattern = 'rx bitrate: .*? ([\d|\.]+) MBit/s'
+            field_name = "rx_bit_rate"
+            self.rx_bit_rate = float(self.field_extractor(
+                field_name, pattern, iw_station))
+
+        # Extract Tx MCS value (e.g. tx bitrate:     72.2 MBit/s MCS 7 short GI)
+        if not self.tx_mcs:
+            pattern = 'tx bitrate: .*? MCS (\d+) '
+            field_name = "tx_mcs"
+            self.tx_mcs = int(self.field_extractor(
+                field_name, pattern, iw_station))
+
+        # Extract Rx MCS value (e.g. rx bitrate:     121.5 MBit/s MCS 6 40MHz)
+        if not self.rx_mcs:
+            pattern = 'rx bitrate:  .*? MCS (\d+) '
+            field_name = "rx_mcs"
+            self.rx_mcs = int(self.field_extractor(
+                field_name, pattern, iw_station))
+
+        return True
+
     def get_wireless_info(self):
         '''
         This function will look for various pieces of information from the
@@ -294,7 +352,7 @@ class WirelessAdapter(object):
         self.iw_link()
 
         # get info using iw station
-        # self.iw_link(self)
+        self.iw_station()
 
         # get the values extracted and return in a list
         results_list = [self.ssid, self.bssid, self.freq, self.tx_bit_rate,
