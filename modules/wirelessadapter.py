@@ -39,17 +39,18 @@ class WirelessAdapter(object):
 
     def field_extractor(self, field_name, pattern, cmd_output_text):
 
-        field_value = "NA"
-
         re_result = re.search(pattern, cmd_output_text)
 
         if not re_result is None:
             field_value = re_result.group(1)
 
-        if self.debug:
-            print("{} = {}".format(field_name, field_value))
+            if self.debug:
+                print("{} = {}".format(field_name, field_value))
 
-        return field_value
+            return field_value
+        else:
+
+            return None
 
     def channel_lookup(self, freq):
 
@@ -311,7 +312,7 @@ class WirelessAdapter(object):
 
         # Extract Rx MCS value (e.g. rx bitrate:     121.5 MBit/s MCS 6 40MHz)
         if not self.rx_mcs:
-            pattern = 'rx bitrate:  .*? MCS (\d+) '
+            pattern = 'rx bitrate: .*? MCS (\d+) '
             field_name = "rx_mcs"
             self.rx_mcs = int(self.field_extractor(
                 field_name, pattern, iw_station))
