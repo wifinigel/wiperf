@@ -506,19 +506,19 @@ def main():
     # define column headers
     column_headers = ['time', 'server_name', 'ping_time', 'download_rate_mbps', 'upload_rate_mbps', 'ssid', 'bssid', 'freq_ghz', 'channel', 'phy_rate_mbps', 'signal_level_dbm', 'tx_retries', 'ip_address', 'location']
     
-    results_dict['ssid'] = str(adapter.get_ssid())
-    results_dict['bssid'] = str(adapter.get_bssid())
-    results_dict['freq_ghz'] = str(adapter.get_freq())
-    results_dict['center_freq_ghz'] = str(adapter.get_center_freq())
-    results_dict['channel'] = str(adapter.get_channel())
-    results_dict['channel_width'] = str(adapter.get_channel_width())
-    results_dict['tx_rate_mbps'] = float(adapter.get_tx_bit_rate())
-    results_dict['rx_rate_mbps'] = float(adapter.get_rx_bit_rate())
-    results_dict['tx_mcs'] = int(adapter.get_tx_mcs())
-    results_dict['rx_mcs'] = int(adapter.get_rx_mcs())
-    results_dict['signal_level_dbm'] = int(adapter.get_signal_level())
-    results_dict['tx_retries'] = int(adapter.get_tx_retries())
-    results_dict['ip_address'] = str(adapter.get_ipaddr())      
+    results_dict['ssid'] = adapter.get_ssid()
+    results_dict['bssid'] = adapter.get_bssid()
+    results_dict['freq_ghz'] = adapter.get_freq()
+    results_dict['center_freq_ghz'] = adapter.get_center_freq()
+    results_dict['channel'] = adapter.get_channel()
+    results_dict['channel_width'] = adapter.get_channel_width()
+    results_dict['tx_rate_mbps'] = adapter.get_tx_bit_rate()
+    results_dict['rx_rate_mbps'] = adapter.get_rx_bit_rate()
+    results_dict['tx_mcs'] = adapter.get_tx_mcs()
+    results_dict['rx_mcs'] = adapter.get_rx_mcs()
+    results_dict['signal_level_dbm'] = adapter.get_signal_level()
+    results_dict['tx_retries'] = adapter.get_tx_retries()
+    results_dict['ip_address'] = adapter.get_ipaddr()    
     results_dict['time'] = int(time.time())
     #results_dict['tags'] = [x.strip() for x in config_vars['tags'].split(',')]
     results_dict['location'] = config_vars['location']

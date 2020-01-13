@@ -19,17 +19,17 @@ class WirelessAdapter(object):
 
         self.ssid = ''  # str
         self.bssid = ''  # str
-        self.freq = ''  # int
-        self.center_freq = ''  # int
-        self.channel = ''  # int
-        self.channel_width = ''  # int
-        self.tx_bit_rate = ''  # float
-        self.rx_bit_rate = ''  # float
-        self.tx_mcs = ''  # int
-        self.rx_mcs = ''  # int
+        self.freq = False  # int
+        self.center_freq = False  # int
+        self.channel = False  # int
+        self.channel_width = False  # int
+        self.tx_bit_rate = False  # float
+        self.rx_bit_rate = False  # float
+        self.tx_mcs = False  # int
+        self.rx_mcs = False  # int
 
-        self.signal_level = ''  # float
-        self.tx_retries = ''  # int
+        self.signal_level = False  # float
+        self.tx_retries = False  # int
 
         self.ip_addr = ''  # str
         self.def_gw = ''  # str
