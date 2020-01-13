@@ -140,7 +140,7 @@ class WirelessAdapter(object):
                 field_name, pattern, iwconfig_info))
 
         # lookup channel number from freq
-        self.channel = self.channel_lookup(self.freq)
+        self.channel = self.channel_lookup(str(self.freq))
 
         # Extract Tx Bit Rate (e.g. Bit Rate=144.4 Mb/s)
         if not self.tx_bit_rate:
