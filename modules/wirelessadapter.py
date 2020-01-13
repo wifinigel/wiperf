@@ -291,7 +291,7 @@ class WirelessAdapter(object):
         self.iw_info()
 
         # get info using iw link
-        # self.iw_link()
+        self.iw_link()
 
         # get info using iw station
         # self.iw_link(self)
