@@ -334,7 +334,7 @@ class WirelessAdapter(object):
 
         # Extract Tx MCS value (e.g. tx bitrate:     72.2 MBit/s MCS 7 short GI)
         if not self.tx_mcs:
-            pattern = r'tx bitrate\:.*?MBit/s MCS (\d+) '
+            pattern = r'tx bitrate\:.*?MCS (\d+) '
             field_name = "tx_mcs"
             extraction = self.field_extractor(field_name, pattern, iw_station)
             if extraction:
@@ -342,7 +342,7 @@ class WirelessAdapter(object):
 
         # Extract Rx MCS value (e.g. rx bitrate:     121.5 MBit/s MCS 6 40MHz)
         if not self.rx_mcs:
-            pattern = r'rx bitrate\:.*?MBit/s MCS (\d+)'
+            pattern = r'rx bitrate\:.*?MCS (\d+)'
             field_name = "rx_mcs"
             extraction = self.field_extractor(field_name, pattern, iw_station)
             if extraction:
