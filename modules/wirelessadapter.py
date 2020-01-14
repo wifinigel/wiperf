@@ -19,8 +19,8 @@ class WirelessAdapter(object):
 
         self.ssid = ''  # str
         self.bssid = ''  # str
-        self.freq = False  # int
-        self.center_freq = False  # int
+        self.freq = False  # float
+        self.center_freq = False  # float
         self.channel = False  # int
         self.channel_width = False  # int
         self.tx_bit_rate = False  # float
@@ -198,15 +198,15 @@ class WirelessAdapter(object):
         if not self.center_freq:
             pattern = r'center1\: (\d+) MHz'
             field_name = "center_freq"
-            self.center_freq = int(self.field_extractor(
-                field_name, pattern, iw_info))
+            self.center_freq = float(self.field_extractor(
+                field_name, pattern, iw_info))/1000
 
         # Extract frequency
         if not self.freq:
             pattern = r'channel \d+ \((\d+) MHz\)'
             field_name = "freq"
-            self.freq = int(self.field_extractor(
-                field_name, pattern, iw_info))
+            self.freq = float(self.field_extractor(
+                field_name, pattern, iw_info))/1000
 
         return True
 
@@ -284,7 +284,7 @@ class WirelessAdapter(object):
 
         # Extract channel width
         if not self.channel_width:
-            pattern = r'rx bitrate\: .*? (\d+)MHz'
+            pattern = r'rx bitrate\:.*?(\d+)MHz'
             field_name = "channel_width"
             extraction = self.field_extractor(field_name, pattern, iw_station)
             if not extraction == None:
@@ -292,7 +292,7 @@ class WirelessAdapter(object):
 
         # Extract Tx Bit Rate (e.g. tx bitrate:     72.2 MBit/s MCS 7 short GI)
         if not self.tx_bit_rate:
-            pattern = r'tx bitrate\: .*? ([\d|\.]+) MBit/s'
+            pattern = r'tx bitrate\:.*?([\d|\.]+) MBit/s'
             field_name = "tx_bit_rate"
             extraction = self.field_extractor(field_name, pattern, iw_station)
             if not extraction == None:
@@ -300,7 +300,7 @@ class WirelessAdapter(object):
 
         # Extract Rx Bit Rate (e.g. rx bitrate:     121.5 MBit/s MCS 6 40MHz)
         if not self.rx_bit_rate:
-            pattern = r'rx bitrate\: .*? ([\d|\.]+) MBit/s'
+            pattern = r'rx bitrate\:.*?([\d|\.]+) MBit/s'
             field_name = "rx_bit_rate"
             extraction = self.field_extractor(field_name, pattern, iw_station)
             if not extraction == None:
@@ -308,7 +308,7 @@ class WirelessAdapter(object):
 
         # Extract Tx MCS value (e.g. tx bitrate:     72.2 MBit/s MCS 7 short GI)
         if not self.tx_mcs:
-            pattern = r'tx bitrate\: .*? MCS (\d+) '
+            pattern = r'tx bitrate\:.*?MBit/s MCS (\d+) '
             field_name = "tx_mcs"
             extraction = self.field_extractor(field_name, pattern, iw_station)
             if not extraction == None:
@@ -316,7 +316,7 @@ class WirelessAdapter(object):
 
         # Extract Rx MCS value (e.g. rx bitrate:     121.5 MBit/s MCS 6 40MHz)
         if not self.rx_mcs:
-            pattern = r'rx bitrate\: .*? MCS (\d+) '
+            pattern = r'rx bitrate\:.*?MBit/s MCS (\d+)'
             field_name = "rx_mcs"
             extraction = self.field_extractor(field_name, pattern, iw_station)
             if not extraction == None:
