@@ -1,5 +1,5 @@
 <form>
-  <label>Speedtest Report</label>
+  <label>04 - TCP iperf Report</label>
   <fieldset submitButton="false">
     <input type="dropdown" token="host_name" searchWhenChanged="true">
       <label>Hostname</label>
@@ -24,16 +24,19 @@
   <row>
     <panel>
       <chart>
-        <title>Speedtest (Download) - $host_name$</title>
+        <title>TCP iPerf Rate - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk"| timechart avg(download_rate_mbps) as "Avg Download" by host</query>
+          <query>host=$host_name$ source="wiperf-iperf3-tcp-splunk"| timechart avg(sent_mbps) as "Avg Sent Mbps" avg(received_mbps) as "Avg Rec Mbps"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
         </search>
         <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleY.text">Mbps</option>
         <option name="charting.axisY.minimumNumber">0</option>
-        <option name="charting.chart">area</option>
+        <option name="charting.axisY2.enabled">1</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.overlayFields">"Avg Rec Mbps"</option>
         <option name="charting.drilldown">none</option>
         <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
         <option name="charting.legend.placement">top</option>
@@ -42,18 +45,23 @@
     </panel>
     <panel>
       <chart>
-        <title>Speedtest (Upload) - $host_name$</title>
+        <title>iPerf Re-transmits - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk"| timechart avg(upload_rate_mbps) as "Avg Upload" by host</query>
+          <query>host=$host_name$ source="wiperf-iperf3-tcp-splunk"| timechart avg(retransmits) as "iPerf Re-transmits"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
         </search>
-        <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleY.text">Mbps</option>
+        <option name="charting.axisY.abbreviation">none</option>
+        <option name="charting.axisY.maximumNumber">100</option>
         <option name="charting.axisY.minimumNumber">0</option>
+        <option name="charting.axisY2.enabled">1</option>
+        <option name="charting.axisY2.maximumNumber">100</option>
+        <option name="charting.axisY2.minimumNumber">0</option>
         <option name="charting.chart">area</option>
+        <option name="charting.chart.overlayFields">"% Loss"</option>
         <option name="charting.drilldown">none</option>
-        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
         <option name="charting.legend.placement">top</option>
         <option name="refresh.display">progressbar</option>
       </chart>
@@ -64,34 +72,58 @@
       <chart>
         <title>Wireless Connection - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk"| timechart avg(phy_rate_mbps) as "PHY Rate" avg(signal_level_dbm) as "Signal Level (dBm)"</query>
+          <query>host=$host_name$ source="wiperf-speedtest-splunk"| timechart avg(tx_rate_mbps) as "Tx PHY Rate" avg(rx_rate_mbps) as "Rx PHY Rate" avg(signal_level_dbm) as "Signal Level (dBm)"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
         </search>
         <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisY.maximumNumber">-20</option>
-        <option name="charting.axisY.minimumNumber">-100</option>
+        <option name="charting.axisTitleY.text">PHY Rates</option>
+        <option name="charting.axisTitleY2.text">Signal (dBm)</option>
+        <option name="charting.axisY.minimumNumber">0</option>
         <option name="charting.axisY2.enabled">1</option>
-        <option name="charting.axisY2.minimumNumber">0</option>
+        <option name="charting.axisY2.maximumNumber">-20</option>
+        <option name="charting.axisY2.minimumNumber">-90</option>
         <option name="charting.axisY2.scale">inherit</option>
         <option name="charting.chart">line</option>
-        <option name="charting.chart.overlayFields">"PHY Rate"</option>
+        <option name="charting.chart.overlayFields">"Signal Level (dBm)"</option>
         <option name="charting.drilldown">none</option>
         <option name="charting.legend.placement">top</option>
+        <option name="refresh.display">progressbar</option>
       </chart>
     </panel>
     <panel>
       <chart>
-        <title>Layer 2 TX Retries - $host_name$</title>
+        <title>TX Retries - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-speedtest-splunk"| sort host _time | delta tx_retries as delta_retries p=1 
 | timechart latest(delta_retries) as "Tx Retries" by host</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
-        <option name="charting.axisTitleY.text">L2 Retries</option>
         <option name="charting.chart">line</option>
         <option name="charting.drilldown">none</option>
+        <option name="charting.legend.placement">top</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>Wireless MCS - $host_name$</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-speedtest-splunk"| timechart avg(tx_mcs) as "Tx MCS"  avg(rx_mcs) as "Rx MCS"</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleY.text">MCS</option>
+        <option name="charting.axisY.minimumNumber">0</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
         <option name="charting.legend.placement">top</option>
         <option name="refresh.display">progressbar</option>
       </chart>
@@ -106,7 +138,6 @@
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
-        <option name="charting.axisLabelsY.majorUnit">1</option>
         <option name="charting.axisTitleX.text">Time</option>
         <option name="charting.axisTitleY.visibility">collapsed</option>
         <option name="charting.chart">column</option>
@@ -128,9 +159,7 @@
           <refresh>1m</refresh>
           <refreshType>delay</refreshType>
         </search>
-        <option name="charting.axisLabelsY.majorUnit">1</option>
         <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleY.visibility">collapsed</option>
         <option name="charting.axisY.minimumNumber">0</option>
         <option name="charting.chart">column</option>
         <option name="charting.chart.stackMode">stacked</option>
@@ -141,8 +170,6 @@
         <option name="refresh.display">progressbar</option>
       </chart>
     </panel>
-  </row>
-  <row>
     <panel>
       <chart>
         <title>Channel - $host_name$</title>
@@ -153,63 +180,12 @@
           <refresh>1m</refresh>
           <refreshType>delay</refreshType>
         </search>
-        <option name="charting.axisLabelsY.majorUnit">1</option>
         <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleX.visibility">visible</option>
-        <option name="charting.axisTitleY.visibility">collapsed</option>
-        <option name="charting.axisTitleY2.visibility">visible</option>
         <option name="charting.chart">column</option>
         <option name="charting.chart.stackMode">stacked</option>
         <option name="charting.drilldown">none</option>
         <option name="charting.legend.placement">top</option>
         <option name="refresh.display">progressbar</option>
-        <option name="trellis.enabled">0</option>
-      </chart>
-    </panel>
-    <panel>
-      <chart>
-        <title>Wi-Fi Band - $host_name$</title>
-        <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk" | eval band=if(channel&lt;14,"2.4GHz","5GHz") 
-| stats count by band</query>
-          <earliest>$field1.earliest$</earliest>
-          <latest>$field1.latest$</latest>
-          <refresh>1m</refresh>
-          <refreshType>delay</refreshType>
-        </search>
-        <option name="charting.axisTitleX.visibility">visible</option>
-        <option name="charting.axisTitleY.visibility">visible</option>
-        <option name="charting.axisTitleY2.visibility">visible</option>
-        <option name="charting.chart">pie</option>
-        <option name="charting.drilldown">none</option>
-        <option name="charting.legend.placement">right</option>
-        <option name="refresh.display">progressbar</option>
-        <option name="trellis.enabled">0</option>
-        <option name="trellis.size">large</option>
-        <option name="trellis.splitBy">_aggregation</option>
-      </chart>
-    </panel>
-    <panel>
-      <chart>
-        <title>Speedtest Servers - $host_name$</title>
-        <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk"| stats count(server_name) by server_name</query>
-          <earliest>$field1.earliest$</earliest>
-          <latest>$field1.latest$</latest>
-          <refresh>1m</refresh>
-          <refreshType>delay</refreshType>
-        </search>
-        <option name="charting.axisLabelsY.majorUnit">1</option>
-        <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleX.visibility">visible</option>
-        <option name="charting.axisTitleY.visibility">collapsed</option>
-        <option name="charting.axisTitleY2.visibility">visible</option>
-        <option name="charting.chart">pie</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.drilldown">none</option>
-        <option name="charting.legend.placement">top</option>
-        <option name="refresh.display">progressbar</option>
-        <option name="trellis.enabled">0</option>
       </chart>
     </panel>
   </row>
