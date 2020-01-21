@@ -491,9 +491,10 @@ class WirelessAdapter(object):
         if self.debug:
             print("Bouncing interface (platform type = " + self.platform + ")")
 
-        self.file_logger.error(
+        self.file_logger.info(
             "Bouncing interface (platform type = " + self.platform + ")")
 
+        #if_down_cmd = "sudo /sbin/ifup {}".format(self.wlan_if_name)
         if_down_cmd = "sudo /sbin/ifconfig {} down".format(self.wlan_if_name)
 
         if self.debug:
@@ -519,7 +520,7 @@ class WirelessAdapter(object):
             print("Output of ifdown command: ")
             print(if_down)
 
-        self.file_logger.error("sudo ifdown output: " + str(if_down))
+        self.file_logger.info("sudo ifdown output: " + str(if_down))
 
         # have a sleep to allow time for wpa_supplicant to exit?
         time.sleep(5)
@@ -549,7 +550,7 @@ class WirelessAdapter(object):
             print("Output of ifup command: ")
             print(if_up)
 
-        self.file_logger.error("sudo ifup output: " + str(if_up))
+        self.file_logger.info("sudo ifup output: " + str(if_up))
 
         return True
 
