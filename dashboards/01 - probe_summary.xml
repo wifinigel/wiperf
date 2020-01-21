@@ -3,6 +3,7 @@
   <fieldset submitButton="false">
     <input type="dropdown" token="host_name" searchWhenChanged="true">
       <label>Hostname</label>
+      <selectFirstChoice>true</selectFirstChoice>
       <fieldForLabel>host</fieldForLabel>
       <fieldForValue>host</fieldForValue>
       <search>
