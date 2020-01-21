@@ -38,11 +38,14 @@ We'll take a look at each section of the config file and provide some guidance o
     - [splunk_token](#splunk_token)
     - [test_interval](#test_interval)
     - [test_offset](#test_offset)
+    - [location](#location)
     - [data_format](#data_format)
     - [data_dir](#data_dir)
     - [date_transport](#data_transport)
+    - [unit_bouncer](#unit_bouncer)
 - [Speetest Section](#speedtest-section)
     - [enabled](#enabled)
+    - [server_id](#server_id)
     - [speedtest_data_file](#speedtest_data_file)
 - [Ping_Test Section](#ping_test-section)
     - [enabled](#enabled-1)
@@ -186,6 +189,16 @@ test_offset: 0
 ```
 [top](#parameter-reference-guide)
 
+### location
+
+This is a string that can be added to assist with report filtering, if required. Its default value in an empty string. It could be be used in an expression within Splunk to filer units based on a location field (for instance)
+
+Default setting:
+```
+location: 
+```
+[top](#parameter-reference-guide)
+
 ### data_format
 (Not currently operational) Wiperf has the capability to output data in a number of formats. The current options are: csv or json
 
@@ -219,6 +232,24 @@ data_transport: hec
 ```
 [top](#parameter-reference-guide)
 
+### unit_bouncer
+
+If you need to bounce (reboot) the unit for some reason on a regular basis, this field can be used to signal to the WLAN Pi each hour at which is must reboot.
+
+The field is a comma separated string that lists the hours at which the unit must reboot (in 24-hour format), The number format and comma separation are important to get right! Note that the reboot is not exactly on the hour, but will reboot at the end of the next text cycle that detects that it is within the hour where a reboot is required. It will only happen once per hour.
+
+Example: the following config will reboot at midnight, 04:00, 08:00, 12:00, 16:00:
+```
+ unit_bouncer: 00, 06, 12, 18
+```
+This parameter is commented out by default as it is obviously not something you necessarilly want to switch on accidentally.
+
+Default setting:
+```
+; unit_bouncer: 00, 06, 12, 18
+```
+[top](#parameter-reference-guide)
+
 ## [Speedtest] Section
 
 (Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
@@ -233,6 +264,20 @@ enabled: yes
 ```
 [top](#parameter-reference-guide)
 
+### server_id
+
+If you wish to specify a particular Ookla speedtest server that the test needs to be run against, you can enter its ID here. This must be the (numeric) server ID of a specific Ookla server taken from : https://c.speedtest.net/speedtest-servers-static.php
+
+**Note this must be the number (NOT url!) taken from the field id="xxxxx".**
+
+If no value is specified, best server is used (default)
+
+Default setting:
+```
+server_id:
+```
+[top](#parameter-reference-guide)
+
 ### speedtest_data_file
 
 (Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for Speedtests in Splunk 
@@ -242,6 +287,7 @@ Default setting:
 speedtest_data_file: wiperf-speedtest-splunk
 ```
 [top](#parameter-reference-guide)
+
 
 ## [Ping_Test] Section
 
