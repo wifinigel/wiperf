@@ -32,6 +32,7 @@ lock_file = '/tmp/wiperf.lock'
 mode_active = os.path.dirname(os.path.realpath(__file__)) + "/wiperf_mode.on"
 status_file = '/tmp/wiperf_status.txt'
 watchdog_file = '/tmp/wiperf.watchdog'
+bounce_file = '/tmp/wiperf.bounce'
 
 # Enable debugs or create some dummy data for testing
 DEBUG = 0
@@ -84,6 +85,9 @@ def read_config(debug):
     # test cycle timing parameters
     config_vars['test_interval'] = gen_sect.get('test_interval', '5')
     config_vars['test_offset'] = gen_sect.get('test_offset', '0')
+
+    # unit bouncer - hours at which we'd like to bounce unit (e.g. 00, 04, 08, 12, 16, 20)
+    config_vars['unit_bouncer'] = gen_sect.get('unit_bouncer', False)
 
     # location
     config_vars['location'] = gen_sect.get('location', '')
@@ -279,6 +283,78 @@ def delete_lock_file(lock_file, file_logger):
     except Exception as ex:
         file_logger.error("Issue deleting lock file: {}, exiting...".format(ex))
         sys.exit()
+
+####################################
+# Unit bouncer
+####################################
+def check_bounce_file(bounce_file, file_logger):
+
+    if os.path.exists(bounce_file):
+        return True
+    
+    return False
+
+def read_bounce_file(bounce_file, file_logger):
+
+    try :
+        with open(bounce_file, 'r') as bouncef:
+            hour = bouncef.read()
+        return hour
+    except Exception as ex:
+        file_logger.error("Issue reading bounce file: {}, exiting...".format(ex))
+        sys.exit()
+
+def write_bounce_file(bounce_file, hour, file_logger):
+
+    try :
+        with open(bounce_file, 'w') as bouncef:
+            bouncef.write(str(hour))
+        return True
+    except Exception as ex:
+        file_logger.error("Issue writing bounce file: {}, exiting...".format(ex))
+        sys.exit()
+
+def check_for_bounce(bounce_file, file_logger):
+
+        # split out the hours we need to bounce the interface
+        bounce_hours = config_vars['unit_bouncer'].split(",")
+        bounce_hours = [i.strip() for i in bounce_hours]
+
+        # get current time and extract hour
+        now = datetime.datetime.now()
+        current_hour = '{:02d}'.format(now.hour)
+
+        # check if we have a bounce file that shows time of last bounce
+        if check_bounce_file(bounce_file, file_logger):
+
+            last_bounce = read_bounce_file(bounce_file, file_logger)
+
+            # is it time to bounce?
+            if current_hour in bounce_hours:
+
+                file_logger.info("Time to bounce unit?")
+
+                # possibly time to bounce, have we already bounced?
+                if last_bounce != current_hour:
+
+                    file_logger.info("Yes, bouncing unit (reboot)")
+
+                    # it's time to reboot
+                    write_bounce_file(bounce_file, current_hour, file_logger)
+
+                    try:
+                        reboot_output = subprocess.check_output('sudo /sbin/reboot', stderr=subprocess.STDOUT, shell=True).decode()
+                        file_logger.info("Reboot output: {}".format(reboot_output))
+                    except Exception as ex:
+                        file_logger.error("Reboot command had issue: {}.".format(ex))
+                else:
+                    file_logger.info("No.")
+        
+        else:
+
+            # bounce file does not exist, create it with current hour to stop bouncing
+            file_logger.info("Creating bounce file.")
+            write_bounce_file(bounce_file, str(current_hour), file_logger)
 
 def check_route_to_dest(ip_address, file_logger):
 
@@ -871,7 +947,11 @@ def main():
 
     # decrement watchdog as we ran OK
     dec_watchdog_count()
-    
+
+    # check if we need to bounce interface
+    if config_vars['unit_bouncer']:
+        check_for_bounce(bounce_file, file_logger)
+   
 
 ###############################################################################
 # End main
