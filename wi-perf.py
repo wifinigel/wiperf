@@ -252,19 +252,6 @@ def send_results(results_dict, column_headers, data_file, test_name, file_logger
     
     return True
 
-def bounce_error_exit(adapter, file_logger, debug=False): 
-    '''
-    Log an error before bouncing the wlan interface and then exiting as we have an unrecoverable error with the network connection
-    '''
-    import sys
-    
-    file_logger.error("Attempting to recover by bouncing wireless interface...")
-    file_logger.error("Bouncing WLAN interface")
-    adapter.bounce_wlan_interface()
-    file_logger.error("Bounce completed. Exiting script.")
-    
-    sys.exit()
-
 def read_lock_file(filename, file_logger):
     
     try :
@@ -288,11 +275,26 @@ def write_lock_file(filename, file_logger):
 def delete_lock_file(lock_file, file_logger):
     try :
         os.remove(lock_file)
+        file_logger.info("removing lock file")
         return True
     except Exception as ex:
         file_logger.error("Issue deleting lock file: {}, exiting...".format(ex))
         sys.exit()
 
+def bounce_error_exit(adapter, file_logger, debug=False): 
+    '''
+    Log an error before bouncing the wlan interface and then exiting as we have an unrecoverable error with the network connection
+    '''
+    import sys
+    
+    file_logger.error("Attempting to recover by bouncing wireless interface...")
+    file_logger.error("Bouncing WLAN interface")
+    adapter.bounce_wlan_interface()
+    file_logger.error("Bounce completed. Exiting script.")
+
+    # clean up lock file & exit
+    delete_lock_file(lock_file, file_logger)
+    sys.exit()
 ####################################
 # Unit bouncer
 ####################################
@@ -608,6 +610,9 @@ def main():
     #results_dict['tags'] = [x.strip() for x in config_vars['tags'].split(',')]
     results_dict['location'] = config_vars['location']
 
+    # test issue flag
+    test_issue = False
+
     # drump out adapter info to log file
     file_logger.info("Wireless connection: SSID:{}, BSSID:{}, Freq:{}, Center Freq:{}, Channel: {}, Channel Width: {}, Tx Phy rate:{}, Rx Phy rate:{}, Tx MCS: {}, Rx MCS: {}, RSSI:{}, Tx retries:{}, IP address:{}".format(results_dict['ssid'], 
         results_dict['bssid'], results_dict['freq_ghz'], results_dict['center_freq_ghz'], results_dict['channel'], results_dict['channel_width'], results_dict['tx_rate_mbps'], results_dict['rx_rate_mbps'], results_dict['tx_mcs'], results_dict['rx_mcs'], results_dict['signal_level_dbm'], results_dict['tx_retries'],
@@ -646,6 +651,7 @@ def main():
                 file_logger.error("Error running speedtest - check logs for info.")
         else:
             file_logger.error("Unable to run Speedtest as route to Internet not via wireless interface.")
+            test_issue = True
     else:
         file_logger.info("Speedtest not enabled in config file, just dumping adapter info instead...")
 
@@ -657,7 +663,7 @@ def main():
     #############################
     # Run ping test (if enabled)
     #############################
-    if config_vars['ping_enabled'] == 'yes':
+    if config_vars['ping_enabled'] == 'yes' and test_issue == False:
 
         file_logger.info("Starting ping test...")
         write_status_file("Ping tests")
@@ -678,6 +684,8 @@ def main():
         column_headers = ['time', 'ping_index', 'ping_host', 'pkts_tx', 'pkts_rx', 'percent_loss', 'test_time_ms', 'rtt_min_ms', 'rtt_avg_ms', 'rtt_max_ms', 'rtt_mdev_ms']
             
         # initial ping to populate arp cache and avoid arp timeput for first test ping
+        ping_dns_issue = False
+
         for ping_host in ping_hosts:
             if ping_host == '':
                 continue
@@ -690,14 +698,22 @@ def main():
                 if check_route_to_dest(ping_host, file_logger) == config_vars['wlan_if']:
                     ping_obj.ping_host(ping_host, 1)
                 else:
-                    file_logger.error("Unable to ping {} as route to destination not over wireless interface...bypassing test".format(ping_host))
-                    continue
+                    file_logger.error("Unable to ping {} as route to destination not over wireless interface...bypassing ping tests".format(ping_host))
+                    # we will break here if we have an issue as something bad has happened...don't want to run more tests
+                    test_issue = True
+                    break
             
         # ping test
         ping_index = 0
         delete_file = True
 
         for ping_host in ping_hosts:
+
+            # bail if we have had DNS issues
+            if test_issue == True:
+                file_logger.error("As we had previous issues, bypassing ping tests.")
+                break
+
             ping_index += 1
 
             if ping_host == '':
@@ -748,7 +764,7 @@ def main():
     ###################################
     # Run iperf3 tcp test (if enabled)
     ###################################
-    if config_vars['iperf3_tcp_enabled'] == 'yes':
+    if config_vars['iperf3_tcp_enabled'] == 'yes' and test_issue == False:
 
         file_logger.info("Starting iperf3 tcp test...")
         write_status_file("iperf3 tcp")
@@ -793,6 +809,7 @@ def main():
         
         else:
             file_logger.error("Unable to run iperf test to {} as route to destination not over wireless interface...bypassing test".format(server_hostname))
+            test_issue = True
     
     else:
         file_logger.info("Iperf3 tcp test not enabled in config file, bypassing this test...")
@@ -800,7 +817,7 @@ def main():
     ###################################
     # Run iperf3 udp test (if enabled)
     ###################################
-    if config_vars['iperf3_udp_enabled'] == 'yes':
+    if config_vars['iperf3_udp_enabled'] == 'yes' and test_issue == False:
 
         file_logger.info("Starting iperf3 udp test...")
         write_status_file("iperf3 udp")
@@ -850,6 +867,7 @@ def main():
 
         else:
             file_logger.error("Unable to run iperf test to {} as route to destination not over wireless interface...bypassing test".format(server_hostname))
+            test_issue = True
     
     else:
         file_logger.info("Iperf3 udp test not enabled in config file, bypassing this test...")
@@ -857,7 +875,7 @@ def main():
     ###################################
     # Run DNS lookup tests (if enabled)
     ###################################
-    if config_vars['dns_test_enabled'] == 'yes':
+    if config_vars['dns_test_enabled'] == 'yes' and test_issue == False:
 
         file_logger.info("Starting DNS tests...")
         write_status_file("DNS tests")
@@ -907,7 +925,10 @@ def main():
                 delete_file = False
 
             else:
-                file_logger.error("DNS test error - no results (check logs)")
+                file_logger.error("DNS test error - no results (check logs) - exiting DNS tests")
+                test_issue = True
+                break
+
 
     
     else:
@@ -917,7 +938,7 @@ def main():
     #####################################
     # Run DHCP renewal test (if enabled)
     #####################################
-    if config_vars['dhcp_test_enabled'] == 'yes':
+    if config_vars['dhcp_test_enabled'] == 'yes' and test_issue == False:
 
         file_logger.info("Starting DHCP renewal test...")
         write_status_file("DHCP renew")
@@ -950,14 +971,14 @@ def main():
         file_logger.info("DHCP test not enabled in config file, bypassing this test...")
 
     # get rid of log file
-    file_logger.info("Removing lock file.")
     write_status_file("")
     delete_lock_file(lock_file, file_logger)
 
     # decrement watchdog as we ran OK
-    dec_watchdog_count()
+    if test_issue == False:
+        dec_watchdog_count()
 
-    # check if we need to bounce interface
+    # check if we need to reboot (and that it's time to reboot)
     if config_vars['unit_bouncer']:
         check_for_bounce(bounce_file, file_logger)
    
