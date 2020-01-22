@@ -109,6 +109,15 @@ def read_config(debug):
     config_vars['speedtest_enabled'] = speed_sect.get('enabled')
     config_vars['server_id'] = speed_sect.get('server_id', '')
     config_vars['speedtest_data_file'] = speed_sect.get('speedtest_data_file')
+    config_vars['http_proxy'] = speed_sect.get('http_proxy', '')
+    config_vars['https_proxy'] = speed_sect.get('https_proxy', '')
+    config_vars['no_proxy'] = speed_sect.get('no_proxy', '')
+    # set env vars if they are specified in the config file
+    for proxy_var in ['http_proxy', 'https_proxy', 'no_proxy']:
+
+        if config_vars[proxy_var]:
+            os.environ[proxy_var] = config_vars['proxy_var']
+
 
     ### Get Ping config params
     ping_sect = config['Ping_Test']
