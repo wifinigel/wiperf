@@ -43,21 +43,24 @@ def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
 
     protocol = 'tcp'
 
-    iperf_cmd_string = "{} -c {} -t {} -p {} -J".format(
+    iperf_cmd_string = "{} -c {} -t {} -p {} --connect-timeout 2000 -J".format(
         iperf, server_hostname, duration, port)
 
     if debug:
         file_logger.debug("TCP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}".format(
             server_hostname, port, protocol, duration))
 
+    # run the test
     try:
-        iperf_output = subprocess.check_output(
-            iperf_cmd_string, shell=True).decode()
-    except Exception as ex:
-        file_logger.error("iperf TCP test error: {}".format(ex))
+        output = subprocess.check_output(
+            iperf_cmd_string, stderr=subprocess.STDOUT, shell=True).decode()
+    except subprocess.CalledProcessError as exc:
+        iperf_json = json.loads(exc.output.decode())
+        err_msg = iperf_json['error']
+        file_logger.error("iperf UDP test error: {}".format(err_msg))
         return False
 
-    iperf_json = json.loads(iperf_output)
+    iperf_json = json.loads(output)
 
     # extract data
     sent_json = iperf_json['end']['sum_sent']
@@ -103,18 +106,20 @@ def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
         file_logger.debug("UDP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}, bandwidth: {}".format(
             server_hostname, port, protocol, duration, bandwidth))
 
-    iperf_cmd_string = "{} -c {} -u -t {} -p {} -b {} -J".format(
+    iperf_cmd_string = "{} -c {} -u -t {} -p {} -b {} --connect-timeout 2000 -J".format(
         iperf, server_hostname, duration, port, bandwidth)
 
     # run the test
     try:
-        iperf_output = subprocess.check_output(
-            iperf_cmd_string, shell=True).decode()
-    except Exception as ex:
-        file_logger.error("iperf TCP test error: {}".format(ex))
+        output = subprocess.check_output(
+            iperf_cmd_string, stderr=subprocess.STDOUT, shell=True).decode()
+    except subprocess.CalledProcessError as exc:
+        iperf_json = json.loads(exc.output.decode())
+        err_msg = iperf_json['error']
+        file_logger.error("iperf UDP test error: {}".format(err_msg))
         return False
 
-    iperf_json = json.loads(iperf_output)
+    iperf_json = json.loads(output)
 
     # extract data
     bytes = iperf_json['end']['sum']['bytes']
