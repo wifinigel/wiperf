@@ -461,15 +461,15 @@ class WirelessAdapter(object):
         # Get route info (used to figure out default gateway)
         try:
             self.route_info = subprocess.check_output(
-                "/sbin/route -n | grep ^0.0.0.0 | grep " + self.wlan_if_name + " 2>&1", shell=True).decode()
-        except Exception as ex:
-            error_descr = "Issue getting default gateway info using route command (Prob due to multiple interfaces being up or wlan interface being wrong)"
+                "/sbin/route -n | grep ^0.0.0.0 | grep " + self.wlan_if_name, stderr=subprocess.STDOUT, shell=True).decode()
+        except subprocess.CalledProcessError as exc:
+            output = exc.output.decode()
+            error_descr = "Issue getting default gateway info using route command (Prob due to multiple interfaces being up or wlan interface being wrong). Error: {}".format(
+                str(output))
             if self.debug:
                 print(error_descr)
-                print(ex)
 
             self.file_logger.error(error_descr)
-            self.file_logger.error(ex)
             self.file_logger.error("Returning error...")
             return False
 
@@ -512,14 +512,15 @@ class WirelessAdapter(object):
         try:
             if_down = subprocess.check_output(
                 if_down_cmd, stderr=subprocess.STDOUT, shell=True).decode()
-        except Exception as ex:
-            error_descr = "ifdown command appears to have failed"
+        except subprocess.CalledProcessError as exc:
+            output = exc.output.decode()
+            error_descr = "ifdown command appears to have failed. Error: {}".format(
+                str(output))
+
             if self.debug:
                 print(error_descr)
-                print(ex)
 
             self.file_logger.error(error_descr)
-            self.file_logger.error(ex)
             self.file_logger.error("Returning error...")
             return False
 
@@ -543,14 +544,15 @@ class WirelessAdapter(object):
         try:
             if_up = subprocess.check_output(
                 if_up_cmd, stderr=subprocess.STDOUT, shell=True).decode()
-        except Exception as ex:
-            error_descr = "ifup command appears to have failed"
+        except subprocess.CalledProcessError as exc:
+            output = exc.output.decode()
+            error_descr = "ifup command appears to have failed. Error: {}".format(
+                str(output))
+
             if self.debug:
                 print(error_descr)
-                print(ex)
 
             self.file_logger.error(error_descr)
-            self.file_logger.error(ex)
             self.file_logger.error("Returning error...")
             return False
 
