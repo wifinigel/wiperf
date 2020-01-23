@@ -43,7 +43,7 @@ def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
 
     protocol = 'tcp'
 
-    iperf_cmd_string = "{} -c {} -t {} -p {} --connect-timeout 2000 -J".format(
+    iperf_cmd_string = "{} -c {} -t {} -p {} -J".format(
         iperf, server_hostname, duration, port)
 
     if debug:
@@ -107,7 +107,7 @@ def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
         file_logger.debug("UDP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}, bandwidth: {}".format(
             server_hostname, port, protocol, duration, bandwidth))
 
-    iperf_cmd_string = "{} -c {} -u -t {} -p {} -b {} --connect-timeout 2000 -J".format(
+    iperf_cmd_string = "{} -c {} -u -t {} -p {} -b {} -J".format(
         iperf, server_hostname, duration, port, bandwidth)
 
     # run the test
