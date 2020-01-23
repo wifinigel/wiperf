@@ -383,16 +383,20 @@ class WirelessAdapter(object):
             print("Getting wireless adapter info...")
 
         # get info using iwconfig cmd
-        self.iwconfig()
+        if self.iwconfig() == False:
+            return False
 
         # get info using iw info
-        self.iw_info()
+        if self.iw_info() == False:
+            return False
 
         # get info using iw link
-        self.iw_link()
+        if self.iw_link() == False:
+            return False
 
         # get info using iw station
-        self.iw_station()
+        if self.iw_station() == False:
+            return False
 
         # get the values extracted and return in a list
         results_list = [self.ssid, self.bssid, self.freq, self.tx_bit_rate,
