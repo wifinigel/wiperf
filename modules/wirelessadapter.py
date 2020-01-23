@@ -105,7 +105,7 @@ class WirelessAdapter(object):
         ####################################################################
         try:
             iwconfig_info = subprocess.check_output(
-                "/sbin/iwconfig " + self.wlan_if_name + " 2>&1", stderr=subprocess.STDOUT, shell=True).decode()
+                "/sbin/iwconfig " + self.wlan_if_name, stderr=subprocess.STDOUT, shell=True).decode()
         except subprocess.CalledProcessError as exc:
             output = exc.output.decode()
             error_descr = "Issue getting interface info using iwconfig command: {}".format(
@@ -187,13 +187,15 @@ class WirelessAdapter(object):
         #############################################################################
         try:
             iw_info = subprocess.check_output(
-                "/sbin/iw " + self.wlan_if_name + " info 2>&1", shell=True).decode()
-        except Exception as ex:
-            error_descr = "Issue getting interface info using iw info command"
+                "/sbin/iw " + self.wlan_if_name + " info", stderr=subprocess.STDOUT, shell=True).decode()
+        except subprocess.CalledProcessError as exc:
+            output = exc.output.decode()
+            error_descr = "Issue getting interface info using iw info command: {}".format(
+                output)
             if self.debug:
-                print("{}: {}".format(error_descr, ex))
+                print("{}".format(error_descr))
 
-            self.file_logger.error("{}: {}".format(error_descr, ex))
+            self.file_logger.error("{}".format(error_descr))
             self.file_logger.error("Returning error...")
             return False
 
@@ -237,13 +239,15 @@ class WirelessAdapter(object):
         #############################################################################
         try:
             iw_link = subprocess.check_output(
-                "/sbin/iw " + self.wlan_if_name + " link 2>&1", shell=True).decode()
-        except Exception as ex:
-            error_descr = "Issue getting interface info using iw link command"
+                "/sbin/iw " + self.wlan_if_name + " link", stderr=subprocess.STDOUT, shell=True).decode()
+        except subprocess.CalledProcessError as exc:
+            output = exc.output.decode()
+            error_descr = "Issue getting interface info using iw link command: {}".format(
+                output)
             if self.debug:
-                print("{}: {}".format(error_descr, ex))
+                print("{}".format(error_descr))
 
-            self.file_logger.error("{}: {}".format(error_descr, ex))
+            self.file_logger.error("{}".format(error_descr))
             self.file_logger.error("Returning error...")
             return False
 
@@ -296,13 +300,15 @@ class WirelessAdapter(object):
         ######################################################################################
         try:
             iw_station = subprocess.check_output(
-                "/sbin/iw " + self.wlan_if_name + " station dump 2>&1", shell=True).decode()
-        except Exception as ex:
-            error_descr = "Issue getting interface info using iw link command"
+                "/sbin/iw " + self.wlan_if_name + " station dump", stderr=subprocess.STDOUT, shell=True).decode()
+        except subprocess.CalledProcessError as exc:
+            output = exc.output.decode()
+            error_descr = "Issue getting interface info using iw station command: {}".format(
+                output)
             if self.debug:
-                print("{}: {}".format(error_descr, ex))
+                print("{}".format(error_descr))
 
-            self.file_logger.error("{}: {}".format(error_descr, ex))
+            self.file_logger.error("{}".format(error_descr))
             self.file_logger.error("Returning error...")
             return False
 
@@ -410,16 +416,16 @@ class WirelessAdapter(object):
         # Get interface info
         try:
             self.ifconfig_info = subprocess.check_output(
-                "/sbin/ifconfig " + str(self.wlan_if_name) + " 2>&1", shell=True).decode()
-        except Exception as ex:
-            error_descr = "Issue getting interface info using ifconfig command"
+                "/sbin/ifconfig " + str(self.wlan_if_name), stderr=subprocess.STDOUT, shell=True).decode()
+        except subprocess.CalledProcessError as exc:
+            output = exc.output.decode()
+            error_descr = "Issue getting interface info using iw station command: {}".format(
+                output)
             if self.debug:
-                print(error_descr)
-                print(ex)
+                print("{}".format(error_descr))
 
-            self.file_logger.error(error_descr)
-            self.file_logger.error(ex)
-            self.file_logger.error("Return error...")
+            self.file_logger.error("{}".format(error_descr))
+            self.file_logger.error("Returning error...")
             return False
 
         if self.debug:
