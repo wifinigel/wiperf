@@ -534,19 +534,23 @@ def main():
     #####################
     # get wireless info
     #####################
+    file_logger.info("########## wireless connection checks ##########")
     adapter = WirelessAdapter(wlan_if, file_logger, platform=platform, debug=DEBUG)   
 
     # if we have no network connection (i.e. no bssid), no point in proceeding...
+    file_logger.info("Checking wireless connection available.")
     if adapter.get_wireless_info() == False:
         file_logger.error("Unable to get wireless info due to failure with ifconfig command")
         inc_watchdog_count()
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
-        
+
+    file_logger.info("Checking we're connected to the network")    
     if adapter.get_bssid() == 'NA':
         file_logger.error("Problem with wireless connection: not associated to network")
         inc_watchdog_count()
         bounce_error_exit(adapter, file_logger, DEBUG) # exit here
     
+    file_logger.info("Checking we have an IP address.")
     # if we have no IP address, no point in proceeding...
     if adapter.get_adapter_ip() == False:
         file_logger.error("Unable to get wireless adapter IP info")
@@ -567,6 +571,7 @@ def main():
     
     # final connectivity check: see if we can resolve an address 
     # (network connection and DNS must be up)
+    file_logger.info("Checking we can do a DNS lookup.")
     try:
         gethostbyname('bbc.co.uk')
     except Exception as ex:
