@@ -237,9 +237,9 @@ data_transport: hec
 
 ### unit_bouncer
 
-If you need to bounce (reboot) the unit for some reason on a regular basis, this field can be used to signal to the WLAN Pi each hour at which is must reboot.
+If you need to bounce (reboot) the unit for some reason on a regular basis, this field can be used to signal to the WLAN Pi each hour at which it must reboot.
 
-The field is a comma separated string that lists the hours at which the unit must reboot (in 24-hour format), The number format and comma separation are important to get right! Note that the reboot is not exactly on the hour, but will reboot at the end of the next text cycle that detects that it is within the hour where a reboot is required. It will only happen once per hour.
+The field is a comma separated string that lists the hours at which the unit must reboot (in 24-hour format). The number-format and comma separation are important to get right! Note that the reboot is not exactly on the hour, but will occur at the end of the next test cycle that it is within the hour where a reboot is required. It will only happen once per hour.
 
 Example: the following config will reboot at midnight, 04:00, 08:00, 12:00, 16:00:
 ```
