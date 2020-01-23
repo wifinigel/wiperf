@@ -759,7 +759,7 @@ def main():
                 file_logger.error("Ping test failed.")
          
     else:
-        file_logger.info("Ping test not enabled in config file, bypassing this test...")
+        file_logger.info("Ping test not enabled in config file (or previous tests failed), bypassing this test...")
 
     ###################################
     # Run iperf3 tcp test (if enabled)
@@ -812,7 +812,7 @@ def main():
             test_issue = True
     
     else:
-        file_logger.info("Iperf3 tcp test not enabled in config file, bypassing this test...")
+        file_logger.info("Iperf3 tcp test not enabled in config file (or previous tests failed), bypassing this test...")
     
     ###################################
     # Run iperf3 udp test (if enabled)
@@ -870,7 +870,7 @@ def main():
             test_issue = True
     
     else:
-        file_logger.info("Iperf3 udp test not enabled in config file, bypassing this test...")
+        file_logger.info("Iperf3 udp test not enabled in config file (or previous tests failed), bypassing this test...")
     
     ###################################
     # Run DNS lookup tests (if enabled)
@@ -932,7 +932,7 @@ def main():
 
     
     else:
-        file_logger.info("DNS test not enabled in config file, bypassing this test...")
+        file_logger.info("DNS test not enabled in config file (or previous tests failed), bypassing this test...")
         
     
     #####################################
@@ -968,7 +968,7 @@ def main():
 
     
     else:
-        file_logger.info("DHCP test not enabled in config file, bypassing this test...")
+        file_logger.info("DHCP test not enabled in config file (or previous tests failed), bypassing this test...")
 
     # get rid of log file
     write_status_file("")
