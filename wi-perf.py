@@ -116,7 +116,7 @@ def read_config(debug):
     for proxy_var in ['http_proxy', 'https_proxy', 'no_proxy']:
 
         if config_vars[proxy_var]:
-            os.environ[proxy_var] = config_vars['proxy_var']
+            os.environ[proxy_var] = config_vars[proxy_var]
 
 
     ### Get Ping config params
@@ -385,7 +385,7 @@ def check_route_to_dest(ip_address, file_logger):
 
     try :
         interface_name = subprocess.check_output(ip_route_cmd, shell=True).decode()
-        file_logger.info("Checked interface route to : {}. Result: {}".format(ip_address, interface_name))
+        file_logger.info("Checked interface route to : {}. Result: {}".format(ip_address, interface_name.strip()))
         return interface_name.strip()
     except Exception as ex:
         file_logger.error("Issue looking up route (route cmd syntax?): {} (command used: {})".format(ex, ip_route_cmd))
@@ -624,6 +624,7 @@ def main():
     results_dict['upload_rate_mbps'] = None
     results_dict['server_name'] = None
 
+    file_logger.info("########## speedtest ##########")
     if config_vars['speedtest_enabled'] == 'yes':
 
         file_logger.info("Starting speedtest...")
@@ -663,6 +664,7 @@ def main():
     #############################
     # Run ping test (if enabled)
     #############################
+    file_logger.info("########## ping tests ##########")
     if config_vars['ping_enabled'] == 'yes' and test_issue == False:
 
         file_logger.info("Starting ping test...")
@@ -760,10 +762,71 @@ def main():
          
     else:
         file_logger.info("Ping test not enabled in config file (or previous tests failed), bypassing this test...")
+    
+    ###################################
+    # Run DNS lookup tests (if enabled)
+    ###################################
+    file_logger.info("########## dns tests ##########")
+    if config_vars['dns_test_enabled'] == 'yes' and test_issue == False:
+
+        file_logger.info("Starting DNS tests...")
+        write_status_file("DNS tests")
+
+        dns_targets = [ config_vars['dns_target1'], config_vars['dns_target2'], config_vars['dns_target3'], config_vars['dns_target4'], config_vars['dns_target5'] ]
+
+        dns_index = 0
+        delete_file = True
+
+        for dns_target in dns_targets:
+
+            dns_index += 1
+
+            # move on to next if no DNS entry data
+            if dns_target == '':
+                continue
+
+            dns_obj = DnsTester(file_logger, platform = platform, debug = DEBUG)
+
+            dns_result = dns_obj.dns_single_lookup(dns_target)
+
+            if dns_result:
+    
+                column_headers = ['time', 'dns_index', 'dns_target', 'lookup_time_ms']
+
+                # summarise result for log
+                result_str = ' {}: {}ms'.format(dns_target, dns_result)
+
+                # drop abbreviated results in log file
+                file_logger.info("DNS results: {}".format(result_str))
+
+                results_dict = { 
+                        'time':int(time.time()),
+                        'dns_index': dns_index,
+                        'dns_target': dns_target, 
+                        'lookup_time_ms': dns_result
+                }
+
+                # dump the results 
+                data_file = config_vars['dns_data_file']
+                test_name = "DNS"
+                send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG, delete_data_file=delete_file)
+
+                file_logger.info("DNS test ended.")
+
+                # Make sure we don't delete data file next time around
+                delete_file = False
+
+            else:
+                file_logger.error("DNS test error - no results (check logs) - exiting DNS tests")
+                test_issue = True
+                break  
+    else:
+        file_logger.info("DNS test not enabled in config file (or previous tests failed), bypassing this test...")
 
     ###################################
     # Run iperf3 tcp test (if enabled)
     ###################################
+    file_logger.info("########## iperf3 tcp test ##########")
     if config_vars['iperf3_tcp_enabled'] == 'yes' and test_issue == False:
 
         duration = int(config_vars['iperf3_tcp_duration'])
@@ -817,6 +880,7 @@ def main():
     ###################################
     # Run iperf3 udp test (if enabled)
     ###################################
+    file_logger.info("########## iperf3 udp test ##########")
     if config_vars['iperf3_udp_enabled'] == 'yes' and test_issue == False:
 
         duration = int(config_vars['iperf3_udp_duration'])
@@ -871,73 +935,12 @@ def main():
     
     else:
         file_logger.info("Iperf3 udp test not enabled in config file (or previous tests failed), bypassing this test...")
-    
-    ###################################
-    # Run DNS lookup tests (if enabled)
-    ###################################
-    if config_vars['dns_test_enabled'] == 'yes' and test_issue == False:
-
-        file_logger.info("Starting DNS tests...")
-        write_status_file("DNS tests")
-
-        dns_targets = [ config_vars['dns_target1'], config_vars['dns_target2'], config_vars['dns_target3'], config_vars['dns_target4'], config_vars['dns_target5'] ]
-
-        dns_index = 0
-        delete_file = True
-
-        for dns_target in dns_targets:
-
-            dns_index += 1
-
-            # move on to next if no DNS entry data
-            if dns_target == '':
-                continue
-
-            dns_obj = DnsTester(file_logger, platform = platform, debug = DEBUG)
-
-            dns_result = dns_obj.dns_single_lookup(dns_target)
-
-            if dns_result:
-    
-                column_headers = ['time', 'dns_index', 'dns_target', 'lookup_time_ms']
-
-                # summarise result for log
-                result_str = ' {}: {}ms'.format(dns_target, dns_result)
-
-                # drop abbreviated results in log file
-                file_logger.info("DNS results: {}".format(result_str))
-
-                results_dict = { 
-                        'time':int(time.time()),
-                        'dns_index': dns_index,
-                        'dns_target': dns_target, 
-                        'lookup_time_ms': dns_result
-                }
-
-                # dump the results 
-                data_file = config_vars['dns_data_file']
-                test_name = "DNS"
-                send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG, delete_data_file=delete_file)
-
-                file_logger.info("DNS test ended.")
-
-                # Make sure we don't delete data file next time around
-                delete_file = False
-
-            else:
-                file_logger.error("DNS test error - no results (check logs) - exiting DNS tests")
-                test_issue = True
-                break
-
-
-    
-    else:
-        file_logger.info("DNS test not enabled in config file (or previous tests failed), bypassing this test...")
-        
+     
     
     #####################################
     # Run DHCP renewal test (if enabled)
     #####################################
+    file_logger.info("########## dhcp test ##########")
     if config_vars['dhcp_test_enabled'] == 'yes' and test_issue == False:
 
         file_logger.info("Starting DHCP renewal test...")
@@ -973,6 +976,7 @@ def main():
     # get rid of log file
     write_status_file("")
     delete_lock_file(lock_file, file_logger)
+    file_logger.info("########## end ##########")
 
     # decrement watchdog as we ran OK
     if test_issue == False:
