@@ -644,6 +644,8 @@ def main():
         # check test to Intenet will go via wlan interface
         if check_route_to_dest('8.8.8.8', file_logger) == config_vars['wlan_if']:
 
+            file_logger.info("Speedtest in progress....please wait.")
+
             # speedtest returns false if there are any issues
             speedtest_results = ooklaspeedtest(file_logger, config_vars['server_id'])
             if not speedtest_results == False:
