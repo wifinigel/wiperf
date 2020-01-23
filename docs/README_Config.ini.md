@@ -46,6 +46,9 @@ We'll take a look at each section of the config file and provide some guidance o
 - [Speetest Section](#speedtest-section)
     - [enabled](#enabled)
     - [server_id](#server_id)
+    - [http_proxy](#http_proxy)
+    - [https_proxy](#https_proxy)
+    - [no_proxy](#no_proxy)
     - [speedtest_data_file](#speedtest_data_file)
 - [Ping_Test Section](#ping_test-section)
     - [enabled](#enabled-1)
@@ -277,6 +280,29 @@ Default setting:
 server_id:
 ```
 [top](#parameter-reference-guide)
+
+### http_proxy
+### https_proxy
+### no_proxy
+
+If proxy server access is required to run a speedtest, enter the proxy server details here for https & https e.g. 
+```
+https_proxy: http://10.1.1.1:8080
+```
+
+For sites that are not accessed via proxy, use ```no_proxy``` (make sure value enclosed in quotes & comma separated for mutiple values) e.g. 
+```
+no_proxy: "mail.local, intranet.local"
+```
+
+Default settings:
+```
+http_proxy: 
+https_proxy:
+no_proxy:
+```
+[top](#parameter-reference-guide)
+
 
 ### speedtest_data_file
 
