@@ -57,13 +57,17 @@ class Pinger(object):
         try:
             ping_output = (subprocess.check_output(["/bin/ping", "-q", "-c "
                                                     + str(count), host])).decode().splitlines()
-        except Exception as error:
-            self.file_logger.error("Hit an error with ping: {}".format(error))
+        except subprocess.CalledProcessError as exc:
+            output = exc.output.decode()
+            error = "Hit an error when pinging {} : {}".format(
+                str(host), str(output))
+            self.file_logger.error(error)
+
             if self.debug:
                 print("Hit an error with ping: ")
                 print(error)
 
-            stderr.write("Error with running ping command: " + str(error))
+            stderr.write(str(error))
 
             # Things have gone bad - we just return a false status
             return False
@@ -76,28 +80,28 @@ class Pinger(object):
 
         # Extract packets transmitted
         pkts_tx_re = re.search(
-            '(\d+) packets transmitted', packets_summary_str)
+            r'(\d+) packets transmitted', packets_summary_str)
         if pkts_tx_re is None:
             self.pkts_tx = "NA"
         else:
             self.pkts_tx = pkts_tx_re.group(1)
 
         # Extract packets received
-        pkts_rx_re = re.search('(\d+) received', packets_summary_str)
+        pkts_rx_re = re.search(r'(\d+) received', packets_summary_str)
         if pkts_rx_re is None:
             self.pkts_rx = "NA"
         else:
             self.pkts_rx = pkts_rx_re.group(1)
 
         # Extract packet loss
-        pkt_loss_re = re.search('(\d+)\% packet loss', packets_summary_str)
+        pkt_loss_re = re.search(r'(\d+)\% packet loss', packets_summary_str)
         if pkt_loss_re is None:
             self.pkt_loss = "NA"
         else:
             self.pkt_loss = pkt_loss_re.group(1)
 
         # Extract test time (duration)
-        test_time_re = re.search('time (\d+)ms', packets_summary_str)
+        test_time_re = re.search(r'time (\d+)ms', packets_summary_str)
         if test_time_re is None:
             self.test_time = "NA"
         else:
@@ -110,7 +114,7 @@ class Pinger(object):
             print("Test duration (mS): " + str(self.test_time))
 
         perf_summary_str = ping_output[4]
-        perf_data_re = re.search('= ([\d\.]+?)\/([\d\.]+?)\/([\d\.]+?)\/([\d\.]+)',
+        perf_data_re = re.search(r'= ([\d\.]+?)\/([\d\.]+?)\/([\d\.]+?)\/([\d\.]+)',
                                  perf_summary_str)
 
         if test_time_re is None:
