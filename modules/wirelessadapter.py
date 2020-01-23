@@ -504,21 +504,22 @@ class WirelessAdapter(object):
             print("Bouncing interface (platform type = " + self.platform + ")")
 
         self.file_logger.info(
-            "Bouncing interface (platform type = " + self.platform + ")")
+            "Bouncing interface {} (platform type = {})".format(
+                self.wlan_if_name, self.platform))
 
-        #if_down_cmd = "sudo /sbin/ifup {}".format(self.wlan_if_name)
-        if_down_cmd = "sudo /sbin/ifconfig {} down".format(self.wlan_if_name)
+        if_bounce_cmd = "sudo /sbin/ifdown {} && sudo /sbin/ifup {};".format(
+            self.wlan_if_name, self.wlan_if_name)
 
         if self.debug:
-            print("if down command:")
-            print(if_down_cmd)
+            print("if bounce command:")
+            print(if_bounce_cmd)
 
         try:
-            if_down = subprocess.check_output(
-                if_down_cmd, stderr=subprocess.STDOUT, shell=True).decode()
+            if_bounce = subprocess.check_output(
+                if_bounce_cmd, stderr=subprocess.STDOUT, shell=True).decode()
         except subprocess.CalledProcessError as exc:
             output = exc.output.decode()
-            error_descr = "ifdown command appears to have failed. Error: {}".format(
+            error_descr = "if bounce command appears to have failed. Error: {}".format(
                 str(output))
 
             if self.debug:
@@ -527,44 +528,6 @@ class WirelessAdapter(object):
             self.file_logger.error(error_descr)
             self.file_logger.error("Returning error...")
             return False
-
-        if self.debug:
-            print("")
-            print("Output of ifdown command: ")
-            print(if_down)
-
-        self.file_logger.info("sudo ifdown output: " + str(if_down))
-
-        # have a sleep to allow time for wpa_supplicant to exit?
-        time.sleep(5)
-
-        # if_up_cmd = "sudo ifup " + str(self.wlan_if_name)
-        if_up_cmd = "sudo /sbin/ifconfig {} up".format(self.wlan_if_name)
-
-        if self.debug:
-            print("if up command:")
-            print(if_up_cmd)
-
-        try:
-            if_up = subprocess.check_output(
-                if_up_cmd, stderr=subprocess.STDOUT, shell=True).decode()
-        except subprocess.CalledProcessError as exc:
-            output = exc.output.decode()
-            error_descr = "ifup command appears to have failed. Error: {}".format(
-                str(output))
-
-            if self.debug:
-                print(error_descr)
-
-            self.file_logger.error(error_descr)
-            self.file_logger.error("Returning error...")
-            return False
-
-        if self.debug:
-            print("Output of ifup command: ")
-            print(if_up)
-
-        self.file_logger.info("sudo ifup output: " + str(if_up))
 
         return True
 
