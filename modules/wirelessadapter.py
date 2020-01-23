@@ -105,13 +105,15 @@ class WirelessAdapter(object):
         ####################################################################
         try:
             iwconfig_info = subprocess.check_output(
-                "/sbin/iwconfig " + self.wlan_if_name + " 2>&1", shell=True).decode()
-        except Exception as ex:
-            error_descr = "Issue getting interface info using iwconfig command"
+                "/sbin/iwconfig " + self.wlan_if_name + " 2>&1", stderr=subprocess.STDOUT, shell=True).decode()
+        except subprocess.CalledProcessError as exc:
+            output = exc.output.decode()
+            error_descr = "Issue getting interface info using iwconfig command: {}".format(
+                output)
             if self.debug:
-                print("{}: {}".format(error_descr, ex))
+                print("{}".format(error_descr))
 
-            self.file_logger.error("{}: {}".format(error_descr, ex))
+            self.file_logger.error("{}".format(error_descr))
             self.file_logger.error("Returning error...")
             return False
 
