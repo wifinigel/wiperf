@@ -766,12 +766,12 @@ def main():
     ###################################
     if config_vars['iperf3_tcp_enabled'] == 'yes' and test_issue == False:
 
-        file_logger.info("Starting iperf3 tcp test...")
-        write_status_file("iperf3 tcp")
-
         duration = int(config_vars['iperf3_tcp_duration'])
         port = int(config_vars['iperf3_tcp_port'])
         server_hostname = config_vars['iperf3_tcp_server_hostname']
+
+        file_logger.info("Starting iperf3 tcp test ({}:{})...".format(server_hostname, str(port)))
+        write_status_file("iperf3 tcp")
 
         # check test to iperf3 server will go via wlan interface
         if check_route_to_dest(server_hostname, file_logger) == config_vars['wlan_if']:
@@ -819,13 +819,13 @@ def main():
     ###################################
     if config_vars['iperf3_udp_enabled'] == 'yes' and test_issue == False:
 
-        file_logger.info("Starting iperf3 udp test...")
-        write_status_file("iperf3 udp")
-
         duration = int(config_vars['iperf3_udp_duration'])
         port = int(config_vars['iperf3_udp_port'])
         server_hostname = config_vars['iperf3_udp_server_hostname']
         bandwidth = int(config_vars['iperf3_udp_bandwidth'])
+
+        file_logger.info("Starting iperf3 udp test ({}:{})...".format(server_hostname, str(port)))
+        write_status_file("iperf3 udp")
 
         if check_route_to_dest(server_hostname, file_logger) == config_vars['wlan_if']:
 
