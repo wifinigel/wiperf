@@ -57,7 +57,7 @@ def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
     except subprocess.CalledProcessError as exc:
         iperf_json = json.loads(exc.output.decode())
         err_msg = iperf_json['error']
-        file_logger.error("iperf UDP test error ({}:{}): {}".format(
+        file_logger.error("iperf TCP test error ({}:{}): {}".format(
             server_hostname, port, err_msg))
         return False
 
