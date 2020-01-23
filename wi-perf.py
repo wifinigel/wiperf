@@ -177,7 +177,7 @@ def read_config(debug):
             sys.exit()
 
     # Figure out our machine_id (provides unique device id if required)
-    machine_id = subprocess.check_output("cat /etc/machine-id", shell=True).decode()
+    machine_id = subprocess.check_output("cat /etc/machine-id", stderr=subprocess.STDOUT, shell=True).decode()
     config_vars['machine_id'] = machine_id.strip()
 
     if debug:    
@@ -356,8 +356,9 @@ def check_for_bounce(bounce_file, file_logger):
                     try:
                         reboot_output = subprocess.check_output('sudo /sbin/reboot', stderr=subprocess.STDOUT, shell=True).decode()
                         file_logger.info("Reboot output: {}".format(reboot_output))
-                    except Exception as ex:
-                        file_logger.error("Reboot command had issue: {}.".format(ex))
+                    except subprocess.CalledProcessError as exc:
+                        output = exc.output.decode()
+                        file_logger.error("Reboot command had issue: {}.".format(str(output)))
                 else:
                     file_logger.info("No.")
         
@@ -384,11 +385,12 @@ def check_route_to_dest(ip_address, file_logger):
     ip_route_cmd = "/bin/ip route show to match " + ip_address + " | head -n 1 | awk '{print $5}'"
 
     try :
-        interface_name = subprocess.check_output(ip_route_cmd, shell=True).decode()
+        interface_name = subprocess.check_output(ip_route_cmd, stderr=subprocess.STDOUT, shell=True).decode()
         file_logger.info("Checked interface route to : {}. Result: {}".format(ip_address, interface_name.strip()))
         return interface_name.strip()
-    except Exception as ex:
-        file_logger.error("Issue looking up route (route cmd syntax?): {} (command used: {})".format(ex, ip_route_cmd))
+    except subprocess.CalledProcessError as exc:
+        output = exc.output.decode()
+        file_logger.error("Issue looking up route (route cmd syntax?): {} (command used: {})".format(str(output), ip_route_cmd))
         return ''
 
 # write current status msg to file in /tmp for display on FPMS
@@ -500,8 +502,9 @@ def main():
         try:
             reboot_output = subprocess.check_output('sudo /sbin/reboot', stderr=subprocess.STDOUT, shell=True).decode()
             file_logger.error("Reboot output: {}".format(reboot_output))
-        except Exception as ex:
-            file_logger.error("Reboot command had issue: {}.".format(ex))
+        except subprocess.CalledProcessError as exc:
+            output = exc.output.decode()
+            file_logger.error("Reboot command had issue: {}.".format(str(output)))
 
     ###################################
     # Check if script already running
@@ -578,8 +581,9 @@ def main():
         try:
             portcheck_output = subprocess.check_output('/bin/nc -zvw10 {} {}'.format(config_vars['data_host'], config_vars['data_port']), stderr=subprocess.STDOUT, shell=True).decode()
             file_logger.info("Port connection to server {}, port: {} checked OK.".format(config_vars['data_host'], config_vars['data_port']))
-        except Exception as ex:
-            file_logger.error("Port check to server failed. Err msg: {} (Exiting...)".format(ex))
+        except subprocess.CalledProcessError as exc:
+            output = exc.output.decode()
+            file_logger.error("Port check to server failed. Err msg: {} (Exiting...)".format(str(output)))
             inc_watchdog_count()
             sys.exit()
     
