@@ -46,7 +46,9 @@ config_vars = {}
         
 # set up our error_log file & initialize
 file_logger = FileLogger(log_file)
-file_logger.info("Starting logging...")
+file_logger.info("*****************************************************")
+file_logger.info(" Starting logging...")
+file_logger.info("*****************************************************")
 
 def read_config(debug):
     '''
