@@ -162,7 +162,7 @@ class WirelessAdapter(object):
 
         # Extract Signal Level
         if not self.signal_level:
-            pattern = r'Signal level[\=|\:](.+?) '
+            pattern = r'Signal level[\=|\:](.+?) dBm'
             field_name = "signal_level"
             extraction = self.field_extractor(
                 field_name, pattern, iwconfig_info)
