@@ -1,3 +1,10 @@
 {
-    "python.pythonPath": "C:\\Users\\mrnig\\AppData\\Local\\Programs\\Python\\Python37\\python.exe"
+    "python.pythonPath": "C:\\Users\\mrnig\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
+    "spellright.language": [
+        "en"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex"
+    ]
 }
