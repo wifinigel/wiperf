@@ -86,9 +86,9 @@ def main():
     # setup CLI parser
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("check", action='store_true',
+    parser.add_argument("--check", action='store_true',
                         help="Check if an update is available")
-    parser.add_argument("update", action='store_true',
+    parser.add_argument("--update", action='store_true',
                         help="Initiate an update of wiperf software to latest version")
 
     args = parser.parse_args()
@@ -98,6 +98,7 @@ def main():
 
         # get the contents of the local version.txt file
         local_version = read_version_file()
+        print(local_version)
         # pull the contents of the master repo version.txt
 
         # end
