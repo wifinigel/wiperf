@@ -16,7 +16,7 @@ class HttpTester(object):
     def __init__(self, file_logger, debug=False, platform="rpi"):
 
         self.platform = platform
-        self.debug = debug
+        self.debug = 1
         self.file_logger = file_logger
 
         self.http_target = ''
