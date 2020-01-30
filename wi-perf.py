@@ -22,6 +22,7 @@ from modules.filelogger import *
 from modules.heclogger import *
 from modules.iperf3_tester import tcp_iperf_client_test, udp_iperf_client_test
 from modules.dnstester import *
+from modules.httptester import *
 from modules.dhcptester import *
 from modules.fieldchecker import *
 
@@ -158,6 +159,16 @@ def read_config(debug):
     config_vars['dns_target3'] = dns_sect.get('dns_target3')
     config_vars['dns_target4'] = dns_sect.get('dns_target4')
     config_vars['dns_target5'] = dns_sect.get('dns_target5')
+
+    ### Get http test params
+    http_sect = config['HTTP_test']
+    config_vars['http_test_enabled'] = http_sect.get('enabled', 'no')
+    config_vars['http_data_file'] = http_sect.get('http_data_file')
+    config_vars['http_target1'] = http_sect.get('http_target1')
+    config_vars['http_target2'] = http_sect.get('http_target2')
+    config_vars['http_target3'] = http_sect.get('http_target3')
+    config_vars['http_target4'] = http_sect.get('http_target4')
+    config_vars['http_target5'] = http_sect.get('http_target5')
 
     ### Get DHCP test params
     dhcp_sect = config['DHCP_test']
@@ -835,6 +846,66 @@ def main():
                 break  
     else:
         file_logger.info("DNS test not enabled in config file (or previous tests failed), bypassing this test...")
+    
+    ###################################
+    # Run HTTP lookup tests (if enabled)
+    ###################################
+    file_logger.info("########## http tests ##########")
+    if config_vars['http_test_enabled'] == 'yes' and test_issue == False:
+
+        file_logger.info("Starting HTTP tests...")
+        write_status_file("HTTP tests")
+
+        http_targets = [ config_vars['http_target1'], config_vars['http_target2'], config_vars['http_target3'], config_vars['http_target4'], config_vars['http_target5'] ]
+
+        http_index = 0
+        delete_file = True
+
+        for http_target in http_targets:
+
+            http_index += 1
+
+            # move on to next if no HTTP entry data
+            if http_target == '':
+                continue
+
+            http_obj = HttpTester(file_logger, platform = platform, debug = DEBUG)
+
+            http_result = http_obj.http_get(http_target)
+
+            if http_result:
+    
+                column_headers = ['time', 'http_index', 'http_target', 'lookup_time_ms']
+
+                # summarise result for log
+                result_str = ' {}: {}ms'.format(http_target, http_result)
+
+                # drop abbreviated results in log file
+                file_logger.info("HTTP results: {}".format(result_str))
+
+                results_dict = { 
+                        'time':int(time.time()),
+                        'http_index': http_index,
+                        'http_target': http_target, 
+                        'lookup_time_ms': http_result
+                }
+
+                # dump the results 
+                data_file = config_vars['http_data_file']
+                test_name = "HTTP"
+                send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG, delete_data_file=delete_file)
+
+                file_logger.info("HTTP test ended.")
+
+                # Make sure we don't delete data file next time around
+                delete_file = False
+
+            else:
+                file_logger.error("HTTP test error - no results (check logs) - exiting HTTP tests")
+                test_issue = True
+                break  
+    else:
+        file_logger.info("HTTP test not enabled in config file (or previous tests failed), bypassing this test...")
 
     ###################################
     # Run iperf3 tcp test (if enabled)
