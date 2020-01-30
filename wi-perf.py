@@ -869,6 +869,7 @@ def main():
             if http_target == '':
                 continue
 
+            file_logger.info("Starting http test to : {}".format(http_target))
             http_obj = HttpTester(file_logger, platform = platform, debug = DEBUG)
 
             http_result = http_obj.http_get(http_target)
