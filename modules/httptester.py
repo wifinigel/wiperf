@@ -102,7 +102,7 @@ class HttpTester(object):
 
         start = time.time()
         try:
-            response = requests.get(target_url)
+            response = requests.get(target_url, verify=False)
 
             # If the response was successful, no Exception will be raised
             response.raise_for_status()
