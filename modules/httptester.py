@@ -39,6 +39,10 @@ class HttpTester(object):
         # pull out the hostname
         parse_obj = urlparse(http_target)
         hostname = parse_obj.hostname
+        schema = parse_obj.scheme
+        path = parse_obj.path
+        port = parse_obj.port
+
         if not hostname:
             self.file_logger.error(
                 "URL parsing failed for: {}".format(hostname))
@@ -59,7 +63,7 @@ class HttpTester(object):
                 print("DNS lookup for: {} failed! - err: {}".format(hostname, ex))
                 return False
 
-        return target_ip
+        return [target_ip, schema, path, port]
 
     def http_get(self, http_target):
         '''
@@ -76,7 +80,17 @@ class HttpTester(object):
         # Get the IP address so that we don't included DNS lookup
         # time when performing http get
 
-        target_ip = self.dns_lookup(http_target)
+        dns_result = self.dns_lookup(http_target)
+        target_ip = dns_result[0]
+        schema = dns_result[1]
+        path = dns_result[2]
+        port = dns_result[3]
+
+        if not port:
+            port = '80'
+
+        target_url = "{}://{}:{}{}".format(schema, target_ip, port, path)
+
         if not target_ip:
             self.file_logger.error(
                 'DNS lookup error occurred to: {}'.format(http_target))
@@ -88,7 +102,7 @@ class HttpTester(object):
 
         start = time.time()
         try:
-            response = requests.get(target_ip)
+            response = requests.get(target_url)
 
             # If the response was successful, no Exception will be raised
             response.raise_for_status()
