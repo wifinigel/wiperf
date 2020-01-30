@@ -77,6 +77,7 @@ class HttpTester(object):
         if self.debug:
             print("HTTP test target: {}".format(http_target))
 
+        '''
         # Get the IP address so that we don't included DNS lookup
         # time when performing http get
 
@@ -99,9 +100,11 @@ class HttpTester(object):
         if self.debug:
             print("Performing HTTP request to: {} ({})".format(
                 target_ip, http_target))
+        '''
 
         start = time.time()
         try:
+            #response = requests.get(target_url, verify=False)
             response = requests.get(target_url, verify=False)
 
             # If the response was successful, no Exception will be raised
