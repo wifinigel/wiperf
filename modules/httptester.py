@@ -20,7 +20,8 @@ class HttpTester(object):
 
         self.http_target = ''
         self.target_ip = ''
-        self.http_get_result = 0
+        self.http_get_duration = 0
+        self.http_status_code = 0
 
     def http_get(self, http_target):
         '''
@@ -38,6 +39,7 @@ class HttpTester(object):
         try:
             #response = requests.get(target_url, verify=False)
             response = requests.get(http_target, verify=False)
+            self.http_status_code = response.status_code
 
             # If the response was successful, no Exception will be raised
             response.raise_for_status()
@@ -48,13 +50,18 @@ class HttpTester(object):
 
         end = time.time()
         time_taken = int(round((end - start) * 1000))
-        self.http_get_result = time_taken
+        self.http_get_duration = time_taken
 
         if self.debug:
             print("http get for: {} succeeded.".format(http_target))
 
-        return self.http_get_result
+        # return status code & elapsed duration in mS
+        return (self.http_status_code, self.http_get_duration)
 
-    def get_http_get_result(self):
+    def get_http_duration(self):
         ''' Get DNS lookup results '''
-        return self.http_get_result
+        return self.http_get_duration
+
+    def get_status_code(self):
+        ''' Get http status code '''
+        return self.http_status_code

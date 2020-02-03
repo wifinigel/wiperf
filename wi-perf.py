@@ -876,10 +876,13 @@ def main():
 
             if http_result:
     
-                column_headers = ['time', 'http_index', 'http_target', 'lookup_time_ms']
+                column_headers = ['time', 'http_index', 'http_target', 'lookup_time_ms', http_status_code]
+                
+                http_status_code = http_result[0]
+                duration = http_result[1]
 
                 # summarise result for log
-                result_str = ' {}: {}ms'.format(http_target, http_result)
+                result_str = ' {}: {}ms (status code: {})'.format(http_target, duration, http_status_code)
 
                 # drop abbreviated results in log file
                 file_logger.info("HTTP results: {}".format(result_str))
@@ -888,7 +891,8 @@ def main():
                         'time':int(time.time()),
                         'http_index': http_index,
                         'http_target': http_target, 
-                        'lookup_time_ms': http_result
+                        'lookup_time_ms': duration,
+                        'http_status_code': http_status_code
                 }
 
                 # dump the results 
