@@ -88,6 +88,26 @@
         <option name="refresh.display">progressbar</option>
       </chart>
     </panel>
+        <panel>
+      <chart>
+        <title>HTTP Get Time (mS) - $host_name$</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-http-splunk"| timechart avg(lookup_time_ms) as "HTTP Get (mS)"</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisY.minimumNumber">0</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="charting.legend.placement">top</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
     <panel>
       <chart>
         <title>DHCP Renewal - $host_name$</title>
