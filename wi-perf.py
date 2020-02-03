@@ -876,7 +876,7 @@ def main():
 
             if http_result:
     
-                column_headers = ['time', 'http_index', 'http_target', 'lookup_time_ms', http_status_code]
+                column_headers = ['time', 'http_index', 'http_target', 'lookup_time_ms', 'http_status_code']
                 
                 http_status_code = http_result[0]
                 duration = http_result[1]
