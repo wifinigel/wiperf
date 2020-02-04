@@ -88,17 +88,18 @@
         <option name="refresh.display">progressbar</option>
       </chart>
     </panel>
-        <panel>
+    <panel>
       <chart>
         <title>HTTP Get Time (mS) - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk"| timechart avg(lookup_time_ms) as "HTTP Get (mS)"</query>
+          <query>host=$host_name$ source="wiperf-http-splunk" http_target=*| timechart avg(lookup_time_ms)  as "HTTP Get (mS)" by http_target</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
           <refreshType>delay</refreshType>
         </search>
         <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleY.text">HTTP Get (mS)</option>
         <option name="charting.axisY.minimumNumber">0</option>
         <option name="charting.chart">line</option>
         <option name="charting.drilldown">none</option>
