@@ -1,2 +1,4 @@
 
-V0.07 alpha in development. Use with care
+V0.07 beta
+
+Added http test & dashboard reort
