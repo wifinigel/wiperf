@@ -80,8 +80,16 @@ We'll take a look at each section of the config file and provide some guidance o
     - [dns_target4](#dns_target4)
     - [dns_target5](#dns_target5)
     - [dns_data_file](#dns_data_file)
-- [DHCP_test Section](#dhcp_test-section)
+[HTTP_test Section](#http_test-section)
     - [enabled](#enabled-5)
+    - [http_target1](#http_target1)
+    - [http_target2](#http_target2)
+    - [http_target3](#http_target3)
+    - [http_target4](#http_target4)
+    - [http_target5](#http_target5)
+    - [http_data_file](#http_data_file)
+- [DHCP_test Section](#dhcp_test-section)
+    - [enabled](#enabled-6)
     - [mode](#mode)
     - [dhcp_data_file](#dhcp_data_file)
 
@@ -588,6 +596,86 @@ dns_target5:
 Default setting:
 ```
 dns_data_file: wiperf-dns-splunk
+```
+[top](#parameter-reference-guide)
+
+## [HTTP_test] Section
+
+(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
+
+### enabled
+
+Options: yes or no. If set to no, entire section is ignored and no HTTP tests are run. When enabled, DNS tests are run for each of the ```http_target``` paramters defined in this section. Any targets that have no value entered will be ignored.
+
+Targets must include the full url of each site to be queried (including http:// or https:// element). Valid site address examples:
+
+- http://bbc.co.uk
+- https://ebay.com
+
+
+Default setting:
+```
+enabled: yes
+```
+[top](#parameter-reference-guide)
+
+### http_target1
+
+Hostname of first HTTP target. No target details = no test run
+
+Default setting:
+```
+http_target1: https://yahoo.com
+```
+[top](#parameter-reference-guide)
+
+### http_target2
+
+Hostname of second HTTP target. No target details = no test run
+
+Default setting:
+```
+http_target2: https://bbc.co.uk
+```
+[top](#parameter-reference-guide)
+
+### http_target3
+
+Hostname of third HTTP target. No target details = no test run
+
+Default setting:
+```
+http_target3:
+```
+[top](#parameter-reference-guide)
+
+### http_target4
+
+Hostname of fourth HTTP target. No target details = no test run
+
+Default setting:
+```
+http_target4: 
+```
+[top](#parameter-reference-guide)
+
+### http_target5
+
+Hostname of fifth HTTP target. No target details = no test run
+
+Default setting:
+```
+http_target5: 
+```
+[top](#parameter-reference-guide)
+
+### http_data_file
+
+(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for HTTP tests in Splunk 
+
+Default setting:
+```
+http_data_file: wiperf-http-splunk
 ```
 [top](#parameter-reference-guide)
 
