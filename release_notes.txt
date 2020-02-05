@@ -1,4 +1,4 @@
 
-V0.07 beta3
+V0.07 beta4
 
 Added http test & dashboard reort
