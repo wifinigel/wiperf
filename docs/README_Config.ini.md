@@ -80,7 +80,7 @@ We'll take a look at each section of the config file and provide some guidance o
     - [dns_target4](#dns_target4)
     - [dns_target5](#dns_target5)
     - [dns_data_file](#dns_data_file)
-[HTTP_test Section](#http_test-section)
+- [HTTP_test Section](#http_test-section)
     - [enabled](#enabled-5)
     - [http_target1](#http_target1)
     - [http_target2](#http_target2)
@@ -605,13 +605,14 @@ dns_data_file: wiperf-dns-splunk
 
 ### enabled
 
-Options: yes or no. If set to no, entire section is ignored and no HTTP tests are run. When enabled, DNS tests are run for each of the ```http_target``` paramters defined in this section. Any targets that have no value entered will be ignored.
+Options: yes or no. If set to no, entire section is ignored and no HTTP tests are run. When enabled, HTTP tests are run for each of the ```http_target``` paramters defined in this section. Any targets that have no value entered will be ignored.
 
 Targets must include the full url of each site to be queried (including http:// or https:// element). Valid site address examples:
 
 - http://bbc.co.uk
 - https://ebay.com
 
+A http get will be performed for each target and the result code returned.
 
 Default setting:
 ```
