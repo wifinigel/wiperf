@@ -626,7 +626,7 @@ Hostname of first HTTP target. No target details = no test run
 
 Default setting:
 ```
-http_target1: https://yahoo.com
+http_target1: https://ebay.co.uk
 ```
 [top](#parameter-reference-guide)
 
@@ -636,7 +636,7 @@ Hostname of second HTTP target. No target details = no test run
 
 Default setting:
 ```
-http_target2: https://bbc.co.uk
+http_target2: http://twitter.com
 ```
 [top](#parameter-reference-guide)
 
@@ -646,7 +646,7 @@ Hostname of third HTTP target. No target details = no test run
 
 Default setting:
 ```
-http_target3:
+http_target3: https://facebook.com
 ```
 [top](#parameter-reference-guide)
 
@@ -656,7 +656,7 @@ Hostname of fourth HTTP target. No target details = no test run
 
 Default setting:
 ```
-http_target4: 
+http_target4: https://instagram.com
 ```
 [top](#parameter-reference-guide)
 
@@ -664,7 +664,7 @@ http_target4:
 
 Hostname of fifth HTTP target. No target details = no test run
 
-Default setting:
+Default setting: https://amazon.com
 ```
 http_target5: 
 ```

@@ -1,7 +1,10 @@
 <form>
   <init>
-    <set token="target1">https://yahoo.com</set>
-    <set token="target2">https://bbc.co.uk</set>
+    <set token="target1">https://ebay.co.uk</set>
+    <set token="target2">http://twitter.com</set>
+    <set token="target3">https://facebook.com</set>
+    <set token="target4">https://instagram.com</set>
+    <set token="target5">https://amazon.com</set>
   </init>
   <label>05 - HTTP Report</label>
   <fieldset submitButton="false">
@@ -104,6 +107,80 @@
         <title>Target: $target2$</title>
         <search>
           <query>host=$host_name$ source="wiperf-http-splunk" http_target=$target2$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTP Get Time (mS)"</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleY.text">HTTP Status Code</option>
+        <option name="charting.axisTitleY2.text">HTTP Get Time (mS)</option>
+        <option name="charting.axisY.maximumNumber">600</option>
+        <option name="charting.axisY.minimumNumber">0</option>
+        <option name="charting.axisY2.enabled">1</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.overlayFields">"HTP Get Time (mS)"</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.placement">top</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Target: $target3$</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-http-splunk" http_target=$target3$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTP Get Time (mS)"</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleY.text">HTTP Status Code</option>
+        <option name="charting.axisTitleY2.text">HTTP Get Time (mS)</option>
+        <option name="charting.axisY.maximumNumber">600</option>
+        <option name="charting.axisY.minimumNumber">0</option>
+        <option name="charting.axisY2.enabled">1</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.overlayFields">"HTP Get Time (mS)"</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.placement">top</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>Target: $target4$</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-http-splunk" http_target=$target4$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTP Get Time (mS)"</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleY.text">HTTP Status Code</option>
+        <option name="charting.axisTitleY2.text">HTTP Get Time (mS)</option>
+        <option name="charting.axisY.maximumNumber">600</option>
+        <option name="charting.axisY.minimumNumber">0</option>
+        <option name="charting.axisY2.enabled">1</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.overlayFields">"HTP Get Time (mS)"</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.placement">top</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>Target: $target5$</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-http-splunk" http_target=$target5$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTP Get Time (mS)"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
