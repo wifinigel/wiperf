@@ -1,6 +1,6 @@
 # Wiperf - Configuration on the WLAN Pi
 
-This instruction paper assumes you are running Wiperf on a WLAN Pi on an image verison of v1.9 or later (which has Wiperf installed and available as part of the image.)
+This instruction paper assumes you are running Wiperf on a WLAN Pi on an image version of v1.9 or later (which has Wiperf installed and available as part of the image.)
 
 (**Special note for WLAN Pi image v1.9.0:** please see the [Known Issues](#known-issues)) section of this document)
 
@@ -114,9 +114,9 @@ If things seem to be going wrong, try the following:
 
 Wiperf has a watchdog feature that it uses to try to reset things when it is having connectivity related difficulties.
 
-There may be instances when tests are continualy failing or wireless connectivity is intermiitent due to perhaps being stuck on a remote AP that is sub-optimal from a connecvitity perspective.
+There may be instances when tests are continually failing or wireless connectivity is intermittent due to perhaps being stuck on a remote AP that is sub-optimal from a connectivity perspective.
 
-If persistent issues are detected, then Wiperf will reboot the WLAN Pi to try to remediate the issue. This will provide the opportunity to the resest all network connectivity and internal processes.
+If persistent issues are detected, then Wiperf will reboot the WLAN Pi to try to remediate the issue. This will provide the opportunity to the reset all network connectivity and internal processes.
 
 Note that this is a last ditch mechanism. Wiperf will try bouncing the WLAN interface to remediate any short-term connectivity issues, which will likely fixe many issues without the need for a full reboot.
 
@@ -124,7 +124,7 @@ If you observe your WLAN Pi rebooting on a regular basis (e.g. a couple of times
 
 ## Security
 
-Wiperf employs the following security mechanisms in an atempt to harden the WLAN Pi when deployed in Wiperf mode:
+Wiperf employs the following security mechanisms in an attempt to harden the WLAN Pi when deployed in Wiperf mode:
 
 - No forwarding is allowed between interfaces
 - The internal UFW firewall is configured to only allow incoming connectivity on port 22 on the wlan0 & eth0 interfaces
@@ -133,7 +133,7 @@ Wiperf employs the following security mechanisms in an atempt to harden the WLAN
 
 If you are remote from your WLAN Pi you may not be able to flip it in to Wiperf mode using the front panel buttons. However, it is possible to flip it in to Wiperf mode using the CLI (via an SSH session).
 
-To flip in to Wipef mode using the CLI, SSH to your WLAN Pi and execute the following on the CLI (**CAVEAT:** make sure you have correctly configured the /home/wlanpi/wiperf/conf/etc/wpa_suplicant/wpa_supplicant.conf file before do this...otherwise you may lose comms with the WLAN Pi after it reboots if you rely on the WLAN connection for access):
+To flip in to Wiperf mode using the CLI, SSH to your WLAN Pi and execute the following on the CLI (**CAVEAT:** make sure you have correctly configured the /home/wlanpi/wiperf/conf/etc/wpa_suplicant/wpa_supplicant.conf file before do this...otherwise you may lose comms with the WLAN Pi after it reboots if you rely on the WLAN connection for access):
 
 ```
  # performed as the wlanpi user
@@ -142,7 +142,7 @@ To flip in to Wipef mode using the CLI, SSH to your WLAN Pi and execute the foll
  ```
  After executing this command, the WLAN Pi will reboot in to the Wiperf mode.
  
-If you'd like to fip back from Wiperf mode, SSH to the WLAN Pi and execute:
+If you'd like to flip back from Wiperf mode, SSH to the WLAN Pi and execute:
 
 ```
  # performed as the wlanpi user
