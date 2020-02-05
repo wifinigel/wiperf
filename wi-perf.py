@@ -109,9 +109,9 @@ def read_config(debug):
 
     ### Get Speedtest config params
     speed_sect = config['Speedtest']
-    config_vars['speedtest_enabled'] = speed_sect.get('enabled')
+    config_vars['speedtest_enabled'] = speed_sect.get('enabled', 'no')
     config_vars['server_id'] = speed_sect.get('server_id', '')
-    config_vars['speedtest_data_file'] = speed_sect.get('speedtest_data_file')
+    config_vars['speedtest_data_file'] = speed_sect.get('speedtest_data_file', '')
     config_vars['http_proxy'] = speed_sect.get('http_proxy', '')
     config_vars['https_proxy'] = speed_sect.get('https_proxy', '')
     config_vars['no_proxy'] = speed_sect.get('no_proxy', '')
@@ -125,56 +125,56 @@ def read_config(debug):
     ### Get Ping config params
     ping_sect = config['Ping_Test']
     config_vars['ping_enabled'] = ping_sect.get('enabled', 'no')
-    config_vars['ping_data_file'] = ping_sect.get('ping_data_file')
-    config_vars['ping_host1'] = ping_sect.get('ping_host1')
-    config_vars['ping_host2'] = ping_sect.get('ping_host2')
-    config_vars['ping_host3'] = ping_sect.get('ping_host3')
-    config_vars['ping_host4'] = ping_sect.get('ping_host4')
-    config_vars['ping_host5'] = ping_sect.get('ping_host5')
-    config_vars['ping_count'] = ping_sect.get('ping_count')
+    config_vars['ping_data_file'] = ping_sect.get('ping_data_file', '')
+    config_vars['ping_host1'] = ping_sect.get('ping_host1', '')
+    config_vars['ping_host2'] = ping_sect.get('ping_host2', '')
+    config_vars['ping_host3'] = ping_sect.get('ping_host3', '')
+    config_vars['ping_host4'] = ping_sect.get('ping_host4', '')
+    config_vars['ping_host5'] = ping_sect.get('ping_host5', '')
+    config_vars['ping_count'] = ping_sect.get('ping_count', '')
 
     ### Get iperf3 tcp test params
     iperft_sect = config['Iperf3_tcp_test']
     config_vars['iperf3_tcp_enabled'] = iperft_sect.get('enabled', 'no')
-    config_vars['iperf3_tcp_data_file'] = iperft_sect.get('iperf3_tcp_data_file')
-    config_vars['iperf3_tcp_server_hostname'] = iperft_sect.get('server_hostname')
-    config_vars['iperf3_tcp_port'] = iperft_sect.get('port')
-    config_vars['iperf3_tcp_duration'] = iperft_sect.get('duration')
+    config_vars['iperf3_tcp_data_file'] = iperft_sect.get('iperf3_tcp_data_file', '')
+    config_vars['iperf3_tcp_server_hostname'] = iperft_sect.get('server_hostname', '')
+    config_vars['iperf3_tcp_port'] = iperft_sect.get('port', '')
+    config_vars['iperf3_tcp_duration'] = iperft_sect.get('duration', '')
 
     ### Get iperf3 udp test params
     iperfu_sect = config['Iperf3_udp_test']
     config_vars['iperf3_udp_enabled'] = iperfu_sect.get('enabled', 'no')
-    config_vars['iperf3_udp_data_file'] = iperfu_sect.get('iperf3_udp_data_file')
-    config_vars['iperf3_udp_server_hostname'] = iperfu_sect.get('server_hostname')
-    config_vars['iperf3_udp_port'] = iperfu_sect.get('port')
-    config_vars['iperf3_udp_duration'] = iperfu_sect.get('duration')
-    config_vars['iperf3_udp_bandwidth'] = iperfu_sect.get('bandwidth')
+    config_vars['iperf3_udp_data_file'] = iperfu_sect.get('iperf3_udp_data_file', '')
+    config_vars['iperf3_udp_server_hostname'] = iperfu_sect.get('server_hostname', '')
+    config_vars['iperf3_udp_port'] = iperfu_sect.get('port', '')
+    config_vars['iperf3_udp_duration'] = iperfu_sect.get('duration', '')
+    config_vars['iperf3_udp_bandwidth'] = iperfu_sect.get('bandwidth', '')
 
     ### Get DNS test params
     dns_sect = config['DNS_test']
     config_vars['dns_test_enabled'] = dns_sect.get('enabled', 'no')
-    config_vars['dns_data_file'] = dns_sect.get('dns_data_file')
-    config_vars['dns_target1'] = dns_sect.get('dns_target1')
-    config_vars['dns_target2'] = dns_sect.get('dns_target2')
-    config_vars['dns_target3'] = dns_sect.get('dns_target3')
-    config_vars['dns_target4'] = dns_sect.get('dns_target4')
-    config_vars['dns_target5'] = dns_sect.get('dns_target5')
+    config_vars['dns_data_file'] = dns_sect.get('dns_data_file', '')
+    config_vars['dns_target1'] = dns_sect.get('dns_target1', '')
+    config_vars['dns_target2'] = dns_sect.get('dns_target2', '')
+    config_vars['dns_target3'] = dns_sect.get('dns_target3', '')
+    config_vars['dns_target4'] = dns_sect.get('dns_target4', '')
+    config_vars['dns_target5'] = dns_sect.get('dns_target5', '')
 
     ### Get http test params
     http_sect = config['HTTP_test']
     config_vars['http_test_enabled'] = http_sect.get('enabled', 'no')
-    config_vars['http_data_file'] = http_sect.get('http_data_file')
-    config_vars['http_target1'] = http_sect.get('http_target1')
-    config_vars['http_target2'] = http_sect.get('http_target2')
-    config_vars['http_target3'] = http_sect.get('http_target3')
-    config_vars['http_target4'] = http_sect.get('http_target4')
-    config_vars['http_target5'] = http_sect.get('http_target5')
+    config_vars['http_data_file'] = http_sect.get('http_data_file', '')
+    config_vars['http_target1'] = http_sect.get('http_target1', '')
+    config_vars['http_target2'] = http_sect.get('http_target2', '')
+    config_vars['http_target3'] = http_sect.get('http_target3', '')
+    config_vars['http_target4'] = http_sect.get('http_target4', '')
+    config_vars['http_target5'] = http_sect.get('http_target5', '')
 
     ### Get DHCP test params
     dhcp_sect = config['DHCP_test']
     config_vars['dhcp_test_enabled'] = dhcp_sect.get('enabled', 'no')
     config_vars['dhcp_test_mode'] = dhcp_sect.get('mode', 'passive')
-    config_vars['dhcp_data_file'] = dhcp_sect.get('dhcp_data_file')
+    config_vars['dhcp_data_file'] = dhcp_sect.get('dhcp_data_file', '')
 
     '''
     # Check all entered config.ini values to see if valid
