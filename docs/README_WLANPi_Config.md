@@ -154,6 +154,7 @@ If you'd like to flip back from Wiperf mode, SSH to the WLAN Pi and execute:
 
 - There is an issue with the v1.9.0 WLAN Pi image that means that the iperf tests fail when running in Wiperf mode. To get the fixed version, follow the update process detailed in the [Updating](#updating) section of this document (3rd Jan 2020)
 - There seems to be an issue with the Comfast CF-912 adapter when using it with the WLAN Pi and associating as a client to SSIDs that use 80MHz width channels. If you hit an issue where the WLAN Pi seems to lock up or does not boot correctly, try a different adapter or a network that does not use 80Mhz channels.
+- In several dashboard reports, the reported MCS values & Rx Phy rate may be blank. This is because these values are only reported by MediaTek wireless NICs. Therefore, the CF-912 will not show these values (as it is a Realtek NIC). Sorry, not much I can do about this.
 
 <!-- link list -->
 [wlanpi_build]: docs/README_WLANPi_Image_Build.md
