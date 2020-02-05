@@ -881,24 +881,29 @@ def main():
                 http_status_code = http_result[0]
                 duration = http_result[1]
 
-                # summarise result for log
-                result_str = ' {}: {}ms (status code: {})'.format(http_target, duration, http_status_code)
+                # test if http get returned a code - False = bad http get test
+                if http_status_code:
+                    # summarise result for log
+                    result_str = ' {}: {}ms (status code: {})'.format(http_target, duration, http_status_code)
 
-                # drop abbreviated results in log file
-                file_logger.info("HTTP results: {}".format(result_str))
+                    # drop abbreviated results in log file
+                    file_logger.info("HTTP results: {}".format(result_str))
 
-                results_dict = { 
-                        'time':int(time.time()),
-                        'http_index': http_index,
-                        'http_target': http_target, 
-                        'lookup_time_ms': duration,
-                        'http_status_code': http_status_code
-                }
+                    results_dict = { 
+                            'time':int(time.time()),
+                            'http_index': http_index,
+                            'http_target': http_target, 
+                            'lookup_time_ms': duration,
+                            'http_status_code': http_status_code
+                    }
 
-                # dump the results 
-                data_file = config_vars['http_data_file']
-                test_name = "HTTP"
-                send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG, delete_data_file=delete_file)
+                    # dump the results 
+                    data_file = config_vars['http_data_file']
+                    test_name = "HTTP"
+                    send_results(results_dict, column_headers, data_file, test_name, file_logger, DEBUG, delete_data_file=delete_file)
+
+                else:
+                    file_logger.error("HTTP test had issue and failed, check agent.log")
 
                 file_logger.info("HTTP test ended.")
 

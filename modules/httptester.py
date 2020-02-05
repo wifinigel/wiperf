@@ -52,8 +52,15 @@ class HttpTester(object):
         time_taken = int(round((end - start) * 1000))
         self.http_get_duration = time_taken
 
+        # if we got a status code of zero, then something went wrong
+        # therefore we need to drop our results to avoid bad duration results
+        if self.http_status_code == 0:
+            self.http_status_code = False
+            self.http_get_duration = False
+
         if self.debug:
-            print("http get for: {} succeeded.".format(http_target))
+            print("http get for: {} : {}mS (code: {}).".format(
+                http_target, self.http_get_duration, self.http_get_duration))
 
         # return status code & elapsed duration in mS
         return (self.http_status_code, self.http_get_duration)
