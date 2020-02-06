@@ -32,6 +32,20 @@ Assuming your image is up to date, you need to complete the following steps:
 
 Check out the troubleshooting section of this guide: [WLANPi initial config & test guide][wlanpi_config]
 
+# FAQ
+
+## Where do I get the dashboard reports for Splunk
+
+Use SFTP/SCP and pull the xml files in /home/wlanpi/wiperf/dashboards from your WLAN Pi. See the [Splunk build guide][splunk_build] for details of how to add them to Splunk.
+
+## How do I get more reports or customize the supplied Splunk reports
+
+Sorry, you'll have to roll up your sleeves and have a look at this for yourself: [https://docs.splunk.com/Documentation/Splunk/8.0.1/SearchTutorial/Createnewdashboard]
+
+## Can I make a feature suggestion?
+
+Yes, get along to the GitHub site and post your suggestion in the 'Issues' section: [https://github.com/wifinigel/wiperf/issues]. It will be added to my "todo" list.
+
 # Documentation
 
 The current documentation for Wiperf is available below.
@@ -61,3 +75,11 @@ The current documentation for Wiperf is available below.
 [probe_image]: https://github.com/wifinigel/wiperf/raw/master/docs/images/probe_summary.JPG
 [speedtest_image]: https://github.com/wifinigel/wiperf/raw/master/docs/images/speedtest_summary.JPG
 [wlanpi_reimage]: https://www.youtube.com/watch?v=sD4WlNyyWDs
+
+# Credits
+
+Thanks to Kristian Roberts for his invaluable input, testing and guidance on Splunk. He kicked this whole thing off! A top bloke.
+
+# Developer
+
+Nigel Bowden (WifiNigel): [https://twitter.com/wifinigel]
