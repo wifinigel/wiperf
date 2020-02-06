@@ -6,6 +6,8 @@ It can run tests to an iperf server or to the Ookla speedtest service to give an
 
 Additionally, the probe can be configured to run a number of ping, DNS and http tests to chosen targets.
 
+The probe attempts to perform all tests over the wireless interface of the WLAN Pi. The results may be sent back to the Splunk server over the wireless or ethernet interface of the WLAN Pi. If you're wondering how to get the results back to your Splunk server and its not on the customer network, or maybe you don't have a cloud/VPS instance to run it on, check out "Zerotier" in the  [Splunk build guide][splunk_build] (yes...you can have the Splunk server on your desk at work or at home!)
+
 ![Probe Report][probe_image]
 
 Tests are run at a configured interval (usually 5 minutes) and data is sent back to a Splunk server (which will need to be setup and configured separately). The volume of data returned by the probe is very low, so the free tier of Splunk may be used to gather and report on data. To find out how to setup a Splunk server, check out this document: [Splunk build guide][splunk_build] (it's a lot easier than you might expect...honestly)
@@ -34,17 +36,21 @@ Check out the troubleshooting section of this guide: [WLANPi initial config & te
 
 # FAQ
 
-## Where do I get the dashboard reports for Splunk
+## Where do I get the dashboard reports for Splunk?
 
 Use SFTP/SCP and pull the xml files in /home/wlanpi/wiperf/dashboards from your WLAN Pi. See the [Splunk build guide][splunk_build] for details of how to add them to Splunk.
 
-## How do I get more reports or customize the supplied Splunk reports
+## How do I get more reports or customize the supplied Splunk reports?
 
 Sorry, you'll have to roll up your sleeves and have a look at this for yourself: https://docs.splunk.com/Documentation/Splunk/8.0.1/SearchTutorial/Createnewdashboard
 
 ## Can I make a feature suggestion?
 
 Yes, get along to the GitHub site and post your suggestion in the 'Issues' section: https://github.com/wifinigel/wiperf/issues. It will be added to my "todo" list.
+
+## Can I run tests over the Ethernet interface of the WLAN Pi?
+
+No, not at present. It was originally designed as a WLAN test device, so I need to do a bit of code re-writing to get tests going over Ethernet. Stay tuned.
 
 # Documentation
 
