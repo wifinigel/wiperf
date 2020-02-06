@@ -1,6 +1,16 @@
 # wiperf
 
-Wi-Fi performance probe for RPi & WLANPi
+Wiperf is a utility that can be installed on to a WLAN Pi or a Raspberry Pi to act as a network probes running a series of  network tests. It is primarily intended to provide an indication of the end-user experience on a wireless network.
+
+It can run tests to an iperf server or to the Ookla speedtest service to give an indication of what network throughput looks like. While running tests, the probe also gathers information about wireless connection data.
+
+Additionally, the probe can be configured to run a number of ping, DNS and http tests to chosen targets.
+
+Tests are run at a configured interval (usually 5 minutes) and data is sent back to a Splunk server (which will need to be setup and configured separately). The volume of data returned by the probe is very low, so the free tier of Splunk may be used to gather and report on data. To find out how to setup a Splunk server, check out this document: [Splunk build guide][splunk_build] (it's a lot easier than you might expect...honestly)
+
+Wiperf has been designed to be a tactical tool for engineers to deploy on to a wireless network where perhaps issues are being experienced and some longer term monitoring may be required. It is not designed to replace large-scale commercial offerings that provide wireless and end-user experience monitoring in a far more comprehensive and user-friendly fashion.
+
+
 
 # Documentation
 
