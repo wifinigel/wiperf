@@ -12,11 +12,29 @@ Tests are run at a configured interval (usually 5 minutes) and data is sent back
 
 Wiperf has been designed to be a tactical tool for engineers to deploy on to a wireless network where perhaps issues are being experienced and some longer term monitoring may be required. It is not designed to replace large-scale commercial offerings that provide wireless and end-user experience monitoring in a far more comprehensive and user-friendly fashion.
 
+# Setting up Wiperf
 
+In this section, we'll walk through how to set up Wiperf on your WLAN Pi.
+
+## How do I get Wiperf going on my WLAN Pi?
+
+If you have a WLAN Pi with image version v1.9 or later, the good news is you're good to go! If not, you will need to update your WLAN Pi image (see this video on [YouTube][wlanpi_reimage]).
+
+Assuming your image is up to date, you need to complete the following steps:
+
+- Setup your Splunk server and obtain the HEC token from your Splunk instance (see this doc: [Splunk build guide][splunk_build])
+- SSH to your WLAN Pi and configure your WLAN Pi as detailed in this guide: [WLANPi initial config & test guide][wlanpi_config]
+- Flip your WLAN Pi in to wiperf mode and wait for your data to appear (Front panel option : Menu > Mode > Wiperf)
+
+![HTTP Report][http_image]
+
+## How do I troubleshoot issues I may be having?
+
+Check out the troubleshooting section of this guide: [WLANPi initial config & test guide][wlanpi_config]
 
 # Documentation
 
-The current documentation for Wiperf is available below. This documentation is subject to regular updates as new features are added.
+The current documentation for Wiperf is available below.
 
 ## WLANPi Docs
 
@@ -30,6 +48,8 @@ The current documentation for Wiperf is available below. This documentation is s
 
 - [RPI software installation and setup overview][rpi_readme]
 
+![Speedtest Report][speedtest_image]
+
 <!-- link list -->
 [rpi_readme]: docs/README_RPi.md
 [wlanpi_build]: docs/README_WLANPi_Image_Build.md
@@ -40,3 +60,4 @@ The current documentation for Wiperf is available below. This documentation is s
 [iperf_image]: https://github.com/wifinigel/wiperf/raw/master/docs/images/iperf_summary.JPG
 [probe_image]: https://github.com/wifinigel/wiperf/raw/master/docs/images/probe_summary.JPG
 [speedtest_image]: https://github.com/wifinigel/wiperf/raw/master/docs/images/speedtest_summary.JPG
+[wlanpi_reimage]: https://www.youtube.com/watch?v=sD4WlNyyWDs
