@@ -40,11 +40,11 @@ Use SFTP/SCP and pull the xml files in /home/wlanpi/wiperf/dashboards from your 
 
 ## How do I get more reports or customize the supplied Splunk reports
 
-Sorry, you'll have to roll up your sleeves and have a look at this for yourself: [https://docs.splunk.com/Documentation/Splunk/8.0.1/SearchTutorial/Createnewdashboard]
+Sorry, you'll have to roll up your sleeves and have a look at this for yourself: https://docs.splunk.com/Documentation/Splunk/8.0.1/SearchTutorial/Createnewdashboard
 
 ## Can I make a feature suggestion?
 
-Yes, get along to the GitHub site and post your suggestion in the 'Issues' section: [https://github.com/wifinigel/wiperf/issues]. It will be added to my "todo" list.
+Yes, get along to the GitHub site and post your suggestion in the 'Issues' section: https://github.com/wifinigel/wiperf/issues. It will be added to my "todo" list.
 
 # Documentation
 
@@ -78,8 +78,8 @@ The current documentation for Wiperf is available below.
 
 # Credits
 
-Thanks to Kristian Roberts for his invaluable input, testing and guidance on Splunk. He kicked this whole thing off! A top bloke.
+Thanks to Kristian Roberts for his invaluable input, testing and guidance on Splunk. He kicked this whole thing off and it definitely wouldn't have happened without him A top bloke.
 
 # Developer
 
-Nigel Bowden (WifiNigel): [https://twitter.com/wifinigel]
+Nigel Bowden (WifiNigel): https://twitter.com/wifinigel
