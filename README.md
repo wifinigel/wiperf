@@ -64,7 +64,7 @@ cd ~
 git pull https://github.com/wifinigel/wiperf.git
 ```
 
-(It's best to do this is classic mode and redo you Wiperf configuration again after this operation - note that the config.default.ini files has new options you will probably like to use. Don't forget to check /home/wlanpi/wiperf/config/etc/wpa_supplicant/wpa_supplicant.conf too.)
+(It's best to do this is classic mode and redo you Wiperf configuration again after this operation - note that the config.default.ini file has new options you will probably like to use. Don't forget to check /home/wlanpi/wiperf/config/etc/wpa_supplicant/wpa_supplicant.conf too.)
 
 # Documentation
 
