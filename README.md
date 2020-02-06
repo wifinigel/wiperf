@@ -52,6 +52,18 @@ Yes, get along to the GitHub site and post your suggestion in the 'Issues' secti
 
 No, not at present. It was originally designed as a WLAN test device, so I need to do a bit of code re-writing to get tests going over Ethernet. Stay tuned.
 
+## I'm running the v1.9 WLAN Pi image and the iperf tests don't work....what's going on?
+
+There was an issue with the code distributed with image v1.9. Try the following:
+
+- ssh to the WLAN Pi
+- Run the following commands (assuming the WLAN Pi has Internet connectivity):
+
+'''
+cd ~
+git pull https://github.com/wifinigel/wiperf.git
+'''
+
 # Documentation
 
 The current documentation for Wiperf is available below.
