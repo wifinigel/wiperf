@@ -20,7 +20,7 @@ In this section, we'll walk through how to set up Wiperf on your WLAN Pi.
 
 ## How do I get Wiperf going on my WLAN Pi?
 
-If you have a WLAN Pi with image version v1.9 or later, the good news is you're good to go! If not, you will need to update your WLAN Pi image (see this video on [YouTube][wlanpi_reimage]).
+If you have a WLAN Pi with image version v1.9 or later, the good news is you're good to go! If not, you will need to update your WLAN Pi image (see this video on [YouTube][wlanpi_reimage]). Note: if you have the v1.9 image, you need to check this out and update the wiperf code before you start configuring wiperf: [FAQ note](#im-running-the-v19-wlan-pi-image-and-the-iperf-tests-dont-workwhats-going-on)
 
 Assuming your image is up to date, you need to complete the following steps:
 
