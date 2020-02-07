@@ -101,10 +101,15 @@ The current documentation for Wiperf is available below.
 [speedtest_image]: https://github.com/wifinigel/wiperf/raw/master/docs/images/speedtest_summary.JPG
 [wlanpi_reimage]: https://www.youtube.com/watch?v=sD4WlNyyWDs
 [doc_site]: https://wlan-pi.github.io/wlanpi-documentation/
+[license]: License.txt
 
 # Credits
 
 Thanks to Kristian Roberts for his invaluable input, testing and guidance on Splunk. He kicked this whole thing off and it definitely wouldn't have happened without him. A top bloke.
+
+# Caveats
+
+This free software is provided for you to use at your own risk. There are no guarantees around its operation, suitability or the data that it provides. Please consult the [license file][license] shipped with this software.
 
 # Developer
 
