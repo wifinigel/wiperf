@@ -104,7 +104,7 @@ The current documentation for Wiperf is available below.
 
 # Credits
 
-Thanks to Kristian Roberts for his invaluable input, testing and guidance on Splunk. He kicked this whole thing off and it definitely wouldn't have happened without him A top bloke.
+Thanks to Kristian Roberts for his invaluable input, testing and guidance on Splunk. He kicked this whole thing off and it definitely wouldn't have happened without him. A top bloke.
 
 # Developer
 
