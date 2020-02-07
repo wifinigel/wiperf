@@ -64,7 +64,7 @@ There was an issue with the code distributed with image v1.9. Try the following:
 - Run the following commands (assuming the WLAN Pi has Internet connectivity):
 
 ```
-cd ~
+cd ~/wiperf
 git pull https://github.com/wifinigel/wiperf.git
 ```
 
