@@ -76,10 +76,11 @@ The current documentation for Wiperf is available below.
 
 ## WLANPi Docs
 
-- [WLANPi initial config & test guide][wlanpi_config]
+- [WLAN Pi initial config & test guide][wlanpi_config]
 - [config.ini reference guide][config_ini]
 - [Splunk build guide][splunk_build]
-- [WLANPi Image Build Guide for Wiperf (image devs only)][wlanpi_build]
+- [WLAN Pi Image Build Guide for Wiperf (image devs only)][wlanpi_build]
+- [WLAN Pi Documentation Site][doc_site]
 
 
 ## RPI Docs
@@ -99,6 +100,7 @@ The current documentation for Wiperf is available below.
 [probe_image]: https://github.com/wifinigel/wiperf/raw/master/docs/images/probe_summary.JPG
 [speedtest_image]: https://github.com/wifinigel/wiperf/raw/master/docs/images/speedtest_summary.JPG
 [wlanpi_reimage]: https://www.youtube.com/watch?v=sD4WlNyyWDs
+[doc_site]: https://wlan-pi.github.io/wlanpi-documentation/
 
 # Credits
 
