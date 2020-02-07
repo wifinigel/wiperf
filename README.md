@@ -40,6 +40,10 @@ Check out the troubleshooting section of this guide: [WLANPi initial config & te
 
 Use SFTP/SCP and pull the xml files in /home/wlanpi/wiperf/dashboards from your WLAN Pi. See the [Splunk build guide][splunk_build] for details of how to add them to Splunk.
 
+## The dashboard reports show no MCS data and RX PHY rate data - why not?
+
+Various WLAN NICs that use both Realtek and Mediatek WLAN chips are now supported by the WLAN Pi. Unfortunately, the Realtek chipsets (e.g. our old favourite the CF-912) do not report as much data as the Mediatek chips, so this data is missing. As I am not aware of any way of making the dashboard reports show data conditional on the chipset used, some graphs are shown but not fully populate - sorry.
+
 ## How do I get more reports or customize the supplied Splunk reports?
 
 Sorry, you'll have to roll up your sleeves and have a look at this for yourself: https://docs.splunk.com/Documentation/Splunk/8.0.1/SearchTutorial/Createnewdashboard
