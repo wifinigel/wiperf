@@ -89,7 +89,7 @@ class DhcpTester(object):
             # includes zombie process cleanup
             start = time.time()
             subprocess.check_output(
-                "sudo /sbin/dhclient -v {} -pf /tmp/dhclient.pid 2>&1 && sudo kill $(cat /tmp/dhclient.pid) 2> /dev/null".format(self.interface), shell=True).decode()
+                "sudo /sbin/dhclient -v {} -1 -pf /tmp/dhclient.pid 2>&1 && sudo kill $(cat /tmp/dhclient.pid) 2> /dev/null".format(self.interface), shell=True).decode()
             end = time.time()
             # TODO: pattern search for "bound to 192.168.1.89"
             self.file_logger.info("Address renewed.")
