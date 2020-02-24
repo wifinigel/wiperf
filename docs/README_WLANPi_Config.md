@@ -6,6 +6,15 @@ This instruction paper assumes you are running Wiperf on a WLAN Pi on an image v
 
 The Wiperf probe is activated via the front panel menu system (FPMS) of the WLAN Pi. But, before flipping in to the Wiperf mode, a few configuration steps need to be completed:
 
+# Hostname
+
+It is strongly advised that you configure the hostname of your WLAN Pi before following the steps detailed below. The data sent to and stored in Splunk will be associated with the WLAN Pi hostname that is used when the data is forwarded. If you decide to subsequently change the hostname, then historical data from the unit will not be associated with the data sent with the new hostname.
+
+If you are running multiple WLAN Pi units, then you MUST change their hostnames, as you will not be able to differentiate their data within Splunk. All data, from all units, will be shown under the default 'wlanpi' hostname.
+
+To change the WLAN Pi hostname, please check out the following [FAQ][hostname_faq] page and complete all suggested steps: [link][hostname_faq]
+
+
 # Configuration File (config.ini)
 
 The operation of Wiperf is configured using the file `'/home/wanpi/wiperf/config.ini'` This needs to be edited prior to entering Wiperf mode.
@@ -161,3 +170,4 @@ If you'd like to flip back from Wiperf mode, SSH to the WLAN Pi and execute:
 [wlanpi_config]: docs/README_WLANPi_Config.md
 [config_ini]: docs/README_Config.ini.md
 [splunk_build]: https://github.com/wifinigel/wiperf/raw/master/docs/WLANPi%20Wiperf%20Probe%20-%20Splunk%20Build.pdf
+[hostname_faq]: https://wlan-pi.github.io/wlanpi-documentation/faq/#how-do-i-change-the-hostname-of-my-wlan-pi
