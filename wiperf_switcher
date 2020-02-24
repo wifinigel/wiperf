@@ -19,6 +19,7 @@ VERSION=0.04
 STATUS_FILE="/home/wlanpi/wiperf/wiperf.on"
 CFG_FILE="/home/wlanpi/wiperf/config.ini"
 LOG_FILE="/home/wlanpi/wiperf/switcher.log"
+ROUTE_FILE="/etc/network/if-up.d/route"
 
 # Check we're root
 if [[ $EUID -ne 0 ]]; then
@@ -121,12 +122,19 @@ wiperf_on () {
     fi
     echo "Ethernet default route: ${ETH_DEF_ROUTE}" >> $LOG_FILE
 
-    # add static route to end of interfaces file
-    STATIC_CMD="post-up ip route add $SPLUNK_IP via $ETH_DEF_ROUTE dev eth0 "
-    echo -e "\n" >> /home/wlanpi/wiperf/conf/etc/network/interfaces
-    echo $STATIC_CMD >> /home/wlanpi/wiperf/conf/etc/network/interfaces
-    echo "Static route command: ${STATIC_CMD}" >> $LOG_FILE
+    # add static route to route file in /etc/network/if-up.d
 
+    # if route file exists, back it up
+    if [ -e "$ROUTE_FILE" ]; then
+      cp $ROUTE_FILE ${ROUTE_FILE}.orig
+    fi
+
+    # create /etc/network/if-up.d/route & chmod 755
+    echo "#!/bin/sh" > $ROUTE_FILE
+    STATIC_CMD="/bin/ip route add $SPLUNK_IP via $ETH_DEF_ROUTE dev eth0"
+    echo "Static route command: ${STATIC_CMD}" >> $LOG_FILE
+    echo $STATIC_CMD >> $ROUTE_FILE
+    chmod 755 $ROUTE_FILE
   fi
 
   # Add crontab entry
@@ -201,7 +209,16 @@ wiperf_off () {
 
   if [ "$MGT_IF" == "eth0" ]; then
     # Using eth0 - need to remove static route back to Splunk
-    sed -i '$ d' /home/wlanpi/wiperf/conf/etc/network/interfaces
+
+    # if route file backup exists restore it, otherwise, remove route file
+    if [ -e "${ROUTE_FILE}.orig" ]
+    then
+      cp "${ROUTE_FILE}.orig" $ROUTE_FILE
+      rm "${ROUTE_FILE}.orig"
+    else
+      rm $ROUTE_FILE
+    fi
+
   fi
 
   # Remove eth0 & wlan0 fw rules
