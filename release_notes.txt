@@ -1,6 +1,3 @@
+V0.09
 
-V0.08
-
-Added http test & new http 
-dashboard report
-
+Added ufw rules to allow http port on wlan & eth
