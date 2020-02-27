@@ -10,6 +10,7 @@
 # v0.02 - 11th Dec 2019 - Fixed awk for multiple spaces, command ordrering, ufw rules 
 # v0.03 - 14th Dec 2019 - Lots of updates for eth0 static routes, wlan0 check etc.
 # v0.04 - 11th Jan 2020 - Fixed WLANPi name to WLAN Pi.
+# v0.05 0 27th Feb 2020 - added tcp/80 to ufw rules
 
 set -e
 
@@ -149,9 +150,11 @@ wiperf_on () {
 
   # Harden eth0 & wlan0 by adding fw rules - allow only ssh in on eth0 & wlan0
   ufw insert 1 allow in on eth0 to any port ssh
-  ufw insert 2 deny in on eth0
-  ufw insert 3 allow in on wlan0 to any port ssh
-  ufw insert 4 deny in on wlan0
+  ufw insert 2 allow in on eth0 to any port http
+  ufw insert 3 deny in on eth0
+  ufw insert 4 allow in on wlan0 to any port ssh
+  ufw insert 5 allow in on wlan0 to any port http
+  ufw insert 6 deny in on wlan0
 
   #Backup existing config files
   cp /etc/network/interfaces /etc/network/interfaces.probe
