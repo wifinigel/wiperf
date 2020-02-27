@@ -227,8 +227,10 @@ wiperf_off () {
   # Remove eth0 & wlan0 fw rules
   # Harden eth0 & wlan0 by adding fw rules - allow only ssh in on eth0 & wlan0
   ufw delete allow in on eth0 to any port ssh
+  ufw delete allow in on eth0 to any port http
   ufw delete deny in on eth0
   ufw delete allow in on wlan0 to any port ssh
+  ufw delete allow in on wlan0 to any port http
   ufw delete deny in on wlan0
 
   # Remove links to config files
