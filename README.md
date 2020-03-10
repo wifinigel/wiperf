@@ -36,6 +36,24 @@ Check out the troubleshooting section of this guide: [WLANPi initial config & te
 
 # FAQ
 
+## I see bounce command error messages in the agent.log file, what is going on?
+
+The following error messages may be seen in the agent.log file of wiperf if using the WLAN Pi v1.9.1 (or earlier) image:
+```
+ERROR - if bounce command appears to have failed. Error: sudo: no tty present and no askpass program specified
+```
+This occurs when connectivity issues are experienced and wiperf attempt to bounce the wireless interface to recover the wireless connection. To fix this issue, add the following entries to the /etc/sudoers.d/wlanpidump file:
+
+```
+/sbin/ifdown 
+/sbin/ifup
+```
+The modified file content should be as follows:
+```
+wlanpi ALL = (root) NOPASSWD: /sbin/iwconfig, /usr/sbin/iw, /sbin/dhclient, /sbin/ifconfig, /sbin/reboot, /bin/kill, /bin/date, /sbin/ifdown, /sbin/ifup
+```
+This will ensure that the wireless interface may be correctly bounced by wiperf if required.
+
 ## Where do I get the dashboard reports for Splunk?
 
 Use SFTP/SCP and pull the xml files in /home/wlanpi/wiperf/dashboards from your WLAN Pi. See the [Splunk build guide][splunk_build] for details of how to add them to Splunk.
