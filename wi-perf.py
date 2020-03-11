@@ -90,6 +90,10 @@ def read_config(debug):
     config_vars['test_interval'] = gen_sect.get('test_interval', '5')
     config_vars['test_offset'] = gen_sect.get('test_offset', '0')
 
+    # connectivity DNS lookup - site used for initial DNS lookup when assessing if DNS working OK
+    config_vars['connectivity_lookup'] = gen_sect.get('connectivity_lookup', 'google.com')
+
+
     # unit bouncer - hours at which we'd like to bounce unit (e.g. 00, 04, 08, 12, 16, 20)
     config_vars['unit_bouncer'] = gen_sect.get('unit_bouncer', False)
 
@@ -644,9 +648,9 @@ def main():
 
     # final connectivity check: see if we can resolve an address
     # (network connection and DNS must be up)
-    file_logger.info("Checking we can do a DNS lookup.")
+    file_logger.info("Checking we can do a DNS lookup to {}".format(config_vars['connectivity_lookup']))
     try:
-        gethostbyname('bbc.co.uk')
+        gethostbyname(config_vars['connectivity_lookup'])
     except Exception as ex:
         file_logger.error(
             "DNS seems to be failing, bouncing wireless interface. Err msg: {}".format(ex))

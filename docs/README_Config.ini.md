@@ -38,10 +38,11 @@ We'll take a look at each section of the config file and provide some guidance o
     - [splunk_token](#splunk_token)
     - [test_interval](#test_interval)
     - [test_offset](#test_offset)
+    - [connectivity_lookup](#connectivity_lookup)
     - [location](#location)
     - [data_format](#data_format)
     - [data_dir](#data_dir)
-    - [date_transport](#data_transport)
+    - [data_transport](#data_transport)
     - [unit_bouncer](#unit_bouncer)
 - [Speetest Section](#speedtest-section)
     - [enabled](#enabled)
@@ -197,6 +198,16 @@ The default value is zero which means that the default 5,10,15,20... run pattern
 Default setting:
 ```
 test_offset: 0
+```
+[top](#parameter-reference-guide)
+
+### connectivity_lookup
+
+At the start of each test cycle, a DNS lookup is performed to ensure that DNS is working. By default this is 'google.com' (this was 'bbc.co.uk' on older versions of wiperf). This may be set to any required hostname lookup in instances when the default site may not be available for some reason (e.g. DNS restrictions due to filtering or lack of Internet access)
+
+Default setting:
+```
+connectivity_lookup: google.com
 ```
 [top](#parameter-reference-guide)
 

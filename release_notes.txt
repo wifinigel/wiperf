@@ -1,3 +1,5 @@
-V0.09
+V0.10
+Added 'connectivity_lookup' parameter to config.default.ini to allow custom DNS lookup when wiperf assesses initial connectivity health.
 
+V0.09
 Added ufw rules to allow http port on wlan & eth
