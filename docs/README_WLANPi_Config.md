@@ -101,6 +101,66 @@ To get the latest updates from the GitHub repo (when available), use the followi
 
 (note that this will update config.default.ini but not config.ini, so remember to re-edit it after a pull if the config file format changes)
 
+# Known Issues:
+
+## iperf Tests Fail
+
+There is an issue with the v1.9.0 WLAN Pi image that means that the iperf tests fail when running in wiperf mode. To get the fixed version, follow the update process detailed in the [Updating](#updating) section of this document (3rd Jan 2020)
+
+## Interface Bounce Failures
+
+There is an issue in WLAN Pi image versions v1.9.0 & v1.9.1 with some required commands missing from the ```/etc/sudoers.d/wlanpidump``` file. This issue manifests itself with errors about WLAN interface bounce operations failing in the agent.log file. To fix this issue, please apply the following fix:
+
+ Add the following entries to the /etc/sudoers.d/wlanpidump file:
+
+```
+/sbin/ifdown 
+/sbin/ifup
+```
+The modified file content should be as follows:
+```
+wlanpi ALL = (root) NOPASSWD: /sbin/iwconfig, /usr/sbin/iw, /sbin/dhclient, /sbin/ifconfig, /sbin/reboot, /bin/kill, /bin/date, /sbin/ifdown, /sbin/ifup
+```
+Reboot the WLAN Pi after applying this file update
+
+## DNS Lookup Order Issue
+
+By default in WLAN Pi image versions up to and including v1.9.1, the DNS server value ```8.8.8.8``` has been hard-coded in to the DNS server lookup list. This has been achieved by configuring the following line in to the file ```/etc/resolvconf/resolv.conf.d/head```:
+
+```
+nameserver 8.8.8.8
+```
+This ensures that the 8.8.8.8 address is always used as the first DNS lookup entry, even if the WLAN Pi receives a DNS server address during its DHCP process. This can be verified by performing a ```cat /etc/resolv.conf``` when the WLAN Pi is in wiperf mode - even though there may be two or more entries in the file, 8.8.8.8 will always be shown at the top of the file listing, and be used as the first lookup server. This may not be desirable behaviour, as 8.8.8.8 may not be available or DHCP assigned servers may be preferred. 
+
+To ensure that the desired DNS environment is used, the following options exist:
+
+1. Remove the 8.8.8.8 entry completely: edit the file  ```/etc/resolvconf/resolv.conf.d/head``` and remove the offending entry completely. This will ensure only the DHCP assigned DNS server(s) will be used.
+2. Replace the 8.8.8.8 entry by editing the  ```/etc/resolvconf/resolv.conf.d/head``` and replacing it with a desired value
+3. Move the 8.8.8.8 entry from the ```/etc/resolvconf/resolv.conf.d/head``` file to the ```/etc/resolvconf/resolv.conf.d/tail``` file, so that 8.8.8.8 is still used, but is now the last option in the DNS server list (only used when other preceding servers do not return a result)
+
+## Hostname Change Related Issues 
+
+There have been a number of issues reported that have been reported that are due to the WLAN Pi hostname being changed from the default, but it has not been updated in both the ```/etc/hostname``` AND ```/etc/hosts``` file. Please ensure you have followed [this process][hostname_faq] : [Link][hostname_faq]
+
+The issue tends to manifest itself as various "weird" issues such as "sudo" commands failing for no apparent reason. 
+
+## Comfast CF-912 80MHz Width Channels
+
+There seems to be an issue with the Comfast CF-912 adapter when using it with the WLAN Pi and associating as a client to SSIDs that use 80MHz width channels. If you hit an issue where the WLAN Pi seems to lock up or does not boot correctly, try a different adapter or a network that does not use 80Mhz channels.
+
+## MCS & Rx Phy rates Missing From Reports
+
+In several dashboard reports, the reported MCS values & Rx Phy rate may be blank. This is because these values are only reported by MediaTek wireless NICs. Therefore, the CF-912 will not show these values (as it is a Realtek NIC). Sorry, not much I can do about this.
+
+## Tests Fail To Start Due to DNS Failures
+
+In versions of wiperf before version v0.10, the wiperf probe performed a series of tests to verify the health of the wireless connection prior to tests running. One of these tests included a DNS lookup to "bbc.co.uk" to verify Internet connectivity.
+
+In some environments, this may not be a valid test. To fix this issue, a new configuring parameter was added to the config.ini file that allows a custom lookup target to be provided, if requried: 
+```
+connectivity_lookup: google.com
+```
+
 # Troubleshooting:
 
 If things seem to be going wrong, try the following:
@@ -161,11 +221,7 @@ If you'd like to flip back from Wiperf mode, SSH to the WLAN Pi and execute:
  sudo ./wiperf_switcher off
  ```
 
-# Known Issues:
 
-- There is an issue with the v1.9.0 WLAN Pi image that means that the iperf tests fail when running in Wiperf mode. To get the fixed version, follow the update process detailed in the [Updating](#updating) section of this document (3rd Jan 2020)
-- There seems to be an issue with the Comfast CF-912 adapter when using it with the WLAN Pi and associating as a client to SSIDs that use 80MHz width channels. If you hit an issue where the WLAN Pi seems to lock up or does not boot correctly, try a different adapter or a network that does not use 80Mhz channels.
-- In several dashboard reports, the reported MCS values & Rx Phy rate may be blank. This is because these values are only reported by MediaTek wireless NICs. Therefore, the CF-912 will not show these values (as it is a Realtek NIC). Sorry, not much I can do about this.
 
 <!-- link list -->
 [wlanpi_build]: docs/README_WLANPi_Image_Build.md
