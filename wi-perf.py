@@ -41,9 +41,6 @@ check_cfg_file = '/tmp/wiperf.cfg'
 DEBUG = 0
 DUMMY_DATA = False
 
-# Refresh config file from central sever every  CFG_REFRESH_INTERVAL seconds
-CFG_REFRESH_INTERVAL = 1800
-
 config_vars = {}
 
 ###################################
@@ -111,6 +108,7 @@ def read_config(debug):
     config_vars['cfg_username'] = gen_sect.get('cfg_username', '')
     config_vars['cfg_password'] = gen_sect.get('cfg_password', '')
     config_vars['cfg_token'] = gen_sect.get('cfg_token', '')
+    config_vars['cfg_refresh_interval'] = gen_sect.get('cfg_refresh_interval', 1800)
 
     # do some basic checks that mandatory fields are present
     for field in ['data_host', 'splunk_token']:
@@ -434,7 +432,7 @@ def check_last_cfg_read(check_cfg_file, file_logger):
     
     # if config file not read in last 30 mins, pull cfg file
     file_logger.info("Checking time diff, time now: {}, last read time: {}".format(time_now, last_read_time))
-    if (time_now - int(last_read_time)) >  CFG_REFRESH_INTERVAL:
+    if (time_now - int(last_read_time)) >  int(config_vars['cfg_refresh_interval']):
         file_logger.info("Time to read remote cfg file...")
         return read_remote_cfg(file_logger)
     else:
