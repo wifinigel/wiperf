@@ -13,6 +13,7 @@ import csv
 import os.path
 import logging
 import json
+import requests
 
 # our local modules...
 from modules.ooklaspeedtest import ooklaspeedtest
@@ -34,10 +35,14 @@ mode_active = os.path.dirname(os.path.realpath(__file__)) + "/wiperf_mode.on"
 status_file = '/tmp/wiperf_status.txt'
 watchdog_file = '/tmp/wiperf.watchdog'
 bounce_file = '/tmp/wiperf.bounce'
+check_cfg_file = '/tmp/wiperf.cfg'
 
 # Enable debugs or create some dummy data for testing
 DEBUG = 0
 DUMMY_DATA = False
+
+# Refresh config file from central sever every  CFG_REFRESH_INTERVAL seconds
+CFG_REFRESH_INTERVAL = 1800
 
 config_vars = {}
 
@@ -99,6 +104,13 @@ def read_config(debug):
 
     # location
     config_vars['location'] = gen_sect.get('location', '')
+
+    # config server details (if supplied)
+    config_vars['cfg_filename'] = gen_sect.get('cfg_filename', '')
+    config_vars['cfg_url'] = gen_sect.get('cfg_url', '')
+    config_vars['cfg_username'] = gen_sect.get('cfg_username', '')
+    config_vars['cfg_password'] = gen_sect.get('cfg_password', '')
+    config_vars['cfg_token'] = gen_sect.get('cfg_token', '')
 
     # do some basic checks that mandatory fields are present
     for field in ['data_host', 'splunk_token']:
@@ -334,11 +346,104 @@ def bounce_error_exit(adapter, file_logger, debug=False):
     # clean up lock file & exit
     delete_lock_file(lock_file, file_logger)
     sys.exit()
+
+####################################
+# config server
+####################################
+def read_remote_cfg(file_logger):
+    """
+    Pull the remote cfg file if refresh time expired or on first boot
+    """
+
+    cfg_file_url = config_vars['cfg_url']
+    cfg_token = config_vars['cfg_token']
+    cfg_username = config_vars['cfg_username']
+    cfg_password = config_vars['cfg_password']
+    cfg_text = ''
+    
+    # if we use a token, we need to set user/pwd to be token
+    if cfg_token:
+        cfg_username = cfg_token
+        cfg_password = cfg_token
+    
+    file_logger.info("Trying to pull config file from : {}".format(cfg_file_url))
+    try:
+        response = requests.get(cfg_file_url, auth=(cfg_username, cfg_password))
+        if response.status_code == 200:
+           cfg_text = response.text
+        file_logger.info("Config file pulled OK.")
+    except Exception as err:
+        file_logger.error("Config file pull error:")
+        file_logger.error("HTTP get error: {}".format(err))
+        return False
+
+    if cfg_text:
+        file_logger.info("Writing pulled config file...")
+        try:   
+            with open(config_file, 'w') as f:
+                f.write(cfg_text)
+            file_logger.info("Config file written OK.")
+            write_cfg_timestamp(check_cfg_file, file_logger)
+            return True
+        except Exception as ex:
+            file_logger.error("Config file write error:")
+            file_logger.error("Issue writing cfg timestamp file: {}".format(ex))
+            return False
+    else:
+        file_logger.info("No data detected in cfg file, nothing written to file (check file URL)")
+        return False
+
+def write_cfg_timestamp(check_cfg_file, file_logger):
+    """
+    Write current timestamp to cfg timestamp file
+    """
+    
+    time_now = str(int(time.time()))
+    
+    file_logger.info("Writing current time to cfg timestamp file...")
+    try:   
+        with open(check_cfg_file, 'w') as f:
+            f.write(time_now)
+        file_logger.info("Written OK.")
+        return True
+    except Exception as ex:
+        file_logger.error("Issue writing cfg timestamp file: {}".format(ex))
+        return False
+
+
+def check_last_cfg_read(check_cfg_file, file_logger):
+    """
+    Read timestamp from cfg timestamp file and force pull of remote cfg file if required
+    """
+
+    time_now = int(time.time())
+    last_read_time = 0
+
+    file_logger.info("Checking cfg last-read timestamp...")
+    try:
+        with open(check_cfg_file) as f:
+            last_read_time = f.read()
+        file_logger.info("Last read timestamp: {}".format(last_read_time))
+    except FileNotFoundError:
+        # file does not exist, create & write timestamp
+        file_logger.info("Timestamp file does not exist, creating...")
+        write_cfg_timestamp(check_cfg_file, file_logger)
+    except Exception as e:
+        file_logger.info("File read error: {}".format(e))
+        return False
+    
+    # if config file not read in last 30 mins, pull cfg file
+    file_logger.info("Checking time diff, time now: {}, last read time: {}".format(time_now, last_read_time))
+    if (time_now - int(last_read_time)) >  CFG_REFRESH_INTERVAL:
+        file_logger.info("Time to read remote cfg file...")
+        return read_remote_cfg(file_logger)
+    else:
+        file_logger.info("Not time to read remote cfg file.")
+        return False
+
 ####################################
 # Unit bouncer
 ####################################
-
-
 def check_bounce_file(bounce_file, file_logger):
 
     if os.path.exists(bounce_file):
@@ -373,7 +478,7 @@ def write_bounce_file(bounce_file, hour, file_logger):
 
 def check_for_bounce(bounce_file, file_logger):
 
-        # split out the hours we need to bounce the interface
+    # split out the hours we need to bounce the interface
     bounce_hours = config_vars['unit_bouncer'].split(",")
     bounce_hours = [i.strip() for i in bounce_hours]
 
@@ -448,8 +553,6 @@ def check_route_to_dest(ip_address, file_logger):
         return ''
 
 # write current status msg to file in /tmp for display on FPMS
-
-
 def write_status_file(text="", status_file=status_file, file_logger=file_logger):
 
     if text == '':
@@ -474,8 +577,6 @@ def write_status_file(text="", status_file=status_file, file_logger=file_logger)
 ###################################################
 # Watchdog
 ###################################################
-
-
 def write_watchdog_count(watchdog_count, watchdog_file=watchdog_file, file_logger=file_logger):
 
     try:
@@ -547,18 +648,26 @@ def dec_watchdog_count(watchdog_file=watchdog_file, file_logger=file_logger):
 ###############################################################################
 # Main
 ###############################################################################
-
-
 def main():
 
-    # read in our local config file (content in dictionary: config_vars)
+    global file_logger
 
+    # read in our local config file (content in dictionary: config_vars)
     config_vars = read_config(DEBUG)
+
+    # if we have a config server specified, check to see if it's time
+    # to pull the config
+    file_logger.info("Checking if we use remote cfg file...")
+    if config_vars['cfg_url']:
+        
+        # if able to get cfg file, re-read params in case updated
+        if check_last_cfg_read(check_cfg_file, file_logger):
+            config_vars = read_config(DEBUG)
+    else:
+        file_logger.info("No remote cfg file confgured...using current local ini file.")
 
     wlan_if = config_vars['wlan_if']
     platform = config_vars['platform']
-
-    global file_logger
 
     # create watchdog if doesn't exist
     create_watchdog()
@@ -672,6 +781,7 @@ def main():
             file_logger.error(
                 "Port check to server failed. Err msg: {} (Exiting...)".format(str(output)))
             inc_watchdog_count()
+            delete_lock_file(lock_file, file_logger)
             sys.exit()
 
     #############################################
