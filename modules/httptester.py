@@ -38,7 +38,7 @@ class HttpTester(object):
         start = time.time()
         try:
             #response = requests.get(target_url, verify=False)
-            response = requests.get(http_target, verify=False)
+            response = requests.get(http_target, verify=False, timeout=5)
             self.http_status_code = response.status_code
 
             # If the response was successful, no Exception will be raised

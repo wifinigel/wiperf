@@ -366,7 +366,7 @@ def read_remote_cfg(file_logger):
     
     file_logger.info("Trying to pull config file from : {}".format(cfg_file_url))
     try:
-        response = requests.get(cfg_file_url, auth=(cfg_username, cfg_password))
+        response = requests.get(cfg_file_url, auth=(cfg_username, cfg_password), timeout=5)
         if response.status_code == 200:
            cfg_text = response.text
         file_logger.info("Config file pulled OK.")
