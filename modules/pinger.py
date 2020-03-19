@@ -26,7 +26,7 @@ class Pinger(object):
         self.rtt_max = ''
         self.rtt_mdev = ''
 
-    def ping_host(self, host, count):
+    def ping_host(self, host, count, ping_timeout=1):
         '''
         This function will run a ping test and return an analysis of the results
 
@@ -55,8 +55,8 @@ class Pinger(object):
 
         # Execute the ping
         try:
-            ping_output = (subprocess.check_output(["/bin/ping", "-q", "-c "
-                                                    + str(count), host])).decode().splitlines()
+            #ping_output = (subprocess.check_output(["/bin/ping", "-q", "-c " + str(count), host])).decode().splitlines()
+            ping_output = subprocess.check_output("/bin/ping -q -c {} -W {} {}".format(count, ping_timeout, host)).decode().splitlines()
         except subprocess.CalledProcessError as exc:
             output = exc.output.decode()
             error = "Hit an error when pinging {} : {}".format(
