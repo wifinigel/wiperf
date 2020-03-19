@@ -1,3 +1,7 @@
+v0.11
+1. Added timeouts to http & ping tests
+2. Added optional central config retrieval from github repo
+
 V0.10
 Added 'connectivity_lookup' parameter to config.default.ini to allow custom DNS lookup when wiperf assesses initial connectivity health.
 
