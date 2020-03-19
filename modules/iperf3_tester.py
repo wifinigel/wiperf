@@ -27,7 +27,7 @@ def get_iperf(file_logger):
     for location in locations:
 
         if os.path.exists(location):
-            file_logger.info("Found iperf3 program: {}".format(location))
+            file_logger.debug("Found iperf3 program: {}".format(location))
             return location
 
     file_logger.error("Unable to find iperf3 program")
@@ -46,9 +46,8 @@ def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
     iperf_cmd_string = "{} -c {} -t {} -p {} -J".format(
         iperf, server_hostname, duration, port)
 
-    if debug:
-        file_logger.debug("TCP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}".format(
-            server_hostname, port, protocol, duration))
+    file_logger.debug("TCP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}".format(
+        server_hostname, port, protocol, duration))
 
     # run the test
     try:
@@ -103,9 +102,8 @@ def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
 
     protocol = 'udp'
 
-    if debug:
-        file_logger.debug("UDP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}, bandwidth: {}".format(
-            server_hostname, port, protocol, duration, bandwidth))
+    file_logger.debug("UDP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}, bandwidth: {}".format(
+        server_hostname, port, protocol, duration, bandwidth))
 
     iperf_cmd_string = "{} -c {} -u -t {} -p {} -b {} -J".format(
         iperf, server_hostname, duration, port, bandwidth)
