@@ -678,6 +678,8 @@ def main():
             reboot_output = subprocess.check_output(
                 'sudo /sbin/reboot', stderr=subprocess.STDOUT, shell=True).decode()
             file_logger.error("Reboot output: {}".format(reboot_output))
+            file_logger.error("Exiting script.")
+            sys.exit()
         except subprocess.CalledProcessError as exc:
             output = exc.output.decode()
             file_logger.error(
@@ -899,8 +901,6 @@ def main():
                           'percent_loss', 'test_time_ms', 'rtt_min_ms', 'rtt_avg_ms', 'rtt_max_ms', 'rtt_mdev_ms']
 
         # initial ping to populate arp cache and avoid arp timeput for first test ping
-        ping_dns_issue = False
-
         for ping_host in ping_hosts:
             if ping_host == '':
                 continue
@@ -919,9 +919,10 @@ def main():
                     test_issue = True
                     break
 
-        # ping test
+        # run actual ping tests
         ping_index = 0
         delete_file = True
+        all_tests_fail = True
 
         for ping_host in ping_hosts:
 
@@ -976,9 +977,17 @@ def main():
                 if DEBUG:
                     print("Main: Ping test results:")
                     print(ping_result)
+                
+                # signal that at least one test passed
+                all_tests_fail = False
 
             else:
                 file_logger.error("Ping test failed.")
+            
+        # if all tests fail, and there are more than 2 tests, signal a possible issue
+        if all_tests_fail and (ping_index > 1):
+            file_logger.error("Looks like quite a few pings failed, incrementing watchdog.")
+            inc_watchdog_count()
 
     else:
         file_logger.info(
@@ -1062,6 +1071,7 @@ def main():
 
         http_index = 0
         delete_file = True
+        all_tests_fail = True
 
         for http_target in http_targets:
 
@@ -1107,6 +1117,8 @@ def main():
                     send_results(results_dict, column_headers, data_file, test_name,
                                  file_logger, DEBUG, delete_data_file=delete_file)
 
+                    all_tests_fail = False
+
                 else:
                     file_logger.error(
                         "HTTP test had issue and failed, check agent.log")
@@ -1121,6 +1133,11 @@ def main():
                     "HTTP test error - no results (check logs) - exiting HTTP tests")
                 test_issue = True
                 break
+
+        # if all tests fail, and there are more than 2 tests, signal a possible issue
+        if all_tests_fail and (http_index > 1):
+            file_logger.error("Looks like quite a few http tests failed, incrementing watchdog.")
+            inc_watchdog_count()
     else:
         file_logger.info(
             "HTTP test not enabled in config file (or previous tests failed), bypassing this test...")
