@@ -127,8 +127,7 @@ def read_config(debug):
     speed_sect = config['Speedtest']
     config_vars['speedtest_enabled'] = speed_sect.get('enabled', 'no')
     config_vars['server_id'] = speed_sect.get('server_id', '')
-    config_vars['speedtest_data_file'] = speed_sect.get(
-        'speedtest_data_file', '')
+    config_vars['speedtest_data_file'] = speed_sect.get('speedtest_data_file', '')
     config_vars['http_proxy'] = speed_sect.get('http_proxy', '')
     config_vars['https_proxy'] = speed_sect.get('https_proxy', '')
     config_vars['no_proxy'] = speed_sect.get('no_proxy', '')
@@ -152,20 +151,16 @@ def read_config(debug):
     # Get iperf3 tcp test params
     iperft_sect = config['Iperf3_tcp_test']
     config_vars['iperf3_tcp_enabled'] = iperft_sect.get('enabled', 'no')
-    config_vars['iperf3_tcp_data_file'] = iperft_sect.get(
-        'iperf3_tcp_data_file', '')
-    config_vars['iperf3_tcp_server_hostname'] = iperft_sect.get(
-        'server_hostname', '')
+    config_vars['iperf3_tcp_data_file'] = iperft_sect.get('iperf3_tcp_data_file', '')
+    config_vars['iperf3_tcp_server_hostname'] = iperft_sect.get('server_hostname', '')
     config_vars['iperf3_tcp_port'] = iperft_sect.get('port', '')
     config_vars['iperf3_tcp_duration'] = iperft_sect.get('duration', '')
 
     # Get iperf3 udp test params
     iperfu_sect = config['Iperf3_udp_test']
     config_vars['iperf3_udp_enabled'] = iperfu_sect.get('enabled', 'no')
-    config_vars['iperf3_udp_data_file'] = iperfu_sect.get(
-        'iperf3_udp_data_file', '')
-    config_vars['iperf3_udp_server_hostname'] = iperfu_sect.get(
-        'server_hostname', '')
+    config_vars['iperf3_udp_data_file'] = iperfu_sect.get('iperf3_udp_data_file', '')
+    config_vars['iperf3_udp_server_hostname'] = iperfu_sect.get('server_hostname', '')
     config_vars['iperf3_udp_port'] = iperfu_sect.get('port', '')
     config_vars['iperf3_udp_duration'] = iperfu_sect.get('duration', '')
     config_vars['iperf3_udp_bandwidth'] = iperfu_sect.get('bandwidth', '')
@@ -421,7 +416,7 @@ def check_last_cfg_read(check_cfg_file, file_logger):
     try:
         with open(check_cfg_file) as f:
             last_read_time = f.read()
-        file_logger.info("Last read timestamp: {}".format(last_read_time))
+        file_logger.debug("Last read timestamp: {}".format(last_read_time))
     except FileNotFoundError:
         # file does not exist, create & write timestamp
         file_logger.info("Timestamp file does not exist, creating...")
@@ -431,7 +426,7 @@ def check_last_cfg_read(check_cfg_file, file_logger):
         return False
     
     # if config file not read in last 30 mins, pull cfg file
-    file_logger.info("Checking time diff, time now: {}, last read time: {}".format(time_now, last_read_time))
+    file_logger.debug("Checking time diff, time now: {}, last read time: {}".format(time_now, last_read_time))
     if (time_now - int(last_read_time)) >  int(config_vars['cfg_refresh_interval']):
         file_logger.info("Time to read remote cfg file...")
         return read_remote_cfg(file_logger)
