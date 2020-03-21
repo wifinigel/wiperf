@@ -2,8 +2,6 @@
 A simple class to perform an network ICMP Ping and return a number of
 result characteristics
 '''
-from __future__ import print_function
-
 
 class Pinger(object):
     '''

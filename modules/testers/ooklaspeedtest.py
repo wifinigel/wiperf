@@ -1,6 +1,5 @@
 import speedtest
 
-
 def ooklaspeedtest(file_logger, server_id='', DUMMY_DATA=False, DEBUG=False):
     '''
     This function runs the actual speedtest and returns the result

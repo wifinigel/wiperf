@@ -1,16 +1,15 @@
-'''
+"""
 A simple class to perform a DHCP release & renew and return the renewal time
-'''
-from __future__ import print_function
+"""
 import time
 import subprocess
-from modules.wirelessadapter import *
+from modules.helpers.wirelessadapter import WirelessAdapter
 
 
 class DhcpTester(object):
-    '''
+    """
     A class to perform a DHCP release & renew and return the renewal time
-    '''
+    """
 
     def __init__(self, file_logger, debug=False, platform="rpi"):
 
@@ -20,13 +19,12 @@ class DhcpTester(object):
 
         self.interface = ''
         self.duration = ''
-        self.debug = debug
         self.platform = platform
 
     def bounce_interface(self, interface, file_logger, debug):
-        '''
+        """
         Log an error before bouncing the wlan interface
-        '''
+        """
         import sys
 
         adapter = WirelessAdapter(interface, file_logger, self.platform, debug)
@@ -39,7 +37,7 @@ class DhcpTester(object):
         sys.exit()
 
     def dhcp_renewal(self, interface, mode='passive'):
-        '''
+        """
         This function will release the current DHCP address and request a renewal.
         The renewal duration is timed and the result (in mS) returned
 
@@ -48,7 +46,7 @@ class DhcpTester(object):
             tester_obj.dhcp_renewal("wlan0")
 
         If the renewal fails, the wlan interface will be bounced and the whole script will exit
-        '''
+        """
 
         self.interface = interface
 
@@ -111,5 +109,7 @@ class DhcpTester(object):
         return self.duration
 
     def get_duration(self):
-        ''' Get DHCP renewal duration '''
+        """
+        Get DHCP renewal duration
+        """
         return self.duration

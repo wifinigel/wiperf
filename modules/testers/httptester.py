@@ -6,7 +6,6 @@ import socket
 import requests
 from requests.exceptions import HTTPError
 
-
 class HttpTester(object):
     '''
     A simple class to perform a http get and return the time taken

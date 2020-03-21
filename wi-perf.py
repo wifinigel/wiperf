@@ -16,16 +16,18 @@ import json
 import requests
 
 # our local modules...
-from modules.ooklaspeedtest import ooklaspeedtest
-from modules.wirelessadapter import *
-from modules.pinger import *
-from modules.filelogger import *
-from modules.heclogger import *
-from modules.iperf3_tester import tcp_iperf_client_test, udp_iperf_client_test
-from modules.dnstester import *
-from modules.httptester import *
-from modules.dhcptester import *
-from modules.fieldchecker import *
+from modules.testers.ooklaspeedtest import ooklaspeedtest
+from modules.testers.pinger import *
+from modules.testers.iperf3_tester import tcp_iperf_client_test, udp_iperf_client_test
+from modules.testers.dnstester import *
+from modules.testers.httptester import *
+from modules.testers.dhcptester import *
+
+from modules.helpers.wirelessadapter import *
+from modules.helpers.filelogger import *
+from modules.helpers.fieldchecker import *
+
+from modules.exporters.heclogger import *
 
 # define useful system files
 config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"

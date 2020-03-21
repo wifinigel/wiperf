@@ -1,10 +1,8 @@
 '''
 A simple class to perform a DNS lookup against a number of targets and return the lookup time
 '''
-from __future__ import print_function
 import time
 import socket
-
 
 class DnsTester(object):
     '''

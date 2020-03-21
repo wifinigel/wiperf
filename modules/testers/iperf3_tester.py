@@ -9,7 +9,6 @@ import os
 import json
 import subprocess
 
-
 def get_iperf(file_logger):
     '''
      Find the iperf program
@@ -34,7 +33,7 @@ def get_iperf(file_logger):
     return False
 
 
-def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, debug=False):
+def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, timeout=2000, debug=False):
 
     iperf = get_iperf(file_logger)
 
@@ -43,11 +42,10 @@ def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
 
     protocol = 'tcp'
 
-    iperf_cmd_string = "{} -c {} -t {} -p {} -J".format(
-        iperf, server_hostname, duration, port)
+    iperf_cmd_string = "{} -c {} -t {} -p {} --connect-timeout {} -J".format(iperf, server_hostname, duration, port, timeout)
 
-    file_logger.debug("TCP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}".format(
-        server_hostname, port, protocol, duration))
+    file_logger.debug("TCP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}, --connect-timeout {}".format(
+        server_hostname, port, protocol, duration, timeout))
 
     # run the test
     try:
@@ -93,7 +91,7 @@ def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
     return result
 
 
-def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, bandwidth=10000000, debug=False):
+def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, bandwidth=10000000, timeout=2000, debug=False):
 
     iperf = get_iperf(file_logger)
 
@@ -102,11 +100,10 @@ def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
 
     protocol = 'udp'
 
-    file_logger.debug("UDP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}, bandwidth: {}".format(
-        server_hostname, port, protocol, duration, bandwidth))
+    file_logger.debug("UDP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}, bandwidth: {} --connect-timeout {}".format(
+        server_hostname, port, protocol, duration, bandwidth, timeout))
 
-    iperf_cmd_string = "{} -c {} -u -t {} -p {} -b {} -J".format(
-        iperf, server_hostname, duration, port, bandwidth)
+    iperf_cmd_string = "{} -c {} -u -t {} -p {} -b {} --connect-timeout {} -J".format(iperf, server_hostname, duration, port, bandwidth, timeout)
 
     # run the test
     try:
@@ -127,12 +124,12 @@ def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, 
     jitter_ms = iperf_json['end']['sum']['jitter_ms']
     kbps = bps / 1000
     Mbps = kbps / 1000
-    kB_s = bps / (8 * 1024)
-    MB_s = kB_s / 1024
+    # kB_s = bps / (8 * 1024)
+    # MB_s = kB_s / 1024
     packets = iperf_json['end']['sum']['packets']
     lost_packets = iperf_json['end']['sum']['lost_packets']
     lost_percent = iperf_json['end']['sum']['lost_percent']
-    seconds = iperf_json['end']['sum']['seconds']
+    # seconds = iperf_json['end']['sum']['seconds']
 
     result = {}
 
