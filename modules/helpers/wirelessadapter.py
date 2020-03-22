@@ -10,12 +10,11 @@ class WirelessAdapter(object):
     A class to monitor and manipulate the wireless adapter for the WLANPerfAgent
     '''
 
-    def __init__(self, wlan_if_name, file_logger, platform="rpi", debug=False):
+    def __init__(self, wlan_if_name, file_logger, platform="rpi"):
 
         self.wlan_if_name = wlan_if_name
         self.file_logger = file_logger
         self.platform = platform
-        self.debug = debug
 
         self.ssid = ''  # str
         self.bssid = ''  # str
@@ -34,8 +33,7 @@ class WirelessAdapter(object):
         self.ip_addr = ''  # str
         self.def_gw = ''  # str
 
-        if self.debug:
-            print("#### Initialized WirelessAdapter instance... ####")
+        self.file_logger.debug("#### Initialized WirelessAdapter instance... ####")
 
     def field_extractor(self, field_name, pattern, cmd_output_text):
 
@@ -44,8 +42,7 @@ class WirelessAdapter(object):
         if not re_result is None:
             field_value = re_result.group(1)
 
-            if self.debug:
-                print("{} = {}".format(field_name, field_value))
+            self.file_logger.debug("{} = {}".format(field_name, field_value))
 
             return field_value
         else:
@@ -104,22 +101,17 @@ class WirelessAdapter(object):
         # Get wireless interface IP address info using the iwconfig command
         ####################################################################
         try:
-            iwconfig_info = subprocess.check_output(
-                "/sbin/iwconfig " + self.wlan_if_name, stderr=subprocess.STDOUT, shell=True).decode()
+            cmd = "/sbin/iwconfig {}".format(self.wlan_if_name)
+            iwconfig_info = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True).decode()
         except subprocess.CalledProcessError as exc:
             output = exc.output.decode()
-            error_descr = "Issue getting interface info using iwconfig command: {}".format(
-                output)
-            if self.debug:
-                print("{}".format(error_descr))
+            error_descr = "Issue getting interface info using iwconfig command: {}".format(output)
 
             self.file_logger.error("{}".format(error_descr))
             self.file_logger.error("Returning error...")
             return False
 
-        if self.debug:
-            print("Wireless interface config info: ")
-            print(iwconfig_info)
+        self.file_logger.debug("Wireless interface config info: {}".format(iwconfig_info))
 
         # Extract SSID
         if not self.ssid:
@@ -186,22 +178,18 @@ class WirelessAdapter(object):
         # Get wireless interface IP address info using the iw dev wlanX info command
         #############################################################################
         try:
-            iw_info = subprocess.check_output(
-                "/sbin/iw " + self.wlan_if_name + " info", stderr=subprocess.STDOUT, shell=True).decode()
+            cmd = "/sbin/iw {} info".format(self.wlan_if_name)
+            iw_info = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True).decode()
         except subprocess.CalledProcessError as exc:
             output = exc.output.decode()
             error_descr = "Issue getting interface info using iw info command: {}".format(
                 output)
-            if self.debug:
-                print("{}".format(error_descr))
 
             self.file_logger.error("{}".format(error_descr))
             self.file_logger.error("Returning error...")
             return False
 
-        if self.debug:
-            print("Wireless interface config info (iw dev wlanX info): ")
-            print(iw_info)
+        self.file_logger.debug("Wireless interface config info (iw dev wlanX info): {}".format(iw_info))
 
         # Extract channel width
         if not self.channel_width:
@@ -238,22 +226,17 @@ class WirelessAdapter(object):
         # Get wireless interface IP address info using the iw dev wlanX link command
         #############################################################################
         try:
-            iw_link = subprocess.check_output(
-                "/sbin/iw " + self.wlan_if_name + " link", stderr=subprocess.STDOUT, shell=True).decode()
+            cmd = "/sbin/iw {} link".format(self.wlan_if_name)
+            iw_link = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True).decode()
         except subprocess.CalledProcessError as exc:
             output = exc.output.decode()
-            error_descr = "Issue getting interface info using iw link command: {}".format(
-                output)
-            if self.debug:
-                print("{}".format(error_descr))
+            error_descr = "Issue getting interface info using iw link command: {}".format(output)
 
             self.file_logger.error("{}".format(error_descr))
             self.file_logger.error("Returning error...")
             return False
 
-        if self.debug:
-            print("Wireless interface config info (iw dev wlanX link): ")
-            print(iw_link)
+        self.file_logger.debug("Wireless interface config info (iw dev wlanX link): {}".format(iw_link))
 
         # Extract channel width
         if not self.channel_width:
@@ -299,22 +282,17 @@ class WirelessAdapter(object):
         # Get wireless interface IP address info using the iw dev wlanX station dump command
         ######################################################################################
         try:
-            iw_station = subprocess.check_output(
-                "/sbin/iw " + self.wlan_if_name + " station dump", stderr=subprocess.STDOUT, shell=True).decode()
+            cmd = "/sbin/iw {} station dump".format(self.wlan_if_name)
+            iw_station = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True).decode()
         except subprocess.CalledProcessError as exc:
             output = exc.output.decode()
-            error_descr = "Issue getting interface info using iw station command: {}".format(
-                output)
-            if self.debug:
-                print("{}".format(error_descr))
+            error_descr = "Issue getting interface info using iw station command: {}".format(output)
 
             self.file_logger.error("{}".format(error_descr))
             self.file_logger.error("Returning error...")
             return False
 
-        if self.debug:
-            print("Wireless interface config info (iw dev wlanX station dump): ")
-            print(iw_station)
+        self.file_logger.debug("Wireless interface config info (iw dev wlanX station dump): {}".format(iw_station))
 
         # Extract channel width
         if not self.channel_width:
@@ -379,8 +357,7 @@ class WirelessAdapter(object):
 
         '''
 
-        if self.debug:
-            print("Getting wireless adapter info...")
+        self.file_logger.debug("Getting wireless adapter info...")
 
         # get info using iwconfig cmd
         if self.iwconfig() == False:
@@ -402,9 +379,7 @@ class WirelessAdapter(object):
         results_list = [self.ssid, self.bssid, self.freq, self.tx_bit_rate,
                         self.signal_level, self.tx_retries, self.channel]
 
-        if self.debug:
-            print("Results list:")
-            print(results_list)
+        self.file_logger.debug("Results list: {}".format(results_list))
 
         return results_list
 
@@ -419,22 +394,18 @@ class WirelessAdapter(object):
 
         # Get interface info
         try:
-            self.ifconfig_info = subprocess.check_output(
-                "/sbin/ifconfig " + str(self.wlan_if_name), stderr=subprocess.STDOUT, shell=True).decode()
+            cmd = "/sbin/ifconfig {}".format(self.wlan_if_name)
+            self.ifconfig_info = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True).decode()
         except subprocess.CalledProcessError as exc:
             output = exc.output.decode()
             error_descr = "Issue getting interface info using iw station command: {}".format(
                 output)
-            if self.debug:
-                print("{}".format(error_descr))
 
             self.file_logger.error("{}".format(error_descr))
             self.file_logger.error("Returning error...")
             return False
 
-        if self.debug:
-            print("Interface config info: ")
-            print(self.ifconfig_info)
+        self.file_logger.debug("Interface config info: {}".format(self.ifconfig_info))
 
         # Extract IP address info (e.g. inet 10.255.250.157)
         ip_re = re.search(r'inet .*?(\d+\.\d+\.\d+\.\d+)', self.ifconfig_info)
@@ -448,8 +419,7 @@ class WirelessAdapter(object):
         if not apipa_re is None:
             self.ip_addr = "NA"
 
-        if self.debug:
-            print("IP Address = " + self.ip_addr)
+        self.file_logger.debug("IP Address = " + self.ip_addr)
 
         return self.ip_addr
 
@@ -464,22 +434,18 @@ class WirelessAdapter(object):
 
         # Get route info (used to figure out default gateway)
         try:
-            self.route_info = subprocess.check_output(
-                "/sbin/route -n | grep ^0.0.0.0 | grep " + self.wlan_if_name, stderr=subprocess.STDOUT, shell=True).decode()
+            cmd = "/sbin/route -n | grep ^0.0.0.0 | grep {}".format(self.wlan_if_name)
+            self.route_info = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True).decode()
         except subprocess.CalledProcessError as exc:
             output = exc.output.decode()
             error_descr = "Issue getting default gateway info using route command (Prob due to multiple interfaces being up or wlan interface being wrong). Error: {}".format(
                 str(output))
-            if self.debug:
-                print(error_descr)
 
             self.file_logger.error(error_descr)
             self.file_logger.error("Returning error...")
             return False
 
-        if self.debug:
-            print("Route info:")
-            print(self.route_info)
+        self.file_logger.debug("Route info: {}".format(self.route_info))
 
         # Extract def gw
         def_gw_re = re.search(
@@ -489,8 +455,7 @@ class WirelessAdapter(object):
         else:
             self.def_gw = def_gw_re.group(1)
 
-        if self.debug:
-            print("Default GW = " + self.def_gw)
+        self.file_logger.debug("Default GW = " + self.def_gw)
 
     def bounce_wlan_interface(self):
         '''
@@ -500,30 +465,20 @@ class WirelessAdapter(object):
         Note: wlanpi must be added to sudoers group using visudo command on RPI
         '''
 
-        if self.debug:
-            print("Bouncing interface (platform type = " + self.platform + ")")
+        self.file_logger.debug("Bouncing interface (platform type = " + self.platform + ")")
 
         self.file_logger.info(
-            "Bouncing interface {} (platform type = {})".format(
-                self.wlan_if_name, self.platform))
+            "Bouncing interface {} (platform type = {})".format(self.wlan_if_name, self.platform))
 
-        if_bounce_cmd = "sudo /sbin/ifdown {} && sudo /sbin/ifup {};".format(
-            self.wlan_if_name, self.wlan_if_name)
+        if_bounce_cmd = "sudo /sbin/ifdown {} && sudo /sbin/ifup {};".format(self.wlan_if_name, self.wlan_if_name)
 
-        if self.debug:
-            print("if bounce command:")
-            print(if_bounce_cmd)
+        self.file_logger.debug("if bounce command: {}".format(if_bounce_cmd))
 
         try:
-            if_bounce = subprocess.check_output(
-                if_bounce_cmd, stderr=subprocess.STDOUT, shell=True).decode()
+            if_bounce = subprocess.check_output(if_bounce_cmd, stderr=subprocess.STDOUT, shell=True).decode()
         except subprocess.CalledProcessError as exc:
             output = exc.output.decode()
-            error_descr = "if bounce command appears to have failed. Error: {}".format(
-                str(output))
-
-            if self.debug:
-                print(error_descr)
+            error_descr = "i/f bounce command appears to have failed. Error: {}".format(str(output))
 
             self.file_logger.error(error_descr)
             self.file_logger.error("Returning error...")

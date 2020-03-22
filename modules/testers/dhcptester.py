@@ -27,7 +27,7 @@ class DhcpTester(object):
         """
         import sys
 
-        adapter = WirelessAdapter(interface, file_logger, self.platform, debug)
+        adapter = WirelessAdapter(interface, file_logger, self.platform)
         self.file_logger.error("Bouncing WLAN interface")
         adapter.bounce_wlan_interface()
         self.file_logger.error("Interface bounced: {}".format(interface))
