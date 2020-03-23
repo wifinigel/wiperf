@@ -485,6 +485,21 @@ class WirelessAdapter(object):
             return False
 
         return True
+    
+    def bounce_error_exit(self, lockf_obj):
+        '''
+        Log an error before bouncing the wlan interface and then exiting as we have an unrecoverable error with the network connection
+        '''
+        import sys
+
+        self.file_logger.error("Attempting to recover by bouncing wireless interface...")
+        self.file_logger.error("Bouncing WLAN interface")
+        self.bounce_wlan_interface()
+        self.file_logger.error("Bounce completed. Exiting script.")
+
+        # clean up lock file & exit
+        lockf_obj.delete_lock_file()
+        sys.exit()
 
     def get_ssid(self):
         return self.ssid

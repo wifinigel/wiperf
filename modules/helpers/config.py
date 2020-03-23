@@ -10,7 +10,7 @@ import configparser
 import os
 import sys
 
-def read_config(config_file, file_logger):
+def read_local_config(config_file, file_logger):
     '''
     Read in and return all config file variables. 
     '''

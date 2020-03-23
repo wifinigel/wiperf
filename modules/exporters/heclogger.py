@@ -1,15 +1,13 @@
 '''
 A function to perform logging to Splunk using the HTTP event logger (HEC).
 '''
-import logging
 from splunk_http_event_collector import http_event_collector
 
 
-def HecLogger(host, token, port, dict_data, source, file_logger, debug):
+def HecLogger(host, token, port, dict_data, source, file_logger):
     '''
     A function to perform logging to Splunk using the HTTP event logger (HEC).
     '''
-
     event_logger = http_event_collector(token, host)
 
     payload = {}

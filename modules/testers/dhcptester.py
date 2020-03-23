@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 """
 A simple class to perform a DHCP release & renew and return the renewal time
 """
@@ -14,7 +17,6 @@ class DhcpTester(object):
     def __init__(self, file_logger, debug=False, platform="rpi"):
 
         self.platform = platform
-        self.debug = debug
         self.file_logger = file_logger
 
         self.interface = ''
@@ -53,8 +55,7 @@ class DhcpTester(object):
         if mode == 'active':
 
             # only do this if running active test
-            if self.debug:
-                print("Releasing dhcp address on {}...".format(self.interface))
+            self.file_logger.debug("Releasing dhcp address on {}...".format(self.interface))
 
             self.file_logger.info(
                 "Releasing dhcp address on {}...".format(self.interface))
@@ -64,22 +65,13 @@ class DhcpTester(object):
                     "sudo /sbin/dhclient -r -v {} -pf /tmp/dhclient.pid 2>&1 && sudo kill $(cat /tmp/dhclient.pid) 2> /dev/null".format(self.interface), shell=True).decode()
                 # TODO: pattern search of: "DHCPRELEASE of 192.168.1.89 on wlan0"
                 self.file_logger.info("Address released.")
-                if self.debug:
-                    print("Address released.")
             except Exception as ex:
-                self.file_logger.error(
-                    "Issue releasing IP on interface: {}, issue {}".format(self.interface, ex))
-                if self.debug:
-                    print("Issue releasing IP address: {}".format(ex))
+                self.file_logger.error("Issue releasing IP on interface: {}, issue {}".format(self.interface, ex))
                 # If release fails, bounce interface to recover - script will exit
-                self.bounce_interface(
-                    self.interface, self.file_logger, self.debug)
+                self.bounce_interface(self.interface, self.file_logger, False)
 
         start = 0.0
         end = 0.0
-
-        if self.debug:
-            print("Renewing dhcp address...(mode = {})".format(mode))
 
         self.file_logger.info(
             "Renewing dhcp address...(mode = {}, interface= {})".format(mode, self.interface))
@@ -91,22 +83,43 @@ class DhcpTester(object):
             end = time.time()
             # TODO: pattern search for "bound to 192.168.1.89"
             self.file_logger.info("Address renewed.")
-            if self.debug:
-                print("Address renewed.")
         except Exception as ex:
             self.file_logger.error("Issue renewing IP address: {}".format(ex))
-            if self.debug:
-                print("Issue renewing IP address: {}".format(ex))
+
             # If renewal fails, bounce interface to recover - script will exit
-            self.bounce_interface(self.interface, self.file_logger, self.debug)
+            self.bounce_interface(self.interface, self.file_logger, False)
 
         self.duration = int(round((end - start) * 1000))
 
         self.file_logger.info("Renewal time: {}mS".format(self.duration))
-        if self.debug:
-            print("Renewal time: {}mS".format(self.duration))
 
         return self.duration
+
+    def run_tests(self, status_file_obj, config_vars, exporter_obj):
+
+        self.file_logger.info("Starting DHCP renewal test...")
+        status_file_obj.write_status_file("DHCP renew")
+
+        renewal_result = self.dhcp_renewal(config_vars['wlan_if'], mode=config_vars['dhcp_test_mode'])
+
+        if renewal_result:
+
+            column_headers = ['time', 'renewal_time_ms']
+
+            results_dict = {
+                'time': int(time.time()),
+                'renewal_time_ms': renewal_result,
+            }
+
+            # dump the results
+            data_file = config_vars['dhcp_data_file']
+            test_name = "DHCP"
+            exporter_obj.send_results(config_vars, results_dict, column_headers, data_file, test_name, self.file_logger)
+
+            self.file_logger.info("DHCP test ended.")
+
+        else:
+            self.file_logger.error("DHCP test error - no results (check logs)")
 
     def get_duration(self):
         """

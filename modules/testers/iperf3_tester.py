@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 '''
 Functions to perform iperf3 tcp & udp tests and return a number of result characteristics
 
@@ -8,136 +11,249 @@ program itself, which returns results in json format with no issues.
 import os
 import json
 import subprocess
+import time
 
-def get_iperf(file_logger):
-    '''
-     Find the iperf program
-    '''
-    # This is a little clunky, but the 'which' cmd stopped
-    # working in WLANPi image 1.9...after many hours of diagnosing,
-    # finally gave up and put this in...
-    locations = [
-        '/usr/local/bin/iperf3',
-        '/usr/bin/iperf3',
-        '/bin/iperf3',
-        '/sbin/iperf3',
-    ]
+class IperfTester(object):
+    """
+    A class to perform a tcp & udp iperf3 tests
+    """
 
-    for location in locations:
+    def __init__(self, file_logger, platform):
 
-        if os.path.exists(location):
-            file_logger.debug("Found iperf3 program: {}".format(location))
-            return location
-
-    file_logger.error("Unable to find iperf3 program")
-    return False
+        self.platform = platform
+        self.file_logger = file_logger
 
 
-def tcp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, timeout=2000, debug=False):
+    def get_iperf(self):
+        '''
+        Find the iperf program
+        '''
+        # This is a little clunky, but the 'which' cmd stopped
+        # working in WLANPi image 1.9...after many hours of diagnosing,
+        # finally gave up and put this in...
+        locations = [
+            '/usr/local/bin/iperf3',
+            '/usr/bin/iperf3',
+            '/bin/iperf3',
+            '/sbin/iperf3',
+        ]
 
-    iperf = get_iperf(file_logger)
+        for location in locations:
 
-    if not iperf:
+            if os.path.exists(location):
+                self.file_logger.debug("Found iperf3 program: {}".format(location))
+                return location
+
+        self.file_logger.error("Unable to find iperf3 program")
         return False
 
-    protocol = 'tcp'
 
-    iperf_cmd_string = "{} -c {} -t {} -p {} --connect-timeout {} -J".format(iperf, server_hostname, duration, port, timeout)
+    def tcp_iperf_client_test(self, server_hostname, duration=10, port=5201, timeout=2000, debug=False):
 
-    file_logger.debug("TCP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}, --connect-timeout {}".format(
-        server_hostname, port, protocol, duration, timeout))
+        iperf = self.get_iperf()
 
-    # run the test
-    try:
-        output = subprocess.check_output(
-            iperf_cmd_string, stderr=subprocess.STDOUT, shell=True).decode()
-    except subprocess.CalledProcessError as exc:
-        iperf_json = json.loads(exc.output.decode())
-        err_msg = iperf_json['error']
-        file_logger.error("iperf TCP test error ({}:{}): {}".format(
-            server_hostname, port, err_msg))
-        return False
+        if not iperf:
+            return False
 
-    iperf_json = json.loads(output)
+        protocol = 'tcp'
 
-    # extract data
-    sent_json = iperf_json['end']['sum_sent']
-    recv_json = iperf_json['end']['sum_received']
+        iperf_cmd_string = "{} -c {} -t {} -p {} --connect-timeout {} -J".format(iperf, server_hostname, duration, port, timeout)
 
-    # bps
-    sent_bps = sent_json['bits_per_second']
-    received_bps = recv_json['bits_per_second']
+        self.file_logger.debug("TCP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}, --connect-timeout {}".format(
+            server_hostname, port, protocol, duration, timeout))
 
-    sent_kbps = sent_bps / 1000
-    sent_Mbps = sent_kbps / 1000  # use this
+        # run the test
+        try:
+            output = subprocess.check_output(
+                iperf_cmd_string, stderr=subprocess.STDOUT, shell=True).decode()
+        except subprocess.CalledProcessError as exc:
+            iperf_json = json.loads(exc.output.decode())
+            err_msg = iperf_json['error']
+            self.file_logger.error("iperf TCP test error ({}:{}): {}".format(server_hostname, port, err_msg))
+            return False
 
-    received_kbps = received_bps / 1000
-    received_Mbps = received_kbps / 1000  # use this
+        iperf_json = json.loads(output)
 
-    # bytes
-    received_bytes = recv_json['bytes']  # use this
-    sent_bytes = sent_json['bytes']  # use this
+        # extract data
+        sent_json = iperf_json['end']['sum_sent']
+        recv_json = iperf_json['end']['sum_received']
 
-    # retransmits
-    retransmits = sent_json.get('retransmits')  # use this
+        # bps
+        sent_bps = sent_json['bits_per_second']
+        received_bps = recv_json['bits_per_second']
 
-    result = {}
-    result['sent_mbps'] = sent_Mbps
-    result['received_mbps'] = received_Mbps
-    result['sent_bytes'] = sent_bytes
-    result['received_bytes'] = received_bytes
-    result['retransmits'] = retransmits
+        sent_kbps = sent_bps / 1000
+        sent_Mbps = sent_kbps / 1000  # use this
 
-    return result
+        received_kbps = received_bps / 1000
+        received_Mbps = received_kbps / 1000  # use this
+
+        # bytes
+        received_bytes = recv_json['bytes']  # use this
+        sent_bytes = sent_json['bytes']  # use this
+
+        # retransmits
+        retransmits = sent_json.get('retransmits')  # use this
+
+        result = {}
+        result['sent_mbps'] = sent_Mbps
+        result['received_mbps'] = received_Mbps
+        result['sent_bytes'] = sent_bytes
+        result['received_bytes'] = received_bytes
+        result['retransmits'] = retransmits
+
+        return result
 
 
-def udp_iperf_client_test(file_logger, server_hostname, duration=10, port=5201, bandwidth=10000000, timeout=2000, debug=False):
+    def udp_iperf_client_test(self, server_hostname, duration=10, port=5201, bandwidth=10000000, timeout=2000, debug=False):
 
-    iperf = get_iperf(file_logger)
+        iperf = self.get_iperf()
 
-    if not iperf:
-        return False
+        if not iperf:
+            return False
 
-    protocol = 'udp'
+        protocol = 'udp'
 
-    file_logger.debug("UDP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}, bandwidth: {} --connect-timeout {}".format(
-        server_hostname, port, protocol, duration, bandwidth, timeout))
+        self.file_logger.debug("UDP iperf server test params: server: {}, port: {}, protocol: {}, duration: {}, bandwidth: {} --connect-timeout {}".format(
+            server_hostname, port, protocol, duration, bandwidth, timeout))
 
-    iperf_cmd_string = "{} -c {} -u -t {} -p {} -b {} --connect-timeout {} -J".format(iperf, server_hostname, duration, port, bandwidth, timeout)
+        iperf_cmd_string = "{} -c {} -u -t {} -p {} -b {} --connect-timeout {} -J".format(iperf, server_hostname, duration, port, bandwidth, timeout)
 
-    # run the test
-    try:
-        output = subprocess.check_output(
-            iperf_cmd_string, stderr=subprocess.STDOUT, shell=True).decode()
-    except subprocess.CalledProcessError as exc:
-        iperf_json = json.loads(exc.output.decode())
-        err_msg = iperf_json['error']
-        file_logger.error("iperf UDP test error ({}:{}): {}".format(
-            server_hostname, port, err_msg))
-        return False
+        # run the test
+        try:
+            output = subprocess.check_output(
+                iperf_cmd_string, stderr=subprocess.STDOUT, shell=True).decode()
+        except subprocess.CalledProcessError as exc:
+            iperf_json = json.loads(exc.output.decode())
+            err_msg = iperf_json['error']
+            self.file_logger.error("iperf UDP test error ({}:{}): {}".format(
+                server_hostname, port, err_msg))
+            return False
 
-    iperf_json = json.loads(output)
+        iperf_json = json.loads(output)
 
-    # extract data
-    bytes = iperf_json['end']['sum']['bytes']
-    bps = iperf_json['end']['sum']['bits_per_second']
-    jitter_ms = iperf_json['end']['sum']['jitter_ms']
-    kbps = bps / 1000
-    Mbps = kbps / 1000
-    # kB_s = bps / (8 * 1024)
-    # MB_s = kB_s / 1024
-    packets = iperf_json['end']['sum']['packets']
-    lost_packets = iperf_json['end']['sum']['lost_packets']
-    lost_percent = iperf_json['end']['sum']['lost_percent']
-    # seconds = iperf_json['end']['sum']['seconds']
+        # extract data
+        bytes = iperf_json['end']['sum']['bytes']
+        bps = iperf_json['end']['sum']['bits_per_second']
+        jitter_ms = iperf_json['end']['sum']['jitter_ms']
+        kbps = bps / 1000
+        Mbps = kbps / 1000
+        # kB_s = bps / (8 * 1024)
+        # MB_s = kB_s / 1024
+        packets = iperf_json['end']['sum']['packets']
+        lost_packets = iperf_json['end']['sum']['lost_packets']
+        lost_percent = iperf_json['end']['sum']['lost_percent']
+        # seconds = iperf_json['end']['sum']['seconds']
 
-    result = {}
+        result = {}
 
-    result['bytes'] = bytes
-    result['mbps'] = Mbps
-    result['jitter_ms'] = jitter_ms
-    result['packets'] = packets
-    result['lost_packets'] = lost_packets
-    result['lost_percent'] = lost_percent
+        result['bytes'] = bytes
+        result['mbps'] = Mbps
+        result['jitter_ms'] = jitter_ms
+        result['packets'] = packets
+        result['lost_packets'] = lost_packets
+        result['lost_percent'] = lost_percent
 
-    return result
+        return result
+
+    def run_tcp_test(self, config_vars, status_file_obj, check_route_to_dest, exporter_obj, test_issue):
+
+            duration = int(config_vars['iperf3_tcp_duration'])
+            port = int(config_vars['iperf3_tcp_port'])
+            server_hostname = config_vars['iperf3_tcp_server_hostname']
+
+            self.file_logger.info("Starting iperf3 tcp test ({}:{})...".format(server_hostname, str(port)))
+            status_file_obj.write_status_file("iperf3 tcp")
+
+            # check test to iperf3 server will go via wlan interface
+            if check_route_to_dest(server_hostname, self.file_logger) == config_vars['wlan_if']:
+
+                # run iperf test
+                result = self.tcp_iperf_client_test(server_hostname, duration=duration, port=port, debug=False)
+
+                if not result == False:
+
+                    results_dict = {}
+
+                    column_headers = ['time', 'sent_mbps', 'received_mbps', 'sent_bytes', 'received_bytes', 'retransmits']
+
+                    results_dict['time'] = int(time.time())
+                    results_dict['sent_mbps'] = round(result['sent_mbps'], 1)
+                    results_dict['received_mbps'] = round(result['received_mbps'], 1)
+                    results_dict['sent_bytes'] = result['sent_bytes']
+                    results_dict['received_bytes'] = result['received_bytes']
+                    results_dict['retransmits'] = result['retransmits']
+
+                    # drop abbreviated results in log file
+                    self.file_logger.info("Iperf3 tcp results - rx_mbps: {}, tx_mbps: {}, retransmits: {}, sent_bytes: {}, rec_bytes: {}".format(
+                        results_dict['received_mbps'], results_dict['sent_mbps'], results_dict['retransmits'], results_dict['sent_bytes'],
+                        results_dict['received_bytes']))
+
+                    # dump the results
+                    data_file = config_vars['iperf3_tcp_data_file']
+                    test_name = "iperf3_tcp"
+                    exporter_obj.send_results(config_vars, results_dict, column_headers,
+                                data_file, test_name, self.file_logger)
+
+                    self.file_logger.info("Iperf3 tcp test ended.")
+
+                else:
+                    self.file_logger.error("Error with iperf3 tcp test, check logs")
+
+            else:
+                self.file_logger.error("Unable to run iperf test to {} as route to destination not over wireless interface...bypassing test".format(server_hostname))
+                test_issue = True
+    
+    def run_udp_test(self, config_vars, status_file_obj, check_route_to_dest, exporter_obj, test_issue):
+
+        duration = int(config_vars['iperf3_udp_duration'])
+        port = int(config_vars['iperf3_udp_port'])
+        server_hostname = config_vars['iperf3_udp_server_hostname']
+        bandwidth = int(config_vars['iperf3_udp_bandwidth'])
+
+        self.file_logger.info("Starting iperf3 udp test ({}:{})...".format(server_hostname, str(port)))
+        status_file_obj.write_status_file("iperf3 udp")
+
+        if check_route_to_dest(server_hostname, self.file_logger) == config_vars['wlan_if']:
+
+            result = self.udp_iperf_client_test(server_hostname, duration=duration, port=port, bandwidth=bandwidth, debug=False)
+
+            if not result == False:
+
+                results_dict = {}
+
+                column_headers = ['time', 'bytes', 'mbps', 'jitter_ms',
+                                  'packets', 'lost_packets', 'lost_percent']
+
+                results_dict['time'] = int(time.time())
+                results_dict['bytes'] = result['bytes']
+                results_dict['mbps'] = round(result['mbps'], 1)
+                results_dict['jitter_ms'] = round(result['jitter_ms'], 1)
+                results_dict['packets'] = result['packets']
+                results_dict['lost_packets'] = result['lost_packets']
+                results_dict['lost_percent'] = round(result['lost_percent'], 1)
+
+                # workaround for crazy jitter figures sometimes seen
+                if results_dict['jitter_ms'] > 2000:
+                    self.file_logger.error("Received very high jitter value({}), set to none".format(results_dict['jitter_ms']))
+                    results_dict['jitter_ms'] = None
+
+                # drop results in log file
+                self.file_logger.info("Iperf3 udp results - mbps: {}, packets: {}, lost_packets: {}, lost_percent: {}, jitter: {}, bytes: {}".format(
+                    results_dict['mbps'], results_dict['packets'], results_dict['lost_packets'], results_dict['lost_percent'],
+                    results_dict['jitter_ms'], results_dict['bytes']))
+
+                # dump the results
+                data_file = config_vars['iperf3_udp_data_file']
+                test_name = "iperf_udp"
+                exporter_obj.send_results(config_vars, results_dict, column_headers, data_file, test_name, self.file_logger)
+
+                self.file_logger.info("Iperf3 udp test ended.")
+
+            else:
+                self.file_logger.error("Error with iperf3 udp test, check logs")
+
+        else:
+            self.file_logger.error(
+                "Unable to run iperf test to {} as route to destination not over wireless interface...bypassing test".format(server_hostname))
+            test_issue = True
