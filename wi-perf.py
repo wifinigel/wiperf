@@ -46,6 +46,7 @@ bounce_file = '/tmp/wiperf.bounce'
 check_cfg_file = '/tmp/wiperf.cfg'
 
 # Enable debugs or create some dummy data for testing
+# TODO: pull debug flag out of cfg file & set log level
 DEBUG = 0
 DUMMY_DATA = False
 
@@ -61,6 +62,11 @@ file_logger.info("*****************************************************")
 
 # Pull in our config.ini dict
 config_vars = read_local_config(config_file, file_logger)
+
+# set logging to debug if debugging enabled
+if DEBUG or (config_vars['debug'] == 'on'):
+    file_logger.setLevel('DEBUG')
+    file_logger.info("(Note: logging set to debug level.)")
 
 # Lock file object
 lockf_obj = LockFile(lock_file, file_logger)
@@ -167,7 +173,7 @@ def main():
     if config_vars['ping_enabled'] == 'yes' and test_issue == False:
 
         # run ping test
-        ping_obj = Pinger(file_logger, platform=platform, debug=DEBUG)
+        ping_obj = Pinger(file_logger, platform=platform)
         adapter_obj = WirelessAdapter(wlan_if, file_logger, platform=platform)
 
         ping_obj.run_tests(status_file_obj, config_vars, adapter_obj, check_route_to_dest, test_issue, exporter_obj, watchdog_obj)
@@ -181,7 +187,7 @@ def main():
     file_logger.info("########## dns tests ##########")
     if config_vars['dns_test_enabled'] == 'yes' and test_issue == False:
 
-        dns_obj = DnsTester(file_logger, platform=platform, debug=False)
+        dns_obj = DnsTester(file_logger, platform=platform)
         dns_obj.run_tests(status_file_obj, config_vars, exporter_obj)
 
     else:
@@ -193,7 +199,7 @@ def main():
     file_logger.info("########## http tests ##########")
     if config_vars['http_test_enabled'] == 'yes' and test_issue == False:
 
-        http_obj = HttpTester(file_logger, platform=platform, debug=DEBUG)
+        http_obj = HttpTester(file_logger, platform=platform)
         http_obj.run_tests(status_file_obj, config_vars, exporter_obj, test_issue, watchdog_obj)
 
     else:
@@ -229,7 +235,7 @@ def main():
     file_logger.info("########## dhcp test ##########")
     if config_vars['dhcp_test_enabled'] == 'yes' and test_issue == False:
 
-        dhcp_obj = DhcpTester(file_logger, platform=platform, debug=False)
+        dhcp_obj = DhcpTester(file_logger, platform=platform)
         dhcp_obj.run_tests(status_file_obj, config_vars, exporter_obj)
 
     else:

@@ -9,7 +9,7 @@ class DnsTester(object):
     A class to perform a number of DNS lookups and return the lookup times
     '''
 
-    def __init__(self, file_logger, debug=False, platform="rpi"):
+    def __init__(self, file_logger, platform="rpi"):
 
         self.platform = platform
         self.file_logger = file_logger

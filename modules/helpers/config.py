@@ -56,6 +56,9 @@ def read_local_config(config_file, file_logger):
     # location
     config_vars['location'] = gen_sect.get('location', '')
 
+    # debugging on/off for enhanced logging messages
+    config_vars['debug'] = gen_sect.get('debug', 'off')
+
     # config server details (if supplied)
     config_vars['cfg_filename'] = gen_sect.get('cfg_filename', '')
     config_vars['cfg_url'] = gen_sect.get('cfg_url', '')

@@ -13,7 +13,7 @@ class Pinger(object):
     A class to ping a host - a basic wrapper around a CLI ping command
     '''
 
-    def __init__(self, file_logger, platform="rpi", debug=False):
+    def __init__(self, file_logger, platform="rpi"):
 
         self.platform = platform
         self.file_logger = file_logger

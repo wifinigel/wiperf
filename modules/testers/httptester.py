@@ -14,7 +14,7 @@ class HttpTester(object):
     A simple class to perform a http get and return the time taken
     '''
 
-    def __init__(self, file_logger, debug=False, platform="rpi"):
+    def __init__(self, file_logger, platform="rpi"):
 
         self.platform = platform
         self.file_logger = file_logger
@@ -58,8 +58,7 @@ class HttpTester(object):
             self.http_status_code = False
             self.http_get_duration = False
 
-        self.file_logger.debug("http get for: {} : {}mS (code: {}).".format(
-                http_target, self.http_get_duration, self.http_get_duration))
+        self.file_logger.debug("http get for: {} : {}mS (code: {}).".format(http_target, self.http_get_duration, self.http_get_duration))
 
         # return status code & elapsed duration in mS
         return (self.http_status_code, self.http_get_duration)

@@ -14,7 +14,7 @@ class DhcpTester(object):
     A class to perform a DHCP release & renew and return the renewal time
     """
 
-    def __init__(self, file_logger, debug=False, platform="rpi"):
+    def __init__(self, file_logger, platform="rpi"):
 
         self.platform = platform
         self.file_logger = file_logger
@@ -23,7 +23,7 @@ class DhcpTester(object):
         self.duration = ''
         self.platform = platform
 
-    def bounce_interface(self, interface, file_logger, debug):
+    def bounce_interface(self, interface, file_logger):
         """
         Log an error before bouncing the wlan interface
         """
@@ -68,7 +68,7 @@ class DhcpTester(object):
             except Exception as ex:
                 self.file_logger.error("Issue releasing IP on interface: {}, issue {}".format(self.interface, ex))
                 # If release fails, bounce interface to recover - script will exit
-                self.bounce_interface(self.interface, self.file_logger, False)
+                self.bounce_interface(self.interface, self.file_logger)
 
         start = 0.0
         end = 0.0
@@ -87,7 +87,7 @@ class DhcpTester(object):
             self.file_logger.error("Issue renewing IP address: {}".format(ex))
 
             # If renewal fails, bounce interface to recover - script will exit
-            self.bounce_interface(self.interface, self.file_logger, False)
+            self.bounce_interface(self.interface, self.file_logger)
 
         self.duration = int(round((end - start) * 1000))
 
