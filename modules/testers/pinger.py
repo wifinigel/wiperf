@@ -59,7 +59,7 @@ class Pinger(object):
             error = "Hit an error when pinging {} : {}".format(str(host), str(output))
             self.file_logger.error(error)
 
-            stderr.write(str(error))
+            #stderr.write(str(error))
 
             # Things have gone bad - we just return a false status
             return False

@@ -29,10 +29,14 @@ def read_local_config(config_file, file_logger):
     config_vars['mgt_if'] = gen_sect.get('mgt_if', 'wlan0')
     # Get platform architecture
     config_vars['platform'] = gen_sect.get('platform', 'wlanpi')
+    # data exporter type for results
+    config_vars['exporter_type'] = gen_sect.get('exporter_type', 'splunk')
     # format of output data (csv/json)
     config_vars['data_format'] = gen_sect.get('data_format', 'json')
     # directory where data dumped
     config_vars['data_dir'] = gen_sect.get('data_dir')
+
+    ####### Splunk config ########
     # data transport
     config_vars['data_transport'] = gen_sect.get('data_transport', 'hec')
     # host where to send logs
@@ -41,6 +45,14 @@ def read_local_config(config_file, file_logger):
     config_vars['data_port'] = gen_sect.get('data_port', '8088')
     # Splunk HEC token
     config_vars['splunk_token'] = gen_sect.get('splunk_token')
+    ##############################
+
+    ####### Influx config ########
+    config_vars['influx_url'] = gen_sect.get('influx_url', '')
+    config_vars['influx_token'] = gen_sect.get('influx_token', '')
+    config_vars['influx_bucket'] = gen_sect.get('influx_bucket', '')
+    config_vars['influx_org'] = gen_sect.get('influx_org', '')
+    ##############################
 
     # test cycle timing parameters
     config_vars['test_interval'] = gen_sect.get('test_interval', '5')

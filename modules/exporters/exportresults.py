@@ -6,8 +6,11 @@ Set of functions to export results data to a variety of destinations
 import csv
 import json
 import os
+from socket import gethostname
 
 from modules.exporters.heclogger import HecLogger
+from modules.exporters.influxexporter import influxexporter
+#TODO: conditional import of influxexporter if Influx module available
 
 class ResultsExporter(object):
     """
@@ -52,41 +55,58 @@ class ResultsExporter(object):
 
     def send_results_to_hec(self, host, token, port, dict_data, file_logger, source):
 
-        file_logger.info("Sending event to HEC: {} (dest host: {}, dest port: {})".format(
-            source, host, port))
+        file_logger.info("Sending event to HEC: {} (dest host: {}, dest port: {})".format(source, host, port))
         HecLogger(host, token, port, dict_data, source, file_logger)
+
+    
+    def send_results_to_influx(self, localhost, url, token, bucket, org, dict_data, source, file_logger):
+
+        file_logger.info("Sending data to Influx url: {}, bucket: {}, source: {})".format(url, bucket, source))
+        influxexporter(localhost, url, token, bucket, org, dict_data, source, file_logger)
 
 
     def send_results(self, config_vars, results_dict, column_headers, data_file, test_name, file_logger, delete_data_file=False):
 
         # dump the results to appropriate destination
 
-        # Check if we are using the Splunk HEC (https transport)
-        if config_vars['data_transport'] == 'hec':
-            file_logger.info(
-                "HEC update: {}, source={}".format(data_file, test_name))
-            self.send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'],
-                                results_dict, file_logger, data_file)
-        # Create files if we are using the Splunk universal forwarder
-        elif config_vars['data_transport'] == 'forwarder':
+        if config_vars['exporter_type'] == 'splunk':
 
-            # CSV file format for forwarder
-            if config_vars['data_format'] == 'csv':
-                data_file = "{}/{}.csv".format(config_vars['data_dir'], data_file)
-                self.send_results_to_csv(data_file, results_dict, column_headers,
-                                    file_logger, delete_data_file=delete_data_file)
-            # JSON format for the forwarder
-            elif config_vars['data_format'] == 'json':
-                data_file = "{}/{}.json".format(config_vars['data_dir'], data_file)
-                self.send_results_to_json(data_file, results_dict, file_logger, delete_data_file=delete_data_file)
+            # Check if we are using the Splunk HEC (https transport)
+            if config_vars['data_transport'] == 'hec':
+                file_logger.info("HEC update: {}, source={}".format(data_file, test_name))
+                self.send_results_to_hec(config_vars['data_host'], config_vars['splunk_token'], config_vars['data_port'],
+                    results_dict, file_logger, data_file)
+            
+            # Create files if we are using the Splunk universal forwarder
+            elif config_vars['data_transport'] == 'forwarder':
+
+                # CSV file format for forwarder
+                if config_vars['data_format'] == 'csv':
+                    data_file = "{}/{}.csv".format(config_vars['data_dir'], data_file)
+                    self.send_results_to_csv(data_file, results_dict, column_headers,
+                                        file_logger, delete_data_file=delete_data_file)
+                
+                # JSON format for the forwarder
+                elif config_vars['data_format'] == 'json':
+                
+                    data_file = "{}/{}.json".format(config_vars['data_dir'], data_file)
+                    self.send_results_to_json(data_file, results_dict, file_logger, delete_data_file=delete_data_file)
+                
+                else:
+                
+                    file_logger.info("Unknown file format type in config file: {}".format(config_vars['data_format']))
+                    exit()
+            
+            # Transport type which is not know has been configured in the ini file
             else:
-                file_logger.info("Unknown file format type in config file: {}".format(
-                    config_vars['data_format']))
+                file_logger.info("Unknown transport type in config file: {}".format(config_vars['data_transport']))
                 exit()
-        # Transport type which is not know has been configured in the ini file
-        else:
-            file_logger.info("Unknown transport type in config file: {}".format(
-                config_vars['data_transport']))
-            exit()
+        
+        elif config_vars['exporter_type'] == 'influxdb':
+            
+            file_logger.info("Influx update: {}, source={}".format(data_file, test_name))
+
+            self.send_results_to_influx(gethostname(), config_vars['influx_url'], config_vars['influx_token'],
+                    config_vars['influx_bucket'], config_vars['influx_org'], results_dict, data_file, file_logger)
 
         return True

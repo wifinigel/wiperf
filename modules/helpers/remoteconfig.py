@@ -94,7 +94,7 @@ def check_last_cfg_read(config_file, check_cfg_file, config_vars, file_logger):
         file_logger.info("File read error: {}".format(e))
         return False
     
-    # if config file not read in last 30 mins, pull cfg file
+    # if config file not read in last refresh interval, pull cfg file
     file_logger.debug("Checking time diff, time now: {}, last read time: {}".format(time_now, last_read_time))
 
     cfg_refresh_interval = int(config_vars['cfg_refresh_interval'])

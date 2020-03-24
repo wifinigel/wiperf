@@ -34,6 +34,7 @@ from modules.helpers.lockfile import LockFile
 from modules.helpers.watchdog import Watchdog
 
 from modules.exporters.exportresults import ResultsExporter
+from modules.exporters.influxexporter import influxexporter
 
 # define useful system files
 config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"
@@ -46,7 +47,6 @@ bounce_file = '/tmp/wiperf.bounce'
 check_cfg_file = '/tmp/wiperf.cfg'
 
 # Enable debugs or create some dummy data for testing
-# TODO: pull debug flag out of cfg file & set log level
 DEBUG = 0
 DUMMY_DATA = False
 
@@ -147,7 +147,7 @@ def main():
     #############################################
     # Run network checks
     #############################################
-    file_logger.info("########## wireless connection checks ##########")
+    file_logger.info("########## Wireless connection checks ##########")
 
     connection_obj = ConnectionTester(file_logger, wlan_if, platform)
     connection_obj.run_tests(watchdog_obj, lockf_obj, config_vars, exporter_obj)
