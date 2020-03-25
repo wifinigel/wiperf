@@ -2,19 +2,34 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+import sys
 
-import influxdb_client
-from influxdb_client import InfluxDBClient, Point
-from influxdb_client.client.write_api import SYNCHRONOUS
+# module import vars
+influx_modules = True
+import_err = ''
+
+try:
+    import influxdb_client
+    from influxdb_client import InfluxDBClient, Point
+    from influxdb_client.client.write_api import SYNCHRONOUS
+except ImportError as error:
+    influx_modules = False
+    import_err = error
 
 # TODO: Error checking if write to Influx fails 
-# TODO: conditional import of influxdb_client if module available
+# TODO: convert to class
 
 def time_lookup():
     return datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def influxexporter(localhost, url, token, bucket, org, dict_data, source, file_logger):
+
+    if not influx_modules:
+        file_logger.error(" ********* MAJOR ERROR ********** ")
+        file_logger.error("One or more Influx Python modules are not installed on this system. Influx export failed, exiting")
+        file_logger.error(import_err)
+        sys.exit()
 
     client = InfluxDBClient(url=url, token=token, org=org)
     write_api = client.write_api(write_options=SYNCHRONOUS)
@@ -42,42 +57,3 @@ def influxexporter(localhost, url, token, bucket, org, dict_data, source, file_l
     file_logger.debug(data)
     write_api.write(bucket, org, data)
     file_logger.info("Data sent to Influx. (bucket: {})".format(bucket))
-
-'''
-token = 'BPqy1_9zJ8RsvJFTyYHFMHXMl8ZD1--iIH64xp83SDH-y_0dqzo4pt_zTZ5nFGbtbYuN3ckKKiBGn_LYv6N5Tw=='
-url = 'https://eu-central-1-1.aws.cloud2.influxdata.com'
-bucket = 'wiperf'
-org = '105748af6a5bb862'
-
-host = "orange_wlanpi"
-measurement = "speedtest"
-
-client = InfluxDBClient(url=url, token=token, org=org)
-write_api = client.write_api(write_options=SYNCHRONOUS)
-
-
-
-data = { 
-	"measurement": measurement,
-	"tags": { "host": host },
-	"fields": {"download": 110},
-	"time": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-}
-
-    data = [
-        { 
-        "measurement": measurement,
-        "tags": { "host": host },
-        "fields": {"download": 130},
-        "time": now
-        },
-        { 
-        "measurement": measurement,
-        "tags": { "host": host },
-        "fields": {"upload": 20},
-        "time": now
-        }
-    ]
-'''
-
-#write_api.write(bucket=bucket, org=org, record=p)
