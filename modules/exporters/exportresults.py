@@ -8,7 +8,7 @@ import json
 import os
 from socket import gethostname
 
-from modules.exporters.heclogger import HecLogger
+from modules.exporters.splunkexporter import splunkexporter
 from modules.exporters.influxexporter import influxexporter
 #TODO: conditional import of influxexporter if Influx module available
 
@@ -56,7 +56,7 @@ class ResultsExporter(object):
     def send_results_to_hec(self, host, token, port, dict_data, file_logger, source):
 
         file_logger.info("Sending event to HEC: {} (dest host: {}, dest port: {})".format(source, host, port))
-        HecLogger(host, token, port, dict_data, source, file_logger)
+        splunkexporter(host, token, port, dict_data, source, file_logger)
 
     
     def send_results_to_influx(self, localhost, url, token, bucket, org, dict_data, source, file_logger):
