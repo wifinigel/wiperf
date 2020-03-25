@@ -66,7 +66,7 @@ class ConnectionTester(object):
             self.adapter_obj.bounce_error_exit(lockf_obj)  # exit here
 
         # if we are using hec, make sure we can access the hec network port, otherwise we are wasting our time
-        if config_vars['data_transport'] == 'hec':
+        if config_vars['data_transport'] == 'hec' and config_vars['exporter_type'] == 'splunk':
             self.file_logger.info("Checking port connection to server {}, port: {}".format(
                 config_vars['data_host'], config_vars['data_port']))
 

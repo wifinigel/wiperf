@@ -6,7 +6,10 @@ Functions to retrieve centralized remote config file
 TODO: Convert to object
 """
 
+import warnings
 import requests
+from requests.exceptions import HTTPError
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import time
 
 ####################################
@@ -30,6 +33,7 @@ def read_remote_cfg(config_file, check_cfg_file, config_vars, file_logger):
     
     file_logger.info("Trying to pull config file from : {}".format(cfg_file_url))
     try:
+        warnings.simplefilter('ignore',InsecureRequestWarning)
         response = requests.get(cfg_file_url, auth=(cfg_username, cfg_password), timeout=5)
         if response.status_code == 200:
            cfg_text = response.text

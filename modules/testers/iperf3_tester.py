@@ -156,7 +156,7 @@ class IperfTester(object):
 
         return result
 
-    def run_tcp_test(self, config_vars, status_file_obj, check_route_to_dest, exporter_obj, test_issue):
+    def run_tcp_test(self, config_vars, status_file_obj, check_route_to_dest, exporter_obj):
 
             duration = int(config_vars['iperf3_tcp_duration'])
             port = int(config_vars['iperf3_tcp_port'])
@@ -202,9 +202,9 @@ class IperfTester(object):
 
             else:
                 self.file_logger.error("Unable to run iperf test to {} as route to destination not over wireless interface...bypassing test".format(server_hostname))
-                test_issue = True
+                config_vars['test_issue'] = True
     
-    def run_udp_test(self, config_vars, status_file_obj, check_route_to_dest, exporter_obj, test_issue):
+    def run_udp_test(self, config_vars, status_file_obj, check_route_to_dest, exporter_obj):
 
         duration = int(config_vars['iperf3_udp_duration'])
         port = int(config_vars['iperf3_udp_port'])
@@ -254,6 +254,5 @@ class IperfTester(object):
                 self.file_logger.error("Error with iperf3 udp test, check logs")
 
         else:
-            self.file_logger.error(
-                "Unable to run iperf test to {} as route to destination not over wireless interface...bypassing test".format(server_hostname))
-            test_issue = True
+            self.file_logger.error("Unable to run iperf test to {} as route to destination not over wireless interface...bypassing test".format(server_hostname))
+            config_vars['test_issue'] = True

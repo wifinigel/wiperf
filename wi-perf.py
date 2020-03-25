@@ -1,30 +1,21 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import time
-import datetime
-import subprocess
-from socket import gethostbyname
-import os
-import re
 import sys
-import csv
 import os.path
 import logging
-import requests
 
 # our local modules...
 from modules.testers.speedtester import Speedtester
 from modules.testers.connectiontester import ConnectionTester
-from modules.testers.pinger import *
+from modules.testers.pinger import Pinger
 from modules.testers.iperf3_tester import IperfTester
 from modules.testers.dnstester import DnsTester
 from modules.testers.httptester import HttpTester
-from modules.testers.dhcptester import *
+from modules.testers.dhcptester import DhcpTester
 
 from modules.helpers.wirelessadapter import WirelessAdapter
-from modules.helpers.filelogger import *
-from modules.helpers.fieldchecker import *
+from modules.helpers.filelogger import FileLogger
 from modules.helpers.config import read_local_config
 from modules.helpers.bouncer import Bouncer
 from modules.helpers.remoteconfig import check_last_cfg_read
@@ -37,10 +28,11 @@ from modules.exporters.exportresults import ResultsExporter
 from modules.exporters.influxexporter import influxexporter
 
 # define useful system files
-config_file = os.path.dirname(os.path.realpath(__file__)) + "/config.ini"
-log_file = os.path.dirname(os.path.realpath(__file__)) + "/logs/agent.log"
+this_dir = os.path.dirname(os.path.realpath(__file__))
+
+config_file = this_dir + "/config.ini"
+log_file = this_dir + "/logs/agent.log"
 lock_file = '/tmp/wiperf.lock'
-mode_active = os.path.dirname(os.path.realpath(__file__)) + "/wiperf_mode.on"
 status_file = '/tmp/wiperf_status.txt'
 watchdog_file = '/tmp/wiperf.watchdog'
 bounce_file = '/tmp/wiperf.bounce'
@@ -48,7 +40,7 @@ check_cfg_file = '/tmp/wiperf.cfg'
 
 # Enable debugs or create some dummy data for testing
 DEBUG = 0
-DUMMY_DATA = False
+DUMMY_DATA = False # Speedtest data only
 
 ###################################
 # File logger
@@ -112,7 +104,7 @@ def main():
     # create watchdog if doesn't exist
     watchdog_obj.create_watchdog()
 
-    # check watchdog count...if higher than 5, time for a reboot
+    # check watchdog count...if higher than 3, time for a reboot
     watchdog_count = watchdog_obj.get_watchdog_count()
     if watchdog_count > 3:
         file_logger.error("Watchdog count exceeded...rebooting")
@@ -132,21 +124,23 @@ def main():
             file_logger.error("Existing lock stale, breaking lock...")
             lockf_obj.break_lock()
         else:
+            # lock not old enough yet, respect lock & exit
             file_logger.error("Exiting due to lock file indicating script running.")
             file_logger.error("(Delete {} if you are sure script not running)".format(lock_file))
             sys.exit()
     else:
-        # create lockfile with current timestamp
+        # create lockfile with current timestamp to stop 2nd process starting
         file_logger.info("No lock file found. Creating lock file.")
         lockf_obj.write_lock_file()
 
     # test issue flag - set if any tests hit major issues
     # to stall further testing
-    test_issue = False
+    config_vars['test_issue'] = False
 
     #############################################
     # Run network checks
     #############################################
+    # Note: test_issue flag not set by connection tests, as issues will result in process exit
     file_logger.info("########## Wireless connection checks ##########")
 
     connection_obj = ConnectionTester(file_logger, wlan_if, platform)
@@ -160,7 +154,7 @@ def main():
     if config_vars['speedtest_enabled'] == 'yes':
 
         speedtest_obj = Speedtester(file_logger, platform)
-        speedtest_obj.run_tests(status_file_obj, check_route_to_dest, config_vars, exporter_obj, test_issue)
+        speedtest_obj.run_tests(status_file_obj, check_route_to_dest, config_vars, exporter_obj)
 
     else:
         file_logger.info(
@@ -170,13 +164,13 @@ def main():
     # Run ping test (if enabled)
     #############################
     file_logger.info("########## ping tests ##########")
-    if config_vars['ping_enabled'] == 'yes' and test_issue == False:
+    if config_vars['ping_enabled'] == 'yes' and config_vars['test_issue'] == False:
 
         # run ping test
         ping_obj = Pinger(file_logger, platform=platform)
         adapter_obj = WirelessAdapter(wlan_if, file_logger, platform=platform)
 
-        ping_obj.run_tests(status_file_obj, config_vars, adapter_obj, check_route_to_dest, test_issue, exporter_obj, watchdog_obj)
+        ping_obj.run_tests(status_file_obj, config_vars, adapter_obj, check_route_to_dest, exporter_obj, watchdog_obj)
 
     else:
         file_logger.info("Ping test not enabled in config file (or previous tests failed), bypassing this test...")
@@ -185,7 +179,7 @@ def main():
     # Run DNS lookup tests (if enabled)
     ###################################
     file_logger.info("########## dns tests ##########")
-    if config_vars['dns_test_enabled'] == 'yes' and test_issue == False:
+    if config_vars['dns_test_enabled'] == 'yes' and config_vars['test_issue'] == False:
 
         dns_obj = DnsTester(file_logger, platform=platform)
         dns_obj.run_tests(status_file_obj, config_vars, exporter_obj)
@@ -197,10 +191,10 @@ def main():
     # Run HTTP lookup tests (if enabled)
     #####################################
     file_logger.info("########## http tests ##########")
-    if config_vars['http_test_enabled'] == 'yes' and test_issue == False:
+    if config_vars['http_test_enabled'] == 'yes' and config_vars['test_issue'] == False:
 
         http_obj = HttpTester(file_logger, platform=platform)
-        http_obj.run_tests(status_file_obj, config_vars, exporter_obj, test_issue, watchdog_obj)
+        http_obj.run_tests(status_file_obj, config_vars, exporter_obj, watchdog_obj)
 
     else:
         file_logger.info("HTTP test not enabled in config file (or previous tests failed), bypassing this test...")
@@ -209,10 +203,10 @@ def main():
     # Run iperf3 tcp test (if enabled)
     ###################################
     file_logger.info("########## iperf3 tcp test ##########")
-    if config_vars['iperf3_tcp_enabled'] == 'yes' and test_issue == False:
+    if config_vars['iperf3_tcp_enabled'] == 'yes' and config_vars['test_issue'] == False:
 
         iperf3_tcp_obj = IperfTester(file_logger, platform)
-        iperf3_tcp_obj.run_tcp_test(config_vars, status_file_obj, check_route_to_dest, exporter_obj, test_issue)
+        iperf3_tcp_obj.run_tcp_test(config_vars, status_file_obj, check_route_to_dest, exporter_obj)
 
     else:
         file_logger.info("Iperf3 tcp test not enabled in config file (or previous tests failed), bypassing this test...")
@@ -221,10 +215,10 @@ def main():
     # Run iperf3 udp test (if enabled)
     ###################################
     file_logger.info("########## iperf3 udp test ##########")
-    if config_vars['iperf3_udp_enabled'] == 'yes' and test_issue == False:
+    if config_vars['iperf3_udp_enabled'] == 'yes' and config_vars['test_issue'] == False:
 
         iperf3_udp_obj = IperfTester(file_logger, platform)
-        iperf3_udp_obj.run_udp_test(config_vars, status_file_obj, check_route_to_dest, exporter_obj, test_issue)
+        iperf3_udp_obj.run_udp_test(config_vars, status_file_obj, check_route_to_dest, exporter_obj)
 
     else:
         file_logger.info("Iperf3 udp test not enabled in config file (or previous tests failed), bypassing this test...")
@@ -233,7 +227,7 @@ def main():
     # Run DHCP renewal test (if enabled)
     #####################################
     file_logger.info("########## dhcp test ##########")
-    if config_vars['dhcp_test_enabled'] == 'yes' and test_issue == False:
+    if config_vars['dhcp_test_enabled'] == 'yes' and config_vars['test_issue'] == False:
 
         dhcp_obj = DhcpTester(file_logger, platform=platform)
         dhcp_obj.run_tests(status_file_obj, config_vars, exporter_obj)
@@ -251,7 +245,7 @@ def main():
     file_logger.info("########## end ##########")
 
     # decrement watchdog as we ran OK
-    if test_issue == False:
+    if config_vars['test_issue'] == False:
         watchdog_obj.dec_watchdog_count()
 
     # check if we need to reboot (and that it's time to reboot)

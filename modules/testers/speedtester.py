@@ -118,7 +118,7 @@ class Speedtester(object):
         return {'ping_time': ping_time, 'download_rate': download_rate, 'upload_rate': upload_rate, 'server_name': server_name}
 
 
-    def run_tests(self, status_file_obj, check_route_to_dest, config_vars, exporter_obj, test_issue):
+    def run_tests(self, status_file_obj, check_route_to_dest, config_vars, exporter_obj):
 
         column_headers = ['time', 'server_name', 'ping_time', 'download_rate_mbps', 'upload_rate_mbps']
 
@@ -157,4 +157,4 @@ class Speedtester(object):
                 self.file_logger.error("Error running speedtest - check logs for info.")
         else:
             self.file_logger.error("Unable to run Speedtest as route to Internet not via wireless interface.")
-            test_issue = True
+            config_vars['test_issue'] = True

@@ -137,7 +137,7 @@ class Pinger(object):
             'rtt_avg': self.rtt_avg,
             'rtt_mdev': self.rtt_mdev}
 
-    def run_tests(self, status_file_obj, config_vars, adapter, check_route_to_dest, test_issue, exporter_obj, watchd):
+    def run_tests(self, status_file_obj, config_vars, adapter, check_route_to_dest, exporter_obj, watchd):
 
         self.file_logger.info("Starting ping test...")
         status_file_obj.write_status_file("Ping tests")
@@ -172,7 +172,7 @@ class Pinger(object):
                     self.file_logger.error(
                         "Unable to ping {} as route to destination not over wireless interface...bypassing ping tests".format(ping_host))
                     # we will break here if we have an issue as something bad has happened...don't want to run more tests
-                    test_issue = True
+                    config_vars['test_issue'] = True
                     break
 
         # run actual ping tests
@@ -183,7 +183,7 @@ class Pinger(object):
         for ping_host in ping_hosts:
 
             # bail if we have had DNS issues
-            if test_issue == True:
+            if config_vars['test_issue'] == True:
                 self.file_logger.error("As we had previous issues, bypassing ping tests.")
                 break
 

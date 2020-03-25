@@ -6,8 +6,10 @@ A simple class to perform a http get and return the time taken
 '''
 import time
 import socket
+import warnings
 import requests
 from requests.exceptions import HTTPError
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 class HttpTester(object):
     '''
@@ -38,6 +40,7 @@ class HttpTester(object):
         start = time.time()
         try:
             #response = requests.get(target_url, verify=False)
+            warnings.simplefilter('ignore',InsecureRequestWarning)
             response = requests.get(http_target, verify=False, timeout=5)
             self.http_status_code = response.status_code
 
@@ -63,7 +66,7 @@ class HttpTester(object):
         # return status code & elapsed duration in mS
         return (self.http_status_code, self.http_get_duration)
     
-    def run_tests(self, status_file_obj, config_vars, exporter_obj, test_issue, watchd):
+    def run_tests(self, status_file_obj, config_vars, exporter_obj, watchd):
 
         self.file_logger.info("Starting HTTP tests...")
         status_file_obj.write_status_file("HTTP tests")
@@ -130,7 +133,7 @@ class HttpTester(object):
             else:
                 self.file_logger.error(
                     "HTTP test error - no results (check logs) - exiting HTTP tests")
-                test_issue = True
+                config_vars['test_issue'] = True
                 break
 
         # if all tests fail, and there are more than 2 tests, signal a possible issue
