@@ -8,7 +8,7 @@ import re
 import subprocess
 from sys import stderr
 
-class Pinger(object):
+class PingTester(object):
     '''
     A class to ping a host - a basic wrapper around a CLI ping command
     '''
