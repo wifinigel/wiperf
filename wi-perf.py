@@ -8,8 +8,8 @@ import logging
 # our local modules...
 from modules.testers.speedtester import Speedtester
 from modules.testers.connectiontester import ConnectionTester
-from modules.testers.pinger import Pinger
-from modules.testers.iperf3_tester import IperfTester
+from modules.testers.pingtester import PingTester
+from modules.testers.iperf3tester import IperfTester
 from modules.testers.dnstester import DnsTester
 from modules.testers.httptester import HttpTester
 from modules.testers.dhcptester import DhcpTester
@@ -167,7 +167,7 @@ def main():
     if config_vars['ping_enabled'] == 'yes' and config_vars['test_issue'] == False:
 
         # run ping test
-        ping_obj = Pinger(file_logger, platform=platform)
+        ping_obj = PingTester(file_logger, platform=platform)
         adapter_obj = WirelessAdapter(wlan_if, file_logger, platform=platform)
 
         ping_obj.run_tests(status_file_obj, config_vars, adapter_obj, check_route_to_dest, exporter_obj, watchdog_obj)
