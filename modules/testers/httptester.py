@@ -1,6 +1,3 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-
 '''
 A simple class to perform a http get and return the time taken
 '''

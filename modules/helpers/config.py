@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
 """
 Read in config.ini file and return in a dictionary 
 
@@ -23,6 +21,10 @@ def read_local_config(config_file, file_logger):
 
     # Get general config params
     gen_sect = config['General']
+    # Testing mode
+    config_vars['probe_mode'] = gen_sect.get('probe_mode', 'wireless')
+    # Eth interface name
+    config_vars['eth_if'] = gen_sect.get('eth_if', 'eth0')
     # WLAN interface name
     config_vars['wlan_if'] = gen_sect.get('wlan_if', 'wlan0')
     # Interface name to send mgt traffic over (default wlan0)
@@ -48,7 +50,8 @@ def read_local_config(config_file, file_logger):
     ##############################
 
     ####### Influx config ########
-    config_vars['influx_url'] = gen_sect.get('influx_url', '')
+    config_vars['influx_host'] = gen_sect.get('influx_host', '')
+    config_vars['influx_port'] = gen_sect.get('influx_port', '443')
     config_vars['influx_token'] = gen_sect.get('influx_token', '')
     config_vars['influx_bucket'] = gen_sect.get('influx_bucket', '')
     config_vars['influx_org'] = gen_sect.get('influx_org', '')

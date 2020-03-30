@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
 """
 Set of functions to export results data to a variety of destinations
 """
@@ -83,8 +81,7 @@ class ResultsExporter(object):
                 # CSV file format for forwarder
                 if config_vars['data_format'] == 'csv':
                     data_file = "{}/{}.csv".format(config_vars['data_dir'], data_file)
-                    self.send_results_to_csv(data_file, results_dict, column_headers,
-                                        file_logger, delete_data_file=delete_data_file)
+                    self.send_results_to_csv(data_file, results_dict, column_headers,file_logger, delete_data_file=delete_data_file)
                 
                 # JSON format for the forwarder
                 elif config_vars['data_format'] == 'json':
@@ -106,7 +103,10 @@ class ResultsExporter(object):
             
             file_logger.info("Influx update: {}, source={}".format(data_file, test_name))
 
-            self.send_results_to_influx(gethostname(), config_vars['influx_url'], config_vars['influx_token'],
+            # construct url
+            influx_url = "https://{}:{}".format(config_vars['data_host'], config_vars['data_port'])
+
+            self.send_results_to_influx(gethostname(), influx_url, config_vars['influx_token'],
                     config_vars['influx_bucket'], config_vars['influx_org'], results_dict, data_file, file_logger)
 
         return True

@@ -1,6 +1,3 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-
 """
 A simple class to perform a DHCP release & renew and return the renewal time
 """
@@ -100,7 +97,14 @@ class DhcpTester(object):
         self.file_logger.info("Starting DHCP renewal test...")
         status_file_obj.write_status_file("DHCP renew")
 
-        renewal_result = self.dhcp_renewal(config_vars['wlan_if'], mode=config_vars['dhcp_test_mode'])
+        # check mode to see which interface we need to use
+        if config_vars['probe_mode'] == 'wireless':
+            interface = config_vars['wlan_if']
+        else:
+            interface = config_vars['eth_if']
+
+        self.file_logger.info("Interface under test: {}".format(interface))
+        renewal_result = self.dhcp_renewal(interface, mode=config_vars['dhcp_test_mode'])
 
         if renewal_result:
 

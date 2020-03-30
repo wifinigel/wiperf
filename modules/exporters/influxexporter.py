@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
 import datetime
 import sys
@@ -31,7 +29,7 @@ def influxexporter(localhost, url, token, bucket, org, dict_data, source, file_l
         file_logger.error(import_err)
         sys.exit()
 
-    client = InfluxDBClient(url=url, token=token, org=org)
+    client = InfluxDBClient(url=url, token=token, org=org, timeout=100)
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
     now = time_lookup()

@@ -1,6 +1,6 @@
-'''
+"""
 A function to perform data export to Splunk using the HTTP event logger (HEC).
-'''
+"""
 
 import sys
 

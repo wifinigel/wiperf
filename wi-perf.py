@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/local/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -7,7 +7,8 @@ import logging
 
 # our local modules...
 from modules.testers.speedtester import Speedtester
-from modules.testers.connectiontester import ConnectionTester
+from modules.testers.wirelessconnectiontester import WirelessConnectionTester
+from modules.testers.ethernetconnectiontester import EthernetConnectionTester
 from modules.testers.pingtester import PingTester
 from modules.testers.iperf3tester import IperfTester
 from modules.testers.dnstester import DnsTester
@@ -15,6 +16,7 @@ from modules.testers.httptester import HttpTester
 from modules.testers.dhcptester import DhcpTester
 
 from modules.helpers.wirelessadapter import WirelessAdapter
+from modules.helpers.ethernetadapter import EthernetAdapter
 from modules.helpers.filelogger import FileLogger
 from modules.helpers.config import read_local_config
 from modules.helpers.bouncer import Bouncer
@@ -99,6 +101,7 @@ def main():
         file_logger.info("No remote cfg file confgured...using current local ini file.")
 
     wlan_if = config_vars['wlan_if']
+    eth_if = config_vars['eth_if']
     platform = config_vars['platform']
 
     # create watchdog if doesn't exist
@@ -142,8 +145,15 @@ def main():
     #############################################
     # Note: test_issue flag not set by connection tests, as issues will result in process exit
     file_logger.info("########## Wireless connection checks ##########")
+    connection_obj = ''
 
-    connection_obj = ConnectionTester(file_logger, wlan_if, platform)
+    if config_vars['probe_mode'] == 'ethernet':
+        file_logger.info("Checking ethernet connection is good...")
+        connection_obj = EthernetConnectionTester(file_logger, eth_if, platform)
+    else:
+        file_logger.info("Checking wireless connection is good...")
+        connection_obj = WirelessConnectionTester(file_logger, wlan_if, platform)
+    
     connection_obj.run_tests(watchdog_obj, lockf_obj, config_vars, exporter_obj)
  
     #############################################
@@ -168,7 +178,12 @@ def main():
 
         # run ping test
         ping_obj = PingTester(file_logger, platform=platform)
-        adapter_obj = WirelessAdapter(wlan_if, file_logger, platform=platform)
+        adapter_obj = ''
+
+        if config_vars['probe_mode'] == "ethernet":
+            adapter_obj = EthernetAdapter(eth_if, file_logger, platform=platform)
+        else:
+            adapter_obj = WirelessAdapter(wlan_if, file_logger, platform=platform)
 
         ping_obj.run_tests(status_file_obj, config_vars, adapter_obj, check_route_to_dest, exporter_obj, watchdog_obj)
 

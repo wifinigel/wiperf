@@ -1,14 +1,12 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-
 import sys
 import time
 import subprocess
 from socket import gethostbyname
 
 from modules.helpers.wirelessadapter import WirelessAdapter
+from modules.testers.mgtconnectiontester import MgtConnectionTester
 
-class ConnectionTester(object):
+class WirelessConnectionTester(object):
     """
     Class to implement network connection tests for wiperf
     """
@@ -65,23 +63,11 @@ class ConnectionTester(object):
             watchdog_obj.inc_watchdog_count()
             self.adapter_obj.bounce_error_exit(lockf_obj)  # exit here
 
-        # if we are using hec, make sure we can access the hec network port, otherwise we are wasting our time
-        if config_vars['data_transport'] == 'hec' and config_vars['exporter_type'] == 'splunk':
-            self.file_logger.info("Checking port connection to server {}, port: {}".format(
-                config_vars['data_host'], config_vars['data_port']))
+        # Check we can get to the mgt platform (function will exit script if no connectivity)
+        self.file_logger.info("Checking we can get to the management platform...")
 
-            try:
-                portcheck_output = subprocess.check_output('/bin/nc -zvw10 {} {}'.format(
-                    config_vars['data_host'], config_vars['data_port']), stderr=subprocess.STDOUT, shell=True).decode()
-                self.file_logger.info("Port connection to server {}, port: {} checked OK.".format(
-                    config_vars['data_host'], config_vars['data_port']))
-            except subprocess.CalledProcessError as exc:
-                output = exc.output.decode()
-                self.file_logger.error(
-                    "Port check to server failed. Err msg: {} (Exiting...)".format(str(output)))
-                watchdog_obj.inc_watchdog_count()
-                lockf_obj.delete_lock_file()
-                sys.exit()
+        mgt_connection_obj = MgtConnectionTester(config_vars, self.file_logger, self.platform)
+        mgt_connection_obj.check_connection(watchdog_obj, lockf_obj)
 
         # hold all results in one place
         results_dict = {}

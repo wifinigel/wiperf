@@ -128,7 +128,7 @@ Edit the config file to customize the operation of the script:
 Test the script by running the following command as the wlanpi user (takes around 2 minutes to complete, depending on tests enabled):
 
 ```
-        /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py
+        /usr/bin/env python3 /home/wlanpi/wiperf/wi-perf.py
 ```
 
 If no errors are observed when running it then check the following files to check for no errors & that data is generated:
@@ -154,7 +154,7 @@ Create a cronjob to run the script very 5 mins:
 
 - add line: 
 ```
-        */5 * * * * /usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1
+        */5 * * * * /usr/bin/env python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1
 ```
 ## Account Tidy-up
 

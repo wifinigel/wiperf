@@ -1,6 +1,3 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-
 '''
 Functions to perform iperf3 tcp & udp tests and return a number of result characteristics
 
