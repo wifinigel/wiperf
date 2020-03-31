@@ -179,11 +179,14 @@ def main():
         # run ping test
         ping_obj = PingTester(file_logger, platform=platform)
         adapter_obj = ''
+        probe_mode = config_vars['probe_mode']
 
-        if config_vars['probe_mode'] == "ethernet":
+        if probe_mode == "ethernet":
             adapter_obj = EthernetAdapter(eth_if, file_logger, platform=platform)
-        else:
+        elif probe_mode == "wireless":
             adapter_obj = WirelessAdapter(wlan_if, file_logger, platform=platform)
+        else:
+            file_logger.info("Unknown probe mode: {} (exiting)".format(probe_mode))
 
         ping_obj.run_tests(status_file_obj, config_vars, adapter_obj, check_route_to_dest, exporter_obj, watchdog_obj)
 
