@@ -4,6 +4,7 @@ Set of functions to export results data to a variety of destinations
 import csv
 import json
 import os
+import sys
 from socket import gethostname
 
 from modules.exporters.splunkexporter import splunkexporter
@@ -89,15 +90,14 @@ class ResultsExporter(object):
                     data_file = "{}/{}.json".format(config_vars['data_dir'], data_file)
                     self.send_results_to_json(data_file, results_dict, file_logger, delete_data_file=delete_data_file)
                 
-                else:
-                
+                else:                
                     file_logger.info("Unknown file format type in config file: {}".format(config_vars['data_format']))
-                    exit()
-            
+                    sys.exit()
+           
             # Transport type which is not know has been configured in the ini file
             else:
                 file_logger.info("Unknown transport type in config file: {}".format(config_vars['data_transport']))
-                exit()
+                sys.exit()
         
         elif config_vars['exporter_type'] == 'influxdb':
             
@@ -108,5 +108,9 @@ class ResultsExporter(object):
 
             self.send_results_to_influx(gethostname(), influx_url, config_vars['influx_token'],
                     config_vars['influx_bucket'], config_vars['influx_org'], results_dict, data_file, file_logger)
+        
+        else:
+            file_logger.info("Unknown exporter type in config file: {}".format(config_vars['exporter_type']))
+            sys.exit()
 
         return True

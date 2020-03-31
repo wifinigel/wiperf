@@ -55,5 +55,9 @@ class MgtConnectionTester(object):
                 sys.exit()
 
             return True
+        
+        else:
+            self.file_logger.info("Unknown exporter type configured in config.ini: {} (exiting)".format(exporter_type))
+            sys.exit()
 
 
