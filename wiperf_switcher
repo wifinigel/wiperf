@@ -34,6 +34,16 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+# Figure out platform type from config file
+echo "Checking platform type configured..." | tee $LOG_FILE
+PLATFORM=`cat ${HOME_DIR}/wiperf/config.ini | grep platform\: | awk -F'[:][ ]*' '{print $2}'` || true
+  if  [ -z "PLATFORM" ]; then
+    echo "No platform type found in config file" | tee -a $LOG_FILE 
+    exit 0
+  else
+    echo "Selected platform type in cfg file: ${MODE}" | tee -a $LOG_FILE 
+  fi
+
 ###############################################################################
 #
 # Activate wiperf:
@@ -216,13 +226,15 @@ wiperf_on () {
   #################################################################################
   # 8. Harden eth0 & wlan0 by adding fw rules - allow only ssh in on eth0 & wlan0
   #################################################################################
-  echo "Adding FW rules" | tee -a $LOG_FILE
-  ufw insert 1 allow in on eth0 to any port ssh
-  ufw insert 2 allow in on eth0 to any port http
-  ufw insert 3 deny in on eth0
-  ufw insert 4 allow in on wlan0 to any port ssh
-  ufw insert 5 allow in on wlan0 to any port http
-  ufw insert 6 deny in on wlan0
+  if [ "$PLATFORM" = "wlanpi"]; then
+    echo "Adding FW rules" | tee -a $LOG_FILE
+    ufw insert 1 allow in on eth0 to any port ssh
+    ufw insert 2 allow in on eth0 to any port http
+    ufw insert 3 deny in on eth0
+    ufw insert 4 allow in on wlan0 to any port ssh
+    ufw insert 5 allow in on wlan0 to any port http
+    ufw insert 6 deny in on wlan0
+  fi
 
   ##################################
   # 9. Backup existing config files
@@ -340,15 +352,16 @@ wiperf_off () {
   ##################################
   # 4. Remove eth0 & wlan0 fw rules
   ##################################
-
-  # Harden eth0 & wlan0 by adding fw rules - allow only ssh in on eth0 & wlan0
-  echo "Removing FW rules" | tee $LOG_FILE
-  ufw delete allow in on eth0 to any port ssh
-  ufw delete allow in on eth0 to any port http
-  ufw delete deny in on eth0
-  ufw delete allow in on wlan0 to any port ssh
-  ufw delete allow in on wlan0 to any port http
-  ufw delete deny in on wlan0
+  if [ "$PLATFORM" = "wlanpi"]; then
+    # Harden eth0 & wlan0 by adding fw rules - allow only ssh in on eth0 & wlan0
+    echo "Removing FW rules" | tee $LOG_FILE
+    ufw delete allow in on eth0 to any port ssh
+    ufw delete allow in on eth0 to any port http
+    ufw delete deny in on eth0
+    ufw delete allow in on wlan0 to any port ssh
+    ufw delete allow in on wlan0 to any port http
+    ufw delete deny in on wlan0
+  fi
 
   ##################################
   # 5. Remove links to config files
