@@ -200,7 +200,7 @@ wiperf_on () {
   ########################
   # 7. Add crontab entry
   ########################
-  line="${TEST_OFFSET}-59/${TEST_INTERVAL} * * * * /usr/local/bin/python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1"
+  line="${TEST_OFFSET}-59/${TEST_INTERVAL} * * * * /usr/bin/env python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1"
   (crontab -u wlanpi -l; echo "$line" ) | crontab -u wlanpi -
   LAST_RESULT=$?
   if [ $LAST_RESULT -ne 0 ]; then
@@ -308,7 +308,7 @@ wiperf_off () {
   # 3. Figure out the interface we send mgt traffic over 
   #    and remove static route if eth0 and mode is wireless
   ##########################################################
-  MGT_IF=`cat /home/wlanpi/wiperf/config.ini | grep mgt_if | awk -F'[:][[:space:]]*' '{print $2}'` || 
+  MGT_IF=`cat /home/wlanpi/wiperf/config.ini | grep mgt_if | awk -F'[:][[:space:]]*' '{print $2}'` || true
   # check if we have a mgt interface
   if [ -z "$MGT_IF" ]; then
     echo "No mgt interface in config file" | tee $LOG_FILE 
