@@ -104,7 +104,8 @@ class ResultsExporter(object):
             file_logger.info("Influx update: {}, source={}".format(data_file, test_name))
 
             # construct url
-            influx_url = "https://{}:{}".format(config_vars['data_host'], config_vars['data_port'])
+            #influx_url = "https://{}:{}".format(config_vars['data_host'], config_vars['data_port'])
+            influx_url = "https://{}".format(config_vars['data_host'])
 
             self.send_results_to_influx(gethostname(), influx_url, config_vars['influx_token'],
                     config_vars['influx_bucket'], config_vars['influx_org'], results_dict, data_file, file_logger)
