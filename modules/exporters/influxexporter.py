@@ -30,7 +30,10 @@ def influxexporter(localhost, url, token, bucket, org, dict_data, source, file_l
         sys.exit()
 
     client = InfluxDBClient(url=url, token=token, org=org, timeout=100)
-    write_api = client.write_api(write_options=SYNCHRONOUS)
+    try:
+        write_api = client.write_api(write_options=SYNCHRONOUS)
+    except Exception as err:
+        file_logger.error("Error creating InfluxDB API client: {}".format(err))
 
     now = time_lookup()
 
