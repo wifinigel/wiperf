@@ -53,5 +53,9 @@ def influxexporter(localhost, url, token, bucket, org, dict_data, source, file_l
     # send to Influx
     file_logger.debug("Data structure sent to Influx:")
     file_logger.debug(data)
-    write_api.write(bucket, org, data)
-    file_logger.info("Data sent to Influx. (bucket: {})".format(bucket))
+    try:
+        write_api.write(bucket, org, data)
+        file_logger.info("Data sent to InfluxDB. (bucket: {})".format(bucket))
+    except Exception as err:
+        file_logger.error("Error sending data to InfluxDB: {}".format(err))
+    

@@ -200,6 +200,7 @@ class IperfTester(object):
             else:
                 self.file_logger.error("Unable to run iperf test to {} as route to destination not over wireless interface...bypassing test".format(server_hostname))
                 config_vars['test_issue'] = True
+                config_vars['test_issue_descr'] = "TCP iperf test failure"
     
     def run_udp_test(self, config_vars, status_file_obj, check_route_to_dest, exporter_obj):
 
@@ -253,3 +254,4 @@ class IperfTester(object):
         else:
             self.file_logger.error("Unable to run iperf test to {} as route to destination not over wireless interface...bypassing test".format(server_hostname))
             config_vars['test_issue'] = True
+            config_vars['test_issue_descr'] = "UDP iperf test failure"

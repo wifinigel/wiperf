@@ -139,6 +139,7 @@ def main():
     # test issue flag - set if any tests hit major issues
     # to stall further testing
     config_vars['test_issue'] = False
+    config_vars['test_issue_descr'] = ""
 
     #############################################
     # Run network checks
@@ -191,7 +192,10 @@ def main():
         ping_obj.run_tests(status_file_obj, config_vars, adapter_obj, check_route_to_dest, exporter_obj, watchdog_obj)
 
     else:
-        file_logger.info("Ping test not enabled in config file (or previous tests failed), bypassing this test...")
+        if config_vars['test_issue'] == True:
+            file_logger.info("Previous test failed: {}".format(config_vars['test_issue_descr']))
+        else:
+            file_logger.info("Ping test not enabled in config file, bypassing this test...")
 
     ###################################
     # Run DNS lookup tests (if enabled)
@@ -203,7 +207,10 @@ def main():
         dns_obj.run_tests(status_file_obj, config_vars, exporter_obj)
 
     else:
-        file_logger.info("DNS test not enabled in config file (or previous tests failed), bypassing this test...")
+        if config_vars['test_issue'] == True:
+            file_logger.info("Previous test failed: {}".format(config_vars['test_issue_descr']))
+        else:
+            file_logger.info("DNS test not enabled in config file, bypassing this test...")
 
     #####################################
     # Run HTTP lookup tests (if enabled)
@@ -215,8 +222,11 @@ def main():
         http_obj.run_tests(status_file_obj, config_vars, exporter_obj, watchdog_obj)
 
     else:
-        file_logger.info("HTTP test not enabled in config file (or previous tests failed), bypassing this test...")
-
+        if config_vars['test_issue'] == True:
+            file_logger.info("Previous test failed: {}".format(config_vars['test_issue_descr']))
+        else:
+            file_logger.info("HTTP test not enabled in config file, bypassing this test...")
+    
     ###################################
     # Run iperf3 tcp test (if enabled)
     ###################################
@@ -227,7 +237,10 @@ def main():
         iperf3_tcp_obj.run_tcp_test(config_vars, status_file_obj, check_route_to_dest, exporter_obj)
 
     else:
-        file_logger.info("Iperf3 tcp test not enabled in config file (or previous tests failed), bypassing this test...")
+        if config_vars['test_issue'] == True:
+            file_logger.info("Previous test failed: {}".format(config_vars['test_issue_descr']))
+        else:
+            file_logger.info("Iperf3 tcp test not enabled in config file, bypassing this test...")
 
     ###################################
     # Run iperf3 udp test (if enabled)
@@ -239,7 +252,10 @@ def main():
         iperf3_udp_obj.run_udp_test(config_vars, status_file_obj, check_route_to_dest, exporter_obj)
 
     else:
-        file_logger.info("Iperf3 udp test not enabled in config file (or previous tests failed), bypassing this test...")
+        if config_vars['test_issue'] == True:
+            file_logger.info("Previous test failed: {}".format(config_vars['test_issue_descr']))
+        else:
+            file_logger.info("Iperf3 udp test not enabled in config file, bypassing this test...")
 
     #####################################
     # Run DHCP renewal test (if enabled)
@@ -251,7 +267,10 @@ def main():
         dhcp_obj.run_tests(status_file_obj, config_vars, exporter_obj)
 
     else:
-        file_logger.info("DHCP test not enabled in config file (or previous tests failed), bypassing this test...")
+        if config_vars['test_issue'] == True:
+            file_logger.info("Previous test failed: {}".format(config_vars['test_issue_descr']))
+        else:
+            file_logger.info("DHCP test not enabled in config file, bypassing this test...")
 
     #####################################
     # Tidy up before exit

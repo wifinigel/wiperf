@@ -131,6 +131,7 @@ class HttpTester(object):
                 self.file_logger.error(
                     "HTTP test error - no results (check logs) - exiting HTTP tests")
                 config_vars['test_issue'] = True
+                config_vars['test_issue_descr'] = "HTTP test failure"
                 break
 
         # if all tests fail, and there are more than 2 tests, signal a possible issue

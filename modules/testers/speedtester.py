@@ -155,3 +155,4 @@ class Speedtester(object):
         else:
             self.file_logger.error("Unable to run Speedtest as route to Internet not via wireless interface.")
             config_vars['test_issue'] = True
+            config_vars['test_issue_descr'] = "Speedtest test failure"
