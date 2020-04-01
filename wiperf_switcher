@@ -19,9 +19,12 @@ NAME=wiperf_switcher
 DESC="Script to switch wiperf on/off"
 VERSION=0.07
 
-STATUS_FILE="${HOME}/wiperf/wiperf.on"
-CFG_FILE="${HOME}/wiperf/config.ini"
-LOG_FILE="${HOME}/wiperf/switcher.log"
+HOME_DIR="/home/wlanpi"
+USERNAME="wlanpi"
+
+STATUS_FILE="${HOME_DIR}/wiperf/wiperf.on"
+CFG_FILE="${HOME_DIR}/wiperf/config.ini"
+LOG_FILE="${HOME_DIR}/wiperf/switcher.log"
 ROUTE_FILE="/etc/network/if-up.d/route"
 
 # Check we're root
@@ -67,7 +70,7 @@ wiperf_on () {
   ############################################
   # 1. Get the probe mode (ethernet/wireless)
   ############################################
-  MODE=`cat ${HOME}/wiperf/config.ini | grep probe_mode\: | awk -F'[:][ ]*' '{print $2}'` || true
+  MODE=`cat ${HOME_DIR}/wiperf/config.ini | grep probe_mode\: | awk -F'[:][ ]*' '{print $2}'` || true
   if  [ -z "$MODE" ]; then
     echo "No mode found in config file" | tee -a $LOG_FILE 
     exit 0
@@ -99,7 +102,7 @@ wiperf_on () {
   #######################################
   # 3. Get test interval & offset value
   #######################################
-  TEST_INTERVAL=`cat ${HOME}/wiperf/config.ini | grep test_interval | awk -F'[:][ ]*' '{print $2}'` || true
+  TEST_INTERVAL=`cat ${HOME_DIR}/wiperf/config.ini | grep test_interval | awk -F'[:][ ]*' '{print $2}'` || true
   if  [ -z "TEST_INTERVAL" ]; then
     echo "No test interval in config" | tee -a $LOG_FILE 
     exit 0
@@ -107,7 +110,7 @@ wiperf_on () {
   echo "Test interval from config file: ${TEST_INTERVAL}" | tee -a $LOG_FILE
 
   # Get test offset value
-  TEST_OFFSET=`cat ${HOME}/wiperf/config.ini | grep test_offset | awk -F'[:][ ]*' '{print $2}'` || true
+  TEST_OFFSET=`cat ${HOME_DIR}/wiperf/config.ini | grep test_offset | awk -F'[:][ ]*' '{print $2}'` || true
   if  [ -z "TEST_OFFSET" ]; then
     echo "No test offset in config" | tee -a $LOG_FILE 
     exit 0
@@ -117,7 +120,7 @@ wiperf_on () {
   #######################################################
   # 4. Figure out the interface we send mgt traffic over
   #######################################################
-  MGT_IF=`cat ${HOME}/wiperf/config.ini | grep mgt_if | awk -F'[:][ ]*' '{print $2}'` || true
+  MGT_IF=`cat ${HOME_DIR}/wiperf/config.ini | grep mgt_if | awk -F'[:][ ]*' '{print $2}'` || true
   # check if we have a mgt interface
   if [ -z "$MGT_IF" ]; then
     echo "No mgt interface config" | tee -a $LOG_FILE 
@@ -128,14 +131,14 @@ wiperf_on () {
   ####################################################################
   # 5. Figure out the mgt destination (IP for Splunk, URL for Influx)
   ####################################################################
-  MGT_IP=`cat ${HOME}/wiperf/config.ini | grep data_host | awk -F'[:][ ]*' '{print $2}'` || true
+  MGT_IP=`cat ${HOME_DIR}/wiperf/config.ini | grep data_host | awk -F'[:][ ]*' '{print $2}'` || true
   # check if we have a mgt IP
   if [ -z "$MGT_IP" ]; then
     echo "No mgt server IP config" | tee -a $LOG_FILE 
   fi
   echo "Mgt server IP from config file: ${MGT_IP}" | tee -a $LOG_FILE
 
-  MGT_PORT=`cat ${HOME}/wiperf/config.ini | grep data_port | awk -F'[:][ ]*' '{print $2}'` || true
+  MGT_PORT=`cat ${HOME_DIR}/wiperf/config.ini | grep data_port | awk -F'[:][ ]*' '{print $2}'` || true
   # check if we have a mgt port
   if [ -z "$MGT_PORT" ]; then
     echo "No mgt port" | tee -a $LOG_FILE 
@@ -201,8 +204,8 @@ wiperf_on () {
   ########################
   # 7. Add crontab entry
   ########################
-  line="${TEST_OFFSET}-59/${TEST_INTERVAL} * * * * /usr/bin/env python3 ${HOME}/wiperf/wi-perf.py > ${HOME}/wiperf/wiperf.log 2>&1"
-  (crontab -u $USER -l; echo "$line" ) | crontab -u $USER -
+  line="${TEST_OFFSET}-59/${TEST_INTERVAL} * * * * /usr/bin/env python3 ${HOME_DIR}/wiperf/wi-perf.py > ${HOME_DIR}/wiperf/wiperf.log 2>&1"
+  (crontab -u $USERNAME -l; echo "$line" ) | crontab -u $USERNAME -
   LAST_RESULT=$?
   if [ $LAST_RESULT -ne 0 ]; then
     echo "Cron add failed" | tee -a $LOG_FILE 
@@ -242,13 +245,13 @@ wiperf_on () {
   ##################################
   echo "Linking temp config files..." | tee -a $LOG_FILE
   if [ "$MODE" == "wireless" ]; then
-    ln -s ${HOME}/wiperf/conf/etc/network/interfaces.wlan /etc/network/interfaces  
+    ln -s ${HOME_DIR}/wiperf/conf/etc/network/interfaces.wlan /etc/network/interfaces  
   else
-    ln -s ${HOME}/wiperf/conf/etc/network/interfaces.eth /etc/network/interfaces
+    ln -s ${HOME_DIR}/wiperf/conf/etc/network/interfaces.eth /etc/network/interfaces
   fi
 
-  ln -s ${HOME}/wiperf/conf/etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
-  ln -s ${HOME}/wiperf/conf/etc/sysctl.conf /etc/sysctl.conf
+  ln -s ${HOME_DIR}/wiperf/conf/etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
+  ln -s ${HOME_DIR}/wiperf/conf/etc/sysctl.conf /etc/sysctl.conf
 
   ############################################################
   # 12. Create status file to display status messages on FPMS
@@ -284,7 +287,7 @@ wiperf_off () {
   ############################################
   # 1. Get the probe mode (ethernet/wireless)
   ############################################
-  MODE=`cat ${HOME}/wiperf/config.ini | grep probe_mode\: | awk -F'[:][ ]*' '{print $2}'` || true
+  MODE=`cat ${HOME_DIR}/wiperf/config.ini | grep probe_mode\: | awk -F'[:][ ]*' '{print $2}'` || true
   if  [ -z "$MODE" ]; then
     echo "No mode found in config file" | tee -a $LOG_FILE 
     exit 0
@@ -296,7 +299,7 @@ wiperf_off () {
   # 2. Remove crontab entry to stop polling
   ###########################################
   echo "Removing cront job." | tee -a $LOG_FILE
-  crontab -u $USER -l | grep -v 'wi-perf.py'  | crontab -u $USER -
+  crontab -u $USERNAME -l | grep -v 'wi-perf.py'  | crontab -u $USERNAME -
   LAST_RESULT=$?
   if [ $LAST_RESULT -ne 0 ]; then
     echo "Cron remove failed" | tee $LOG_FILE 
@@ -309,7 +312,7 @@ wiperf_off () {
   # 3. Figure out the interface we send mgt traffic over 
   #    and remove static route if eth0 and mode is wireless
   ##########################################################
-  MGT_IF=`cat ${HOME}/wiperf/config.ini | grep mgt_if | awk -F'[:][ ]*' '{print $2}'` || true
+  MGT_IF=`cat ${HOME_DIR}/wiperf/config.ini | grep mgt_if | awk -F'[:][ ]*' '{print $2}'` || true
   # check if we have a mgt interface
   if [ -z "$MGT_IF" ]; then
     echo "No mgt interface in config file" | tee $LOG_FILE 
