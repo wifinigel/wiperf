@@ -37,12 +37,12 @@ fi
 # Figure out platform type from config file
 echo "Checking platform type configured..." | tee $LOG_FILE
 PLATFORM=`cat ${HOME_DIR}/wiperf/config.ini | grep platform\: | awk -F'[:][ ]*' '{print $2}'` || true
-  if  [ -z "PLATFORM" ]; then
-    echo "No platform type found in config file" | tee -a $LOG_FILE 
-    exit 0
-  else
-    echo "Selected platform type in cfg file: ${MODE}" | tee -a $LOG_FILE 
-  fi
+if  [ -z "$PLATFORM" ]; then
+  echo "No platform type found in config file" | tee -a $LOG_FILE 
+  exit 0
+else
+  echo "Selected platform type in cfg file: $PLATFORM" | tee -a $LOG_FILE 
+fi
 
 ###############################################################################
 #
@@ -226,7 +226,7 @@ wiperf_on () {
   #################################################################################
   # 8. Harden eth0 & wlan0 by adding fw rules - allow only ssh in on eth0 & wlan0
   #################################################################################
-  if [ "$PLATFORM" = "wlanpi"]; then
+  if [ "$PLATFORM" = "wlanpi" ]; then
     echo "Adding FW rules" | tee -a $LOG_FILE
     ufw insert 1 allow in on eth0 to any port ssh
     ufw insert 2 allow in on eth0 to any port http
