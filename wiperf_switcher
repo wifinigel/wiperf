@@ -202,7 +202,7 @@ wiperf_on () {
   # 7. Add crontab entry
   ########################
   line="${TEST_OFFSET}-59/${TEST_INTERVAL} * * * * /usr/bin/env python3 ${HOME}/wiperf/wi-perf.py > ${HOME}/wiperf/wiperf.log 2>&1"
-  (crontab -u wlanpi -l; echo "$line" ) | crontab -u $USER -
+  (crontab -u $USER -l; echo "$line" ) | crontab -u $USER -
   LAST_RESULT=$?
   if [ $LAST_RESULT -ne 0 ]; then
     echo "Cron add failed" | tee -a $LOG_FILE 
@@ -296,7 +296,7 @@ wiperf_off () {
   # 2. Remove crontab entry to stop polling
   ###########################################
   echo "Removing cront job." | tee -a $LOG_FILE
-  crontab -u wlanpi -l | grep -v 'wi-perf.py'  | crontab -u $USER -
+  crontab -u $USER -l | grep -v 'wi-perf.py'  | crontab -u $USER -
   LAST_RESULT=$?
   if [ $LAST_RESULT -ne 0 ]; then
     echo "Cron remove failed" | tee $LOG_FILE 
