@@ -50,9 +50,9 @@ def read_local_config(config_file, file_logger):
     ##############################
 
     ####### Influx2 config ########
-    config_vars['influx2_token'] = gen_sect.get('influx_token', '')
-    config_vars['influx2_bucket'] = gen_sect.get('influx_bucket', '')
-    config_vars['influx2_org'] = gen_sect.get('influx_org', '')
+    config_vars['influx2_token'] = gen_sect.get('influx2_token', '')
+    config_vars['influx2_bucket'] = gen_sect.get('influx2_bucket', '')
+    config_vars['influx2_org'] = gen_sect.get('influx2_org', '')
     ##############################
 
     # test cycle timing parameters
