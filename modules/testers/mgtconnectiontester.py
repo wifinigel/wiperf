@@ -40,7 +40,7 @@ class MgtConnectionTester(object):
 
             return True
 
-        elif exporter_type == 'influxdb':
+        elif exporter_type == 'influxdb2':
             self.file_logger.info("Checking port connection to InfluxDB server {}, port: {}".format(data_host, data_port))
 
             try:
