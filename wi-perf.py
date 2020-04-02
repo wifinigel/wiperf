@@ -27,7 +27,6 @@ from modules.helpers.lockfile import LockFile
 from modules.helpers.watchdog import Watchdog
 
 from modules.exporters.exportresults import ResultsExporter
-from modules.exporters.influxexporter import influxexporter
 
 # define useful system files
 this_dir = os.path.dirname(os.path.realpath(__file__))
