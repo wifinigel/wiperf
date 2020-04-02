@@ -12,6 +12,7 @@
 # v0.04 - 11th Jan 2020 - Fixed WLANPi name to WLAN Pi.
 # v0.05 - 27th Feb 2020 - added tcp/80 to ufw rules
 # v0.06 - 29th Mar 2020 - added support for ethernet tests & InfluxDB 
+# v0.07 - 1st Apr 2020 - added 
 
 set -e
 
@@ -34,9 +35,9 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-# Figure out platform type from config file
+# Figure out platform type from config file - no really needed at present
 echo "Checking platform type configured..." | tee $LOG_FILE
-PLATFORM=`cat ${HOME_DIR}/wiperf/config.ini | grep platform\: | awk -F'[:][ ]*' '{print $2}'` || true
+PLATFORM=`cat ${HOME_DIR}/wiperf/config.ini | grep platform\: | awk -F'[:][[:space:]]*' '{print $2}'` || true
 if  [ -z "$PLATFORM" ]; then
   echo "No platform type found in config file" | tee -a $LOG_FILE 
   exit 0
@@ -80,7 +81,7 @@ wiperf_on () {
   ############################################
   # 1. Get the probe mode (ethernet/wireless)
   ############################################
-  MODE=`cat ${HOME_DIR}/wiperf/config.ini | grep probe_mode\: | awk -F'[:][ ]*' '{print $2}'` || true
+  MODE=`cat ${HOME_DIR}/wiperf/config.ini | grep probe_mode\: | awk -F'[:][[:space:]]*' '{print $2}'` || true
   if  [ -z "$MODE" ]; then
     echo "No mode found in config file" | tee -a $LOG_FILE 
     exit 0
@@ -112,7 +113,7 @@ wiperf_on () {
   #######################################
   # 3. Get test interval & offset value
   #######################################
-  TEST_INTERVAL=`cat ${HOME_DIR}/wiperf/config.ini | grep test_interval | awk -F'[:][ ]*' '{print $2}'` || true
+  TEST_INTERVAL=`cat ${HOME_DIR}/wiperf/config.ini | grep test_interval | awk -F'[:][[:space:]]*' '{print $2}'` || true
   if  [ -z "TEST_INTERVAL" ]; then
     echo "No test interval in config" | tee -a $LOG_FILE 
     exit 0
@@ -120,7 +121,7 @@ wiperf_on () {
   echo "Test interval from config file: ${TEST_INTERVAL}" | tee -a $LOG_FILE
 
   # Get test offset value
-  TEST_OFFSET=`cat ${HOME_DIR}/wiperf/config.ini | grep test_offset | awk -F'[:][ ]*' '{print $2}'` || true
+  TEST_OFFSET=`cat ${HOME_DIR}/wiperf/config.ini | grep test_offset | awk -F'[:][[:space:]]*' '{print $2}'` || true
   if  [ -z "TEST_OFFSET" ]; then
     echo "No test offset in config" | tee -a $LOG_FILE 
     exit 0
@@ -130,7 +131,7 @@ wiperf_on () {
   #######################################################
   # 4. Figure out the interface we send mgt traffic over
   #######################################################
-  MGT_IF=`cat ${HOME_DIR}/wiperf/config.ini | grep mgt_if | awk -F'[:][ ]*' '{print $2}'` || true
+  MGT_IF=`cat ${HOME_DIR}/wiperf/config.ini | grep mgt_if | awk -F'[:][[:space:]]*' '{print $2}'` || true
   # check if we have a mgt interface
   if [ -z "$MGT_IF" ]; then
     echo "No mgt interface config" | tee -a $LOG_FILE 
@@ -141,14 +142,14 @@ wiperf_on () {
   ####################################################################
   # 5. Figure out the mgt destination (IP for Splunk, URL for Influx)
   ####################################################################
-  MGT_IP=`cat ${HOME_DIR}/wiperf/config.ini | grep data_host | awk -F'[:][ ]*' '{print $2}'` || true
+  MGT_IP=`cat ${HOME_DIR}/wiperf/config.ini | grep data_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
   # check if we have a mgt IP
   if [ -z "$MGT_IP" ]; then
     echo "No mgt server IP config" | tee -a $LOG_FILE 
   fi
   echo "Mgt server IP from config file: ${MGT_IP}" | tee -a $LOG_FILE
 
-  MGT_PORT=`cat ${HOME_DIR}/wiperf/config.ini | grep data_port | awk -F'[:][ ]*' '{print $2}'` || true
+  MGT_PORT=`cat ${HOME_DIR}/wiperf/config.ini | grep data_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
   # check if we have a mgt port
   if [ -z "$MGT_PORT" ]; then
     echo "No mgt port" | tee -a $LOG_FILE 
@@ -226,15 +227,12 @@ wiperf_on () {
   #################################################################################
   # 8. Harden eth0 & wlan0 by adding fw rules - allow only ssh in on eth0 & wlan0
   #################################################################################
-  if [ "$PLATFORM" = "wlanpi" ]; then
-    echo "Adding FW rules" | tee -a $LOG_FILE
-    ufw insert 1 allow in on eth0 to any port ssh
-    ufw insert 2 allow in on eth0 to any port http
-    ufw insert 3 deny in on eth0
-    ufw insert 4 allow in on wlan0 to any port ssh
-    ufw insert 5 allow in on wlan0 to any port http
-    ufw insert 6 deny in on wlan0
-  fi
+  ufw insert 1 allow in on eth0 to any port ssh
+  ufw insert 2 allow in on eth0 to any port http
+  ufw insert 3 deny in on eth0
+  ufw insert 4 allow in on wlan0 to any port ssh
+  ufw insert 5 allow in on wlan0 to any port http
+  ufw insert 6 deny in on wlan0
 
   ##################################
   # 9. Backup existing config files
@@ -299,7 +297,7 @@ wiperf_off () {
   ############################################
   # 1. Get the probe mode (ethernet/wireless)
   ############################################
-  MODE=`cat ${HOME_DIR}/wiperf/config.ini | grep probe_mode\: | awk -F'[:][ ]*' '{print $2}'` || true
+  MODE=`cat ${HOME_DIR}/wiperf/config.ini | grep probe_mode\: | awk -F'[:][[:space:]]*' '{print $2}'` || true
   if  [ -z "$MODE" ]; then
     echo "No mode found in config file" | tee -a $LOG_FILE 
     exit 0
@@ -324,7 +322,7 @@ wiperf_off () {
   # 3. Figure out the interface we send mgt traffic over 
   #    and remove static route if eth0 and mode is wireless
   ##########################################################
-  MGT_IF=`cat ${HOME_DIR}/wiperf/config.ini | grep mgt_if | awk -F'[:][ ]*' '{print $2}'` || true
+  MGT_IF=`cat ${HOME_DIR}/wiperf/config.ini | grep mgt_if | awk -F'[:][[:space:]]*' '{print $2}'` || true
   # check if we have a mgt interface
   if [ -z "$MGT_IF" ]; then
     echo "No mgt interface in config file" | tee $LOG_FILE 
@@ -352,16 +350,12 @@ wiperf_off () {
   ##################################
   # 4. Remove eth0 & wlan0 fw rules
   ##################################
-  if [ "$PLATFORM" = "wlanpi"]; then
-    # Harden eth0 & wlan0 by adding fw rules - allow only ssh in on eth0 & wlan0
-    echo "Removing FW rules" | tee $LOG_FILE
-    ufw delete allow in on eth0 to any port ssh
-    ufw delete allow in on eth0 to any port http
-    ufw delete deny in on eth0
-    ufw delete allow in on wlan0 to any port ssh
-    ufw delete allow in on wlan0 to any port http
-    ufw delete deny in on wlan0
-  fi
+  ufw delete allow in on eth0 to any port ssh
+  ufw delete allow in on eth0 to any port http
+  ufw delete deny in on eth0
+  ufw delete allow in on wlan0 to any port ssh
+  ufw delete allow in on wlan0 to any port http
+  ufw delete deny in on wlan0
 
   ##################################
   # 5. Remove links to config files
