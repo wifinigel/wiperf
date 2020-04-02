@@ -49,12 +49,10 @@ def read_local_config(config_file, file_logger):
     config_vars['splunk_token'] = gen_sect.get('splunk_token')
     ##############################
 
-    ####### Influx config ########
-    config_vars['influx_host'] = gen_sect.get('influx_host', '')
-    config_vars['influx_port'] = gen_sect.get('influx_port', '443')
-    config_vars['influx_token'] = gen_sect.get('influx_token', '')
-    config_vars['influx_bucket'] = gen_sect.get('influx_bucket', '')
-    config_vars['influx_org'] = gen_sect.get('influx_org', '')
+    ####### Influx2 config ########
+    config_vars['influx2_token'] = gen_sect.get('influx_token', '')
+    config_vars['influx2_bucket'] = gen_sect.get('influx_bucket', '')
+    config_vars['influx2_org'] = gen_sect.get('influx_org', '')
     ##############################
 
     # test cycle timing parameters

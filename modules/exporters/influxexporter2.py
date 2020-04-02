@@ -21,7 +21,7 @@ def time_lookup():
     return datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def influxexporter(localhost, url, token, bucket, org, dict_data, source, file_logger):
+def influxexporter2(localhost, url, token, bucket, org, dict_data, source, file_logger):
 
     if not influx_modules:
         file_logger.error(" ********* MAJOR ERROR ********** ")
@@ -30,7 +30,7 @@ def influxexporter(localhost, url, token, bucket, org, dict_data, source, file_l
         sys.exit()
 
     client = InfluxDBClient(url=url, token=token, org=org, timeout=100)
-    file_logger.debug("Creating InfluxDB API client...")
+    file_logger.debug("Creating InfluxDB2 API client...")
     file_logger.debug("URL: -{}-".format(url))
     file_logger.debug("Token: -{}-".format(token))
     file_logger.debug("Org: -{}-".format(org))
@@ -38,7 +38,7 @@ def influxexporter(localhost, url, token, bucket, org, dict_data, source, file_l
     try:
         write_api = client.write_api(write_options=SYNCHRONOUS)
     except Exception as err:
-        file_logger.error("Error creating InfluxDB API client: {}".format(err))
+        file_logger.error("Error creating InfluxDB2 API client: {}".format(err))
 
     now = time_lookup()
 
@@ -63,7 +63,7 @@ def influxexporter(localhost, url, token, bucket, org, dict_data, source, file_l
     file_logger.debug(data)
     try:
         write_api.write(bucket, org, data)
-        file_logger.info("Data sent to InfluxDB. (bucket: {})".format(bucket))
+        file_logger.info("Data sent to InfluxDB2. (bucket: {})".format(bucket))
     except Exception as err:
-        file_logger.error("Error sending data to InfluxDB: {}".format(err))
+        file_logger.error("Error sending data to InfluxDB2: {}".format(err))
     

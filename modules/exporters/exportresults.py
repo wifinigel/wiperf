@@ -8,7 +8,7 @@ import sys
 from socket import gethostname
 
 from modules.exporters.splunkexporter import splunkexporter
-from modules.exporters.influxexporter import influxexporter
+from modules.exporters.influxexporter2 import influxexporter2
 #TODO: conditional import of influxexporter if Influx module available
 
 class ResultsExporter(object):
@@ -58,10 +58,10 @@ class ResultsExporter(object):
         splunkexporter(host, token, port, dict_data, source, file_logger)
 
     
-    def send_results_to_influx(self, localhost, url, token, bucket, org, dict_data, source, file_logger):
+    def send_results_to_influx2(self, localhost, url, token, bucket, org, dict_data, source, file_logger):
 
         file_logger.info("Sending data to Influx url: {}, bucket: {}, source: {})".format(url, bucket, source))
-        influxexporter(localhost, url, token, bucket, org, dict_data, source, file_logger)
+        influxexporter2(localhost, url, token, bucket, org, dict_data, source, file_logger)
 
 
     def send_results(self, config_vars, results_dict, column_headers, data_file, test_name, file_logger, delete_data_file=False):
@@ -99,16 +99,15 @@ class ResultsExporter(object):
                 file_logger.info("Unknown transport type in config file: {}".format(config_vars['data_transport']))
                 sys.exit()
         
-        elif config_vars['exporter_type'] == 'influxdb':
+        elif config_vars['exporter_type'] == 'influxdb2':
             
-            file_logger.info("Influx update: {}, source={}".format(data_file, test_name))
+            file_logger.info("InfluxDB2 update: {}, source={}".format(data_file, test_name))
 
             # construct url
             influx_url = "https://{}:{}".format(config_vars['data_host'], config_vars['data_port'])
-            #influx_url = "https://{}".format(config_vars['data_host'])
 
-            self.send_results_to_influx(gethostname(), influx_url, config_vars['influx_token'],
-                    config_vars['influx_bucket'], config_vars['influx_org'], results_dict, data_file, file_logger)
+            self.send_results_to_influx2(gethostname(), influx_url, config_vars['influx2_token'],
+                    config_vars['influx2_bucket'], config_vars['influx2_org'], results_dict, data_file, file_logger)
         
         else:
             file_logger.info("Unknown exporter type in config file: {}".format(config_vars['exporter_type']))
