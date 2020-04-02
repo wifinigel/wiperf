@@ -98,6 +98,6 @@ class WirelessConnectionTester(object):
             results_dict['channel_width'],  results_dict['tx_rate_mbps'], results_dict['rx_rate_mbps'], results_dict['tx_mcs'],
             results_dict['rx_mcs'], results_dict['signal_level_dbm'], results_dict['tx_retries'], results_dict['ip_address']))
         # dump the results
-        data_file = config_vars['speedtest_data_file']
+        data_file = config_vars['network_data_file']
         test_name = "Network Tests"
         exporter_obj.send_results(config_vars, results_dict, column_headers, data_file, test_name, self.file_logger) 

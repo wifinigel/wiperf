@@ -94,11 +94,15 @@ def read_local_config(config_file, file_logger):
 
     file_logger.debug("Platform = {}".format(config_vars.get('General', 'platform')))
 
+    # Get network test config params
+    network_sect = config['Network_Test']
+    config_vars['network_data_file'] = network_sect.get('networkd', 'wiperf-network')
+
     # Get Speedtest config params
     speed_sect = config['Speedtest']
     config_vars['speedtest_enabled'] = speed_sect.get('enabled', 'no')
     config_vars['server_id'] = speed_sect.get('server_id', '')
-    config_vars['speedtest_data_file'] = speed_sect.get('speedtest_data_file', '')
+    config_vars['speedtest_data_file'] = speed_sect.get('speedtest_data_file', 'wiperf-speedtest')
     config_vars['http_proxy'] = speed_sect.get('http_proxy', '')
     config_vars['https_proxy'] = speed_sect.get('https_proxy', '')
     config_vars['no_proxy'] = speed_sect.get('no_proxy', '')
@@ -111,7 +115,7 @@ def read_local_config(config_file, file_logger):
     # Get Ping config params
     ping_sect = config['Ping_Test']
     config_vars['ping_enabled'] = ping_sect.get('enabled', 'no')
-    config_vars['ping_data_file'] = ping_sect.get('ping_data_file', '')
+    config_vars['ping_data_file'] = ping_sect.get('ping_data_file', 'wiperf-ping')
     config_vars['ping_host1'] = ping_sect.get('ping_host1', '')
     config_vars['ping_host2'] = ping_sect.get('ping_host2', '')
     config_vars['ping_host3'] = ping_sect.get('ping_host3', '')
@@ -122,7 +126,7 @@ def read_local_config(config_file, file_logger):
     # Get iperf3 tcp test params
     iperft_sect = config['Iperf3_tcp_test']
     config_vars['iperf3_tcp_enabled'] = iperft_sect.get('enabled', 'no')
-    config_vars['iperf3_tcp_data_file'] = iperft_sect.get('iperf3_tcp_data_file', '')
+    config_vars['iperf3_tcp_data_file'] = iperft_sect.get('iperf3_tcp_data_file', 'wiperf-iperf3-tcp')
     config_vars['iperf3_tcp_server_hostname'] = iperft_sect.get('server_hostname', '')
     config_vars['iperf3_tcp_port'] = iperft_sect.get('port', '')
     config_vars['iperf3_tcp_duration'] = iperft_sect.get('duration', '')
@@ -130,7 +134,7 @@ def read_local_config(config_file, file_logger):
     # Get iperf3 udp test params
     iperfu_sect = config['Iperf3_udp_test']
     config_vars['iperf3_udp_enabled'] = iperfu_sect.get('enabled', 'no')
-    config_vars['iperf3_udp_data_file'] = iperfu_sect.get('iperf3_udp_data_file', '')
+    config_vars['iperf3_udp_data_file'] = iperfu_sect.get('iperf3_udp_data_file', 'wiperf-iperf3-udp')
     config_vars['iperf3_udp_server_hostname'] = iperfu_sect.get('server_hostname', '')
     config_vars['iperf3_udp_port'] = iperfu_sect.get('port', '')
     config_vars['iperf3_udp_duration'] = iperfu_sect.get('duration', '')
@@ -139,7 +143,7 @@ def read_local_config(config_file, file_logger):
     # Get DNS test params
     dns_sect = config['DNS_test']
     config_vars['dns_test_enabled'] = dns_sect.get('enabled', 'no')
-    config_vars['dns_data_file'] = dns_sect.get('dns_data_file', '')
+    config_vars['dns_data_file'] = dns_sect.get('dns_data_file', 'wiperf-dns')
     config_vars['dns_target1'] = dns_sect.get('dns_target1', '')
     config_vars['dns_target2'] = dns_sect.get('dns_target2', '')
     config_vars['dns_target3'] = dns_sect.get('dns_target3', '')
@@ -149,7 +153,7 @@ def read_local_config(config_file, file_logger):
     # Get http test params
     http_sect = config['HTTP_test']
     config_vars['http_test_enabled'] = http_sect.get('enabled', 'no')
-    config_vars['http_data_file'] = http_sect.get('http_data_file', '')
+    config_vars['http_data_file'] = http_sect.get('http_data_file', 'wiperf-http')
     config_vars['http_target1'] = http_sect.get('http_target1', '')
     config_vars['http_target2'] = http_sect.get('http_target2', '')
     config_vars['http_target3'] = http_sect.get('http_target3', '')
@@ -160,7 +164,7 @@ def read_local_config(config_file, file_logger):
     dhcp_sect = config['DHCP_test']
     config_vars['dhcp_test_enabled'] = dhcp_sect.get('enabled', 'no')
     config_vars['dhcp_test_mode'] = dhcp_sect.get('mode', 'passive')
-    config_vars['dhcp_data_file'] = dhcp_sect.get('dhcp_data_file', '')
+    config_vars['dhcp_data_file'] = dhcp_sect.get('dhcp_data_file', 'wiperf-dhcp')
 
     '''
     # Check all entered config.ini values to see if valid
