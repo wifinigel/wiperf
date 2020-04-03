@@ -47,14 +47,13 @@ def influxexporter(localhost, host, port, username, password, database, dict_dat
         data_point = {"measurement": source,
             "tags": { "host": localhost },
             "fields": {key: value},
-            "time": now
         }
 
         data.append(data_point)
 
     # send to Influx
     try:
-        if client.write_points(data, time_precision='n'):
+        if client.write_points(data):
             file_logger.info("Data sent to influx OK")
         else:
             file_logger.info("Issue with sending data sent to influx...")
