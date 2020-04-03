@@ -34,22 +34,30 @@ def influxexporter(localhost, host, port, username, password, database, dict_dat
     file_logger.debug("Database: -{}-".format(database))
     file_logger.debug("User: -{}-".format(username))
 
-    now = time_lookup()
+    now = time_lookup() # not used as using local timestamp on server
 
     data = []
 
+    data_point = {
+        "measurement": source,
+        "tags": { "host": localhost },
+        "fields": [],
+    }
     # construct data structure to send to InFlux
     for key, value in dict_data.items():
 
         if key == 'time':
             continue
 
+        """
         data_point = {"measurement": source,
             "tags": { "host": localhost },
             "fields": {key: value},
         }
+        """
 
-        data.append(data_point)
+        #data.append(data_point)
+        data.append(data_point['fields'])
 
     # send to Influx
     try:
