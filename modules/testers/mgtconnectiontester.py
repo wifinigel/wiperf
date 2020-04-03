@@ -39,9 +39,25 @@ class MgtConnectionTester(object):
                 sys.exit()
 
             return True
+        
+        elif exporter_type == 'influxdb':
+            self.file_logger.info("Checking port connection to InfluxDB server {}, port: {}".format(data_host, data_port))
+
+            try:
+                portcheck_output = subprocess.check_output('/bin/nc -zvw10 {} {}'.format(data_host, data_port), stderr=subprocess.STDOUT, shell=True).decode()
+                self.file_logger.info("Port connection to server {}, port: {} checked OK.".format(data_host, data_port))
+            except subprocess.CalledProcessError as exc:
+                output = exc.output.decode()
+                self.file_logger.error(
+                    "Port check to server failed. Err msg: {} (Exiting...)".format(str(output)))
+                watchdog_obj.inc_watchdog_count()
+                lockf_obj.delete_lock_file()
+                sys.exit()
+
+            return True
 
         elif exporter_type == 'influxdb2':
-            self.file_logger.info("Checking port connection to InfluxDB server {}, port: {}".format(data_host, data_port))
+            self.file_logger.info("Checking port connection to InfluxDB2 server {}, port: {}".format(data_host, data_port))
 
             try:
                 portcheck_output = subprocess.check_output('/bin/nc -zvw10 {} {}'.format(data_host, data_port), stderr=subprocess.STDOUT, shell=True).decode()
