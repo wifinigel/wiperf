@@ -26,7 +26,8 @@ def influxexporter(localhost, host, port, username, password, database, dict_dat
         file_logger.error(import_err)
         sys.exit()
 
-    client = InfluxDBClient(host, port, database, username, password, timeout=100, ssl=True, verify_ssl=False)
+    #client = InfluxDBClient(host, port, database, username, password, timeout=100, ssl=True, verify_ssl=True)
+    client = InfluxDBClient(host, port, database, username, password, timeout=100)
     file_logger.debug("Creating InfluxDB API client...")
     file_logger.debug("Remote host: -{}-".format(host))
     file_logger.debug("Port: -{}-".format(port))
