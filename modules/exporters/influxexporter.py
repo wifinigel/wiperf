@@ -57,11 +57,12 @@ def influxexporter(localhost, host, port, username, password, database, dict_dat
         """
 
         #data.append(data_point)
-        data.append(data_point['fields'])
+        data_point['fields'].append({key: value})
 
     # send to Influx
     try:
-        if client.write_points(data):
+        #if client.write_points(data):
+        if client.write_points([data_point]):    
             file_logger.info("Data sent to influx OK")
         else:
             file_logger.info("Issue with sending data sent to influx...")
