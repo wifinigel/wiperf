@@ -49,6 +49,12 @@ def read_local_config(config_file, file_logger):
     config_vars['splunk_token'] = gen_sect.get('splunk_token')
     ##############################
 
+    ####### Influx1 config ########
+    config_vars['influx_username'] = gen_sect.get('influx_username', 'admin')
+    config_vars['influx_password'] = gen_sect.get('influx_password', 'admin')
+    config_vars['influx_database'] = gen_sect.get('influx_database', 'wiperf')
+    ##############################
+
     ####### Influx2 config ########
     config_vars['influx2_token'] = gen_sect.get('influx2_token', '')
     config_vars['influx2_bucket'] = gen_sect.get('influx2_bucket', '')

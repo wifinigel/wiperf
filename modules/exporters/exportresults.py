@@ -9,6 +9,7 @@ from socket import gethostname
 
 from modules.exporters.splunkexporter import splunkexporter
 from modules.exporters.influxexporter2 import influxexporter2
+from modules.exporters.influxexporter import influxexporter
 #TODO: conditional import of influxexporter if Influx module available
 
 class ResultsExporter(object):
@@ -57,6 +58,10 @@ class ResultsExporter(object):
         file_logger.info("Sending event to HEC: {} (dest host: {}, dest port: {})".format(source, host, port))
         splunkexporter(host, token, port, dict_data, source, file_logger)
 
+    def send_results_to_influx(self, localhost, host, port, username, password, database, dict_data, source, file_logger):
+
+        file_logger.info("Sending data to Influx host: {}, port: {}, database: {})".format(host, port, database))
+        influxexporter(localhost, host, port, username, password, database, dict_data, source, file_logger)
     
     def send_results_to_influx2(self, localhost, url, token, bucket, org, dict_data, source, file_logger):
 
@@ -98,6 +103,13 @@ class ResultsExporter(object):
             else:
                 file_logger.info("Unknown transport type in config file: {}".format(config_vars['data_transport']))
                 sys.exit()
+        
+        elif config_vars['exporter_type'] == 'influxdb':
+            
+            file_logger.info("InfluxDB update: {}, source={}".format(data_file, test_name))
+
+            self.send_results_to_influx(gethostname(), config_vars['data_host'], config_vars['data_port'], 
+                config_vars['influxusername'], config_vars['influx_password'], config_vars['influx_database'], results_dict, data_file, file_logger)
         
         elif config_vars['exporter_type'] == 'influxdb2':
             
