@@ -109,7 +109,7 @@ class ResultsExporter(object):
             file_logger.info("InfluxDB update: {}, source={}".format(data_file, test_name))
 
             self.send_results_to_influx(gethostname(), config_vars['data_host'], config_vars['data_port'], 
-                config_vars['influxusername'], config_vars['influx_password'], config_vars['influx_database'], results_dict, data_file, file_logger)
+                config_vars['influx_username'], config_vars['influx_password'], config_vars['influx_database'], results_dict, data_file, file_logger)
         
         elif config_vars['exporter_type'] == 'influxdb2':
             
