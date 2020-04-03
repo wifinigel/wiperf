@@ -34,34 +34,26 @@ def influxexporter(localhost, host, port, username, password, database, dict_dat
     file_logger.debug("Database: -{}-".format(database))
     file_logger.debug("User: -{}-".format(username))
 
-    now = time_lookup() # not used as using local timestamp on server
-
-    data = []
-
     data_point = {
         "measurement": source,
         "tags": { "host": localhost },
-        "fields": [],
+        "fields": {},
     }
+
+    fields_dict = {}
+
     # construct data structure to send to InFlux
     for key, value in dict_data.items():
 
         if key == 'time':
             continue
 
-        """
-        data_point = {"measurement": source,
-            "tags": { "host": localhost },
-            "fields": {key: value},
-        }
-        """
+        fields_dict[key] = value
 
-        #data.append(data_point)
-        data_point['fields'].append({key: value})
+    data_point['fields'] = fields_dict
 
     # send to Influx
     try:
-        #if client.write_points(data):
         if client.write_points([data_point]):    
             file_logger.info("Data sent to influx OK")
         else:
@@ -71,6 +63,6 @@ def influxexporter(localhost, host, port, username, password, database, dict_dat
         file_logger.error("Issue sending data to Influx: {}".format(err))
     
     file_logger.debug("Data structure sent to Influx:")
-    file_logger.debug(data)
+    file_logger.debug(data_point)
 
     
