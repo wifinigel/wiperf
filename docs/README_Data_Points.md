@@ -2,7 +2,7 @@
 
 ## Background
 
-The wiperf probe collects a variety of data points about various aspects of network connectivity and performance. It then makes those data points available to a number of databases via their standard API.
+The wiperf probe collects a variety of data points about various aspects of network connectivity and performance. It then makes those data points available to a number of databases via their standard API (e.g. Splunk, InfluxDB etc.).
 
 The data collected in all instances is the same, but the format of the data presented to each type of database varies depending on the their API and formatting rules and syntax.
 
@@ -28,44 +28,81 @@ Here are the data points that may be collected, displayed by test type:
 
 ### Wireless Network Connectivity
 
-
-
-results_dict['ssid'] = self.adapter_obj.get_ssid()
-results_dict['bssid'] = self.adapter_obj.get_bssid()
-results_dict['freq_ghz'] = self.adapter_obj.get_freq()
-results_dict['center_freq_ghz'] = self.adapter_obj.get_center_freq()
-results_dict['channel'] = self.adapter_obj.get_channel()
-results_dict['channel_width'] = self.adapter_obj.get_channel_width()
-results_dict['tx_rate_mbps'] = self.adapter_obj.get_tx_bit_rate()
-results_dict['rx_rate_mbps'] = self.adapter_obj.get_rx_bit_rate()
-results_dict['tx_mcs'] = self.adapter_obj.get_tx_mcs()
-results_dict['rx_mcs'] = self.adapter_obj.get_rx_mcs()
-results_dict['signal_level_dbm'] = self.adapter_obj.get_signal_level()
-results_dict['tx_retries'] = self.adapter_obj.get_tx_retries()
-results_dict['ip_address'] = self.adapter_obj.get_ipaddr()
-
-
+* time : Unix timestamp of sample time
+* ssid : The network name of the wireless network to which the wiperf probe is currently connected 
+* bssid : The basic service set identifier (i.e. MAC address) of the radio to which the wiperf probe is currently connected
+* freq_ghz : ?
+* center_freq_ghz : The centre frequency of the channel on which the probe is operating 
+* channel : The channel number on which the probe is operating
+* channel_width: The channel width (e.g. 20MHz, 40MHz, 80MHz) of the channel on which the probe is operating
+* tx_rate_mbps : The PHY rate at which data is being sent from the probe to the AP (note this is not a throughput rate, just a physical connection rate)
+* rx_rate_mbps : The PHY rate at which data is being sent from the AP to the probe (note this is not a throughput rate, just a physical connection rate)
+* tx_mcs : For HT & VHT connections, this is the the MCS value used by the probe to the AP
+* rx_mcs : For HT & VHT connections, this is the the MCS value used by the AP to the probe
+* signal_level_dbm : The power level of the AP radio signal as observed by the probe (in dBm)
+* tx_retries : The number of transmitted frames that have had to be sent gain (retried)
+* ip_address : The IP address assigned to the probe WLAN NIC
 
 ### Speedtest Results
 
+* time : Unix timestamp of sample time
+* ping_time : The RTT of a ping test to the speedtest server
+* download_rate_mbps : The throughput rate achieved when receiving data from the speedtest server
+* upload_rate_mbps : The throughput rate achieved when sending data to the speedtest server
+* server_name : The name of the speedtest server used for this test
 
 ### Ping Results
 
+* time : Unix timestamp of sample time
+* ping_index :
+* ping_host :
+* pkts_tx :
+* pkts_rx :
+* percent_loss :
+* test_time_ms :
+* rtt_min_ms :
+* rtt_avg_ms :
+* rtt_max_ms :
+* rtt_mdev_ms :
 
 ### DNS Results
 
+* time : Unix timestamp of sample time
+* dns_index : 
+* dns_target : 
+* lookup_time_ms :
 
 ### HTTP Results
 
+* time : Unix timestamp of sample time
+* http_index :
+* http_target : 
+* lookup_time_ms : 
+* http_status_code : 
 
 ### iperf3 TCP Results
 
+* time : Unix timestamp of sample time
+* sent_mbps : 
+* received_mbps : 
+* sent_bytes : 
+* received_bytes : 
+* retransmits : 
 
 ### iperf3 UDP Results
 
+* time : Unix timestamp of sample time
+* bytes : 
+* mbps : 
+* jitter_ms : 
+* packets : 
+* lost_packets : 
+* lost_percent : 
 
 ### DHCP Test Results
 
+* time : Unix timestamp of sample time
+* renewal_time_ms : 
 
 
 
