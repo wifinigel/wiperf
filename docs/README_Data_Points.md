@@ -10,14 +10,14 @@ This document details the data points collected by the probe. These field names 
 
 The probe may collect data for the following network tests, depending upon its configuration:
 
-- Wireless network connectivity details
-- Speedtest testing results data
-- ICMP ping tests to various destinations
-- DNS lookup tests to various destinations
-- HTTP (web) tests to various destinations
-- iperf3 TCP test to a nominated iperf3 server
-- iperf3 UDP test to a nominated iperf3 server
-- DHCP renewal test to test DHCP performance on network to which the WLAN Pi is connected
+- [Wireless network connectivity details](#wireless-network-connectivity)
+- [Speedtest testing results data](#speedtest-results)
+- [ICMP ping tests to various destinations](#ping-results)
+- [DNS lookup tests to various destinations](#dns-results)]
+- [HTTP (web) tests to various destinations](#http-results)
+- [iperf3 TCP test to a nominated iperf3 server](#iperf3-tcp-results)
+- [iperf3 UDP test to a nominated iperf3 server](#iperf3-udp-results)
+- [DHCP renewal test to test DHCP performance on network to which the WLAN Pi is connected](#dhcp-test-results)
 
 The tests are run each time the wiperf process is triggered (usually every 5 minutes from a local cron job). The tests that are run, together with test configuration parameters are configured in the config.ini file.
 
