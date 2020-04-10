@@ -2,14 +2,14 @@
   <init>
     <set token="host_name">wlanpi</set>
   </init>
-  <label>Probe Overview - 4 Hours</label>
+  <label>Probe Overview - 24 Hours</label>
   <row>
     <panel>
       <chart>
         <title>Speedtest - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk"| timechart avg(download_rate_mbps) as "Avg Download" avg(upload_rate_mbps) as "Avg Upload" by host</query>
-          <earliest>-4h@m</earliest>
+          <query>host=$host_name$ source="wiperf-speedtest"| timechart avg(download_rate_mbps) as "Avg Download" avg(upload_rate_mbps) as "Avg Upload" by host</query>
+          <earliest>-24h@m</earliest>
           <latest>now</latest>
         </search>
         <option name="charting.axisTitleX.text">Time</option>
@@ -26,8 +26,8 @@
       <chart>
         <title>Wireless Connection - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk"| timechart avg(phy_rate_mbps) as "PHY Rate" avg(signal_level_dbm) as "Signal Level (dBm)"</query>
-          <earliest>-4h@h</earliest>
+          <query>host=$host_name$ source="wiperf-speedtest"| timechart avg(phy_rate_mbps) as "PHY Rate" avg(signal_level_dbm) as "Signal Level (dBm)"</query>
+          <earliest>-24h@h</earliest>
           <latest>now</latest>
         </search>
         <option name="charting.axisY.maximumNumber">-20</option>
@@ -46,8 +46,8 @@
       <chart>
         <title>DNS Lookup Time (mS) - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-dns-splunk" dns_target=*| timechart avg(lookup_time_ms) by dns_target</query>
-          <earliest>-4h@m</earliest>
+          <query>host=$host_name$ source="wiperf-dns" dns_target=*| timechart avg(lookup_time_ms) by dns_target</query>
+          <earliest>-24h@m</earliest>
           <latest>now</latest>
         </search>
         <option name="charting.chart">line</option>
@@ -59,8 +59,8 @@
       <chart>
         <title>DHCP Renewal - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-dhcp-splunk"| timechart avg(renewal_time_ms) as "DHCP Renewal (mS)"</query>
-          <earliest>-4h@m</earliest>
+          <query>host=$host_name$ source="wiperf-dhcp"| timechart avg(renewal_time_ms) as "DHCP Renewal (mS)"</query>
+          <earliest>-24h@m</earliest>
           <latest>now</latest>
           <refresh>1m</refresh>
           <refreshType>delay</refreshType>
@@ -81,8 +81,8 @@
       <chart>
         <title>TCP iPerf Rate - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-iperf3-tcp-splunk"| timechart avg(sent_mbps) as "Avg Sent Mbps" avg(received_mbps) as "Avg Rec Mbps"</query>
-          <earliest>-4h@m</earliest>
+          <query>host=$host_name$ source="wiperf-iperf3-tcp"| timechart avg(sent_mbps) as "Avg Sent Mbps" avg(received_mbps) as "Avg Rec Mbps"</query>
+          <earliest>-24h@m</earliest>
           <latest>now</latest>
         </search>
         <option name="charting.axisTitleX.text">Time</option>
@@ -100,8 +100,8 @@
       <chart>
         <title>RTT Avg Times - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-ping-splunk" ping_host=*| timechart avg(rtt_avg_ms) by ping_host</query>
-          <earliest>-4h@m</earliest>
+          <query>host=$host_name$ source="wiperf-ping" ping_host=*| timechart avg(rtt_avg_ms) by ping_host</query>
+          <earliest>-24h@m</earliest>
           <latest>now</latest>
         </search>
         <option name="charting.chart">line</option>
@@ -115,8 +115,8 @@
       <chart>
         <title>UDP iPerf (Speed) - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-iperf3-udp-splunk"| timechart avg(mbps) as "Avg Mbps"</query>
-          <earliest>-4h@m</earliest>
+          <query>host=$host_name$ source="wiperf-iperf3-udp"| timechart avg(mbps) as "Avg Mbps"</query>
+          <earliest>-24h@m</earliest>
           <latest>now</latest>
         </search>
         <option name="charting.axisY.abbreviation">none</option>
@@ -130,8 +130,8 @@
       <chart>
         <title>iPerf UDP (Jitter/Loss) - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-iperf3-udp-splunk"| timechart avg(lost_percent) as "% Loss" avg(jitter_ms) as "Jitter (mS)"</query>
-          <earliest>-4h@m</earliest>
+          <query>host=$host_name$ source="wiperf-iperf3-udp"| timechart avg(lost_percent) as "% Loss" avg(jitter_ms) as "Jitter (mS)"</query>
+          <earliest>-24h@m</earliest>
           <latest>now</latest>
         </search>
         <option name="charting.axisY2.enabled">1</option>

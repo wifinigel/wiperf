@@ -34,7 +34,7 @@
       <chart>
         <title>HTTP Get Time (ms) - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=*| timechart avg(lookup_time_ms)  as "HTTP Get (ms)" by http_target</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*| timechart avg(lookup_time_ms)  as "HTTP Get (ms)" by http_target</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -55,7 +55,7 @@
       <chart>
         <title>HTTP Status Codes - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" | timechart count by http_status_code</query>
+          <query>host=$host_name$ source="wiperf-http" | timechart count by http_status_code</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -82,7 +82,7 @@
       <chart>
         <title>Target: $target1$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=$target1$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=$target1$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -106,7 +106,7 @@
       <chart>
         <title>Target: $target2$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=$target2$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=$target2$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -132,7 +132,7 @@
       <chart>
         <title>Target: $target3$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=$target3$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=$target3$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -156,7 +156,7 @@
       <chart>
         <title>Target: $target4$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=$target4$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=$target4$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -180,7 +180,7 @@
       <chart>
         <title>Target: $target5$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=$target5$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=$target5$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -206,7 +206,7 @@
       <chart>
         <title>Layer 2 TX Retries - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk"| sort host _time | delta tx_retries as delta_retries p=1  | eval delta_retries=if(delta_retries&lt;0,0,delta_retries)
+          <query>host=$host_name$ source="wiperf-speedtest"| sort host _time | delta tx_retries as delta_retries p=1  | eval delta_retries=if(delta_retries&lt;0,0,delta_retries)
 | timechart latest(delta_retries) as "Tx Retries" by host</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
@@ -224,7 +224,7 @@
       <chart>
         <title>Wireless MCS - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk"| timechart avg(tx_mcs) as "Tx MCS"  avg(rx_mcs) as "Rx MCS"</query>
+          <query>host=$host_name$ source="wiperf-speedtest"| timechart avg(tx_mcs) as "Tx MCS"  avg(rx_mcs) as "Rx MCS"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -246,7 +246,7 @@
       <chart>
         <title>BSSID - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk"| timechart count(bssid) by bssid</query>
+          <query>host=$host_name$ source="wiperf-speedtest"| timechart count(bssid) by bssid</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -268,7 +268,7 @@
       <chart>
         <title>SSID - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk"| timechart count(ssid) by ssid</query>
+          <query>host=$host_name$ source="wiperf-speedtest"| timechart count(ssid) by ssid</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -293,7 +293,7 @@
       <chart>
         <title>Channel - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk"| timechart count(channel) by channel</query>
+          <query>host=$host_name$ source="wiperf-speedtest"| timechart count(channel) by channel</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -316,7 +316,7 @@
       <chart>
         <title>Wi-Fi Band - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk" | eval band=if(channel&lt;14,"2.4GHz","5GHz") 
+          <query>host=$host_name$ source="wiperf-speedtest" | eval band=if(channel&lt;14,"2.4GHz","5GHz") 
 | stats count by band</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>

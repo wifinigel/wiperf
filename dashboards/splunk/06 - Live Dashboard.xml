@@ -21,7 +21,7 @@
       <single>
         <title>Avg Speedtest Download</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk" | timechart span=15m avg(download_rate_mbps) as "Avg Download"</query>
+          <query>host=$host_name$ source="wiperf-speedtest" | timechart span=15m avg(download_rate_mbps) as "Avg Download"</query>
           <earliest>-60m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -47,7 +47,7 @@
       <single>
         <title>Avg Speedtest Upload</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest-splunk"   | timechart span=15m  avg(upload_rate_mbps) as "Avg Upload"</query>
+          <query>host=$host_name$ source="wiperf-speedtest"   | timechart span=15m  avg(upload_rate_mbps) as "Avg Upload"</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -73,7 +73,7 @@
       <single>
         <title>Avg DNS Response</title>
         <search>
-          <query>host=$host_name$ source="wiperf-dns-splunk" dns_target=* |  timechart span=15m  avg(lookup_time_ms)</query>
+          <query>host=$host_name$ source="wiperf-dns" dns_target=* |  timechart span=15m  avg(lookup_time_ms)</query>
           <earliest>-60m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -99,7 +99,7 @@
       <single>
         <title>Avg Ping Time</title>
         <search>
-          <query>host=$host_name$ source="wiperf-ping-splunk"  |  timechart span=15m  avg(rtt_avg_ms)</query>
+          <query>host=$host_name$ source="wiperf-ping"  |  timechart span=15m  avg(rtt_avg_ms)</query>
           <earliest>-60m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -125,7 +125,7 @@
       <single>
         <title>Avg HTTP Response</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=*  | timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*  | timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -155,7 +155,7 @@
       <single>
         <title>Google Status Code</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=https://google.com  |  stats last(http_status_code) as "Status"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=https://google.com  |  stats last(http_status_code) as "Status"</query>
           <earliest>-15m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -171,7 +171,7 @@
       <single>
         <title>Google DNS Time</title>
         <search>
-          <query>host=$host_name$ source="wiperf-dns-splunk" dns_target=google.com |  timechart span=15m  avg(lookup_time_ms)</query>
+          <query>host=$host_name$ source="wiperf-dns" dns_target=google.com |  timechart span=15m  avg(lookup_time_ms)</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -197,7 +197,7 @@
       <single>
         <title>Google HTTP Response</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=https://google.com   |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=https://google.com   |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -223,7 +223,7 @@
       <single>
         <title>BBC Status Code</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=*bbc.co.uk*  |  stats last(http_status_code) as "Status"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*bbc.co.uk*  |  stats last(http_status_code) as "Status"</query>
           <earliest>-15m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -239,7 +239,7 @@
       <single>
         <title>BBC DNS Time</title>
         <search>
-          <query>host=$host_name$ source="wiperf-dns-splunk" dns_target=bbc.co.uk |  timechart span=15m  avg(lookup_time_ms)</query>
+          <query>host=$host_name$ source="wiperf-dns" dns_target=bbc.co.uk |  timechart span=15m  avg(lookup_time_ms)</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -265,7 +265,7 @@
       <single>
         <title>BBC HTTP Response</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=*bbc.co.uk*   |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*bbc.co.uk*   |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -295,7 +295,7 @@
       <single>
         <title>Facebook Status Code</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=*facebook*  |  stats last(http_status_code) as "Status"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*facebook*  |  stats last(http_status_code) as "Status"</query>
           <earliest>-15m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -311,7 +311,7 @@
       <single>
         <title>Facebook DNS Time</title>
         <search>
-          <query>host=$host_name$ source="wiperf-dns-splunk" dns_target=*facebook*  |  timechart span=15m  avg(lookup_time_ms)</query>
+          <query>host=$host_name$ source="wiperf-dns" dns_target=*facebook*  |  timechart span=15m  avg(lookup_time_ms)</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -337,7 +337,7 @@
       <single>
         <title>Facebook HTTP Response</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=*facebook*  |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*facebook*  |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -363,7 +363,7 @@
       <single>
         <title>Twitter Status Code</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=*twitter*  |  stats last(http_status_code) as "Status"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*twitter*  |  stats last(http_status_code) as "Status"</query>
           <earliest>-15m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -379,7 +379,7 @@
       <single>
         <title>Twitter DNS Time</title>
         <search>
-          <query>host=$host_name$ source="wiperf-dns-splunk" dns_target=*twitter*  |  timechart span=15m  avg(lookup_time_ms)</query>
+          <query>host=$host_name$ source="wiperf-dns" dns_target=*twitter*  |  timechart span=15m  avg(lookup_time_ms)</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -405,7 +405,7 @@
       <single>
         <title>Twitter HTTP Response</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http-splunk" http_target=*twitter*  |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*twitter*  |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>

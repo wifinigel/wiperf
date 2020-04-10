@@ -147,6 +147,8 @@ def main():
     file_logger.info("########## Wireless connection checks ##########")
     connection_obj = ''
 
+    status_file_obj.write_status_file("network check")
+
     if config_vars['probe_mode'] == 'ethernet':
         file_logger.info("Checking ethernet connection is good...")
         connection_obj = EthernetConnectionTester(file_logger, eth_if, platform)
