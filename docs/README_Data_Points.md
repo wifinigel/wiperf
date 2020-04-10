@@ -28,11 +28,11 @@ Here are the data points that may be collected, displayed by test type:
 
 ### Wireless Network Connectivity
 
-* time : Unix timestamp of sample time
+* time : Unix timestamp of time test was performed
 * ssid : The network name of the wireless network to which the wiperf probe is currently connected 
 * bssid : The basic service set identifier (i.e. MAC address) of the radio to which the wiperf probe is currently connected
-* freq_ghz : ?
-* center_freq_ghz : The centre frequency of the channel on which the probe is operating 
+* freq_ghz : The centre frequency of the channel on which the probe is operating (note this may be different to the primary channel centre freq if a bonded channel is in use)
+* center_freq_ghz : The centre frequency of the primary channel on which the probe is operating 
 * channel : The channel number on which the probe is operating
 * channel_width: The channel width (e.g. 20MHz, 40MHz, 80MHz) of the channel on which the probe is operating
 * tx_rate_mbps : The PHY rate at which data is being sent from the probe to the AP (note this is not a throughput rate, just a physical connection rate)
@@ -45,64 +45,64 @@ Here are the data points that may be collected, displayed by test type:
 
 ### Speedtest Results
 
-* time : Unix timestamp of sample time
+* time : Unix timestamp of time test was performed
 * ping_time : The RTT of a ping test to the speedtest server
-* download_rate_mbps : The throughput rate achieved when receiving data from the speedtest server
-* upload_rate_mbps : The throughput rate achieved when sending data to the speedtest server
+* download_rate_mbps : The throughput rate achieved when receiving data from the speedtest server in megabits per second
+* upload_rate_mbps : The throughput rate achieved when sending data to the speedtest server in megabits per second
 * server_name : The name of the speedtest server used for this test
 
 ### Ping Results
 
-* time : Unix timestamp of sample time
-* ping_index :
-* ping_host :
-* pkts_tx :
-* pkts_rx :
-* percent_loss :
-* test_time_ms :
-* rtt_min_ms :
-* rtt_avg_ms :
-* rtt_max_ms :
-* rtt_mdev_ms :
+* time : Unix timestamp of time test was performed
+* ping_index : wiperf runs up to 5 instances of ping test via its configuration file. This index uniquely identifies each instance.
+* ping_host : The IP address or hostname of the target host/site being pinged
+* pkts_tx : The number of ping request packets sent during the ping test
+* pkts_rx : The number of ping response packets received back during the ping test
+* percent_loss : The percentage (%) of packets lost during the test (i.e. how many responses were received compared to requests sent)
+* test_time_ms : How long the ping test took in total
+* rtt_min_ms : The minimum round trip time of all ping tests to this test instance in milliseconds
+* rtt_avg_ms : The average round trip time of all ping tests to this test instance in milliseconds
+* rtt_max_ms : The maximum round trip time of all ping tests to this test instance in milliseconds
+* rtt_mdev_ms : Standard deviation of all ping tests to this test instance (...no, I don't know either...but you'll look cool at dinner parties if you mention it.)
 
 ### DNS Results
 
-* time : Unix timestamp of sample time
-* dns_index : 
-* dns_target : 
-* lookup_time_ms :
+* time : Unix timestamp of time test was performed
+* dns_index : wiperf runs up to 5 instances of DNS test via its configuration file. This index uniquely identifies each instance.
+* dns_target : The domain name of the target host/site which is the subject of the DNS lookup test
+* lookup_time_ms : The time taken to perform the DNS lookup in milliseconds
 
 ### HTTP Results
 
-* time : Unix timestamp of sample time
-* http_index :
-* http_target : 
-* lookup_time_ms : 
-* http_status_code : 
+* time : Unix timestamp of time test was performed
+* http_index : wiperf runs up to 5 instances of HTTP test via its configuration file. This index uniquely identifies each instance.
+* http_target : The domain name (or IP address) of the target site which is the subject of the HTTP test
+* lookup_time_ms : The time taken to retrieve the html page from the target site in milliseconds
+* http_status_code : The HTTP status code returned from the target site in this test instance (200 is good, other values have varying meanings: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes )
 
 ### iperf3 TCP Results
 
-* time : Unix timestamp of sample time
-* sent_mbps : 
-* received_mbps : 
-* sent_bytes : 
-* received_bytes : 
-* retransmits : 
+* time : Unix timestamp of time test was performed
+* sent_mbps : The transmit throughput achieved (in megabits per seconds) during the TCP iperf test
+* received_mbps : The receive throughput achieved (in megabits per seconds) during the TCP iperf test
+* sent_bytes : The number of bytes (i.e. data volume) sent from the probe to the iperf server during the test
+* received_bytes : The number of bytes (i.e. data volume) received by the probe from the iperf server during the test
+* retransmits : The number of times frames had to be re=transmitted during the test
 
 ### iperf3 UDP Results
 
-* time : Unix timestamp of sample time
-* bytes : 
-* mbps : 
-* jitter_ms : 
-* packets : 
-* lost_packets : 
-* lost_percent : 
+* time : Unix timestamp of time test was performed
+* bytes : The number of bytes transferred from the probe to the iperf server during the test
+* mbps : The throughput achieved (in megabits per second) during the iperf test when sending data to the iperf server
+* jitter_ms : The level of jitter measured (in milliseconds) during the test
+* packets : The number of packets sent from the probe to the iperf server during the test
+* lost_packets : The number of transmitted packets lost during the test
+* lost_percent : The percentage of transmitted packets lost during the test
 
 ### DHCP Test Results
 
-* time : Unix timestamp of sample time
-* renewal_time_ms : 
+* time : Unix timestamp of time test was performed
+* renewal_time_ms : The time taken for the probe to renew it's IP address in milliseconds
 
 
 
