@@ -2,3 +2,7 @@ data/*.csv
 data/*.json
 doc/
 bundle/
+config.ini
+config.log
+*.pyc
+modules/config/*.pyc

@@ -42,24 +42,42 @@ def read_local_config(config_file, file_logger):
     # data transport
     config_vars['data_transport'] = gen_sect.get('data_transport', 'hec')
     # host where to send logs
-    config_vars['data_host'] = gen_sect.get('data_host')
+    config_vars['splunk_host'] = gen_sect.get('splunk_host')
     # host port
-    config_vars['data_port'] = gen_sect.get('data_port', '8088')
+    config_vars['splunk_port'] = gen_sect.get('splunk_port', '8088')
     # Splunk HEC token
     config_vars['splunk_token'] = gen_sect.get('splunk_token')
     ##############################
 
     ####### Influx1 config ########
+    config_vars['influx_host'] = gen_sect.get('influx_host')
+    config_vars['influx_port'] = gen_sect.get('influx_port', '8086')
     config_vars['influx_username'] = gen_sect.get('influx_username', 'admin')
     config_vars['influx_password'] = gen_sect.get('influx_password', 'admin')
     config_vars['influx_database'] = gen_sect.get('influx_database', 'wiperf')
     ##############################
 
     ####### Influx2 config ########
+    config_vars['influx2_host'] = gen_sect.get('influx2_host')
+    config_vars['influx2_port'] = gen_sect.get('influx2_port', '8086')
     config_vars['influx2_token'] = gen_sect.get('influx2_token', '')
     config_vars['influx2_bucket'] = gen_sect.get('influx2_bucket', '')
     config_vars['influx2_org'] = gen_sect.get('influx2_org', '')
     ##############################
+
+    # convert host & port in to std global var
+    if config_vars['exporter_type'] == 'splunk':
+        config_vars['data_host'] = config_vars['splunk_host']
+        config_vars['data_port'] = config_vars['splunk_port']
+    elif config_vars['exporter_type'] == 'influx':
+        config_vars['data_host'] = config_vars['influx_host']
+        config_vars['data_port'] = config_vars['influx_port']
+    elif config_vars['exporter_type'] == 'influx2':
+        config_vars['data_host'] = config_vars['influx_host2']
+        config_vars['data_port'] = config_vars['influx_port2']
+    else:
+        print("Unknown exporter type: {}".format(config_vars['exporter_type']))
+        sys.exit()
 
     # test cycle timing parameters
     config_vars['test_interval'] = gen_sect.get('test_interval', '5')
@@ -191,4 +209,4 @@ def read_local_config(config_file, file_logger):
         print("Machine ID = " + config_vars['machine_id'])
     '''
 
-    return config_vars
+    return (config_vars, config)

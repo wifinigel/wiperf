@@ -54,7 +54,7 @@ file_logger.info(" Starting logging...")
 file_logger.info("*****************************************************")
 
 # Pull in our config.ini dict
-config_vars = read_local_config(config_file, file_logger)
+(config_vars, config_obj) = read_local_config(config_file, file_logger)
 
 # set logging to debug if debugging enabled
 if DEBUG or (config_vars['debug'] == 'on'):
