@@ -157,12 +157,12 @@ wiperf_on () {
     MGT_PORT=`cat ${HOME_DIR}/wiperf/config.ini | grep splunk_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
   elif [ "$EXPORTER_TYPE" == "influxdb" ]
   then
-    MGT_IP=`cat ${HOME_DIR}/wiperf/config.ini | grep influxdb_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
-    MGT_PORT=`cat ${HOME_DIR}/wiperf/config.ini | grep influxdb_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
+    MGT_IP=`cat ${HOME_DIR}/wiperf/config.ini | grep influx_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
+    MGT_PORT=`cat ${HOME_DIR}/wiperf/config.ini | grep influx_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
   elif [ "$EXPORTER_TYPE" == "influxdb2" ]
   then
-    MGT_IP=`cat ${HOME_DIR}/wiperf/config.ini | grep influxdb2_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
-    MGT_PORT=`cat ${HOME_DIR}/wiperf/config.ini | grep influxdb2_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
+    MGT_IP=`cat ${HOME_DIR}/wiperf/config.ini | grep influx2_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
+    MGT_PORT=`cat ${HOME_DIR}/wiperf/config.ini | grep influx2_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
   else
     echo "Unknown exporter type detected" | tee -a $LOG_FILE 
     exit 0
