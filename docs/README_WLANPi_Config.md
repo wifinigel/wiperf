@@ -21,6 +21,23 @@
     - [Security](#security)
     - [CLI Mode Switch](#cli-mode-switch)
 
+# *** Instructions for InfluxDB Testers (conf_pull branch) ***
+
+1. Burn a new SD card with the V1.9.1 image
+2. Make sure WLAN Pi is connected to the Internet 
+3. SSH to the WLAN Pi and execute the following command to install a missing required Python InfluxDB module:
+
+```
+sudo /usr/bin/python3 -m pip install influxdb
+```
+
+4. Install the latest version of wiperf with Influx support (in the same SSH session):
+```
+sudo pkg_admin -i wiperf -b conf_pull
+```
+
+Then, proceed with the instructions in the remainder of this document.
+
 # Wiperf - Configuration on the WLAN Pi
 
 This instruction paper assumes you are running Wiperf on a WLAN Pi on an image version of v1.9 or later (which has Wiperf installed and available as part of the image.)
