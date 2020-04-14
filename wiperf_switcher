@@ -154,7 +154,7 @@ wiperf_on () {
   if [ "$EXPORTER_TYPE" == "splunk" ]
   then
     MGT_IP=`cat ${HOME_DIR}/wiperf/config.ini | grep splunk_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
-    MGT_PORT=`cat ${HOME_DIR}/wiperf/config.ini | grep data_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
+    MGT_PORT=`cat ${HOME_DIR}/wiperf/config.ini | grep splunk_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
   elif [ "$EXPORTER_TYPE" == "influxdb" ]
   then
     MGT_IP=`cat ${HOME_DIR}/wiperf/config.ini | grep influxdb_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
@@ -170,21 +170,17 @@ wiperf_on () {
 
   # check if we have a mgt IP
   if [ -z "$MGT_IP" ]; then
-    echo "No mgt server IP config" | tee -a $LOG_FILE 
+    echo "No mgt destination address defined....exiting" | tee -a $LOG_FILE
+    exit 0 
   fi
   echo "Mgt server IP from config file: ${MGT_IP}" | tee -a $LOG_FILE
 
   # check if we have a mgt port
   if [ -z "$MGT_PORT" ]; then
-    echo "No mgt port" | tee -a $LOG_FILE 
-  fi
-  echo "Mgt port from config file: ${MGT_PORT}" | tee -a $LOG_FILE
-
-  # if mgt address is blank, raise error & exit
-  if [ -z "$MGT_IP" ]; then
-    echo "No mgt destination address defined....exiting" | tee -a $LOG_FILE
+    echo "No mgt port defined....exiting" | tee -a $LOG_FILE
     exit 0
   fi
+  echo "Mgt port from config file: ${MGT_PORT}" | tee -a $LOG_FILE
 
   #########################################################
   # 6. If we're sending mgt traffic via eth0 and tests are 
