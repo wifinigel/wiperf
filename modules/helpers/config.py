@@ -104,7 +104,9 @@ def read_local_config(config_file, file_logger):
     config_vars['cfg_token'] = gen_sect.get('cfg_token', '')
     config_vars['cfg_refresh_interval'] = gen_sect.get('cfg_refresh_interval', 1800)
 
+    # TODO: tidy this up
     # do some basic checks that mandatory fields are present
+    """
     for field in ['data_host', 'splunk_token']:
 
         if config_vars[field] == '':
@@ -113,7 +115,8 @@ def read_local_config(config_file, file_logger):
             file_logger.error(err_msg)
             print(err_msg)
             sys.exit()
-
+    """
+    
     file_logger.debug("Platform = {}".format(config_vars.get('General', 'platform')))
 
     # Get network test config params
