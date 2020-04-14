@@ -35,7 +35,7 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-# Figure out platform type from config file - no really needed at present
+# Figure out platform type from config file - not really needed at present
 echo "Checking platform type configured..." | tee $LOG_FILE
 PLATFORM=`cat ${HOME_DIR}/wiperf/config.ini | grep platform\: | awk -F'[:][[:space:]]*' '{print $2}'` || true
 if  [ -z "$PLATFORM" ]; then
@@ -142,14 +142,38 @@ wiperf_on () {
   ####################################################################
   # 5. Figure out the mgt destination (IP for Splunk, URL for Influx)
   ####################################################################
-  MGT_IP=`cat ${HOME_DIR}/wiperf/config.ini | grep data_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
+  EXPORTER_TYPE=`cat ${HOME_DIR}/wiperf/config.ini | grep exporter_type | awk -F'[:][[:space:]]*' '{print $2}'` || true
+  # check if we have a exporter type
+  if [ -z "$EXPORTER_TYPE" ]
+  then
+    echo "No exporter type detected" | tee -a $LOG_FILE 
+    exit 0
+  fi
+  echo "Exporter type: ${EXPORTER_TYPE}" | tee -a $LOG_FILE
+
+  if [ "$EXPORTER_TYPE" == "splunk" ]
+  then
+    MGT_IP=`cat ${HOME_DIR}/wiperf/config.ini | grep splunk_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
+    MGT_PORT=`cat ${HOME_DIR}/wiperf/config.ini | grep data_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
+  elif [ "$EXPORTER_TYPE" == "influxdb" ]
+  then
+    MGT_IP=`cat ${HOME_DIR}/wiperf/config.ini | grep influxdb_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
+    MGT_PORT=`cat ${HOME_DIR}/wiperf/config.ini | grep influxdb_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
+  elif [ "$EXPORTER_TYPE" == "influxdb2" ]
+  then
+    MGT_IP=`cat ${HOME_DIR}/wiperf/config.ini | grep influxdb2_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
+    MGT_PORT=`cat ${HOME_DIR}/wiperf/config.ini | grep influxdb2_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
+  else
+    echo "Unknown exporter type detected" | tee -a $LOG_FILE 
+    exit 0
+  fi
+
   # check if we have a mgt IP
   if [ -z "$MGT_IP" ]; then
     echo "No mgt server IP config" | tee -a $LOG_FILE 
   fi
   echo "Mgt server IP from config file: ${MGT_IP}" | tee -a $LOG_FILE
 
-  MGT_PORT=`cat ${HOME_DIR}/wiperf/config.ini | grep data_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
   # check if we have a mgt port
   if [ -z "$MGT_PORT" ]; then
     echo "No mgt port" | tee -a $LOG_FILE 
