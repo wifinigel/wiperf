@@ -28,6 +28,8 @@ Here are the data points that may be collected, displayed by test type:
 
 ### Wireless Network Connectivity
 
+**(Data source: wiperf-network)**
+
 * time : Unix timestamp of time test was performed
 * ssid : The network name of the wireless network to which the wiperf probe is currently connected 
 * bssid : The basic service set identifier (i.e. MAC address) of the radio to which the wiperf probe is currently connected
@@ -45,6 +47,8 @@ Here are the data points that may be collected, displayed by test type:
 
 ### Speedtest Results
 
+**(Data source: wiperf-speedtest)**
+
 * time : Unix timestamp of time test was performed
 * ping_time : The RTT of a ping test to the speedtest server
 * download_rate_mbps : The throughput rate achieved when receiving data from the speedtest server in megabits per second
@@ -52,6 +56,8 @@ Here are the data points that may be collected, displayed by test type:
 * server_name : The name of the speedtest server used for this test
 
 ### Ping Results
+
+**(Data source: wiperf-ping)**
 
 * time : Unix timestamp of time test was performed
 * ping_index : wiperf runs up to 5 instances of ping test via its configuration file. This index uniquely identifies each instance.
@@ -67,12 +73,16 @@ Here are the data points that may be collected, displayed by test type:
 
 ### DNS Results
 
+**(Data source: wiperf-ping)**
+
 * time : Unix timestamp of time test was performed
 * dns_index : wiperf runs up to 5 instances of DNS test via its configuration file. This index uniquely identifies each instance.
 * dns_target : The domain name of the target host/site which is the subject of the DNS lookup test
 * lookup_time_ms : The time taken to perform the DNS lookup in milliseconds
 
 ### HTTP Results
+
+**(Data source: wiperf-http)**
 
 * time : Unix timestamp of time test was performed
 * http_index : wiperf runs up to 5 instances of HTTP test via its configuration file. This index uniquely identifies each instance.
@@ -81,6 +91,8 @@ Here are the data points that may be collected, displayed by test type:
 * http_status_code : The HTTP status code returned from the target site in this test instance (200 is good, other values have varying meanings: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes )
 
 ### iperf3 TCP Results
+
+**(Data source: wiperf-iperf3-tcp)**
 
 * time : Unix timestamp of time test was performed
 * sent_mbps : The transmit throughput achieved (in megabits per seconds) during the TCP iperf test
@@ -91,6 +103,8 @@ Here are the data points that may be collected, displayed by test type:
 
 ### iperf3 UDP Results
 
+**(Data source: wiperf-iperf3-udp)**
+
 * time : Unix timestamp of time test was performed
 * bytes : The number of bytes transferred from the probe to the iperf server during the test
 * mbps : The throughput achieved (in megabits per second) during the iperf test when sending data to the iperf server
@@ -100,6 +114,8 @@ Here are the data points that may be collected, displayed by test type:
 * lost_percent : The percentage of transmitted packets lost during the test
 
 ### DHCP Test Results
+
+**(Data source: wiperf-dhcp)**
 
 * time : Unix timestamp of time test was performed
 * renewal_time_ms : The time taken for the probe to renew it's IP address in milliseconds
