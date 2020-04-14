@@ -1,6 +1,7 @@
 # Contents
 
 - [Wiperf - Configuration on the WLAN Pi](#wiperf---configuration-on-the-wlan-pi)
+    - [Instructions for InfluxDB Testers](#-instructions-for-influxdb-testers-conf_pull-branch-)
     - [Hostname](#hostname)
     - [Configuration File (config.ini)](#configuration-file-configini)
     - [Wireless Client Configuration (wpa_supplicant.conf)](#wireless-client-configuration-wpa_supplicantconf)
@@ -33,7 +34,7 @@ sudo /usr/bin/python3 -m pip install influxdb
 
 4. Install the latest version of wiperf with Influx support (in the same SSH session):
 ```
-sudo pkg_admin -i wiperf -b conf_pull
+sudo pkg_admin -i wiperf -b v0.12-a1
 ```
 
 Then, proceed with the instructions in the remainder of this document.
