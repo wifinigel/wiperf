@@ -129,19 +129,19 @@ wlan_if: wlan0
 
 ### mgt_if
 
-When performance tests have been completed, the results data needs to be sent to a Splunk reporting server. This parameter configures the interface over which this management traffic needs to be sent. 
+When performance tests have been completed, the results data needs to be sent to a reporting server (e.g. Splunk/InfluxDb). This parameter configures the interface over which this management traffic needs to be sent. 
 
-Getting ths parameter correct for your environment is very important to ensure that test results data makes it back to your Splunk server.
+Getting this parameter correct for your environment is very important to ensure that test results data makes it back to your reporting server.
 
 The available options are:
 
 - wlan0 (the first available WLAN port - usually a USB dongle plugged in to the WLANPi)
 - eth0 (the internal Ethernet port of the WLANPi)
-- zt  (Zerotier (the virtual network service) is installed and used to connect to the Splunk server)
+- zt  (Zerotier (the virtual network service) is installed and used to connect to the reporting server)
 
-The WANPi is configured to assign a higher cost default route to eth0 by default so that all traffic (tests & test results) will choose the default route provided by wlan0. If eth0 is used as the path to return test results to the Splunk server, then a static route is injected in to the WLANPi route table on start-up to ensure correct routing.
+The WANPi is configured to assign a higher cost default route to eth0 by default so that all traffic (tests & test results) will choose the default route provided by wlan0. If eth0 is used as the path to return test results to the reporting server, then a static route is injected in to the WLANPi route table on start-up to ensure correct routing.
 
-If this parameter is not correctly set, then results data may not make it back to the Splunk server.
+If this parameter is not correctly set, then results data may not make it back to the reporting server.
 
 Default setting:
 ```
@@ -267,7 +267,7 @@ influx_database:
 
 This is the hostname or IP address of the Influx (v2.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the WLANPi. 
 
-(Note: If using Zerotier, make sure this is the address of the IP assigned to your Splunk server in the Zerotier dashboard for your network)
+(Note: If using Zerotier, make sure this is the address of the IP assigned to your InfluxDb2 server in the Zerotier dashboard for your network)
 
 Default setting (none):
 ```
@@ -352,7 +352,7 @@ connectivity_lookup: google.com
 
 ### location
 
-This is a string that can be added to assist with report filtering, if required. Its default value in an empty string. It could be be used in an expression within Splunk to filer units based on a location field (for instance)
+This is a string that can be added to assist with report filtering, if required. Its default value in an empty string. It could be be used in an expression within your reports to filter units based on a location field (for instance)
 
 Default setting:
 ```
@@ -477,7 +477,7 @@ Default setting:
 
 ### network_data_file
 
-(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for network tests in remote data repositories (e.g. Splunk. InfluxDB) 
+(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for network tests in remote data repositories (e.g. Splunk, InfluxDB) 
 
 Default setting:
 ```
@@ -538,11 +538,11 @@ no_proxy:
 
 ### speedtest_data_file
 
-(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for Speedtests in Splunk 
+(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for Speedtests in the reporting server (e.g. Splunk/InfluxDB) 
 
 Default setting:
 ```
-speedtest_data_file: wiperf-speedtest-splunk
+speedtest_data_file: wiperf-speedtest
 ```
 [top](#parameter-reference-guide)
 
@@ -623,11 +623,11 @@ ping_count: 10
 
 ### ping_data_file
 
-(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for ping tests in Splunk 
+(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for ping tests in the reporting server (e.g. Splunk.InfuxDB)
 
 Default setting:
 ```
-ping_data_file: wiperf-ping-splunk
+ping_data_file: wiperf-ping
 ```
 [top](#parameter-reference-guide)
 
@@ -681,7 +681,7 @@ duration: 20
 
 Default setting:
 ```
-iperf3_tcp_data_file: wiperf-iperf3-tcp-splunk
+iperf3_tcp_data_file: wiperf-iperf3-tcp
 ```
 [top](#parameter-reference-guide)
 
@@ -745,7 +745,7 @@ bandwidth: 20000000
 
 Default setting:
 ```
-iperf3_udp_data_file: wiperf-iperf3-udp-splunk
+iperf3_udp_data_file: wiperf-iperf3-udp
 ```
 [top](#parameter-reference-guide)
 
@@ -819,7 +819,7 @@ dns_target5:
 
 Default setting:
 ```
-dns_data_file: wiperf-dns-splunk
+dns_data_file: wiperf-dns
 ```
 [top](#parameter-reference-guide)
 
@@ -900,7 +900,7 @@ http_target5:
 
 Default setting:
 ```
-http_data_file: wiperf-http-splunk
+http_data_file: wiperf-http
 ```
 [top](#parameter-reference-guide)
 
@@ -945,6 +945,6 @@ mode: passive
 
 Default setting:
 ```
-dhcp_data_file: wiperf-dhcp-splunk
+dhcp_data_file: wiperf-dhcp
 ```
 [top](#parameter-reference-guide)
