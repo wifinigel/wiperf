@@ -186,6 +186,51 @@ def connectivity_questions(config_vars):
     answers = ask_questions(questions)
     return answers
 
+def central_config_repo_questions(config_vars):
+
+    sub_section_header("Central config repo")
+
+    questions = [
+        {
+            'type': 'input',
+            'name': 'cfg_url',
+            'message': 'Enter GitHub URL of the config file for this probe:',
+            'default': config_vars['cfg_url'],
+            'filter': lambda val: val.strip(),
+        },
+        {
+            'type': 'input',
+            'name': 'cfg_username',
+            'message': 'Enter GitHub username required to access the config file:',
+            'default': config_vars['cfg_username'],
+            'filter': lambda val: val.strip(),
+        },
+        {
+            'type': 'input',
+            'name': 'cfg_password',
+            'message': 'Enter GitHub password required to access the config file:',
+            'default': config_vars['cfg_password'],
+            'filter': lambda val: val.strip(),
+        },
+        {
+            'type': 'input',
+            'name': 'cfg_token',
+            'message': 'Enter GitHub token required to access the config file:',
+            'default': config_vars['cfg_token'],
+            'filter': lambda val: val.strip(),
+        },
+        {
+            'type': 'input',
+            'name': 'cfg_refresh_interval',
+            'message': 'Enter refresh interval (in secs) that indicates how often the cfg file will be pulled:',
+            'default': config_vars['cfg_refresh_interval'],
+            'filter': lambda val: val.strip(),
+        },
+    ]
+
+    answers = ask_questions(questions)
+    return answers
+
 def location_questions(config_vars):
 
     sub_section_header("Wiperf location parameters")
@@ -304,6 +349,9 @@ def general_section(config_vars, config_obj, config_file):
 
     # get location info
     answers.update(location_questions(config_vars))
+
+    # get central config values
+    answers.update(central_config_repo_questions(config_vars))
 
     # set the values in config.ini
     set_section_values(config_obj, answers, config_file)

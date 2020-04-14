@@ -49,19 +49,25 @@ def main():
     #
 
     while True:
+
+        print("\n========================================")
+        print("          **** MAIN MENU **** ")
+        print("========================================\n")
     
         questions = [
             {
                 'type': 'rawlist',
                 'name': 'main_menu',
                 'message': 'Choose section to configure: ',
-                'choices': ["Global Options", "Management pltaform", "Test Interval"]
+                'choices': ["Global Options", "Management pltaform", "Test Interval", ]
             }
         ]
 
         answers = ask_questions(questions)
+
+        print("\n\n")
     
-        if answers['main_menu'] == "1. Global Options":
+        if answers['main_menu'] == "Global Options":
             gen_sect_answers = general_section(config_vars, config_obj, config_file)
             #print("Entered data: ")
             #print( gen_sect_answers)
