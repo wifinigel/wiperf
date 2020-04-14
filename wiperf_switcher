@@ -235,7 +235,7 @@ wiperf_on () {
   ########################
   # 7. Add crontab entry
   ########################
-  line="${TEST_OFFSET}-59/${TEST_INTERVAL} * * * * /usr/bin/env python3 ${HOME_DIR}/wiperf/wi-perf.py > ${HOME_DIR}/wiperf/wiperf.log 2>&1"
+  line="${TEST_OFFSET}-59/${TEST_INTERVAL} * * * * /usr/bin/python3 ${HOME_DIR}/wiperf/wi-perf.py > ${HOME_DIR}/wiperf/wiperf.log 2>&1"
   (crontab -u $USERNAME -l; echo "$line" ) | crontab -u $USERNAME -
   LAST_RESULT=$?
   if [ $LAST_RESULT -ne 0 ]; then
