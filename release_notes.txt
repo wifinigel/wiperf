@@ -1,3 +1,14 @@
+v0.12
+1. Added ethernet support for running tests
+2. Added support for InfluxDB and InfluxDB2
+3. Added support for enhanced debugging
+4. Changed data source names to remove references to splunk
+
+*** Special Notes: ***
+In this release, you will need to:
+    a. re-create your config.ini file, using config.default.ini as a template
+    b. copy the updated splunk dashboards in dashboards/splunk to any exiting splunk instances
+
 v0.11
 1. Added timeouts to http & ping tests
 2. Added optional central config retrieval from github repo
