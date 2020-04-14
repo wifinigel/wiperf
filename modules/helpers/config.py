@@ -69,10 +69,10 @@ def read_local_config(config_file, file_logger):
     if config_vars['exporter_type'] == 'splunk':
         config_vars['data_host'] = config_vars['splunk_host']
         config_vars['data_port'] = config_vars['splunk_port']
-    elif config_vars['exporter_type'] == 'influx':
+    elif config_vars['exporter_type'] == 'influxdb':
         config_vars['data_host'] = config_vars['influx_host']
         config_vars['data_port'] = config_vars['influx_port']
-    elif config_vars['exporter_type'] == 'influx2':
+    elif config_vars['exporter_type'] == 'influxdb2':
         config_vars['data_host'] = config_vars['influx_host2']
         config_vars['data_port'] = config_vars['influx_port2']
     else:
