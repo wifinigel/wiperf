@@ -26,7 +26,7 @@
       <chart>
         <title>Wireless Connection - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest"| timechart avg(phy_rate_mbps) as "PHY Rate" avg(signal_level_dbm) as "Signal Level (dBm)"</query>
+          <query>host=$host_name$ source="wiperf-network"| timechart avg(phy_rate_mbps) as "PHY Rate" avg(signal_level_dbm) as "Signal Level (dBm)"</query>
           <earliest>-4h@h</earliest>
           <latest>now</latest>
         </search>

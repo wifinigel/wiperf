@@ -67,7 +67,7 @@
       <chart>
         <title>Wireless Connection - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest"| timechart avg(phy_rate_mbps) as "PHY Rate" avg(signal_level_dbm) as "Signal Level (dBm)"</query>
+          <query>host=$host_name$ source="wiperf-network"| timechart avg(phy_rate_mbps) as "PHY Rate" avg(signal_level_dbm) as "Signal Level (dBm)"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -86,7 +86,7 @@
       <chart>
         <title>TX Retries - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest"| timechart avg(tx_retries) as "Tx Retries"</query>
+          <query>host=$host_name$ source="wiperf-network"| timechart avg(tx_retries) as "Tx Retries"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -101,7 +101,7 @@
       <chart>
         <title>BSSID - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest"| timechart count(bssid) by bssid</query>
+          <query>host=$host_name$ source="wiperf-network"| timechart count(bssid) by bssid</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -120,7 +120,7 @@
       <chart>
         <title>SSID - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest"| timechart count(ssid) by ssid</query>
+          <query>host=$host_name$ source="wiperf-network"| timechart count(ssid) by ssid</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -141,7 +141,7 @@
       <chart>
         <title>Channel - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-speedtest"| timechart count(freq_ghz) by freq_ghz</query>
+          <query>host=$host_name$ source="wiperf-network"| timechart count(freq_ghz) by freq_ghz</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
