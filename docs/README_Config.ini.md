@@ -33,9 +33,20 @@ We'll take a look at each section of the config file and provide some guidance o
     - [wlan_if](#wlan_if)
     - [mgt_if](#mgt_if)
     - [platform](#platform)
-    - [data_host](#data_host)
-    - [data_port](#data-port)
+    - [exporter_type](#exporter_type)
+    - [splunk_host](#splunk_host)
+    - [splunk_port](#splunk-port)
     - [splunk_token](#splunk_token)
+    - [influx_host](#influx_host)
+    - [influx_port](#influx_port)
+    - [influx_username](#influx_username)
+    - [influx_password](#influx_password)
+    - [influx_database](#influx_database)
+    - [influx2_host](#influx2_host)
+    - [influx2_port](#influx2_port)
+    - [influx2_token](#influx2_token)
+    - [influx2_bucket](#influx2_bucket)
+    - [influx2_org](#influx2_org)
     - [test_interval](#test_interval)
     - [test_offset](#test_offset)
     - [connectivity_lookup](#connectivity_lookup)
@@ -43,7 +54,15 @@ We'll take a look at each section of the config file and provide some guidance o
     - [data_format](#data_format)
     - [data_dir](#data_dir)
     - [data_transport](#data_transport)
+    - [debug](#debug)
+    - [cfg_url](#cfg_url) 
+    - [cfg_username](#cfg_username) 
+    - [cfg_password](#cfg_password) 
+    - [cfg_token](#cfg_token) 
+    - [cfg_refresh_interval](#cfg_refresh_interval)  
     - [unit_bouncer](#unit_bouncer)
+- [Network_Test Section](#network_test-section)
+    - [network_data_file](#network_data_file)
 - [Speetest Section](#speedtest-section)
     - [enabled](#enabled)
     - [server_id](#server_id)
@@ -143,25 +162,39 @@ platform: wlanpi
 ```
 [top](#parameter-reference-guide)
 
-### data host
+### exporter_type
 
-This is the hostname or IP address of the Splunk platform where test result data is sent to. If the hostname of the Splunk server is used,it must be resolvable by the WLANPi. 
+Wiperf supports a number of remote data repositories that can be used as targets to store test result data. The available options are:
+
+- splunk
+- influxdb
+- influxdb2
+
+Default setting:
+```
+exporter_type: splunk
+```
+[top](#parameter-reference-guide)
+
+### splunk_host
+
+This is the hostname or IP address of the Splunk platform where test result data is sent to. If the hostname of the Splunk server is used, it must be resolvable by the WLANPi. 
 
 (Note: If using Zerotier, make sure this is the address of the IP assigned to your Splunk server in the Zerotier dashboard for your network)
 
 Default setting (none):
 ```
-data_host: 
+splunk_host: 
 ```
 [top](#parameter-reference-guide)
 
-### data_port
+### splunk_port
 
 The network port used to send updates to the Splunk server. By default this is 8088, but this may be changed within the Splunk application if an alternative port is required for your environment
 
 Default setting:
 ```
-data_port: 8088
+splunk_port: 8088
 ```
 [top](#parameter-reference-guide)
 
@@ -174,6 +207,112 @@ Here is example token: 84adb9ca-071c-48ad-8aa1-b1903c60310d
 Default setting (none):
 ```
 splunk_token: 
+```
+[top](#parameter-reference-guide)
+
+### influx_host
+
+This is the hostname or IP address of the Influx (v1.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the WLANPi. 
+
+(Note: If using Zerotier, make sure this is the address of the IP assigned to your Splunk server in the Zerotier dashboard for your network)
+
+Default setting (none):
+```
+influx_host: 
+```
+[top](#parameter-reference-guide)
+
+### influx_port
+
+The network port used to send updates to the Influx (v1.x) server. By default this is 8086, but this may be changed within the Influx application if an alternative port is required for your environment
+
+Default setting:
+```
+influx_port: 8086
+```
+
+[top](#parameter-reference-guide)
+
+### influx_username
+
+The username that will be used to access the Influx (v1.x) server DB to post results data. This username must be configured on the InfluxDB server prior to wiper sending results data to the InfluxDB server.
+
+Default setting (None):
+```
+influx_username:
+```
+[top](#parameter-reference-guide)
+
+### influx_password
+
+The password that will be used to access the Influx (v1.x) server DB to post results data. This password must be configured on the InfluxDB server prior to wiper sending results data to the InfluxDB server.
+
+Default setting (None):
+```
+influx_password:
+```
+[top](#parameter-reference-guide)
+
+### influx_database
+
+The name of the database on the Influx (v1.x) server DB where wiperf will post results data. This database must have been created on the InfluxDB server prior to wiper sending results data to the InfluxDB server.
+
+Default setting (None):
+```
+influx_database:
+```
+[top](#parameter-reference-guide)
+
+### influx2_host
+
+This is the hostname or IP address of the Influx (v2.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the WLANPi. 
+
+(Note: If using Zerotier, make sure this is the address of the IP assigned to your Splunk server in the Zerotier dashboard for your network)
+
+Default setting (none):
+```
+influx2_host: 
+```
+[top](#parameter-reference-guide)
+
+### influx2_port
+
+The network port used to send updates to the Influx (v2.x) server. By default this is 443 (this assumes the cloud service is used), but this may be changed within the Influx application if an alternative port is required for your environment
+
+Default setting:
+```
+influx2_port: 443
+```
+
+[top](#parameter-reference-guide)
+
+### influx2_token
+
+InfluxDB2 allows the use of authentication tokens when sending results data to the InfluxDB2 server. This provides an easier authentication methods than using a username and password. Once a token has been created on InfluxDB server, it can be used by wiperf to authenticate the results data sent to the InfluxDB2 server
+
+Default setting (none):
+```
+influx2_token: 
+```
+[top](#parameter-reference-guide)
+
+### influx2_bucket
+
+Data sent to the InfluxDB2 server from wiperf is stored in a "bucket" in the data store. This field is used to configure the bucket to which wiperf should send it's data.
+
+Default setting (none):
+```
+influx2_bucket: 
+```
+[top](#parameter-reference-guide)
+
+### influx2_org
+
+The InfluxDB2 server can be partitioned in to a number of organizations, which contain the buckets where data will be stored. Use this field to configure wiperf to send data to the correct organisation on InfluxDB2.
+
+Default setting (none):
+```
+influx2_org: 
 ```
 [top](#parameter-reference-guide)
 
@@ -254,6 +393,68 @@ data_transport: hec
 ```
 [top](#parameter-reference-guide)
 
+### debug
+
+To enable enhanced logging in the agent.log file, change this setting to "on"
+
+Default setting:
+```
+debug: off
+```
+[top](#parameter-reference-guide)
+
+### cfg_url
+
+If using centralized configuration file retrieval, this field specifies the full URL of the config file on the remote repo. (Note that on GitHub this is the URL of the raw file itself)
+
+If this field is not set, then centralized configuration retrieval is disabled
+
+Default setting (none):
+```
+cfg_url: 
+```
+[top](#parameter-reference-guide)
+
+### cfg_username
+
+If username/pasword credentials are used to retrieve the centralized config, this field specifies the usename to be used.
+
+Default setting (none):
+```
+cfg_username: 
+```
+[top](#parameter-reference-guide)
+
+### cfg_password
+
+If username/pasword credentials are used to retrieve the centralized config, this field specifies the password to be used.
+
+Default setting (none):
+```
+cfg_password: 
+```
+[top](#parameter-reference-guide)
+
+### cfg_token
+
+If a GitHub authentication token is used to retrieve the centralized config, this field specifies the token to be used. (Note: this is used instead of a username/pwd)
+
+Default setting (none):
+```
+cfg_token: 
+```
+[top](#parameter-reference-guide)
+
+### cfg_refresh_interval
+
+This field specifies how often (in seconds) the centralized config file should be retrieved . Recommended value: 900 (i.e. 15 mins)
+
+Default setting (none):
+```
+cfg_refresh_interval: 
+```
+[top](#parameter-reference-guide)
+
 ### unit_bouncer
 
 If you need to bounce (reboot) the unit for some reason on a regular basis, this field can be used to signal to the WLAN Pi each hour at which it must reboot.
@@ -269,6 +470,18 @@ This parameter is commented out by default as it is obviously not something you 
 Default setting:
 ```
 ; unit_bouncer: 00, 06, 12, 18
+```
+[top](#parameter-reference-guide)
+
+## [Network_Test] Section
+
+### network_data_file
+
+(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for network tests in remote data repositories (e.g. Splunk. InfluxDB) 
+
+Default setting:
+```
+network_data_file: wiperf-network
 ```
 [top](#parameter-reference-guide)
 
