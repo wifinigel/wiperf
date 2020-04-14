@@ -5,5 +5,3 @@ bundle/
 config.ini
 config.log
 *.pyc
-modules/config/*
-configure.py
