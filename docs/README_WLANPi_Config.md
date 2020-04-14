@@ -4,6 +4,7 @@
     - [Hostname](#hostname)
     - [Configuration File (config.ini)](#configuration-file-configini)
     - [Wireless Client Configuration (wpa_supplicant.conf)](#wireless-client-configuration-wpa_supplicantconf)
+    - [Ethernet Client Configuration](#ethernet-client-configuration)
 - [Testing](#testing)
 - [Updating](#updating)
 - [Known Issues](#known-issues)
@@ -32,7 +33,7 @@ The Wiperf probe is activated via the front panel menu system (FPMS) of the WLAN
 
 ## Hostname
 
-It is strongly advised that you configure the hostname of your WLAN Pi before following the steps detailed below. The data sent to and stored in Splunk will be associated with the WLAN Pi hostname that is used when the data is forwarded. If you decide to subsequently change the hostname, then historical data from the unit will not be associated with the data sent with the new hostname.
+It is strongly advised that you configure the hostname of your WLAN Pi before following the steps detailed below. The data sent to and stored in your reporting database (e.g. Splunk, Influx etc.) will be associated with the WLAN Pi hostname that is used when the data is forwarded. If you decide to subsequently change the hostname, then historical data from the unit will not be associated with the data sent with the new hostname.
 
 If you are running multiple WLAN Pi units, then you MUST change their hostnames, as you will not be able to differentiate their data within Splunk. All data, from all units, will be shown under the default 'wlanpi' hostname.
 
@@ -54,30 +55,86 @@ Connect to the WLAN Pi, create a copy of the config template file and edit the n
         nano ./config.ini
 ```
 
-By default, the configuration file is set to run all tests. However, there is a minimum configuration that must be applied for Wiperf mode to run out-of-the-box. Here are the minimum configuration parameters you need to configure (just to get you going...):
+By default, the configuration file is set to run all tests. However, there is a minimum configuration that must be applied for Wiperf mode to run out-of-the-box. The minimum configuration parameters you need to configure (just to get you going...) are outlined in the subsections below. In summary you need to:
+
+* Configure the Wiperf global mode of operation (wireless or Ethernet) and the interface parameters that determine how the WLAN Pi is connected
+* Configure the management platform you'll be sending data to
+* Configure the tests you'd like to run
+
+### Interface Parameters
+
+As the WLAN Pi can now test over the ethernet or WLAN interfaces, we need to tell the software which mode is in use and which interfaces the test traffic and results data will be sent over. (Note that "ethernet" mode with mgt traffic sent over the wireless interface is not supported)
 
 ```
 [General]
-; interface name over which mgt traffic is sent (i.e. how we get to Splunk) - options: wlan0, eth0, zt
+; global test mode: wireless or ethernet
+; 
+; wireless mode: 
+;    - test traffic runs over wireless interface
+;    - management traffic (i.e. result data) sent over interface specified in mgt_if parameter
+; ethernet mode:
+;    - all test and management traffic sent over ethernet port (mgt_if parameter not used/ignored)
+;
+probe_mode: wireless
+
+; ------------- ethernet mode parameters ------------
+; eth interface name set this as per the output of an ifconfig command (usually eth0)
+; (no management interface required, as tests & management traffic over same i/f)
+eth_if: eth0
+; ---------------------------------------------------
+
+; ------------- wireless mode parameters ------------
+; wlan interface name set this as per the output of an iwconfig command (usually wlan0)
+wlan_if: wlan0
+; interface name over which mgt traffic is sent (i.e. how we get to our management
+; server) - options: wlan0, eth0, zt
 mgt_if: wlan0
+; ---------------------------------------------------
+```
+### Database Parameters
 
-; Splunk host IP/name - set this to the address of your Splunk server
-data_host: 192.168.0.99
+Wiperf can send results data to Splunk, InfluxDB (v1.x) and InfluxDB2 data collectors through an exporter module for each collector type. The relevant authentication parameters need to be set for the collector in-use in the following sections (note these need to be configured on the data collector platform also before sending results data):
 
+```
+[General]
+; --------- Common Mgt Platform Params ------- 
+; set the data exporter type - current options: splunk, influxdb, influxdb2
+exporter_type: splunk
+; --------------------------------------------
+
+; -------------- Splunk Config ---------------
+; IP address or hostname of Splunk host
+splunk_host: 192.168.0.99
+; Splunk collector port (8088 by default)
+splunk_port: 8088
 ; Splunk token to access Splunk server created by Splunk (example token: 84adb9ca-071c-48ad-8aa1-b1903c60310d)
-; (you need to have your Splunk server up & configure to get this)
-splunk_token: 84adb9ca-071c-48ad-8aa1-b1903c60310d
+splunk_token: <token_here>
+;---------------------------------------------
 
-[Iperf3_tcp_test]
-; IP address of iperf3 server - set this to your iperf3 server (if you have one)
-server_hostname: 192.168.0.14
+; -------------- InFlux1 Config ---------------
+; IP address or hostname of InfluxDB host
+influx_host:
+; InfluxDb collector port (8086 by default)
+influx_port: 8086
+influx_username: 
+influx_password: 
+influx_database:
+;---------------------------------------------
 
-[Iperf3_udp_test]
-; IP address of iperf3 server - set this to your iperf3 server (if you have one)
-server_hostname: 192.168.0.14
+; -------------- InFlux2 Config ---------------
+; IP address or hostname of InfluxDB2 host
+influx2_host:
+; InfluxDB2 collector port (443 by default)
+influx2_port: 443
+influx2_token:
+influx2_bucket: 
+influx2_org:
+;---------------------------------------------
 ```
 
-If there are some tests you'd like to disable (e.g. if you don't have an iperf3 server set up), then you'll need to open up the config.ini file and look through each section for the "enabled" parameter for that test and set it to "no". For example, to disable the iperf tcp test: 
+### Tests
+
+Note that all network tests are enabled by default. If there are some tests you'd like to disable (e.g. if you don't have an iperf3 server set up), then you'll need to open up the config.ini file and look through each section for the "enabled" parameter for that test and set it to "no". For example, to disable the iperf tcp test: 
 
 ```
 [Iperf3_tcp_test]
@@ -91,7 +148,7 @@ For a full description of the configuration file parameters, please review the f
 
 ## Wireless Client Configuration (wpa_supplicant.conf)
 
-When the WLAN Pi is flipped in to Wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in Wiperf mode) to allow the WLAN Pi to join a WLAN.
+If Wiperf is running in wireless mode, then WLAN Pi is flipped in to Wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in Wiperf mode) to allow the WLAN Pi to join a WLAN.
 
 Edit the following file with the configuration and credentials that will be used by the WLAN Pi to join the SSID under test once it is switched in to Wiperf mode (make edits logged in as the wlanpi user):
 
@@ -99,6 +156,12 @@ Edit the following file with the configuration and credentials that will be used
         cd /home/wlanpi/wiperf/conf/etc/wpa_supplicant
         nano ./wpa_supplicant.conf
 ```
+
+[top](#contents)
+
+## Ethernet Client Configuration
+
+Note that no specific configuration is required for the Ethernet interface when running Wiperf in Ethernet mode. As long as the Ethernet port is connected to a switch port tht supplies an IP address via DHCP, then you're good to go. 
 
 [top](#contents)
 
@@ -117,7 +180,7 @@ If no errors are observed on the FPMS during flip-over, inspect the following fi
 ```
 Note that by default the tests are run every 5 mins unless the interval has been changed in the `config.ini` file. Wait at least this interval before determining that there is an issue - the test cycle will NOT begin immediately upon entering Wiperf mode.
 
-Check your instance of Splunk and verify that data is being received.
+Check your database platform and verify that data is being received.
 
 [top](#contents)
 
