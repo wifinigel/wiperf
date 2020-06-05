@@ -23,6 +23,7 @@ def influxexporter(localhost, host, port, username, password, database, dict_dat
     if not influx_modules:
         file_logger.error(" ********* MAJOR ERROR ********** ")
         file_logger.error("One or more Influx Python modules are not installed on this system. Influx export failed, exiting")
+        file_logger.error("(Execute the following command from the command line of the WLAN Pi: 'sudo pip3 install influxdb')")
         file_logger.error(import_err)
         sys.exit()
 
