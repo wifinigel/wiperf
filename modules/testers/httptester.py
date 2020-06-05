@@ -41,6 +41,10 @@ class HttpTester(object):
             response = requests.get(http_target, verify=False, timeout=5)
             self.http_status_code = response.status_code
 
+            # TODO: add server response time, which is just time to receive
+            # http headers, not full page load
+            # server_response_time = response.elapsed.microseconds
+
             # If the response was successful, no Exception will be raised
             response.raise_for_status()
         except HTTPError as http_err:
