@@ -10,6 +10,8 @@ import json
 import subprocess
 import time
 
+from modules.testers.pingtester import PingTester
+
 class IperfTester(object):
     """
     A class to perform a tcp & udp iperf3 tests
@@ -101,6 +103,33 @@ class IperfTester(object):
 
         return result
 
+    def calculate_mos(self, rtt_avg_ms, jitter_ms, lost_percent):
+        """
+        Calculation of approximate MOS score 
+        (This was kindly contributed by Mario Gingras, based on this 
+        article: https://netbeez.net/blog/impact-of-packet-loss-jitter-and-latency-on-voip/)
+
+        Returns:
+            MOS value -- float (1.0 to 4.5)
+        """
+        #effective_latency=(rtt_avg_ms/2*jitter_ms)+40
+        effective_latency=(rtt_avg_ms/2) + (2*jitter_ms) + 10.0
+
+        if effective_latency < 160:
+            R = 93.2 - (effective_latency/40)
+        else:
+            R = 93.2 - ((effective_latency-120)/10)
+
+        R = R - 2.5 * lost_percent
+
+        if R < 0 :
+            mos_score=1.0
+        elif R <100:
+            mos_score = 1 + 0.035*R + 0.000007*R*(R-60)*(100-R)
+        else:
+            mos_score=4.5
+        
+        return mos_score
 
     def udp_iperf_client_test(self, server_hostname, duration=10, port=5201, bandwidth=10000000, timeout=2000, debug=False):
 
@@ -214,6 +243,19 @@ class IperfTester(object):
 
         if check_route_to_dest(server_hostname, self.file_logger) == config_vars['wlan_if']:
 
+            # Run a ping to the iperf server to get an rtt to feed in to MOS score calc
+            ping_obj = PingTester(self.file_logger, platform=self.platform)
+            ping_obj.ping_host(server_hostname, 1) # one ping to seed arp cache
+            
+            ping_result = ping_obj.ping_host(server_hostname, 5)
+
+            # ping results
+            if ping_result:
+                rtt_avg_ms = round(float(ping_result['rtt_avg']), 2)
+            else:
+                rtt_avg_ms=0
+
+            # Run the iperf test
             result = self.udp_iperf_client_test(server_hostname, duration=duration, port=port, bandwidth=bandwidth, debug=False)
 
             if not result == False:
@@ -230,6 +272,7 @@ class IperfTester(object):
                 results_dict['packets'] = result['packets']
                 results_dict['lost_packets'] = result['lost_packets']
                 results_dict['lost_percent'] = round(result['lost_percent'], 1)
+                results_dict['mos_score']=self.calculate_mos(rtt_avg_ms,round(result['jitter_ms'], 1),round(result['lost_percent'], 1))
 
                 # workaround for crazy jitter figures sometimes seen
                 if results_dict['jitter_ms'] > 2000:
