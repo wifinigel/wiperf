@@ -11,6 +11,15 @@ SCRIPT_PATH=$(dirname "$(realpath -s "$0")")
 
 echo "(ok) Starting wiperf install process (see $LOG_FILE for details)" | tee $LOG_FILE 
 
+echo "(ok) Checking we have git available..."
+`git --version`  >> $LOG_FILE 2>&1
+if [ -z "$?" ]; then
+  echo "(fail) Unable to proceed as git not installed...please install with command 'apt-get install git' " | tee -a $LOG_FILE
+  exit 1
+else
+  echo "(ok) Git looks OK"  | tee -a $LOG_FILE
+fi
+
 # check we have been dropped in to /usr/share/wiperf before we start
 SCRIPT_DIR=`echo  $SCRIPT_PATH || grep '$INSTALL_DIR'` || true
 if  [ -z "$SCRIPT_DIR" ]; then
@@ -37,7 +46,7 @@ echo "(ok) Cloning the Splunk Event collector class..." | tee -a $LOG_FILE
 # take out existing dir (if there)
 rm -rf /tmp/Splunk-Class-httpevent
 
-git -C /tmp clone http://github.com/georgestarcher/Splunk-Class-httpevent.git >> $LOG_FILE 2>&1
+git -C /tmp clone https://github.com/georgestarcher/Splunk-Class-httpevent.git >> $LOG_FILE 2>&1
 
 if [ -z "$?" ]; then
   echo "(fail) Clone of Splunk Python module failed." | tee -a $LOG_FILE
