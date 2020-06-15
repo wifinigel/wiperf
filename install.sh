@@ -57,7 +57,7 @@ fi
 
 # Install the module
 echo "(ok) Installing the Splunk Event collector class (please wait)..." | tee -a $LOG_FILE
-`pip3 install /tmp/Splunk-Class-httpevent` >> $LOG_FILE 2>&1
+pip3 install /tmp/Splunk-Class-httpevent >> $LOG_FILE 2>&1
 if [ -z "$?" ]; then
   echo "(fail) Install of Splunk Python module failed." | tee -a $LOG_FILE
   exit 1
