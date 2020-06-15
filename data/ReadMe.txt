@@ -1,1 +1,0 @@
-A placeholder for the data directory. All CSV files are dumped in this directory.

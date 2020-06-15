@@ -1,11 +1,6 @@
-data/*.csv
-data/*.json
-workspace/
 bundle/
 config.ini
-config.log
 *.pyc
-.flask/*
 dist/*
 wiperf.egg-info/*
 build/*
