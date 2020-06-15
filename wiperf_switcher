@@ -22,12 +22,9 @@ DESC="Script to switch wiperf mode on/off"
 VERSION=0.08
 STATUS_FILE="/etc/wlanpi-state"
 
-CFG_DIR="/etc/wiperf"
 HOME_DIR="/usr/share/wiperf"
-USERNAME="wlanpi"
-
-
-CFG_FILE="${CFG_DIR}/wiperf/config.ini"
+USERNAME="root"
+CFG_FILE="/etc/wiperf/config.ini"
 LOG_FILE="/var/log/wiperf_switcher.log"
 ROUTE_FILE="/etc/network/if-up.d/route"
 
@@ -39,13 +36,13 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Figure out platform type from config file - not really needed at present
-echo "Checking platform type configured..." | tee $LOG_FILE
-PLATFORM=`cat ${CFG_DIR}/config.ini | grep platform\: | awk -F'[:][[:space:]]*' '{print $2}'` || true
+echo "Checking platform type configured..." > $LOG_FILE
+PLATFORM=`cat ${CFG_FILE} | grep platform\: | awk -F'[: ]*' '{print $2}'` || true
 if  [ -z "$PLATFORM" ]; then
   echo "No platform type found in config file" | tee -a $LOG_FILE 
-  exit 0
+  exit 1
 else
-  echo "Selected platform type in cfg file: $PLATFORM" | tee -a $LOG_FILE 
+  echo "Selected platform type in cfg file: $PLATFORM" >> $LOG_FILE 
 fi
 
 ###############################################################################
@@ -92,7 +89,7 @@ wiperf_on () {
   ############################################
   # 1. Get the probe mode (ethernet/wireless)
   ############################################
-  MODE=`cat ${CFG_DIR}/config.ini | grep probe_mode\: | awk -F'[:][[:space:]]*' '{print $2}'` || true
+  MODE=`cat ${CFG_FILE} | grep 'probe_mode:' | awk -F'[: ]*' '{print $2}'` || true
   if  [ -z "$MODE" ]; then
     echo "No mode found in config file (exiting)" | tee -a $LOG_FILE 
     exit 1
@@ -125,7 +122,7 @@ wiperf_on () {
   #######################################
   # 3. Get test interval & offset value
   #######################################
-  TEST_INTERVAL=`cat ${CFG_DIR}/config.ini | grep test_interval | awk -F'[:][[:space:]]*' '{print $2}'` || true
+  TEST_INTERVAL=`cat ${CFG_FILE} | grep 'test_interval:' | awk -F'[: ]*' '{print $2}'` || true
   if  [ -z "TEST_INTERVAL" ]; then
     echo "No test interval in config file (exiting)" | tee -a $LOG_FILE 
     exit 1
@@ -133,7 +130,7 @@ wiperf_on () {
   echo "Test interval from config file: ${TEST_INTERVAL}" | tee -a $LOG_FILE
 
   # Get test offset value
-  TEST_OFFSET=`cat ${CFG_DIR}/config.ini | grep test_offset | awk -F'[:][[:space:]]*' '{print $2}'` || true
+  TEST_OFFSET=`cat ${CFG_FILE} | grep 'test_offset:' | awk -F'[: ]*' '{print $2}'` || true
   if  [ -z "TEST_OFFSET" ]; then
     echo "No test offset in config file (exiting)" | tee -a $LOG_FILE 
     exit 1
@@ -143,7 +140,7 @@ wiperf_on () {
   #######################################################
   # 4. Figure out the interface we send mgt traffic over
   #######################################################
-  MGT_IF=`cat ${CFG_DIR}/config.ini | grep mgt_if | awk -F'[:][[:space:]]*' '{print $2}'` || true
+  MGT_IF=`cat ${CFG_FILE} | grep 'mgt_if:' | awk -F'[: ]*' '{print $2}'` || true
   # check if we have a mgt interface
   if [ -z "$MGT_IF" ]; then
     echo "No mgt interface config (exiting)" | tee -a $LOG_FILE 
@@ -154,7 +151,7 @@ wiperf_on () {
   ####################################################################
   # 5. Figure out the mgt destination (IP for Splunk, URL for Influx)
   ####################################################################
-  EXPORTER_TYPE=`cat ${CFG_DIR}/config.ini | grep exporter_type | awk -F'[:][[:space:]]*' '{print $2}'` || true
+  EXPORTER_TYPE=`cat ${CFG_FILE} | grep 'exporter_type:' | awk -F'[: ]*' '{print $2}'` || true
   # check if we have a exporter type
   if [ -z "$EXPORTER_TYPE" ]
   then
@@ -165,16 +162,16 @@ wiperf_on () {
 
   if [ "$EXPORTER_TYPE" == "splunk" ]
   then
-    MGT_IP=`cat ${CFG_DIR}/config.ini | grep splunk_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
-    MGT_PORT=`cat ${CFG_DIR}/config.ini | grep splunk_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
+    MGT_IP=`cat ${CFG_FILE} | grep 'splunk_host:' | awk -F'[: ]*' '{print $2}'` || true
+    MGT_PORT=`cat ${CFG_FILE} | grep 'splunk_port:' | awk -F'[: ]*' '{print $2}'` || true
   elif [ "$EXPORTER_TYPE" == "influxdb" ]
   then
-    MGT_IP=`cat ${CFG_DIR}/config.ini | grep influx_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
-    MGT_PORT=`cat ${CFG_DIR}/config.ini | grep influx_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
+    MGT_IP=`cat ${CFG_FILE} | grep 'influx_host:' | awk -F'[: ]*' '{print $2}'` || true
+    MGT_PORT=`cat ${CFG_FILE} | grep 'influx_port:' | awk -F'[: ]*' '{print $2}'` || true
   elif [ "$EXPORTER_TYPE" == "influxdb2" ]
   then
-    MGT_IP=`cat ${CFG_DIR}/config.ini | grep influx2_host | awk -F'[:][[:space:]]*' '{print $2}'` || true
-    MGT_PORT=`cat ${CFG_DIR}/config.ini | grep influx2_port | awk -F'[:][[:space:]]*' '{print $2}'` || true
+    MGT_IP=`cat ${CFG_FILE} | grep 'influx2_host:' | awk -F'[: ]*' '{print $2}'` || true
+    MGT_PORT=`cat ${CFG_FILE} | grep 'influx2_port:' | awk -F'[: ]*' '{print $2}'` || true
   else
     echo "Unknown exporter type detected: ${EXPORTER_TYPE} (exiting)" | tee -a $LOG_FILE 
     exit 1
@@ -340,7 +337,7 @@ wiperf_off () {
   ############################################
   # 1. Get the probe mode (ethernet/wireless)
   ############################################
-  MODE=`cat ${CFG_DIR}/config.ini | grep probe_mode\: | awk -F'[:][[:space:]]*' '{print $2}'` || true
+  MODE=`cat ${CFG_FILE} | grep 'probe_mode:' | awk -F'[: ]*' '{print $2}'` || true
   if  [ -z "$MODE" ]; then
     echo "No mode found in config file (exiting)" | tee -a $LOG_FILE 
     exit 1
@@ -365,7 +362,7 @@ wiperf_off () {
   # 3. Figure out the interface we send mgt traffic over 
   #    and remove static route if eth0 and mode is wireless
   ##########################################################
-  MGT_IF=`cat ${CFG_DIR}/config.ini | grep mgt_if | awk -F'[:][[:space:]]*' '{print $2}'` || true
+  MGT_IF=`cat ${CFG_FILE} | grep 'mgt_if:' | awk -F'[: ]*' '{print $2}'` || true
   # check if we have a mgt interface
   if [ -z "$MGT_IF" ]; then
     echo "No mgt interface in config file (exiting)" | tee $LOG_FILE 
@@ -441,9 +438,9 @@ status () {
     echo "wiperf is currently enabled"
     exit 0
   fi
-
+}
 version () {
-    N=/etc/wlanpiwiperf/$NAME
+    N=$NAME
         echo "Version: $N $VERSION" >&2
         exit 1
 
