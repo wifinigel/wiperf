@@ -1,0 +1,26 @@
+# wiperf interface config file
+
+# Wired adapter #1
+allow-hotplug eth0
+iface eth0 inet dhcp
+metric 500
+# Note that the metric stament ensures that the wlan0
+# interface is the default route for all traffic
+
+
+# Wireless adapter #1
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+#wireless-mode Monitor
+
+# Local loopback
+auto lo
+iface lo inet loopback
+
+# USB Ethernet (Static)
+allow-hotplug usb0
+iface usb0 inet static
+address 192.168.42.1
+netmask 255.255.255.224
+

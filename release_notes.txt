@@ -1,23 +1,5 @@
-v0.12
-1. Added ethernet support for running tests
-2. Added support for InfluxDB and InfluxDB2
-3. Added support for enhanced debugging
-4. Changed data source names to remove references to splunk
-5. Added approximate MOS score calculation for udp test, kindly contributed by Mario Gingras
+v0.0.0
 
-*** Special Notes: ***
-In this release, you will need to:
-    a. re-create your config.ini file, using config.default.ini as a template
-    b. copy the updated splunk dashboards in dashboards/splunk to any exiting splunk instances
-    c. You must import the influxdb python module with: sudo pip3 install influxdb
+1. Initial commit
+2. Split out python module from rest of shell script utilities & support files/docs
 
-v0.11
-1. Added timeouts to http & ping tests
-2. Added optional central config retrieval from github repo
-3. Added iperf timeouts to improve perf when targets down
-
-V0.10
-Added 'connectivity_lookup' parameter to config.default.ini to allow custom DNS lookup when wiperf assesses initial connectivity health.
-
-V0.09
-Added ufw rules to allow http port on wlan & eth

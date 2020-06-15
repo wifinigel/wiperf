@@ -1,9 +1,5 @@
-bundle/
+_workspace/
 config.ini
 *.pyc
-dist/*
-wiperf.egg-info/*
-build/*
-.vscode
-
+dashboards/*.zip
 
