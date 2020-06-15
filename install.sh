@@ -11,6 +11,14 @@ SCRIPT_PATH=$(dirname "$(realpath -s "$0")")
 
 echo "(ok) Starting wiperf install process (see $LOG_FILE for details)" | tee $LOG_FILE 
 
+# check we can get to pypi
+curl -s --head  -m 2 --connect-timeout 2 --request GET https://pypi.org | head -n 1 | grep '200'
+if [ "$?" != '0' ]; then
+  echo "Unable to reach Internet - check connection (exiting)" | tee -a $LOG_FILE 
+  exit 1
+fi
+
+# check git is present
 echo "(ok) Checking we have git available..."
 `git --version`  >> $LOG_FILE 2>&1
 if [ -z "$?" ]; then
