@@ -290,6 +290,9 @@ def main():
     if config_vars['unit_bouncer']:
         bouncer_obj.check_for_bounce()
 
+def run():
+    main()
+
 
 ###############################################################################
 # End main
