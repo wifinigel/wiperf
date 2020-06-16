@@ -268,17 +268,20 @@ wiperf_on () {
   # 9. Backup existing config files
   ##################################
   echo "Backing up config files..." | tee -a $LOG_FILE
-  cp /etc/network/interfaces /etc/network/interfaces.probe
-  cp /etc/sysctl.conf /etc/sysctl.conf.probe
-  cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.probe
+  INTERFACES="/etc/network/interfaces"
+  if [ -f "$INTERFACES" ]; then
+    mv $INTERFACES ${INTERFACES}.probe
+  fi
 
-  ###################################
-  # 10. Remove existing config files
-  ###################################
-  echo "Removing existing config files..." | tee -a $LOG_FILE
-  rm /etc/network/interfaces
-  rm /etc/sysctl.conf
-  rm /etc/wpa_supplicant/wpa_supplicant.conf
+  SYSCTL="/etc/sysctl.conf"
+  if [ -f "$SYSCTL" ]; then
+    mv $SYSCTL ${SYSCTL}.probe
+  fi
+
+  WPA="/etc/wpa_supplicant/wpa_supplicant.conf"
+  if [ -f "$WPA" ]; then
+    mv $WPA ${WPA}.probe
+  fi
 
   ##################################
   # 11. Link to wiperf config files
@@ -410,10 +413,20 @@ wiperf_off () {
   # 6. Restore original config files
   ###################################
   echo "Restoring original config files" | tee $LOG_FILE
-  cp /etc/network/interfaces.probe /etc/network/interfaces 
-  cp /etc/sysctl.conf.probe /etc/sysctl.conf
-  cp /etc/wpa_supplicant/wpa_supplicant.conf.probe /etc/wpa_supplicant/wpa_supplicant.conf
+  INTERFACES="/etc/network/interfaces"
+  if [ -f "${INTERFACES}.probe" ]; then
+    mv ${INTERFACES}.probe $INTERFACES
+  fi
 
+  SYSCTL="/etc/sysctl.conf"
+  if [ -f "${SYSCTL}.probe" ]; then
+    mv ${SYSCTL}.probe $SYSCTL
+  fi
+
+  WPA="/etc/wpa_supplicant/wpa_supplicant.conf"
+  if [ -f "${WPA}.probe" ]; then
+    mv  ${WPA}.probe $WPA
+  fi
 
   ###################################
   # 7. Remove FPMS status file
