@@ -1,12 +1,13 @@
+#!/bin/bash
 # Installer for wiperf on WLAN Pi & RPi
 
 # Installation script log file
 LOG_FILE="/var/log/wiperf_install.log"
 
 # Check which platform we're installing for
-read -p 'Enter your platform type (wlanpi/rpi): ' PLATFORM
+PLATFORM=$1
 if ! [[ $PLATFORM =~ ^(wlanpi|rpi)$ ]]; then
-  echo "Unknown platform (exiting)"
+  echo "Unknown (or no) platform supplied (exiting)"
   exit 1
 fi
 
