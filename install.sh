@@ -1,4 +1,3 @@
-#!/bin/bash
 # Installer for wiperf on WLAN Pi & RPi
 
 # Installation script log file
