@@ -2,4 +2,5 @@ _workspace/
 config.ini
 *.pyc
 dashboards/*.zip
+dashboards/grafana
 
