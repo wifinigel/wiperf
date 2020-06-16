@@ -10,9 +10,9 @@ iface wlan0 inet manual
 auto lo
 iface lo inet loopback
 
-# USB Ethernet (Static)
+# USB interface
 allow-hotplug usb0
 iface usb0 inet static
-address 192.168.42.1
+address 169.254.42.1
 netmask 255.255.255.224
 

@@ -4,7 +4,7 @@
 allow-hotplug eth0
 iface eth0 inet dhcp
 metric 500
-# Note that the metric stament ensures that the wlan0
+# Note that the metric statement ensures that the wlan0
 # interface is the default route for all traffic
 
 
@@ -18,9 +18,9 @@ wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 auto lo
 iface lo inet loopback
 
-# USB Ethernet (Static)
+# USB interface
 allow-hotplug usb0
 iface usb0 inet static
-address 192.168.42.1
+address 169.254.42.1
 netmask 255.255.255.224
 
