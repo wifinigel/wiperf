@@ -113,6 +113,18 @@ install () {
   fi
 
   echo "(ok) Install complete." | tee -a $LOG_FILE
+
+  echo ""
+  echo "================================================="
+  echo "Don'tforget to modify the following files before"
+  echo "switching in to wiperf mode:"
+  echo ""
+  echo " 1. Edit $CFG_DIR/wpa_supplicant/wpa_supplicant.conf" 
+  echo "    (add WLAN info)"
+  echo " 2. Copy $CFG_DIR/config.default.ini to $CFG_DIR/config.ini"
+  echo " 3. Edit $CFG_DIR/config.ini for your env"
+  echo "================================================="
+  echo ""
 }
 
 uninstall () {
@@ -120,7 +132,9 @@ uninstall () {
 
   # remove python modules
   echo "(ok) Removing Python modules" | tee -a $LOG_FILE
+  echo "(ok) ...splunk_http_event_collector" | tee -a $LOG_FILE
   pip3 uninstall -y splunk_http_event_collector  >> $LOG_FILE 2>&1
+  echo "(ok) ...wiperf_poller" | tee -a $LOG_FILE
   pip3 uninstall -y wiperf_poller  >> $LOG_FILE 2>&1
 
   # remove directories
@@ -135,18 +149,6 @@ uninstall () {
   echo "(ok) Removing log files" | tee -a $LOG_FILE
   rm -f /var/log/wiperf*.log
   echo "(ok) Done"
-
-  echo ""
-  echo "================================================="
-  echo "Don'tforget to modify the following files before"
-  echo "switching in to wiperf mode:"
-  echo ""
-  echo " 1. Edit $CFG_DIR/wpa_supplicant/wpa_supplicant.conf" 
-  echo "    (add WLAN info)"
-  echo " 2. Copy $CFG_DIR/config.default.ini to $CFG_DIR/config.ini"
-  echo " 3. Edit $CFG_DIR/config.ini for your env"
-  echo "================================================="
-  echo ""
 }
 
 case "$1" in
