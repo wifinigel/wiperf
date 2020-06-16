@@ -24,7 +24,8 @@ STATUS_FILE="/etc/wlanpi-state"
 
 HOME_DIR="/usr/share/wiperf"
 USERNAME="root"
-CFG_FILE="/etc/wiperf/config.ini"
+CFG_DIR="/etc/wiperf"
+CFG_FILE="$CFG_DIR/config.ini"
 LOG_FILE="/var/log/wiperf_switcher.log"
 ROUTE_FILE="/etc/network/if-up.d/route"
 
@@ -284,13 +285,13 @@ wiperf_on () {
   ##################################
   echo "Linking temp config files..." | tee -a $LOG_FILE
   if [ "$MODE" == "wireless" ]; then
-    ln -s ${HOME_DIR}/conf/etc/network/interfaces.wlan /etc/network/interfaces  
+    ln -s ${CFG_DIR}/conf/etc/network/interfaces.wlan /etc/network/interfaces  
   else
-    ln -s ${HOME_DIR}/conf/etc/network/interfaces.eth /etc/network/interfaces
+    ln -s ${CFG_DIR}/conf/etc/network/interfaces.eth /etc/network/interfaces
   fi
 
-  ln -s ${HOME_DIR}/conf/etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
-  ln -s ${HOME_DIR}/conf/etc/sysctl.conf /etc/sysctl.conf
+  ln -s ${CFG_DIR}/conf/etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
+  ln -s ${CFG_DIR}/conf/etc/sysctl.conf /etc/sysctl.conf
 
   ############################################################
   # 12. Create status file to display status messages on FPMS
