@@ -5,8 +5,10 @@
 LOG_FILE="/var/log/wiperf_install.log"
 
 # install dir
-INSTALL_DIR="/usr/share/wiperf"
+CLONE_DIR="/usr/share"
+INSTALL_DIR="$CLONE_DIR/wiperf"
 CFG_DIR="/etc/wiperf"
+
 GITHUB_REPO="https://github.com/wifinigel/wiperf.git"
 GITHUB_BRANCH='conf_pull'
 
@@ -68,7 +70,7 @@ install () {
 
   # Pull in the wiperf github code
   echo "(ok) Cloning GitHub wiperf repo (please wait)..." | tee -a $LOG_FILE
-  git -C $INSTALL_DIR clone $GITHUB_REPO -b $GITHUB_BRANCH >> $LOG_FILE 2>&1
+  git -C $CLONE_DIR clone $GITHUB_REPO -b $GITHUB_BRANCH >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
     echo "(fail) Clone of GitHub repo failed." | tee -a $LOG_FILE
     exit 1
