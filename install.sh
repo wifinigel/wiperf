@@ -7,13 +7,15 @@ LOG_FILE="/var/log/wiperf_install.log"
 # install dir
 INSTALL_DIR="/usr/share/wiperf"
 CFG_DIR="/etc/wiperf"
+GITHUB_REPO="https://github.com/wifinigel/wiperf.git"
+GITHUB_BRANCH='conf_pull'
 
 install () {
 
   echo "(ok) Starting wiperf install process (see $LOG_FILE for details)" | tee $LOG_FILE 
 
   # check we can get to pypi
-  curl -s --head  -m 2 --connect-timeout 2 --request GET https://pypi.org | head -n 1 | grep '200'
+  curl -s --head  -m 2 --connect-timeout 2 --request GET https://pypi.org | head -n 1 | grep '200'  >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
     echo "Unable to reach Internet - check connection (exiting)" | tee -a $LOG_FILE 
     exit 1
@@ -64,6 +66,15 @@ install () {
     echo "(ok) Splunk Python module installed OK." | tee -a $LOG_FILE
   fi
 
+  # Pull in the wiperf github code
+  echo "(ok) Cloning GitHub wiperf repo (please wait)..." | tee -a $LOG_FILE
+  git -C $INSTALL_DIR clone $GITHUB_REPO -b $GITHUB_BRANCH >> $LOG_FILE 2>&1
+  if [ "$?" != '0' ]; then
+    echo "(fail) Clone of GitHub repo failed." | tee -a $LOG_FILE
+    exit 1
+  else
+    echo "(ok) Cloned OK." | tee -a $LOG_FILE
+  fi
 
   # copy config.ini.default to $CFG_DIR
   echo "(ok) Copying config.default.ini to $CFG_DIR..." | tee -a $LOG_FILE
