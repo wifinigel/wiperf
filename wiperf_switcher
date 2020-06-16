@@ -66,10 +66,9 @@ fi
 # 8.  Add fw rules to harden eth0 & wlan0
 # 9.  Backup various existing files to allow restoration when wiperf
 #     deactivated
-# 10.  Remove a number of existing files that need to be replaced
-# 11. Create links from deleted file locations to wiperf config files
-# 12. Create status file to indicate wiperf is active
-# 13. Reboot the wlanpi to ensure clean activation
+# 10. Move a number of existing files that need to be replaced
+# 11. Create status file to indicate wiperf is active
+# 12. Reboot the wlanpi to ensure clean activation
 #
 # Note: /etc/sysctl.conf included to ensure forwarding
 #    cannot be accidentally be enabled in probe mode if
@@ -281,23 +280,8 @@ wiperf_on () {
     fi
   done
 
-  #INTERFACES="/etc/network/interfaces"
-  #if [ -f "$INTERFACES" ]; then
-  #  mv $INTERFACES ${INTERFACES}.probe
-  #fi
-
-  #SYSCTL="/etc/sysctl.conf"
-  #if [ -f "$SYSCTL" ]; then
-  #  mv $SYSCTL ${SYSCTL}.probe
-  #fi
-
-  #WPA="/etc/wpa_supplicant/wpa_supplicant.conf"
-  #if [ -f "$WPA" ]; then
-  #  mv $WPA ${WPA}.probe
-  #fi
-
   ##################################
-  # 11. Link to wiperf config files
+  # 10. Link to wiperf config files
   ##################################
   echo "Linking temp config files..." | tee -a $LOG_FILE
   if [ "$MODE" == "wireless" ]; then
@@ -310,7 +294,7 @@ wiperf_on () {
   ln -s ${CFG_DIR}/conf/etc/sysctl.conf /etc/sysctl.conf
 
   ############################################################
-  # 12. Create status file to display status messages on FPMS
+  # 11. Create status file to display status messages on FPMS
   ############################################################
   echo "Updating status file." | tee -a $LOG_FILE
 
@@ -318,7 +302,7 @@ wiperf_on () {
   echo "wiperf" > $STATUS_FILE
 
   #############
-  # 13. Reboot 
+  # 12. Reboot 
   #############
   echo "WLAN Pi will now reboot" | tee -a $LOG_FILE
   sleep 1
