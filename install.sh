@@ -8,8 +8,6 @@ LOG_FILE="/var/log/wiperf_install.log"
 INSTALL_DIR="/usr/share/wiperf"
 CFG_DIR="/etc/wiperf"
 
-SCRIPT_PATH=$(dirname "$(realpath -s "$0")")
-
 install () {
 
   echo "(ok) Starting wiperf install process (see $LOG_FILE for details)" | tee $LOG_FILE 
@@ -24,27 +22,17 @@ install () {
   # check git is present
   echo "(ok) Checking we have git available..."
   `git --version`  >> $LOG_FILE 2>&1
-  if [ -z "$?" ]; then
+  if [ "$?" != '0' ]; then
     echo "(fail) Unable to proceed as git not installed...please install with command 'apt-get install git' " | tee -a $LOG_FILE
     exit 1
   else
     echo "(ok) Git looks OK"  | tee -a $LOG_FILE
   fi
 
-  # check we have been dropped in to /usr/share/wiperf before we start
-  SCRIPT_DIR=`echo  $SCRIPT_PATH || grep '$INSTALL_DIR'` || true
-  if  [ -z "$SCRIPT_DIR" ]; then
-    echo "(fail) Files not installed in $INSTALL_DIR. Exiting." | tee -a $LOG_FILE 
-    exit 1
-  else
-    echo "(ok) Files installed in $INSTALL_DIR" | tee -a $LOG_FILE 
-  fi
-
-
   # install the wiperf poller from PyPi - exit if errors
   echo "(ok) Installing wiperf python module (please wait)..."  | tee -a $LOG_FILE
   pip3 install wiperf_poller >> $LOG_FILE 2>&1
-  if [ -z "$?" ]; then
+  if [ "$?" != '0' ]; then
       echo "(fail) pip installation of wiperf_poller failed. Exiting." | tee -a $LOG_FILE 
       exit 1
   else
@@ -59,7 +47,7 @@ install () {
 
   git -C /tmp clone https://github.com/georgestarcher/Splunk-Class-httpevent.git >> $LOG_FILE 2>&1
 
-  if [ -z "$?" ]; then
+  if [ "$?" != '0' ]; then
     echo "(fail) Clone of Splunk Python module failed." | tee -a $LOG_FILE
     exit 1
   else
@@ -80,8 +68,8 @@ install () {
   # copy config.ini.default to $CFG_DIR
   echo "(ok) Copying config.default.ini to $CFG_DIR..." | tee -a $LOG_FILE
   mkdir -p $CFG_DIR  >> $LOG_FILE 2>&1
-  cp "$SCRIPT_PATH/config.default.ini" $CFG_DIR  >> $LOG_FILE 2>&1
-  if [ -z "$?" ]; then
+  cp "$INSTALL_DIR/config.default.ini" $CFG_DIR  >> $LOG_FILE 2>&1
+  if [ "$?" != '0' ]; then
     echo "(fail) Copy of config.ini.default failed." | tee -a $LOG_FILE
     exit 1
   else
@@ -90,7 +78,7 @@ install () {
 
   # move files in ./conf to $CFG_DIR
   echo "(ok) Moving conf directory to $CFG_DIR..." | tee -a $LOG_FILE
-  cp -R "$SCRIPT_PATH/conf" $CFG_DIR  >> $LOG_FILE 2>&1
+  cp -R "$INSTALL_DIR/conf" $CFG_DIR  >> $LOG_FILE 2>&1
   if [ -z "$?" ]; then
     echo "(fail) Copy of conf directory failed." | tee -a $LOG_FILE
     exit 1
@@ -100,9 +88,9 @@ install () {
 
   # copy wiperf_switcher to /usr/bin/wiperf_switcher
   echo "(ok) Copying wiperf_switcher to /usr/bin/wiperf_switcher..." | tee -a $LOG_FILE
-  cp "$SCRIPT_PATH/wiperf_switcher" /usr/bin/wiperf_switcher  >> $LOG_FILE 2>&1
+  cp "$INSTALL_DIR/wiperf_switcher" /usr/bin/wiperf_switcher  >> $LOG_FILE 2>&1
 
-  if [ -z "$?" ]; then
+  if [ "$?" != '0' ]; then
     echo "(fail) Copy of wiperf_switcher failed." | tee -a $LOG_FILE
     exit 1
   else
