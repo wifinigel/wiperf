@@ -120,8 +120,8 @@ uninstall () {
 
   # remove python modules
   echo "(ok) Removing Python modules" | tee -a $LOG_FILE
-  pip3 uninstall splunk_http_event_collector  >> $LOG_FILE 2>&1
-  pip3 uninstall wiperf  >> $LOG_FILE 2>&1
+  pip3 uninstall -y splunk_http_event_collector  >> $LOG_FILE 2>&1
+  pip3 uninstall -y wiperf_poller  >> $LOG_FILE 2>&1
 
   # remove directories
   echo "(ok) Removing install dir" | tee -a $LOG_FILE
