@@ -79,9 +79,9 @@ install () {
   fi
 
   # copy config.ini.default to $CFG_DIR
-  echo "(ok) Copying config.default.ini to $CFG_DIR..." | tee -a $LOG_FILE
+  echo "(ok) Moving config.default.ini to $CFG_DIR..." | tee -a $LOG_FILE
   mkdir -p $CFG_DIR  >> $LOG_FILE 2>&1
-  cp "$INSTALL_DIR/config.default.ini" $CFG_DIR  >> $LOG_FILE 2>&1
+  mv "$INSTALL_DIR/config.default.ini" $CFG_DIR  >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
     echo "(fail) Copy of config.ini.default failed." | tee -a $LOG_FILE
     exit 1
@@ -91,7 +91,7 @@ install () {
 
   # move files in ./conf to $CFG_DIR
   echo "(ok) Moving conf directory to $CFG_DIR..." | tee -a $LOG_FILE
-  cp -R "$INSTALL_DIR/conf" $CFG_DIR  >> $LOG_FILE 2>&1
+  mv "$INSTALL_DIR/conf" $CFG_DIR  >> $LOG_FILE 2>&1
   if [ -z "$?" ]; then
     echo "(fail) Copy of conf directory failed." | tee -a $LOG_FILE
     exit 1
@@ -100,8 +100,8 @@ install () {
   fi
 
   # copy wiperf_switcher to /usr/bin/wiperf_switcher
-  echo "(ok) Copying wiperf_switcher to /usr/bin/wiperf_switcher..." | tee -a $LOG_FILE
-  cp "$INSTALL_DIR/wiperf_switcher" /usr/bin/wiperf_switcher  >> $LOG_FILE 2>&1
+  echo "(ok) Moving wiperf_switcher to /usr/bin/wiperf_switcher..." | tee -a $LOG_FILE
+  mv "$INSTALL_DIR/wiperf_switcher" /usr/bin/wiperf_switcher  >> $LOG_FILE 2>&1
 
   if [ "$?" != '0' ]; then
     echo "(fail) Copy of wiperf_switcher failed." | tee -a $LOG_FILE
@@ -136,6 +136,17 @@ uninstall () {
   rm -f /var/log/wiperf*.log
   echo "(ok) Done"
 
+  echo ""
+  echo "================================================="
+  echo "Don'tforget to modify the following files before"
+  echo "switching in to wiperf mode:"
+  echo ""
+  echo " 1. Edit $CFG_DIR/wpa_supplicant/wpa_supplicant.conf" 
+  echo "    (add WLAN info)"
+  echo " 2. Copy $CFG_DIR/config.default.ini to $CFG_DIR/config.ini"
+  echo " 3. Edit $CFG_DIR/config.ini for your env"
+  echo "================================================="
+  echo ""
 }
 
 case "$1" in
