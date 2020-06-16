@@ -6,7 +6,6 @@ LOG_FILE="/var/log/wiperf_install.log"
 
 # install dir
 INSTALL_DIR="/usr/share/wiperf"
-MODULE_DIR="/usr/share/wiperf_poller"
 CFG_DIR="/etc/wiperf"
 
 SCRIPT_PATH=$(dirname "$(realpath -s "$0")")
@@ -42,9 +41,9 @@ install () {
   fi
 
 
-  # do a local install of the python module using 'pip install python' - exit if errors
+  # install the wiperf poller from PyPi - exit if errors
   echo "(ok) Installing wiperf python module (please wait)..."  | tee -a $LOG_FILE
-  pip3 install $MODULE_DIR >> $LOG_FILE 2>&1
+  pip3 install wiperf_poller >> $LOG_FILE 2>&1
   if [ -z "$?" ]; then
       echo "(fail) pip installation of wiperf_poller failed. Exiting." | tee -a $LOG_FILE 
       exit 1
@@ -126,8 +125,7 @@ uninstall () {
   # remove directories
   echo "(ok) Removing install dir" | tee -a $LOG_FILE
   rm -rf $INSTALL_DIR  >> $LOG_FILE 2>&1
-  rm -rf $MODULE_DIR  >> $LOG_FILE 2>&1
-  echo "(ok) Removing config dir" | tee -a $LOG_FILE
+    echo "(ok) Removing config dir" | tee -a $LOG_FILE
   rm -rf $CFG_DIR  >> $LOG_FILE 2>&1
   echo "(ok) Removing switcher script" | tee -a $LOG_FILE
   rm -f /usr/bin/wiperf_switcher  >> $LOG_FILE 2>&1
