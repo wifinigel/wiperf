@@ -267,21 +267,34 @@ wiperf_on () {
   ##################################
   # 9. Backup existing config files
   ##################################
+  declare -a arr=(
+      "/etc/network/interfaces" 
+      "/etc/sysctl.conf"
+      "/etc/wpa_supplicant/wpa_supplicant.conf"
+  )
   echo "Backing up config files..." | tee -a $LOG_FILE
-  INTERFACES="/etc/network/interfaces"
-  if [ -f "$INTERFACES" ]; then
-    mv $INTERFACES ${INTERFACES}.probe
-  fi
 
-  SYSCTL="/etc/sysctl.conf"
-  if [ -f "$SYSCTL" ]; then
-    mv $SYSCTL ${SYSCTL}.probe
-  fi
+  for item in "${arr[@]}"
+  do
+    if [ -f "$item" ]; then
+      mv $item ${item}.probe
+    fi
+  done
 
-  WPA="/etc/wpa_supplicant/wpa_supplicant.conf"
-  if [ -f "$WPA" ]; then
-    mv $WPA ${WPA}.probe
-  fi
+  #INTERFACES="/etc/network/interfaces"
+  #if [ -f "$INTERFACES" ]; then
+  #  mv $INTERFACES ${INTERFACES}.probe
+  #fi
+
+  #SYSCTL="/etc/sysctl.conf"
+  #if [ -f "$SYSCTL" ]; then
+  #  mv $SYSCTL ${SYSCTL}.probe
+  #fi
+
+  #WPA="/etc/wpa_supplicant/wpa_supplicant.conf"
+  #if [ -f "$WPA" ]; then
+  #  mv $WPA ${WPA}.probe
+  #fi
 
   ##################################
   # 11. Link to wiperf config files
@@ -412,24 +425,39 @@ wiperf_off () {
   ###################################
   # 6. Restore original config files
   ###################################
+  declare -a arr=(
+      "/etc/network/interfaces" 
+      "/etc/sysctl.conf"
+      "/etc/wpa_supplicant/wpa_supplicant.conf"
+  )
+
   echo "Restoring original config files" | tee $LOG_FILE
-  INTERFACES="/etc/network/interfaces"
-  if [ -f "${INTERFACES}.probe" ]; then
-    mv ${INTERFACES}.probe $INTERFACES
-  fi
 
-  SYSCTL="/etc/sysctl.conf"
-  if [ -f "${SYSCTL}.probe" ]; then
-    mv ${SYSCTL}.probe $SYSCTL
-  fi
+  for item in "${arr[@]}"
+  do
+    if [ -f "${item}.probe" ]; then
+      mv ${item}.probe $item
+    fi
+  done
 
-  WPA="/etc/wpa_supplicant/wpa_supplicant.conf"
-  if [ -f "${WPA}.probe" ]; then
-    mv  ${WPA}.probe $WPA
-  fi
+  
+  #INTERFACES="/etc/network/interfaces"
+  #if [ -f "${INTERFACES}.probe" ]; then
+  #  mv ${INTERFACES}.probe $INTERFACES
+  #fi
+
+  #SYSCTL="/etc/sysctl.conf"
+  #if [ -f "${SYSCTL}.probe" ]; then
+  #  mv ${SYSCTL}.probe $SYSCTL
+  #fi
+
+  #WPA="/etc/wpa_supplicant/wpa_supplicant.conf"
+  #if [ -f "${WPA}.probe" ]; then
+  #  mv  ${WPA}.probe $WPA
+  #fi
 
   ###################################
-  # 7. Remove FPMS status file
+  # 7. Update FPMS status file
   ###################################
   echo "WLANPi will now reboot"
   echo "classic" > $STATUS_FILE
