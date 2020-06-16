@@ -119,7 +119,7 @@ install () {
   echo "Don'tforget to modify the following files before"
   echo "switching in to wiperf mode:"
   echo ""
-  echo " 1. Edit $CFG_DIR/wpa_supplicant/wpa_supplicant.conf" 
+  echo " 1. Edit $CFG_DIR/conf/etc/wpa_supplicant/wpa_supplicant.conf" 
   echo "    (add WLAN info)"
   echo " 2. Copy $CFG_DIR/config.default.ini to $CFG_DIR/config.ini"
   echo " 3. Edit $CFG_DIR/config.ini for your env"
