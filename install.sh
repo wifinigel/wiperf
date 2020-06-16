@@ -4,24 +4,24 @@
 # Installation script log file
 LOG_FILE="/var/log/wiperf_install.log"
 
-# Check which platform we're installing for
-PLATFORM=$1
-if ! [[ $PLATFORM =~ ^(wlanpi|rpi)$ ]]; then
-  echo "Unknown (or no) platform supplied (exiting)"
-  exit 1
-fi
-
 # define global vars
 CLONE_DIR="/usr/share"
 INSTALL_DIR="$CLONE_DIR/wiperf"
 CFG_DIR="/etc/wiperf"
 GITHUB_REPO="https://github.com/wifinigel/wiperf.git"
 GITHUB_BRANCH='conf_pull'
+PLATFORM=$1
 
 # install function
 install () {
 
   echo "(ok) Starting wiperf install process (see $LOG_FILE for details)" | tee $LOG_FILE 
+
+  # Check which platform we're installing for
+  if ! [[ $PLATFORM =~ ^(wlanpi|rpi)$ ]]; then
+    echo "Unknown (or no) platform supplied (exiting)"
+    exit 1
+  fi
 
   ### check we can get to pypi before staring
   curl -s --head  -m 2 --connect-timeout 2 --request GET https://pypi.org | head -n 1 | grep '200'  >> $LOG_FILE 2>&1
@@ -189,16 +189,12 @@ case "$1" in
   -u)
         uninstall
         ;;
-  -i)
-        install
-        ;;
   -h)
         echo "Usage: install.sh {-i | -u | -h}"
         echo ""
         echo "  install.sh    : run installer (default)"
         echo "  install.sh -h : show this help message"
-        echo "  install.sh -u : unistall wiperf completely"
-        echo "  install.sh -i : install (default action if run with no args)"
+        echo "  install.sh -u : uninstall wiperf completely"
         echo ""
         exit 0
         ;;
