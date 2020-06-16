@@ -75,6 +75,8 @@ install () {
 
   ### Pull in the wiperf github code
   echo "(ok) Cloning GitHub wiperf repo (please wait)..." | tee -a $LOG_FILE
+  # get rid of the local copy if already exists (in case installing over the top)
+  rm -rf $CLONE_DIR >> $LOG_FILE 2>&1
   git -C $CLONE_DIR clone $GITHUB_REPO -b $GITHUB_BRANCH >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
     echo "(fail) Clone of GitHub repo failed." | tee -a $LOG_FILE
