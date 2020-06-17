@@ -15,7 +15,7 @@ PLATFORM=$1
 # install function
 install () {
 
-  echo "(ok) Starting wiperf install process (see $LOG_FILE for details)" | tee $LOG_FILE 
+  echo "(ok) Starting wiperf install process for $PLATFORM (see $LOG_FILE for details)" | tee $LOG_FILE 
 
   # Check which platform we're installing for
   if ! [[ $PLATFORM =~ ^(wlanpi|rpi)$ ]]; then
@@ -137,7 +137,7 @@ install () {
   if [ "$PLATFORM" = 'wlanpi' ]; then
     echo ""
     echo "================================================="
-    echo "Don'tforget to modify the following files before"
+    echo "Don't forget to modify the following files before"
     echo "switching in to wiperf mode:"
     echo ""
     echo " 1. Edit $CFG_DIR/conf/etc/wpa_supplicant/wpa_supplicant.conf" 
@@ -149,8 +149,8 @@ install () {
   else
     echo ""
     echo "================================================="
-    echo "Don'tforget to modify the following files before"
-    echo "to use wiperf:"
+    echo "Don't forget to modify the following files before"
+    echo "trying to use wiperf:"
     echo ""
     echo " 1. Edit /etc/wpa_supplicant/wpa_supplicant.conf (add WLAN info)"
     echo " 2. Edit /etc/network/interfaces (edit wlan0 config)" 
