@@ -9,7 +9,7 @@ CLONE_DIR="/usr/share"
 INSTALL_DIR="$CLONE_DIR/wiperf"
 CFG_DIR="/etc/wiperf"
 GITHUB_REPO="https://github.com/wifinigel/wiperf.git"
-GITHUB_BRANCH='conf_pull'
+GITHUB_BRANCH='dev'
 PLATFORM=$1
 
 # install function
