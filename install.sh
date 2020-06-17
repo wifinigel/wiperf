@@ -96,20 +96,21 @@ install () {
     echo "(ok) Copied OK." | tee -a $LOG_FILE
   fi
 
-  ### move files in ./conf to $CFG_DIR for wlanpi, remove dir for rpi
-  if [ "$PLATFORM" = 'wlanpi' ]; then
-    echo "(ok) Moving conf directory to $CFG_DIR..." | tee -a $LOG_FILE
-    mv "$INSTALL_DIR/conf" $CFG_DIR  >> $LOG_FILE 2>&1
-      if [ -z "$?" ]; then
-        echo "(fail) Copy of conf directory failed." | tee -a $LOG_FILE
-        exit 1
-      else
-        echo "(ok) Copied OK." | tee -a $LOG_FILE
-      fi
+  ### move files in ./conf to $CFG_DIR for wlanpi, remove 'conf' dir for rpi
+  echo "(ok) Moving conf directory to $CFG_DIR..." | tee -a $LOG_FILE
+  mv "$INSTALL_DIR/conf" $CFG_DIR  >> $LOG_FILE 2>&1
+  
+  if [ -z "$?" ]; then
+    echo "(fail) Copy of conf directory failed." | tee -a $LOG_FILE
+    exit 1
   else
+    echo "(ok) Copied OK." | tee -a $LOG_FILE
+  fi
+  
+  if [ "$PLATFORM" = 'rpi' ]; then
     # remove the conf dir if rpi, as don't need it
-    echo "(ok) Removing conf directory $CFG_DIR...(not needed on RPi)" | tee -a $LOG_FILE
-    rm -rf $CFG_DIR >> $LOG_FILE 2>&1
+    echo "(ok) Removing conf directory $CFG_DIR/conf...(not needed on RPi)" | tee -a $LOG_FILE
+    rm -rf $CFG_DIR/conf >> $LOG_FILE 2>&1
   fi 
 
   ### copy across the wiperf switcher if this is a WLAN Pi, remove if rpi 
