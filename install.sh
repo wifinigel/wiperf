@@ -40,6 +40,16 @@ install () {
     echo "(ok) Git looks OK"  | tee -a $LOG_FILE
   fi
 
+  ### check iperf3 is present
+  echo "(ok) Checking we have iperf3 available..."
+  `iperf3 -v`  >> $LOG_FILE 2>&1
+  if [ "$?" != '0' ]; then
+    echo "(fail) Unable to proceed as iperf3 not installed...please install with command 'apt-get install iperf3' " | tee -a $LOG_FILE
+    exit 1
+  else
+    echo "(ok) iperf3 looks OK"  | tee -a $LOG_FILE
+  fi
+
   ### install the wiperf poller from PyPi - exit if errors
   echo "(ok) Installing wiperf python module (please wait)..."  | tee -a $LOG_FILE
   pip3 install wiperf_poller >> $LOG_FILE 2>&1
@@ -133,6 +143,8 @@ install () {
       rm -f $INSTALL_DIR/wiperf_switcher >> $LOG_FILE 2>&1
   fi
 
+  #TODO: Added series of tests to check out the final env
+  
   echo "(ok) Install complete." | tee -a $LOG_FILE
 
   if [ "$PLATFORM" = 'wlanpi' ]; then
