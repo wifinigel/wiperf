@@ -32,7 +32,7 @@ install () {
 
   ### check git is present
   echo "(ok) Checking we have git available..."
-  `git --version`  >> $LOG_FILE 2>&1
+  git --version  >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
     echo "(fail) Unable to proceed as git not installed...please install with command 'apt-get install git' " | tee -a $LOG_FILE
     exit 1
@@ -42,7 +42,7 @@ install () {
 
   ### check iperf3 is present
   echo "(ok) Checking we have iperf3 available..."
-  `iperf3 -v`  >> $LOG_FILE 2>&1
+  iperf3 -v  >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
     echo "(fail) Unable to proceed as iperf3 not installed...please install with command 'apt-get install iperf3' " | tee -a $LOG_FILE
     exit 1
