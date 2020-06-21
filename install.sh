@@ -64,7 +64,9 @@ install () {
   echo "(ok) Cloning the Splunk Event collector class..." | tee -a $LOG_FILE
   # take out existing dir (if there)
   rm -rf /tmp/Splunk-Class-httpevent
-  git -C /tmp clone https://github.com/georgestarcher/Splunk-Class-httpevent.git >> $LOG_FILE 2>&1
+  repo_src="https://github.com/wifinigel/Splunk-Class-httpevent.git"
+  #repo_src="https://github.com/georgestarcher/Splunk-Class-httpevent.git"
+  git -C /tmp clone $repo_src >> $LOG_FILE 2>&1
 
   if [ "$?" != '0' ]; then
     echo "(fail) Clone of Splunk Python module failed." | tee -a $LOG_FILE
