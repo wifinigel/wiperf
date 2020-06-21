@@ -184,7 +184,7 @@ uninstall () {
   # remove python modules
   echo "(ok) Removing Python modules" | tee -a $LOG_FILE
   echo "(ok) ...splunk_http_event_collector" | tee -a $LOG_FILE
-  pip3 uninstall -y splunk_http_event_collector  >> $LOG_FILE 2>&1
+  pip3 uninstall -y Splunk-HEC  >> $LOG_FILE 2>&1
   echo "(ok) ...wiperf_poller" | tee -a $LOG_FILE
   pip3 uninstall -y wiperf_poller  >> $LOG_FILE 2>&1
 
