@@ -54,7 +54,7 @@ install () {
   echo "(ok) Checking we have pip3 available..."
   pip3 -v  >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
-    echo "(fail) Unable to proceed as pip3 not installed...please install with command 'apt-get install python-pip3' " | tee -a $LOG_FILE
+    echo "(fail) Unable to proceed as pip3 not installed...please install with command 'apt-get install python3-pip' " | tee -a $LOG_FILE
     exit 1
   else
     echo "(ok) pip3 looks OK"  | tee -a $LOG_FILE
