@@ -179,7 +179,7 @@ install () {
     echo ""
     echo " 1. Edit wirelss auth settings: sudo nano /etc/wpa_supplicant/wpa_supplicant.conf"
     echo " 2. Edit wlan0 settings: sudo nano /etc/network/interfaces" 
-    echo " 3. Copy default cfg file to live cfg:  sudo cp $CFG_DIR/config.default.ini to $CFG_DIR/config.ini"
+    echo " 3. Copy default cfg file to live cfg:  sudo cp $CFG_DIR/config.default.ini $CFG_DIR/config.ini"
     echo " 4. Edit the cfg file for your env: nano $CFG_DIR/config.ini"
     echo " 5. Add a cron job to run wiperf regularly, e.g. crontab -e (add line below)"
     echo "    0-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py > /var/log/wiperf_cron.log 2>&1"
