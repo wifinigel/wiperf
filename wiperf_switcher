@@ -133,6 +133,11 @@ wiperf_on () {
   ########################
   # 4. Add crontab entry
   ########################
+  # add crontab if does not exist already
+  if ! [ -e  /var/spool/cron/crontabs/$USERNAME ]; then
+    echo "# " | crontab -u $USERNAME -
+  fi
+
   line="${TEST_OFFSET}-59/${TEST_INTERVAL} * * * * /usr/bin/python3 ${HOME_DIR}/wiperf_run.py > /var/log/wiperf_cron.log 2>&1"
   (crontab -u $USERNAME -l; echo "$line" ) | crontab -u $USERNAME -
   LAST_RESULT=$?
