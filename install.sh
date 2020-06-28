@@ -178,7 +178,7 @@ install () {
     echo "Don't forget to modify the following files before"
     echo "trying to use wiperf:"
     echo ""
-    echo " 1. Edit wirelss auth settings: sudo nano /etc/wpa_supplicant/wpa_supplicant.conf"
+    echo " 1. Edit wireless auth settings: sudo nano /etc/wpa_supplicant/wpa_supplicant.conf"
     echo " 2. Edit wlan0 settings: sudo nano /etc/network/interfaces" 
     echo " 3. Copy default cfg file to live cfg:  sudo cp $CFG_DIR/config.default.ini $CFG_DIR/config.ini"
     echo " 4. Edit the cfg file for your env: nano $CFG_DIR/config.ini"
