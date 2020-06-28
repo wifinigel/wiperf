@@ -55,20 +55,13 @@ fi
 #       a. wlan0 - wireless NIC available
 #       b. eth0 - ethernet port available
 # 3.  Read in test interval & offset from config file
-# 4.  Check if our mgt interface is defined in config.ini
-# 5.  Check a management server destination is set (IP for Splunk, URL for Influx)
-# 5.  Check whether we use eth0 at mgt interface (static route req if we are)
-# 6.  if we're using eth0 as mgt i/f:
-#         a. Check eth0 is up
-#         b. Figure out gateway used by eth0
-#         c. Write route to /etc/network/interfaces 
-# 7.  Add crontab entry to perform 5 min polling
-# 8.  Add fw rules to harden eth0 & wlan0
-# 9.  Backup various existing files to allow restoration when wiperf
+# 4.  Add crontab entry to perform 5 min polling
+# 5.  Add fw rules to harden eth0 & wlan0
+# 6.  Backup various existing files to allow restoration when wiperf
 #     deactivated
-# 10. Move a number of existing files that need to be replaced
-# 11. Create status file to indicate wiperf is active
-# 12. Reboot the wlanpi to ensure clean activation
+# 7. Move a number of existing files that need to be replaced
+# 8. Create status file to indicate wiperf is active
+# 9. Reboot the wlanpi to ensure clean activation
 #
 # Note: /etc/sysctl.conf included to ensure forwarding
 #    cannot be accidentally be enabled in probe mode if
@@ -137,112 +130,8 @@ wiperf_on () {
   fi
   echo "Test offset from config file: ${TEST_OFFSET}" | tee -a $LOG_FILE
 
-  #######################################################
-  # 4. Figure out the interface we send mgt traffic over
-  #######################################################
-  MGT_IF=`cat ${CFG_FILE} | grep 'mgt_if:' | awk -F'[: ]*' '{print $2}'` || true
-  # check if we have a mgt interface
-  if [ -z "$MGT_IF" ]; then
-    echo "No mgt interface config (exiting)" | tee -a $LOG_FILE 
-    exit 1
-  fi
-  echo "Mgt interface from config file: ${MGT_IF}" | tee -a $LOG_FILE
-
-  ####################################################################
-  # 5. Figure out the mgt destination (IP for Splunk, URL for Influx)
-  ####################################################################
-  EXPORTER_TYPE=`cat ${CFG_FILE} | grep 'exporter_type:' | awk -F'[: ]*' '{print $2}'` || true
-  # check if we have a exporter type
-  if [ -z "$EXPORTER_TYPE" ]
-  then
-    echo "No exporter type detected (exiting)" | tee -a $LOG_FILE 
-    exit 1
-  fi
-  echo "Exporter type: ${EXPORTER_TYPE}" | tee -a $LOG_FILE
-
-  if [ "$EXPORTER_TYPE" == "splunk" ]
-  then
-    MGT_IP=`cat ${CFG_FILE} | grep 'splunk_host:' | awk -F'[: ]*' '{print $2}'` || true
-    MGT_PORT=`cat ${CFG_FILE} | grep 'splunk_port:' | awk -F'[: ]*' '{print $2}'` || true
-  elif [ "$EXPORTER_TYPE" == "influxdb" ]
-  then
-    MGT_IP=`cat ${CFG_FILE} | grep 'influx_host:' | awk -F'[: ]*' '{print $2}'` || true
-    MGT_PORT=`cat ${CFG_FILE} | grep 'influx_port:' | awk -F'[: ]*' '{print $2}'` || true
-  elif [ "$EXPORTER_TYPE" == "influxdb2" ]
-  then
-    MGT_IP=`cat ${CFG_FILE} | grep 'influx2_host:' | awk -F'[: ]*' '{print $2}'` || true
-    MGT_PORT=`cat ${CFG_FILE} | grep 'influx2_port:' | awk -F'[: ]*' '{print $2}'` || true
-  else
-    echo "Unknown exporter type detected: ${EXPORTER_TYPE} (exiting)" | tee -a $LOG_FILE 
-    exit 1
-  fi
-
-  # check if we have a mgt IP
-  if [ -z "$MGT_IP" ]; then
-    echo "No mgt destination address defined....exiting" | tee -a $LOG_FILE
-    exit 1 
-  fi
-  echo "Mgt server IP from config file: ${MGT_IP}" | tee -a $LOG_FILE
-
-  # check if we have a mgt port
-  if [ -z "$MGT_PORT" ]; then
-    echo "No mgt port defined....exiting" | tee -a $LOG_FILE
-    exit 1
-  fi
-  echo "Mgt port from config file: ${MGT_PORT}" | tee -a $LOG_FILE
-
-  #########################################################
-  # 6. If we're sending mgt traffic via eth0 and tests are 
-  #    run over wlan0, set up static route. If using
-  #    ethernet, assume WLAN down, so no routing issue.
-  #########################################################
-  #if [ "$MGT_IF" == "eth0" ] && [ "$MODE" == "wireless" ]; then
-    # Using eth0 - need to set static route back to Splunk if eth0 up
-
-    # is eth0 up...fail if not
-  #  ETH_STATUS=`ip a | grep eth0 | grep 'state UP'` || true
-  #  if  [ -z "$ETH_STATUS" ]; then
-  #    echo "eth0 is down..." | tee -a $LOG_FILE 
-  #    exit 0
-  #  fi
-  #  echo "Ethernet status: ${ETH_STATUS}" | tee -a $LOG_FILE
-
-    # get def gw of eth0
-  #  ETH_DEF_ROUTE=`cat /var/lib/dhcp/dhclient.eth0.leases | grep 'option routers' | head -n1 | awk  '{print $3}' | sed 's/.$//'` || true
-    # check if we got gateway OK
-  #  if [ -z "$ETH_DEF_ROUTE" ]; then
-  #    echo "Eth0 cannot get def gw (existing)" | tee -a $LOG_FILE 
-  #    exit 1
-  #  fi
-  #  echo "Ethernet default route: ${ETH_DEF_ROUTE}" | tee -a $LOG_FILE
-
-    # add static route to route file in /etc/network/if-up.d
-
-    # if MGT_IP is a name rather than IP, then lookup IP
-  #  if [[ ! "$MGT_IP" =~  [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+ ]]
-  #  then
-  #    echo "Mgt destination appears to be a name rather than IP address: ${MGT_IP}" | tee -a $LOG_FILE
-  #    MGT_NAME=$MGT_IP
-  #    echo "Looking up mgt platform IP address..." | tee -a $LOG_FILE
-  #    MGT_IP=`dig +short ${MGT_IP}`
-  #    echo "MGT_IP was ${MGT_NAME}, is now: ${MGT_IP}" | tee -a $LOG_FILE
-  #  fi
-
-    # if route file exists, back it up
-  #  if [ -e "$ROUTE_FILE" ]; then
-  #    cp $ROUTE_FILE ${ROUTE_FILE}.orig
-  #  fi
-
-    # create /etc/network/if-up.d/route & chmod 755
-  #  echo "#!/bin/sh" > $ROUTE_FILE
-  #  STATIC_CMD="/bin/ip route add $MGT_IP via $ETH_DEF_ROUTE dev eth0"
-  #  echo "Static route command: ${STATIC_CMD}" | tee -a $LOG_FILE
-  #  echo $STATIC_CMD >> $ROUTE_FILE
-  #  chmod 755 $ROUTE_FILE
-  #fi
-
   ########################
-  # 7. Add crontab entry
+  # 4. Add crontab entry
   ########################
   line="${TEST_OFFSET}-59/${TEST_INTERVAL} * * * * /usr/bin/python3 ${HOME_DIR}/wiperf_run.py > /var/log/wiperf_cron.log 2>&1"
   (crontab -u $USERNAME -l; echo "$line" ) | crontab -u $USERNAME -
@@ -254,7 +143,7 @@ wiperf_on () {
   echo "Cron command added: ${line}" | tee -a $LOG_FILE
 
   #################################################################################
-  # 8. Harden eth0 & wlan0 by adding fw rules - allow only ssh in on eth0 & wlan0
+  # 5. Harden eth0 & wlan0 by adding fw rules - allow only ssh in on eth0 & wlan0
   #################################################################################
   ufw insert 1 allow in on eth0 to any port ssh
   ufw insert 2 allow in on eth0 to any port http
@@ -264,7 +153,7 @@ wiperf_on () {
   ufw insert 6 deny in on wlan0
 
   ##################################
-  # 9. Backup existing config files
+  # 6. Backup existing config files
   ##################################
   declare -a arr=(
       "/etc/network/interfaces" 
@@ -281,7 +170,7 @@ wiperf_on () {
   done
 
   ##################################
-  # 10. Link to wiperf config files
+  # 7. Link to wiperf config files
   ##################################
   echo "Linking temp config files..." | tee -a $LOG_FILE
   if [ "$MODE" == "wireless" ]; then
@@ -294,7 +183,7 @@ wiperf_on () {
   ln -s ${CFG_DIR}/conf/etc/sysctl.conf /etc/sysctl.conf
 
   ############################################################
-  # 11. Create status file to display status messages on FPMS
+  # 8. Create status file to display status messages on FPMS
   ############################################################
   echo "Updating status file." | tee -a $LOG_FILE
 
@@ -302,7 +191,7 @@ wiperf_on () {
   echo "wiperf" > $STATUS_FILE
 
   #############
-  # 12. Reboot 
+  # 9. Reboot 
   #############
   echo "WLAN Pi will now reboot" | tee -a $LOG_FILE
   sleep 1
@@ -316,12 +205,11 @@ wiperf_on () {
 #
 # 1. Get the probe mode
 # 2. Remove crontab entry to stop polling
-# 3. Remove eth0 static route (if needed)
-# 4. Remove fw rules added during mode switch
-# 5. Remove links created during activation
-# 6. Restore config files backed up during activation
-# 7. Remove status file to indicate wiperf no longer active
-# 8. Reboot wlanpi to provide clean restoration of services
+# 3. Remove fw rules added during mode switch
+# 4. Remove links created during activation
+# 5. Restore config files backed up during activation
+# 6. Remove status file to indicate wiperf no longer active
+# 7. Reboot wlanpi to provide clean restoration of services
 #
 ###############################################################################
 wiperf_off () {
@@ -349,7 +237,7 @@ wiperf_off () {
   ###########################################
   # 2. Remove crontab entry to stop polling
   ###########################################
-  echo "Removing cront job." | tee -a $LOG_FILE
+  echo "Removing cron job." | tee -a $LOG_FILE
   crontab -u $USERNAME -l | grep -v 'wiperf_run.py'  | crontab -u $USERNAME -
   LAST_RESULT=$?
   if [ $LAST_RESULT -ne 0 ]; then
@@ -359,37 +247,8 @@ wiperf_off () {
   
   echo "Cron entry removed" | tee -a $LOG_FILE
   
-  ##########################################################
-  # 3. Figure out the interface we send mgt traffic over 
-  #    and remove static route if eth0 and mode is wireless
-  ##########################################################
-  #MGT_IF=`cat ${CFG_FILE} | grep 'mgt_if:' | awk -F'[: ]*' '{print $2}'` || true
-  # check if we have a mgt interface
-  #if [ -z "$MGT_IF" ]; then
-  #  echo "No mgt interface in config file (exiting)" | tee $LOG_FILE 
-  #  exit 1
-  #fi
-  
-  #echo "Mgt interface from config file: ${MGT_IF}" | tee $LOG_FILE
-
-  #if [ "$MGT_IF" == "eth0" ] && [ "$MODE" == "wireless" ]; then
-    # Using eth0 - need to remove static route back to mgt platform
-
-    # if route file backup exists restore it, otherwise, remove route file
-  #  if [ -e "${ROUTE_FILE}.orig" ]
-  #  then
-  #    echo "Removing static route" | tee $LOG_FILE
-  #    cp "${ROUTE_FILE}.orig" $ROUTE_FILE
-  #    rm "${ROUTE_FILE}.orig"
-  #  else
-  #    echo "Removing static route" | tee $LOG_FILE
-  #    rm $ROUTE_FILE
-  #  fi
-
-  #fi
-  
   ##################################
-  # 4. Remove eth0 & wlan0 fw rules
+  # 3. Remove eth0 & wlan0 fw rules
   ##################################
   ufw delete allow in on eth0 to any port ssh
   ufw delete allow in on eth0 to any port http
@@ -399,7 +258,7 @@ wiperf_off () {
   ufw delete deny in on wlan0
 
   ##################################
-  # 5. Remove links to config files
+  # 4. Remove links to config files
   ##################################
   echo "Removing links to temp config files" | tee -a $LOG_FILE
   unlink /etc/network/interfaces
@@ -407,7 +266,7 @@ wiperf_off () {
   unlink /etc/wpa_supplicant/wpa_supplicant.conf
  
   ###################################
-  # 6. Restore original config files
+  # 5. Restore original config files
   ###################################
   declare -a arr=(
       "/etc/network/interfaces" 
@@ -425,13 +284,13 @@ wiperf_off () {
   done
 
   ###################################
-  # 7. Update FPMS status file
+  # 6. Update FPMS status file
   ###################################
   echo "WLANPi will now reboot"
   echo "classic" > $STATUS_FILE
 
   ###################################
-  # 8. Reboot
+  # 7. Reboot
   ###################################
   echo "Rebooting" | tee -a $LOG_FILE
   sleep 1
