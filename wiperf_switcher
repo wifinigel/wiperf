@@ -173,12 +173,7 @@ wiperf_on () {
   # 7. Link to wiperf config files
   ##################################
   echo "Linking temp config files..." | tee -a $LOG_FILE
-  if [ "$MODE" == "wireless" ]; then
-    ln -s ${CFG_DIR}/conf/etc/network/interfaces.wlan /etc/network/interfaces  
-  else
-    ln -s ${CFG_DIR}/conf/etc/network/interfaces.eth /etc/network/interfaces
-  fi
-
+  ln -s ${CFG_DIR}/conf/etc/network/interfaces /etc/network/interfaces  
   ln -s ${CFG_DIR}/conf/etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
   ln -s ${CFG_DIR}/conf/etc/sysctl.conf /etc/sysctl.conf
 
