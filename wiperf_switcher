@@ -196,50 +196,50 @@ wiperf_on () {
   #    run over wlan0, set up static route. If using
   #    ethernet, assume WLAN down, so no routing issue.
   #########################################################
-  if [ "$MGT_IF" == "eth0" ] && [ "$MODE" == "wireless" ]; then
+  #if [ "$MGT_IF" == "eth0" ] && [ "$MODE" == "wireless" ]; then
     # Using eth0 - need to set static route back to Splunk if eth0 up
 
     # is eth0 up...fail if not
-    ETH_STATUS=`ip a | grep eth0 | grep 'state UP'` || true
-    if  [ -z "$ETH_STATUS" ]; then
-      echo "eth0 is down..." | tee -a $LOG_FILE 
-      exit 0
-    fi
-    echo "Ethernet status: ${ETH_STATUS}" | tee -a $LOG_FILE
+  #  ETH_STATUS=`ip a | grep eth0 | grep 'state UP'` || true
+  #  if  [ -z "$ETH_STATUS" ]; then
+  #    echo "eth0 is down..." | tee -a $LOG_FILE 
+  #    exit 0
+  #  fi
+  #  echo "Ethernet status: ${ETH_STATUS}" | tee -a $LOG_FILE
 
     # get def gw of eth0
-    ETH_DEF_ROUTE=`cat /var/lib/dhcp/dhclient.eth0.leases | grep 'option routers' | head -n1 | awk  '{print $3}' | sed 's/.$//'` || true
+  #  ETH_DEF_ROUTE=`cat /var/lib/dhcp/dhclient.eth0.leases | grep 'option routers' | head -n1 | awk  '{print $3}' | sed 's/.$//'` || true
     # check if we got gateway OK
-    if [ -z "$ETH_DEF_ROUTE" ]; then
-      echo "Eth0 cannot get def gw (existing)" | tee -a $LOG_FILE 
-      exit 1
-    fi
-    echo "Ethernet default route: ${ETH_DEF_ROUTE}" | tee -a $LOG_FILE
+  #  if [ -z "$ETH_DEF_ROUTE" ]; then
+  #    echo "Eth0 cannot get def gw (existing)" | tee -a $LOG_FILE 
+  #    exit 1
+  #  fi
+  #  echo "Ethernet default route: ${ETH_DEF_ROUTE}" | tee -a $LOG_FILE
 
     # add static route to route file in /etc/network/if-up.d
 
     # if MGT_IP is a name rather than IP, then lookup IP
-    if [[ ! "$MGT_IP" =~  [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+ ]]
-    then
-      echo "Mgt destination appears to be a name rather than IP address: ${MGT_IP}" | tee -a $LOG_FILE
-      MGT_NAME=$MGT_IP
-      echo "Looking up mgt platform IP address..." | tee -a $LOG_FILE
-      MGT_IP=`dig +short ${MGT_IP}`
-      echo "MGT_IP was ${MGT_NAME}, is now: ${MGT_IP}" | tee -a $LOG_FILE
-    fi
+  #  if [[ ! "$MGT_IP" =~  [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+ ]]
+  #  then
+  #    echo "Mgt destination appears to be a name rather than IP address: ${MGT_IP}" | tee -a $LOG_FILE
+  #    MGT_NAME=$MGT_IP
+  #    echo "Looking up mgt platform IP address..." | tee -a $LOG_FILE
+  #    MGT_IP=`dig +short ${MGT_IP}`
+  #    echo "MGT_IP was ${MGT_NAME}, is now: ${MGT_IP}" | tee -a $LOG_FILE
+  #  fi
 
     # if route file exists, back it up
-    if [ -e "$ROUTE_FILE" ]; then
-      cp $ROUTE_FILE ${ROUTE_FILE}.orig
-    fi
+  #  if [ -e "$ROUTE_FILE" ]; then
+  #    cp $ROUTE_FILE ${ROUTE_FILE}.orig
+  #  fi
 
     # create /etc/network/if-up.d/route & chmod 755
-    echo "#!/bin/sh" > $ROUTE_FILE
-    STATIC_CMD="/bin/ip route add $MGT_IP via $ETH_DEF_ROUTE dev eth0"
-    echo "Static route command: ${STATIC_CMD}" | tee -a $LOG_FILE
-    echo $STATIC_CMD >> $ROUTE_FILE
-    chmod 755 $ROUTE_FILE
-  fi
+  #  echo "#!/bin/sh" > $ROUTE_FILE
+  #  STATIC_CMD="/bin/ip route add $MGT_IP via $ETH_DEF_ROUTE dev eth0"
+  #  echo "Static route command: ${STATIC_CMD}" | tee -a $LOG_FILE
+  #  echo $STATIC_CMD >> $ROUTE_FILE
+  #  chmod 755 $ROUTE_FILE
+  #fi
 
   ########################
   # 7. Add crontab entry
@@ -363,30 +363,30 @@ wiperf_off () {
   # 3. Figure out the interface we send mgt traffic over 
   #    and remove static route if eth0 and mode is wireless
   ##########################################################
-  MGT_IF=`cat ${CFG_FILE} | grep 'mgt_if:' | awk -F'[: ]*' '{print $2}'` || true
+  #MGT_IF=`cat ${CFG_FILE} | grep 'mgt_if:' | awk -F'[: ]*' '{print $2}'` || true
   # check if we have a mgt interface
-  if [ -z "$MGT_IF" ]; then
-    echo "No mgt interface in config file (exiting)" | tee $LOG_FILE 
-    exit 1
-  fi
+  #if [ -z "$MGT_IF" ]; then
+  #  echo "No mgt interface in config file (exiting)" | tee $LOG_FILE 
+  #  exit 1
+  #fi
   
-  echo "Mgt interface from config file: ${MGT_IF}" | tee $LOG_FILE
+  #echo "Mgt interface from config file: ${MGT_IF}" | tee $LOG_FILE
 
-  if [ "$MGT_IF" == "eth0" ] && [ "$MODE" == "wireless" ]; then
+  #if [ "$MGT_IF" == "eth0" ] && [ "$MODE" == "wireless" ]; then
     # Using eth0 - need to remove static route back to mgt platform
 
     # if route file backup exists restore it, otherwise, remove route file
-    if [ -e "${ROUTE_FILE}.orig" ]
-    then
-      echo "Removing static route" | tee $LOG_FILE
-      cp "${ROUTE_FILE}.orig" $ROUTE_FILE
-      rm "${ROUTE_FILE}.orig"
-    else
-      echo "Removing static route" | tee $LOG_FILE
-      rm $ROUTE_FILE
-    fi
+  #  if [ -e "${ROUTE_FILE}.orig" ]
+  #  then
+  #    echo "Removing static route" | tee $LOG_FILE
+  #    cp "${ROUTE_FILE}.orig" $ROUTE_FILE
+  #    rm "${ROUTE_FILE}.orig"
+  #  else
+  #    echo "Removing static route" | tee $LOG_FILE
+  #    rm $ROUTE_FILE
+  #  fi
 
-  fi
+  #fi
   
   ##################################
   # 4. Remove eth0 & wlan0 fw rules
@@ -423,22 +423,6 @@ wiperf_off () {
       mv ${item}.probe $item
     fi
   done
-
-  
-  #INTERFACES="/etc/network/interfaces"
-  #if [ -f "${INTERFACES}.probe" ]; then
-  #  mv ${INTERFACES}.probe $INTERFACES
-  #fi
-
-  #SYSCTL="/etc/sysctl.conf"
-  #if [ -f "${SYSCTL}.probe" ]; then
-  #  mv ${SYSCTL}.probe $SYSCTL
-  #fi
-
-  #WPA="/etc/wpa_supplicant/wpa_supplicant.conf"
-  #if [ -f "${WPA}.probe" ]; then
-  #  mv  ${WPA}.probe $WPA
-  #fi
 
   ###################################
   # 7. Update FPMS status file
