@@ -353,11 +353,11 @@ wiperf_off () {
   crontab -u $USERNAME -l | grep -v 'wiperf_run.py'  | crontab -u $USERNAME -
   LAST_RESULT=$?
   if [ $LAST_RESULT -ne 0 ]; then
-    echo "Cron remove failed (exiting)" | tee $LOG_FILE 
+    echo "Cron remove failed (exiting)" | tee -a $LOG_FILE 
     exit 1
   fi
   
-  echo "Cron entry removed" | tee $LOG_FILE
+  echo "Cron entry removed" | tee -a $LOG_FILE
   
   ##########################################################
   # 3. Figure out the interface we send mgt traffic over 
@@ -401,7 +401,7 @@ wiperf_off () {
   ##################################
   # 5. Remove links to config files
   ##################################
-  echo "Removing links to temp config files" | tee $LOG_FILE
+  echo "Removing links to temp config files" | tee -a $LOG_FILE
   unlink /etc/network/interfaces
   unlink /etc/sysctl.conf
   unlink /etc/wpa_supplicant/wpa_supplicant.conf
@@ -415,7 +415,7 @@ wiperf_off () {
       "/etc/wpa_supplicant/wpa_supplicant.conf"
   )
 
-  echo "Restoring original config files" | tee $LOG_FILE
+  echo "Restoring original config files" | tee -a $LOG_FILE
 
   for item in "${arr[@]}"
   do
@@ -433,7 +433,7 @@ wiperf_off () {
   ###################################
   # 8. Reboot
   ###################################
-  echo "Rebooting" | tee $LOG_FILE
+  echo "Rebooting" | tee -a $LOG_FILE
   sleep 1
   sync
   reboot
