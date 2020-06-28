@@ -155,7 +155,7 @@ install () {
       rm -f $INSTALL_DIR/wiperf_switcher >> $LOG_FILE 2>&1
   fi
 
-  #TODO: Added series of tests to check out the final env
+  #TODO: Add series of tests to check out the final env
   
   echo "(ok) Install complete." | tee -a $LOG_FILE
 
@@ -165,10 +165,10 @@ install () {
     echo "Don't forget to modify the following files before"
     echo "switching in to wiperf mode:"
     echo ""
-    echo " 1. Edit $CFG_DIR/conf/etc/wpa_supplicant/wpa_supplicant.conf" 
+    echo " 1. Edit the WLAN config file for your env: sudo nano $CFG_DIR/conf/etc/wpa_supplicant/wpa_supplicant.conf" 
     echo "    (add WLAN info)"
-    echo " 2. Copy $CFG_DIR/config.default.ini to $CFG_DIR/config.ini"
-    echo " 3. Edit $CFG_DIR/config.ini for your env"
+    echo " 2. Copy default cfg file to live cfg:  sudo cp $CFG_DIR/config.default.ini $CFG_DIR/config.ini"
+    echo " 3. Edit the cfg file for your env: nano $CFG_DIR/config.ini"
     echo "================================================="
     echo ""
   else
@@ -183,7 +183,7 @@ install () {
     echo " 4. Edit the cfg file for your env: nano $CFG_DIR/config.ini"
     echo " 5. Add a cron job to run wiperf regularly, e.g. crontab -e (add line below)"
     echo "    0-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py > /var/log/wiperf_cron.log 2>&1"
-    echo "  6. If you are running several probes on a network, change their hostnames to be unique:"
+    echo " 6. If you are running several probes on a network, change their hostnames to be unique:"
     echo "    sudo nano /etc/hostname (change raspberrypi to your req hostname)"
     echo "    sudo nano /etc/hosts (change raspberrypi to your req hostname)"
     echo "    sudo reboot"
