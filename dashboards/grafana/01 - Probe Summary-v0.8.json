@@ -68,7 +68,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1593409715835,
+  "iteration": 1593428867743,
   "links": [
     {
       "$$hashKey": "object:334",
@@ -1723,6 +1723,12 @@
               {
                 "params": [],
                 "type": "last"
+              },
+              {
+                "params": [
+                  "Ping RTT"
+                ],
+                "type": "alias"
               }
             ]
           ],
@@ -2264,7 +2270,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "UDP iperf3 Throughput/Jitter - $WLANPi",
+      "title": "UDP iperf3 Jitter/Loss - $WLANPi",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -3012,5 +3018,5 @@
   "variables": {
     "list": []
   },
-  "version": 111
+  "version": 112
 }
