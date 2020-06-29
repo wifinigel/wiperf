@@ -13,7 +13,7 @@
         <earliest>-24h@h</earliest>
         <latest>now</latest>
       </search>
-  </input>
+    </input>
   </fieldset>
   <row>
     <panel>
@@ -155,7 +155,7 @@
       <single>
         <title>Google Status Code</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=https://google.com  |  stats last(http_status_code) as "Status"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target="https://google.com"  |  stats last(http_status_code) as "Status"</query>
           <earliest>-15m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -221,9 +221,9 @@
         <option name="useThousandSeparators">0</option>
       </single>
       <single>
-        <title>BBC Status Code</title>
+        <title>Cisco Status</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=*bbc.co.uk*  |  stats last(http_status_code) as "Status"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*cisco.com*  |  stats last(http_status_code) as "Status"</query>
           <earliest>-15m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -237,9 +237,9 @@
         <option name="useColors">1</option>
       </single>
       <single>
-        <title>BBC DNS Time</title>
+        <title>Cisco DNS Time</title>
         <search>
-          <query>host=$host_name$ source="wiperf-dns" dns_target=bbc.co.uk |  timechart span=15m  avg(lookup_time_ms)</query>
+          <query>host=$host_name$ source="wiperf-dns" dns_target="cisco.com" |  timechart span=15m  avg(lookup_time_ms)</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -263,9 +263,9 @@
         <option name="useThousandSeparators">0</option>
       </single>
       <single>
-        <title>BBC HTTP Response</title>
+        <title>Cisco HTTP Response</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=*bbc.co.uk*   |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*cisco.com*   |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -293,9 +293,9 @@
   <row>
     <panel>
       <single>
-        <title>Facebook Status Code</title>
+        <title>TBA1 Status</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=*facebook*  |  stats last(http_status_code) as "Status"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*tba*  |  stats last(http_status_code) as "Status"</query>
           <earliest>-15m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -309,9 +309,9 @@
         <option name="useColors">1</option>
       </single>
       <single>
-        <title>Facebook DNS Time</title>
+        <title>TBA1 DNS</title>
         <search>
-          <query>host=$host_name$ source="wiperf-dns" dns_target=*facebook*  |  timechart span=15m  avg(lookup_time_ms)</query>
+          <query>host=$host_name$ source="wiperf-dns" dns_target=*tba*  |  timechart span=15m  avg(lookup_time_ms)</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -335,9 +335,9 @@
         <option name="useThousandSeparators">0</option>
       </single>
       <single>
-        <title>Facebook HTTP Response</title>
+        <title>TBA1 HTTP</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=*facebook*  |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*tba*  |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -361,9 +361,9 @@
         <option name="useThousandSeparators">0</option>
       </single>
       <single>
-        <title>Twitter Status Code</title>
+        <title>TBA2 Status Code</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=*twitter*  |  stats last(http_status_code) as "Status"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*tba*  |  stats last(http_status_code) as "Status"</query>
           <earliest>-15m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -377,9 +377,9 @@
         <option name="useColors">1</option>
       </single>
       <single>
-        <title>Twitter DNS Time</title>
+        <title>TBA2 DNS Time</title>
         <search>
-          <query>host=$host_name$ source="wiperf-dns" dns_target=*twitter*  |  timechart span=15m  avg(lookup_time_ms)</query>
+          <query>host=$host_name$ source="wiperf-dns" dns_target=*tba*  |  timechart span=15m  avg(lookup_time_ms)</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -403,9 +403,9 @@
         <option name="useThousandSeparators">0</option>
       </single>
       <single>
-        <title>Twitter HTTP Response</title>
+        <title>TBA2 HTTP Response</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=*twitter*  |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*tba*  |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>

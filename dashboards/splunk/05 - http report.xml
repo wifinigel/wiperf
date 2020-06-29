@@ -1,11 +1,4 @@
 <form>
-  <init>
-    <set token="target1">https://ebay.co.uk</set>
-    <set token="target2">http://twitter.com</set>
-    <set token="target3">https://facebook.com</set>
-    <set token="target4">https://instagram.com</set>
-    <set token="target5">https://amazon.co.uk</set>
-  </init>
   <label>05 - HTTP Report</label>
   <fieldset submitButton="false">
     <input type="dropdown" token="host_name" searchWhenChanged="true">
@@ -78,11 +71,11 @@
     </panel>
   </row>
   <row>
- <panel>
+    <panel>
       <chart>
-        <title>Target: $target1$</title>
+        <title>Target: google.com</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=$target1$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target="https://google.com" | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -104,9 +97,9 @@
     </panel>
     <panel>
       <chart>
-        <title>Target: $target2$</title>
+        <title>Target: cisco.com</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=$target2$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target="https://cisco.com" | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -130,9 +123,9 @@
   <row>
     <panel>
       <chart>
-        <title>Target: $target3$</title>
+        <title>Target: TBA</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=$target3$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target="https://127.0.0.1" | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -154,9 +147,9 @@
     </panel>
     <panel>
       <chart>
-        <title>Target: $target4$</title>
+        <title>Target: TBA</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=$target4$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target="https://127.0.0.1" | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -178,9 +171,9 @@
     </panel>
     <panel>
       <chart>
-        <title>Target: $target5$</title>
+        <title>Target: TBA</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=$target5$ | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target="https://127.0.0.1" | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>

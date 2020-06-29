@@ -45,7 +45,7 @@
     </panel>
     <panel>
       <chart>
-        <title>Wireless Connection - $host_name$</title>
+        <title>Wireless Connection Rates/Signal  - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-network"| timechart avg(tx_rate_mbps) as "Tx PHY Rate"  avg(rx_rate_mbps) as "Rx PHY Rate" avg(signal_level_dbm) as "Signal Level (dBm)"</query>
           <earliest>$field1.earliest$</earliest>
@@ -89,7 +89,7 @@
     </panel>
     <panel>
       <chart>
-        <title>Wireless MCS - $host_name$</title>
+        <title>Wireless MCS (if reported by NIC) - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-network"| timechart avg(tx_mcs) as "Tx MCS"  avg(rx_mcs) as "Rx MCS"</query>
           <earliest>$field1.earliest$</earliest>
@@ -111,7 +111,7 @@
   <row>
     <panel>
       <chart>
-        <title>BSSID - $host_name$</title>
+        <title>BSSID Used - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-network"| timechart count(bssid) by bssid</query>
           <earliest>$field1.earliest$</earliest>
@@ -133,7 +133,7 @@
     </panel>
     <panel>
       <chart>
-        <title>SSID - $host_name$</title>
+        <title>SSID Used - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-network"| timechart count(ssid) by ssid</query>
           <earliest>$field1.earliest$</earliest>
@@ -158,7 +158,7 @@
   <row>
     <panel>
       <chart>
-        <title>Channel - $host_name$</title>
+        <title>Channel Used - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-network"| timechart count(channel) by channel</query>
           <earliest>$field1.earliest$</earliest>
@@ -181,7 +181,7 @@
     </panel>
     <panel>
       <chart>
-        <title>Wi-Fi Band - $host_name$</title>
+        <title>Wi-Fi Band Used - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-network" | eval band=if(channel&lt;14,"2.4GHz","5GHz") 
 | stats count by band</query>
@@ -204,7 +204,7 @@
     </panel>
     <panel>
       <chart>
-        <title>Speedtest Servers - $host_name$</title>
+        <title>Speedtest Servers Used - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-speedtest"| stats count(server_name) by server_name</query>
           <earliest>$field1.earliest$</earliest>

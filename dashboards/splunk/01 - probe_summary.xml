@@ -25,7 +25,7 @@
   <row>
     <panel>
       <chart>
-        <title>Speedtest - $host_name$</title>
+        <title>Speedtest (Download/Upload) - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-speedtest"| timechart avg(download_rate_mbps) as "Avg Download" avg(upload_rate_mbps) as "Avg Upload" by host</query>
           <earliest>$field1.earliest$</earliest>
@@ -37,15 +37,18 @@
         <option name="charting.axisTitleY.text">Mbps</option>
         <option name="charting.axisY.minimumNumber">0</option>
         <option name="charting.chart">column</option>
-        <option name="charting.drilldown">none</option>
+        <option name="charting.drilldown">all</option>
         <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
         <option name="charting.legend.placement">top</option>
         <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <link target="_blank">/app/search/02</link>
+        </drilldown>
       </chart>
     </panel>
     <panel>
       <chart>
-        <title>Wireless Connection - $host_name$</title>
+        <title>Wireless Connection Rate/Signal - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-network"| timechart avg(tx_rate_mbps) as "Tx PHY Rate" avg(rx_rate_mbps) as "Rx PHY Rate" avg(signal_level_dbm) as "Signal Level (dBm)"</query>
           <earliest>$field1.earliest$</earliest>
@@ -102,16 +105,19 @@
         <option name="charting.axisTitleY.text">HTTP Get (mS)</option>
         <option name="charting.axisY.minimumNumber">0</option>
         <option name="charting.chart">line</option>
-        <option name="charting.drilldown">none</option>
+        <option name="charting.drilldown">all</option>
         <option name="charting.layout.splitSeries">0</option>
         <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
         <option name="charting.legend.placement">top</option>
         <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <link target="_blank">/app/search/05__http_report</link>
+        </drilldown>
       </chart>
     </panel>
     <panel>
       <chart>
-        <title>DHCP Renewal - $host_name$</title>
+        <title>DHCP Renewal Time - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-dhcp"| timechart avg(renewal_time_ms) as "DHCP Renewal (mS)"</query>
           <earliest>$field1.earliest$</earliest>
@@ -146,15 +152,18 @@
         <option name="charting.axisY2.enabled">1</option>
         <option name="charting.chart">line</option>
         <option name="charting.chart.overlayFields">"Avg Rec Mbps"</option>
-        <option name="charting.drilldown">none</option>
+        <option name="charting.drilldown">all</option>
         <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
         <option name="charting.legend.placement">top</option>
         <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <link target="_blank">/app/search/04</link>
+        </drilldown>
       </chart>
     </panel>
     <panel>
       <chart>
-        <title>RTT Avg Times - $host_name$</title>
+        <title>Ping Targets RTT Avg Times - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-ping" ping_host=*| timechart avg(rtt_avg_ms) by ping_host</query>
           <earliest>$field1.earliest$</earliest>
@@ -174,7 +183,7 @@
   <row>
     <panel>
       <chart>
-        <title>UDP iPerf (Speed) - $host_name$</title>
+        <title>UDP iPerf Throughput - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-iperf3-udp"| timechart avg(mbps) as "Avg Mbps"</query>
           <earliest>$field1.earliest$</earliest>
@@ -186,9 +195,12 @@
         <option name="charting.axisY.abbreviation">none</option>
         <option name="charting.axisY.minimumNumber">0</option>
         <option name="charting.chart">line</option>
-        <option name="charting.drilldown">none</option>
+        <option name="charting.drilldown">all</option>
         <option name="charting.legend.placement">top</option>
         <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <link target="_blank">/app/search/03</link>
+        </drilldown>
       </chart>
     </panel>
     <panel>
@@ -205,10 +217,37 @@
         <option name="charting.axisY2.minimumNumber">0</option>
         <option name="charting.chart">area</option>
         <option name="charting.chart.overlayFields">"% Loss"</option>
-        <option name="charting.drilldown">none</option>
+        <option name="charting.drilldown">all</option>
         <option name="charting.legend.placement">top</option>
         <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <link target="_blank">/app/search/03</link>
+        </drilldown>
       </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Poller Status Info</title>
+      <table>
+        <search>
+          <query>host=$host_name$ source="wiperf-poll-status" 
+| convert ctime(_time) 
+| sort - _time
+|  table _time network ip speedtest ping dns http iperf_tcp iperf_udp dhcp probe_mode mgt_if run_time |rename _time AS "Time" network AS "Network Test" ip AS "IP Address" speedtest as "Speedtest" ping as "Ping Test" dns AS "DNS Test" http as "HTTP Test" iperf_tcp as "TCP iperf" iperf_udp as "UDP iperf" dhcp as "DHCP Test" probe_mode AS "Mode" mgt_if as "Mgt I/F" run_time as "Poll Time (secs)"</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">true</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
     </panel>
   </row>
 </form>
