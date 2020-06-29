@@ -68,7 +68,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1593409771789,
+  "iteration": 1593428626687,
   "links": [
     {
       "$$hashKey": "object:712",
@@ -368,7 +368,7 @@
         {
           "$$hashKey": "object:1428",
           "format": "percent",
-          "label": null,
+          "label": "Loss (%)",
           "logBase": 1,
           "max": null,
           "min": "0",
@@ -1317,5 +1317,5 @@
   "variables": {
     "list": []
   },
-  "version": 19
+  "version": 20
 }
