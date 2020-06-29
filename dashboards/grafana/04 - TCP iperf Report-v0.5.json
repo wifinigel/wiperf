@@ -68,7 +68,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1593296893537,
+  "iteration": 1593409795299,
   "links": [
     {
       "$$hashKey": "object:330",
@@ -113,7 +113,7 @@
       },
       "lines": true,
       "linewidth": 1,
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
       "options": {
         "dataLinks": []
       },
@@ -133,7 +133,7 @@
           "groupBy": [
             {
               "params": [
-                "$interval"
+                "5m"
               ],
               "type": "time"
             }
@@ -266,7 +266,7 @@
       },
       "lines": true,
       "linewidth": 1,
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
       "options": {
         "dataLinks": []
       },
@@ -288,7 +288,20 @@
       "targets": [
         {
           "alias": "$col",
-          "groupBy": [],
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "measurement": "wiperf-iperf3-tcp",
           "orderByTime": "ASC",
           "policy": "default",
@@ -301,6 +314,10 @@
                   "retransmits"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
               },
               {
                 "params": [
@@ -406,12 +423,12 @@
       },
       "lines": true,
       "linewidth": 1,
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
       "options": {
         "dataLinks": []
       },
       "percentage": false,
-      "pointradius": 1,
+      "pointradius": 0.5,
       "points": true,
       "renderer": "flot",
       "seriesOverrides": [
@@ -440,7 +457,7 @@
           "groupBy": [
             {
               "params": [
-                "$__interval"
+                "5m"
               ],
               "type": "time"
             },
@@ -489,7 +506,7 @@
           "groupBy": [
             {
               "params": [
-                "$__interval"
+                "5m"
               ],
               "type": "time"
             },
@@ -538,7 +555,7 @@
           "groupBy": [
             {
               "params": [
-                "$__interval"
+                "5m"
               ],
               "type": "time"
             },
@@ -968,7 +985,7 @@
           "groupBy": [
             {
               "params": [
-                "$__interval"
+                "5m"
               ],
               "type": "time"
             },
@@ -1160,5 +1177,5 @@
   "variables": {
     "list": []
   },
-  "version": 11
+  "version": 12
 }
