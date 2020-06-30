@@ -10,8 +10,7 @@ INSTALL_DIR="$CLONE_DIR/wiperf"
 CFG_DIR="/etc/wiperf"
 GITHUB_REPO="https://github.com/wifinigel/wiperf.git"
 GITHUB_BRANCH='dev'
-OPERATION=$1
-PLATFORM=$2
+PLATFORM=$1
 
 # install function
 install () {
@@ -136,13 +135,6 @@ install () {
     rm -rf $CFG_DIR/conf >> $LOG_FILE 2>&1
   fi 
 
-  # if we have old config files, copy them back im
-  if [ -e ".${CFG_DIR}/config.ini"] ; then
-    echo "(ok) Restoring old config files..." | tee -a $LOG_FILE
-    # copy files back in to retain old config & connectivity
-    cp -R ".${CFG_DIR}/*" ${CFG_DIR}  >> $LOG_FILE 2>&1
-  fi
-
   ### copy across the wiperf switcher if this is a WLAN Pi, remove if rpi 
   if [ "$PLATFORM" = 'wlanpi' ]; then
     # copy wiperf_switcher to /usr/bin/wiperf_switcher
@@ -214,9 +206,8 @@ uninstall () {
   # remove directories
   echo "(ok) Removing install dir" | tee -a $LOG_FILE
   rm -rf $INSTALL_DIR  >> $LOG_FILE 2>&1
-  echo "(ok) Removing config dir" | tee -a $LOG_FILE
-  mv $CFG_DIR ".${CFG_DIR}" >> $LOG_FILE 2>&1
-  #rm -rf $CFG_DIR  >> $LOG_FILE 2>&1
+    echo "(ok) Removing config dir" | tee -a $LOG_FILE
+  rm -rf $CFG_DIR  >> $LOG_FILE 2>&1
   echo "(ok) Removing switcher script" | tee -a $LOG_FILE
   rm -f /usr/bin/wiperf_switcher  >> $LOG_FILE 2>&1
 
@@ -226,52 +217,21 @@ uninstall () {
   echo "(ok) Done"
 }
 
-upgrade () {
-
-# Check which platform we're installing for
-  if ! [[ $PLATFORM =~ ^(wlanpi|rpi)$ ]]; then
-    echo "Unknown (or no) platform supplied (exiting)"
-    exit 1
-  fi
-  
-  echo "(ok) wiperf will now be unistalled, then re-installed with a new version"
-
-  ### check we can get to pypi before staring
-  echo "(ok) checking we can get to the Internet before we start..."
-  curl -s --head  -m 2 --connect-timeout 2 --request GET https://pypi.org | head -n 1 | grep '200'  >> $LOG_FILE 2>&1
-  if [ "$?" != '0' ]; then
-    echo "(fail) Unable to reach Internet - check connection (exiting)" | tee -a $LOG_FILE 
-    exit 1
-  fi
-
-  # kick off the uninstall
-  uninstall
-
-  # install new code
-  echo "(ok) Installing latest version of wiperf..."
-  install 
-
-  exit 0
-}
-
 case "$1" in
-  -i)
-        install
-        ;;
   -u)
-        upgrade
-        ;;
-  -r)
         uninstall
         ;;
-  *)
-        echo "Usage: install.sh {-i | -u | -r} {wlanpi | rpi}"
+  -h)
+        echo "Usage: install.sh {-i | -u | -h}"
         echo ""
-        echo "  install.sh -i : run installer"
-        echo "  install.sh -u : upgrade"
-        echo "  install.sh -r : remove wiperf completely"
+        echo "  install.sh    : run installer (default)"
+        echo "  install.sh -h : show this help message"
+        echo "  install.sh -u : uninstall wiperf completely"
         echo ""
         exit 0
+        ;;
+  *)
+        install
         ;;
 esac
 
