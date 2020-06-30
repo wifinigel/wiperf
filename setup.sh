@@ -16,7 +16,7 @@ PLATFORM=$2
 # install function
 install () {
 
-  echo "(ok) Starting wiperf install process for $PLATFORM (see $LOG_FILE for details)" | tee $LOG_FILE 
+  echo "(ok) Starting wiperf install process for $PLATFORM (see $LOG_FILE for details)" | tee -a $LOG_FILE 
 
   # Check which platform we're installing for
   if ! [[ $PLATFORM =~ ^(wlanpi|rpi)$ ]]; then
@@ -202,7 +202,7 @@ install () {
 }
 
 uninstall () {
-  echo "(ok) Starting wiperf uninstall process (see $LOG_FILE for details)" | tee $LOG_FILE
+  echo "(ok) Starting wiperf uninstall process (see $LOG_FILE for details)" | tee -a $LOG_FILE
   cd /tmp
 
   # remove python modules
@@ -238,7 +238,7 @@ upgrade () {
   echo "(ok) wiperf will now be unistalled, then re-installed with a new version"
 
   ### check we can get to pypi before staring
-  echo "(ok) checking we can get to the Internet before we start..."
+  echo "(ok) checking we can get to the Internet before we start..."  | tee $LOG_FILE
   curl -s --head  -m 2 --connect-timeout 2 --request GET https://pypi.org | head -n 1 | grep '200'  >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
     echo "(fail) Unable to reach Internet - check connection (exiting)" | tee -a $LOG_FILE 
