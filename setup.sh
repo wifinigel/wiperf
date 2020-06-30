@@ -268,9 +268,9 @@ case "$1" in
   *)
         echo "Usage: install.sh {-i | -u | -r} {wlanpi | rpi}"
         echo ""
-        echo "  setup.sh install : run installer"
-        echo "  setup.sh upgrade : upgrade"
-        echo "  setup.sh remove  : remove wiperf completely"
+        echo "  setup.sh install [wlanpi|rpi] : run installer"
+        echo "  setup.sh upgrade [wlanpi|rpi]: upgrade"
+        echo "  setup.sh remove  [wlanpi|rpi] : remove wiperf completely"
         echo ""
         exit 0
         ;;
