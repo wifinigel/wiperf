@@ -137,7 +137,7 @@ install () {
   fi 
 
   # if we have old config files, copy them back im
-  if [ -e ".${CFG_DIR}/config.ini"] ; then
+  if [ -e ".${CFG_DIR}/config.ini" ] ; then
     echo "(ok) Restoring old config files..." | tee -a $LOG_FILE
     # copy files back in to retain old config & connectivity
     cp -R ".${CFG_DIR}/*" ${CFG_DIR}  >> $LOG_FILE 2>&1
