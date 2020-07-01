@@ -1,0 +1,1987 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-5.1.5">
+    
+    
+      
+        <title>Wiperf - config.ini reference guide - Wiperf Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.df84b5fe.min.css">
+      
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wiperf-configini-reference-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href=".." title="Wiperf Documentation" class="md-header-nav__button md-logo" aria-label="Wiperf Documentation">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21l3.6-4.8c-1-.75-2.25-1.2-3.6-1.2s-2.6.45-3.6 1.2L12 21m0-18C7.95 3 4.21 4.34 1.2 6.6L3 9c2.5-1.88 5.62-3 9-3s6.5 1.12 9 3l1.8-2.4C19.79 4.34 16.05 3 12 3m0 6c-2.7 0-5.19.89-7.2 2.4l1.8 2.4C8.1 12.67 9.97 12 12 12c2.03 0 3.9.67 5.4 1.8l1.8-2.4C17.19 9.89 14.7 9 12 9z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Wiperf Documentation
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Wiperf - config.ini reference guide
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Wiperf Documentation" class="md-nav__button md-logo" aria-label="Wiperf Documentation">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21l3.6-4.8c-1-.75-2.25-1.2-3.6-1.2s-2.6.45-3.6 1.2L12 21m0-18C7.95 3 4.21 4.34 1.2 6.6L3 9c2.5-1.88 5.62-3 9-3s6.5 1.12 9 3l1.8-2.4C19.79 4.34 16.05 3 12 3m0 6c-2.7 0-5.19.89-7.2 2.4l1.8 2.4C8.1 12.67 9.97 12 12 12c2.03 0 3.9.67 5.4 1.8l1.8-2.4C17.19 9.89 14.7 9 12 9z"/></svg>
+
+    </a>
+    Wiperf Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../operation/" title="Operation Overview" class="md-nav__link">
+      Operation Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Data Server
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Data Server" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Data Server
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1">
+    
+    <label class="md-nav__link" for="nav-3-1">
+      Splunk
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Splunk" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Splunk
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../splunk_platform/" title="Splunk Platform" class="md-nav__link">
+      Splunk Platform
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../splunk_software/" title="Splunk Software" class="md-nav__link">
+      Splunk Software
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../splunk_install/" title="Splunk Installation" class="md-nav__link">
+      Splunk Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../splunk_configure/" title="Splunk Configuration" class="md-nav__link">
+      Splunk Configuration
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
+    
+    <label class="md-nav__link" for="nav-3-2">
+      Influx/Grafana
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Influx/Grafana" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-2">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Influx/Grafana
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../influx_platform/" title="Influx Platform" class="md-nav__link">
+      Influx Platform
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../influx_software/" title="Influx Software" class="md-nav__link">
+      Influx Software
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../influx_install/" title="Influx Installation" class="md-nav__link">
+      Influx Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../influx_configure/" title="Influx Configuration" class="md-nav__link">
+      Influx Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../grafana_platform/" title="Granafa Platform" class="md-nav__link">
+      Granafa Platform
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../grafana_software/" title="Grafana Software" class="md-nav__link">
+      Grafana Software
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../grafana_install/" title="Grafana Installation" class="md-nav__link">
+      Grafana Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../grafana_configure/" title="Grafana Configuration" class="md-nav__link">
+      Grafana Configuration
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Probe
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Probe" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Probe
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_platform.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_prepare.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_install.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_configure.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_deploy.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../troubleshooting/" title="Troubleshooting" class="md-nav__link">
+      Troubleshooting
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../faq/" title="FAQ" class="md-nav__link">
+      FAQ
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../about/" title="About" class="md-nav__link">
+      About
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    Background
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameter-reference-guide" class="md-nav__link">
+    Parameter Reference Guide
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-section" class="md-nav__link">
+    [General] Section
+  </a>
+  
+    <nav class="md-nav" aria-label="[General] Section">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wlan_if" class="md-nav__link">
+    wlan_if
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mgt_if" class="md-nav__link">
+    mgt_if
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#platform" class="md-nav__link">
+    platform
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exporter_type" class="md-nav__link">
+    exporter_type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splunk_host" class="md-nav__link">
+    splunk_host
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splunk_port" class="md-nav__link">
+    splunk_port
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splunk_token" class="md-nav__link">
+    splunk_token
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#influx_host" class="md-nav__link">
+    influx_host
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#influx_port" class="md-nav__link">
+    influx_port
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#influx_username" class="md-nav__link">
+    influx_username
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#influx_password" class="md-nav__link">
+    influx_password
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#influx_database" class="md-nav__link">
+    influx_database
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#influx2_host" class="md-nav__link">
+    influx2_host
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#influx2_port" class="md-nav__link">
+    influx2_port
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#influx2_token" class="md-nav__link">
+    influx2_token
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#influx2_bucket" class="md-nav__link">
+    influx2_bucket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#influx2_org" class="md-nav__link">
+    influx2_org
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_interval" class="md-nav__link">
+    test_interval
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test_offset" class="md-nav__link">
+    test_offset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connectivity_lookup" class="md-nav__link">
+    connectivity_lookup
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#location" class="md-nav__link">
+    location
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data_format" class="md-nav__link">
+    data_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data_dir" class="md-nav__link">
+    data_dir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data_transport" class="md-nav__link">
+    data_transport
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debug" class="md-nav__link">
+    debug
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cfg_url" class="md-nav__link">
+    cfg_url
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cfg_username" class="md-nav__link">
+    cfg_username
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cfg_password" class="md-nav__link">
+    cfg_password
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cfg_token" class="md-nav__link">
+    cfg_token
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cfg_refresh_interval" class="md-nav__link">
+    cfg_refresh_interval
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unit_bouncer" class="md-nav__link">
+    unit_bouncer
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network_test-section" class="md-nav__link">
+    [Network_Test] Section
+  </a>
+  
+    <nav class="md-nav" aria-label="[Network_Test] Section">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network_data_file" class="md-nav__link">
+    network_data_file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#speedtest-section" class="md-nav__link">
+    [Speedtest] Section
+  </a>
+  
+    <nav class="md-nav" aria-label="[Speedtest] Section">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabled" class="md-nav__link">
+    enabled
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server_id" class="md-nav__link">
+    server_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http_proxy" class="md-nav__link">
+    http_proxy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#https_proxy" class="md-nav__link">
+    https_proxy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no_proxy" class="md-nav__link">
+    no_proxy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#speedtest_data_file" class="md-nav__link">
+    speedtest_data_file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ping_test-section" class="md-nav__link">
+    [Ping_Test] Section
+  </a>
+  
+    <nav class="md-nav" aria-label="[Ping_Test] Section">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabled_1" class="md-nav__link">
+    enabled
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ping_host1" class="md-nav__link">
+    ping_host1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ping_host2" class="md-nav__link">
+    ping_host2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ping_host3" class="md-nav__link">
+    ping_host3
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ping_host4" class="md-nav__link">
+    ping_host4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ping_host5" class="md-nav__link">
+    ping_host5
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ping_count" class="md-nav__link">
+    ping_count
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ping_data_file" class="md-nav__link">
+    ping_data_file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iperf3_tcp_test-section" class="md-nav__link">
+    [Iperf3_tcp_test] Section
+  </a>
+  
+    <nav class="md-nav" aria-label="[Iperf3_tcp_test] Section">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabled_2" class="md-nav__link">
+    enabled
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server_hostname" class="md-nav__link">
+    server_hostname
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port" class="md-nav__link">
+    port
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#duration" class="md-nav__link">
+    duration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iperf3_tcp_data_file" class="md-nav__link">
+    iperf3_tcp_data_file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iperf3_udp_test-section" class="md-nav__link">
+    [Iperf3_udp_test] Section
+  </a>
+  
+    <nav class="md-nav" aria-label="[Iperf3_udp_test] Section">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabled_3" class="md-nav__link">
+    enabled
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server_hostname_1" class="md-nav__link">
+    server_hostname
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port_1" class="md-nav__link">
+    port
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#duration_1" class="md-nav__link">
+    duration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bandwidth" class="md-nav__link">
+    bandwidth
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iperf3_udp_data_file" class="md-nav__link">
+    iperf3_udp_data_file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dns_test-section" class="md-nav__link">
+    [DNS_test] Section
+  </a>
+  
+    <nav class="md-nav" aria-label="[DNS_test] Section">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabled_4" class="md-nav__link">
+    enabled
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns_target1" class="md-nav__link">
+    dns_target1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns_target2" class="md-nav__link">
+    dns_target2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns_target3" class="md-nav__link">
+    dns_target3
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns_target4" class="md-nav__link">
+    dns_target4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns_target5" class="md-nav__link">
+    dns_target5
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns_data_file" class="md-nav__link">
+    dns_data_file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http_test-section" class="md-nav__link">
+    [HTTP_test] Section
+  </a>
+  
+    <nav class="md-nav" aria-label="[HTTP_test] Section">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabled_5" class="md-nav__link">
+    enabled
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http_target1" class="md-nav__link">
+    http_target1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http_target2" class="md-nav__link">
+    http_target2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http_target3" class="md-nav__link">
+    http_target3
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http_target4" class="md-nav__link">
+    http_target4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http_target5" class="md-nav__link">
+    http_target5
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http_data_file" class="md-nav__link">
+    http_data_file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dhcp_test-section" class="md-nav__link">
+    [DHCP_test] Section
+  </a>
+  
+    <nav class="md-nav" aria-label="[DHCP_test] Section">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabled_6" class="md-nav__link">
+    enabled
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mode" class="md-nav__link">
+    mode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dhcp_data_file" class="md-nav__link">
+    dhcp_data_file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <h1 id="wiperf-configini-reference-guide">Wiperf - config.ini reference guide</h1>
+<h2 id="background">Background</h2>
+<p>The config.ini file controls the operation of the Wiperf utility. It has many options available for maximum flexiblity, but some may need some clarification.</p>
+<p>Many options will be fine using the defaults that are supplied with the installed package. However, some will definitely require configuration as they may require values such as IP addresses and port numbers which will vary in each instance where Wiperf is used.</p>
+<p>The config.ini file is located in the directory : /home/wlanpi/wiperf</p>
+<p>The file is organised in a number of sections that relate to different areas of operation. Each section begins with a name enclosed is square brackets, like this:</p>
+<pre><code>[Speedtest]
+</code></pre>
+
+<p>Within each section are a number of configurable parameters that are in the format:</p>
+<pre><code>parameter: value
+</code></pre>
+
+<p>You may also see some lines that begin with a semi-colon. These are comments and have no effect on the operation of Wiperf. You may add, remove or change these as you wish. Here is an example comment:</p>
+<pre><code>; wlan interface name set this as per the output of an iwconfig command (usually wlan0)
+</code></pre>
+
+<h2 id="parameter-reference-guide">Parameter Reference Guide</h2>
+<p>We'll take a look at each section of the config file and provide some guidance on suitable parameter values:</p>
+<ul>
+<li><a href="#general-section">General Section</a><ul>
+<li><a href="#wlan_if">wlan_if</a></li>
+<li><a href="#mgt_if">mgt_if</a></li>
+<li><a href="#platform">platform</a></li>
+<li><a href="#exporter_type">exporter_type</a></li>
+<li><a href="#splunk_host">splunk_host</a></li>
+<li><a href="#splunk-port">splunk_port</a></li>
+<li><a href="#splunk_token">splunk_token</a></li>
+<li><a href="#influx_host">influx_host</a></li>
+<li><a href="#influx_port">influx_port</a></li>
+<li><a href="#influx_username">influx_username</a></li>
+<li><a href="#influx_password">influx_password</a></li>
+<li><a href="#influx_database">influx_database</a></li>
+<li><a href="#influx2_host">influx2_host</a></li>
+<li><a href="#influx2_port">influx2_port</a></li>
+<li><a href="#influx2_token">influx2_token</a></li>
+<li><a href="#influx2_bucket">influx2_bucket</a></li>
+<li><a href="#influx2_org">influx2_org</a></li>
+<li><a href="#test_interval">test_interval</a></li>
+<li><a href="#test_offset">test_offset</a></li>
+<li><a href="#connectivity_lookup">connectivity_lookup</a></li>
+<li><a href="#location">location</a></li>
+<li><a href="#data_format">data_format</a></li>
+<li><a href="#data_dir">data_dir</a></li>
+<li><a href="#data_transport">data_transport</a></li>
+<li><a href="#debug">debug</a></li>
+<li><a href="#cfg_url">cfg_url</a> </li>
+<li><a href="#cfg_username">cfg_username</a> </li>
+<li><a href="#cfg_password">cfg_password</a> </li>
+<li><a href="#cfg_token">cfg_token</a> </li>
+<li><a href="#cfg_refresh_interval">cfg_refresh_interval</a>  </li>
+<li><a href="#unit_bouncer">unit_bouncer</a></li>
+</ul>
+</li>
+<li><a href="#network_test-section">Network_Test Section</a><ul>
+<li><a href="#network_data_file">network_data_file</a></li>
+</ul>
+</li>
+<li><a href="#speedtest-section">Speetest Section</a><ul>
+<li><a href="#enabled">enabled</a></li>
+<li><a href="#server_id">server_id</a></li>
+<li><a href="#http_proxy">http_proxy</a></li>
+<li><a href="#https_proxy">https_proxy</a></li>
+<li><a href="#no_proxy">no_proxy</a></li>
+<li><a href="#speedtest_data_file">speedtest_data_file</a></li>
+</ul>
+</li>
+<li><a href="#ping_test-section">Ping_Test Section</a><ul>
+<li><a href="#enabled-1">enabled</a></li>
+<li><a href="#ping_host1">ping_host1</a></li>
+<li><a href="#ping_host2">ping_host2</a></li>
+<li><a href="#ping_host3">ping_host3</a></li>
+<li><a href="#ping_host4">ping_host4</a></li>
+<li><a href="#ping_host5">ping_host5</a></li>
+<li><a href="#ping_count">ping_count</a></li>
+<li><a href="#ping_data_file">ping_data_file</a></li>
+</ul>
+</li>
+<li><a href="#iperf3_tcp_test-section">Iperf3_tcp_test Section</a><ul>
+<li><a href="#enabled-2">enabled</a></li>
+<li><a href="#server_hostname">server_hostname</a></li>
+<li><a href="#port">port</a></li>
+<li><a href="#duration">duration</a></li>
+<li><a href="#iperf3_tcp_data_file">iperf3_tcp_data_file</a></li>
+</ul>
+</li>
+<li><a href="#iperf3_udp_test-section">Iperf3_udp_test Section</a><ul>
+<li><a href="#enabled-3">enabled</a></li>
+<li><a href="#server_hostname-1">server_hostname</a></li>
+<li><a href="#port-1">port</a></li>
+<li><a href="#duration-1">duration</a></li>
+<li><a href="#bandwidth">bandwidth</a></li>
+<li><a href="#iperf3_udp_data_file">iperf3_udp_data_file</a></li>
+</ul>
+</li>
+<li><a href="#dns_test-section">DNS_test Section</a><ul>
+<li><a href="#enabled-4">enabled</a></li>
+<li><a href="#dns_target1">dns_target1</a></li>
+<li><a href="#dns_target2">dns_target2</a></li>
+<li><a href="#dns_target3">dns_target3</a></li>
+<li><a href="#dns_target4">dns_target4</a></li>
+<li><a href="#dns_target5">dns_target5</a></li>
+<li><a href="#dns_data_file">dns_data_file</a></li>
+</ul>
+</li>
+<li><a href="#http_test-section">HTTP_test Section</a><ul>
+<li><a href="#enabled-5">enabled</a></li>
+<li><a href="#http_target1">http_target1</a></li>
+<li><a href="#http_target2">http_target2</a></li>
+<li><a href="#http_target3">http_target3</a></li>
+<li><a href="#http_target4">http_target4</a></li>
+<li><a href="#http_target5">http_target5</a></li>
+<li><a href="#http_data_file">http_data_file</a></li>
+</ul>
+</li>
+<li><a href="#dhcp_test-section">DHCP_test Section</a><ul>
+<li><a href="#enabled-6">enabled</a></li>
+<li><a href="#mode">mode</a></li>
+<li><a href="#dhcp_data_file">dhcp_data_file</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="general-section">[General] Section</h2>
+<p>Note: any changes to this section on the WLANPi should only be made when it is running in classic mode (not while in Wiperf mode).</p>
+<h3 id="wlan_if">wlan_if</h3>
+<p>This parameter contains the name of the WLAN interface on the Pi. This will almost always be 'wlan0', but is provided in case of new use-cases in the future. You can see the WLAN interface name by running the 'ifconfig' command from the CLI of the Pi</p>
+<p>Default setting:</p>
+<pre><code>wlan_if: wlan0
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="mgt_if">mgt_if</h3>
+<p>When performance tests have been completed, the results data needs to be sent to a reporting server (e.g. Splunk/InfluxDb). This parameter configures the interface over which this management traffic needs to be sent. </p>
+<p>Getting this parameter correct for your environment is very important to ensure that test results data makes it back to your reporting server.</p>
+<p>The available options are:</p>
+<ul>
+<li>wlan0 (the first available WLAN port - usually a USB dongle plugged in to the WLANPi)</li>
+<li>eth0 (the internal Ethernet port of the WLANPi)</li>
+<li>zt  (Zerotier (the virtual network service) is installed and used to connect to the reporting server)</li>
+</ul>
+<p>The WANPi is configured to assign a higher cost default route to eth0 by default so that all traffic (tests &amp; test results) will choose the default route provided by wlan0. If eth0 is used as the path to return test results to the reporting server, then a static route is injected in to the WLANPi route table on start-up to ensure correct routing.</p>
+<p>If this parameter is not correctly set, then results data may not make it back to the reporting server.</p>
+<p>Default setting:</p>
+<pre><code>mgt_if: wlan0
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="platform">platform</h3>
+<p>Wiperf is supported on both the WLANPi and Raspberry Pi platforms.  The available options are:</p>
+<ul>
+<li>wlanpi</li>
+<li>rpi</li>
+</ul>
+<p>Default setting:</p>
+<pre><code>platform: wlanpi
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="exporter_type">exporter_type</h3>
+<p>Wiperf supports a number of remote data repositories that can be used as targets to store test result data. The available options are:</p>
+<ul>
+<li>splunk</li>
+<li>influxdb</li>
+<li>influxdb2</li>
+</ul>
+<p>Default setting:</p>
+<pre><code>exporter_type: splunk
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="splunk_host">splunk_host</h3>
+<p>This is the hostname or IP address of the Splunk platform where test result data is sent to. If the hostname of the Splunk server is used, it must be resolvable by the WLANPi. </p>
+<p>(Note: If using Zerotier, make sure this is the address of the IP assigned to your Splunk server in the Zerotier dashboard for your network)</p>
+<p>Default setting (none):</p>
+<pre><code>splunk_host: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="splunk_port">splunk_port</h3>
+<p>The network port used to send updates to the Splunk server. By default this is 8088, but this may be changed within the Splunk application if an alternative port is required for your environment</p>
+<p>Default setting:</p>
+<pre><code>splunk_port: 8088
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="splunk_token">splunk_token</h3>
+<p>Splunk will only receive HEC updates from devices that are authorised to send it data. Splunk uses tokens to decide if an update is from a valid device. To view available (or create) tokens within Splunk, view the menu option: "Settings &gt; Data &gt; Data Inputs &gt; HTTP Event Collector"</p>
+<p>Here is example token: 84adb9ca-071c-48ad-8aa1-b1903c60310d</p>
+<p>Default setting (none):</p>
+<pre><code>splunk_token: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="influx_host">influx_host</h3>
+<p>This is the hostname or IP address of the Influx (v1.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the WLANPi. </p>
+<p>(Note: If using Zerotier, make sure this is the address of the IP assigned to your Splunk server in the Zerotier dashboard for your network)</p>
+<p>Default setting (none):</p>
+<pre><code>influx_host: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="influx_port">influx_port</h3>
+<p>The network port used to send updates to the Influx (v1.x) server. By default this is 8086, but this may be changed within the Influx application if an alternative port is required for your environment</p>
+<p>Default setting:</p>
+<pre><code>influx_port: 8086
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="influx_username">influx_username</h3>
+<p>The username that will be used to access the Influx (v1.x) server DB to post results data. This username must be configured on the InfluxDB server prior to wiper sending results data to the InfluxDB server.</p>
+<p>Default setting (None):</p>
+<pre><code>influx_username:
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="influx_password">influx_password</h3>
+<p>The password that will be used to access the Influx (v1.x) server DB to post results data. This password must be configured on the InfluxDB server prior to wiper sending results data to the InfluxDB server.</p>
+<p>Default setting (None):</p>
+<pre><code>influx_password:
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="influx_database">influx_database</h3>
+<p>The name of the database on the Influx (v1.x) server DB where wiperf will post results data. This database must have been created on the InfluxDB server prior to wiper sending results data to the InfluxDB server.</p>
+<p>Default setting (None):</p>
+<pre><code>influx_database:
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="influx2_host">influx2_host</h3>
+<p>This is the hostname or IP address of the Influx (v2.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the WLANPi. </p>
+<p>(Note: If using Zerotier, make sure this is the address of the IP assigned to your InfluxDb2 server in the Zerotier dashboard for your network)</p>
+<p>Default setting (none):</p>
+<pre><code>influx2_host: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="influx2_port">influx2_port</h3>
+<p>The network port used to send updates to the Influx (v2.x) server. By default this is 443 (this assumes the cloud service is used), but this may be changed within the Influx application if an alternative port is required for your environment</p>
+<p>Default setting:</p>
+<pre><code>influx2_port: 443
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="influx2_token">influx2_token</h3>
+<p>InfluxDB2 allows the use of authentication tokens when sending results data to the InfluxDB2 server. This provides an easier authentication methods than using a username and password. Once a token has been created on InfluxDB server, it can be used by wiperf to authenticate the results data sent to the InfluxDB2 server</p>
+<p>Default setting (none):</p>
+<pre><code>influx2_token: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="influx2_bucket">influx2_bucket</h3>
+<p>Data sent to the InfluxDB2 server from wiperf is stored in a "bucket" in the data store. This field is used to configure the bucket to which wiperf should send it's data.</p>
+<p>Default setting (none):</p>
+<pre><code>influx2_bucket: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="influx2_org">influx2_org</h3>
+<p>The InfluxDB2 server can be partitioned in to a number of organizations, which contain the buckets where data will be stored. Use this field to configure wiperf to send data to the correct organisation on InfluxDB2.</p>
+<p>Default setting (none):</p>
+<pre><code>influx2_org: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="test_interval">test_interval</h3>
+<p>(WLANPi only) This is the interval (in minutes) at which we would like to run the performance tests. The recommened minimum is 5, which is also the default.</p>
+<p>(Note: if this setting is too low, scheduled tests may try to run before the previous test sequence has completed, which could cause gaps in your data)</p>
+<p>Default setting:</p>
+<pre><code>test_interval: 5
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="test_offset">test_offset</h3>
+<p>(WLANPi only) By default test run at the interval specified by the <code>test_interval</code> parameter, which is referenced to the to of the hours (e.g. 5 mins interval will run at 5, 10, 15, 20, 25...etc. mins past the hour). If multiple proes are running, it mau be useful to stagger their start times. By setting <code>test_offset</code> to a value of one, this will offset all test start times by 1 minutes (i.e. 6,11,16,21,26...etc. mins past the hour)</p>
+<p>The default value is zero which means that the default 5,10,15,20... run pattern will be used.</p>
+<p>Default setting:</p>
+<pre><code>test_offset: 0
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="connectivity_lookup">connectivity_lookup</h3>
+<p>At the start of each test cycle, a DNS lookup is performed to ensure that DNS is working. By default this is 'google.com' (this was 'bbc.co.uk' on older versions of wiperf). This may be set to any required hostname lookup in instances when the default site may not be available for some reason (e.g. DNS restrictions due to filtering or lack of Internet access)</p>
+<p>Default setting:</p>
+<pre><code>connectivity_lookup: google.com
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="location">location</h3>
+<p>This is a string that can be added to assist with report filtering, if required. Its default value in an empty string. It could be be used in an expression within your reports to filter units based on a location field (for instance)</p>
+<p>Default setting:</p>
+<pre><code>location: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="data_format">data_format</h3>
+<p>(Not currently operational) Wiperf has the capability to output data in a number of formats. The current options are: csv or json</p>
+<p>However this field is not currently used, as selecting the 'hec' transport mode (the only supported transport currently) over-rides this field. The value in this filed is currently irrelevant, but it s recommended to leave it at the default setting of <code>json</code></p>
+<p>Default setting:</p>
+<pre><code>data_format: json
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="data_dir">data_dir</h3>
+<p>This is the directory on the WLANPi/RPi where test result data is dumped. <strong>Do not change this value from the default</strong>. This field is provided for future configuration options if required.</p>
+<p>Default setting:</p>
+<pre><code>data_dir: /home/wlanpi/wiperf/data
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="data_transport">data_transport</h3>
+<p>The currently supported data transport mode is <code>hec</code>. This is the HTTP Event Collector supported natively within the Splunk server. Other transport modes will be suported in the future, but currently this should be left at the default setting of <code>`hec</code>.</p>
+<p>(Note: the transport method <code>forwarder</code> is also a valid transport method which provides support for very early versions of this code which used the Splunk Univeral Forwarder. Use of this method is deprecated and will be removed in the near future. Anyone still using the UF should move to using hec ASAP)</p>
+<p>Default setting:</p>
+<pre><code>data_transport: hec
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="debug">debug</h3>
+<p>To enable enhanced logging in the agent.log file, change this setting to "on"</p>
+<p>Default setting:</p>
+<pre><code>debug: off
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="cfg_url">cfg_url</h3>
+<p>If using centralized configuration file retrieval, this field specifies the full URL of the config file on the remote repo. (Note that on GitHub this is the URL of the raw file itself)</p>
+<p>If this field is not set, then centralized configuration retrieval is disabled</p>
+<p>Default setting (none):</p>
+<pre><code>cfg_url: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="cfg_username">cfg_username</h3>
+<p>If username/pasword credentials are used to retrieve the centralized config, this field specifies the usename to be used.</p>
+<p>Default setting (none):</p>
+<pre><code>cfg_username: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="cfg_password">cfg_password</h3>
+<p>If username/pasword credentials are used to retrieve the centralized config, this field specifies the password to be used.</p>
+<p>Default setting (none):</p>
+<pre><code>cfg_password: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="cfg_token">cfg_token</h3>
+<p>If a GitHub authentication token is used to retrieve the centralized config, this field specifies the token to be used. (Note: this is used instead of a username/pwd)</p>
+<p>Default setting (none):</p>
+<pre><code>cfg_token: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="cfg_refresh_interval">cfg_refresh_interval</h3>
+<p>This field specifies how often (in seconds) the centralized config file should be retrieved . Recommended value: 900 (i.e. 15 mins)</p>
+<p>Default setting (none):</p>
+<pre><code>cfg_refresh_interval: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="unit_bouncer">unit_bouncer</h3>
+<p>If you need to bounce (reboot) the unit for some reason on a regular basis, this field can be used to signal to the WLAN Pi each hour at which it must reboot.</p>
+<p>The field is a comma separated string that lists the hours at which the unit must reboot (in 24-hour format). The number-format and comma separation are important to get right! Note that the reboot is not exactly on the hour, but will occur at the end of the next test cycle that it is within the hour where a reboot is required. It will only happen once per hour.</p>
+<p>Example: the following config will reboot at midnight, 04:00, 08:00, 12:00, 16:00:</p>
+<pre><code> unit_bouncer: 00, 06, 12, 18
+</code></pre>
+
+<p>This parameter is commented out by default as it is obviously not something you necessarilly want to switch on accidentally.</p>
+<p>Default setting:</p>
+<pre><code>; unit_bouncer: 00, 06, 12, 18
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h2 id="network_test-section">[Network_Test] Section</h2>
+<h3 id="network_data_file">network_data_file</h3>
+<p>(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for network tests in remote data repositories (e.g. Splunk, InfluxDB) </p>
+<p>Default setting:</p>
+<pre><code>network_data_file: wiperf-network
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h2 id="speedtest-section">[Speedtest] Section</h2>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)</p>
+<h3 id="enabled">enabled</h3>
+<p>Options: yes or no. If set to no, entire section is ignored and no Speedtest is run. When enabled, a speedtest to the Ookla speedtest service is run each test cycle.</p>
+<p>Default setting:</p>
+<pre><code>enabled: yes
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="server_id">server_id</h3>
+<p>If you wish to specify a particular Ookla speedtest server that the test needs to be run against, you can enter its ID here. This must be the (numeric) server ID of a specific Ookla server taken from : https://c.speedtest.net/speedtest-servers-static.php</p>
+<p><strong>Note this must be the number (NOT url!) taken from the field id="xxxxx".</strong></p>
+<p>If no value is specified, best server is used (default)</p>
+<p>Default setting:</p>
+<pre><code>server_id:
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="http_proxy">http_proxy</h3>
+<h3 id="https_proxy">https_proxy</h3>
+<h3 id="no_proxy">no_proxy</h3>
+<p>If proxy server access is required to run a speedtest, enter the proxy server details here for https &amp; https e.g. </p>
+<pre><code>https_proxy: http://10.1.1.1:8080
+</code></pre>
+
+<p>For sites that are not accessed via proxy, use <code>no_proxy</code> (make sure value enclosed in quotes &amp; comma separated for mutiple values) e.g. </p>
+<pre><code>no_proxy: &quot;mail.local, intranet.local&quot;
+</code></pre>
+
+<p>Default settings:</p>
+<pre><code>http_proxy: 
+https_proxy:
+no_proxy:
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="speedtest_data_file">speedtest_data_file</h3>
+<p>(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for Speedtests in the reporting server (e.g. Splunk/InfluxDB) </p>
+<p>Default setting:</p>
+<pre><code>speedtest_data_file: wiperf-speedtest
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h2 id="ping_test-section">[Ping_Test] Section</h2>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)</p>
+<h3 id="enabled_1">enabled</h3>
+<p>Options: yes or no. If set to no, entire section is ignored and no ping tests are run. When enabled, up to 5 entries will be targetted with an ICMP ping and the RRT times recorded</p>
+<p>Default setting:</p>
+<pre><code>enabled: yes
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="ping_host1">ping_host1</h3>
+<p>IP address or hostname of first ping target. No target details = no test run</p>
+<p>Default setting:</p>
+<pre><code>ping_host1: bbc.co.uk
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="ping_host2">ping_host2</h3>
+<p>IP address or hostname of second ping target. No target details = no test run</p>
+<p>Default setting:</p>
+<pre><code>ping_host2: cisco.com
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="ping_host3">ping_host3</h3>
+<p>IP address or hostname of third ping target. No target details = no test run</p>
+<p>Default setting:</p>
+<pre><code>ping_host3: google.com
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="ping_host4">ping_host4</h3>
+<p>IP address or hostname of fourth ping target. No target details = no test run</p>
+<p>Default setting:</p>
+<pre><code>ping_host4:
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="ping_host5">ping_host5</h3>
+<p>IP address or hostname of fifth ping target. No target details = no test run</p>
+<p>Default setting:</p>
+<pre><code>ping_host2: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="ping_count">ping_count</h3>
+<p>The number of pings to send for each ping target</p>
+<p>Default setting:</p>
+<pre><code>ping_count: 10
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="ping_data_file">ping_data_file</h3>
+<p>(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for ping tests in the reporting server (e.g. Splunk.InfuxDB)</p>
+<p>Default setting:</p>
+<pre><code>ping_data_file: wiperf-ping
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h2 id="iperf3_tcp_test-section">[Iperf3_tcp_test] Section</h2>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)</p>
+<h3 id="enabled_2">enabled</h3>
+<p>Options: yes or no. If set to no, entire section is ignored and no tcp iperf3 test is run. When enabled, a tcp iperf3 test will be run to the iperf3 server defined in <code>server_hostname</code> to the <code>port</code> network port for the <code>duration</code> period (in secs) </p>
+<p>Default setting:</p>
+<pre><code>enabled: yes
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="server_hostname">server_hostname</h3>
+<p>The IP address or (resolvable) name of the server running the iperf3 service.</p>
+<p>Default setting:</p>
+<pre><code>server_hostname: 192.168.0.14
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="port">port</h3>
+<p>The network port on the server running iperf3 where the iperf3 service is available (5201 by default).</p>
+<p>Default setting:</p>
+<pre><code>port: 5201
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="duration">duration</h3>
+<p>The duration (in seconds) that the iperf3 test will be run for</p>
+<p>Default setting:</p>
+<pre><code>duration: 20
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="iperf3_tcp_data_file">iperf3_tcp_data_file</h3>
+<p>(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for tcp iperf3 tests in Splunk </p>
+<p>Default setting:</p>
+<pre><code>iperf3_tcp_data_file: wiperf-iperf3-tcp
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h2 id="iperf3_udp_test-section">[Iperf3_udp_test] Section</h2>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)</p>
+<h3 id="enabled_3">enabled</h3>
+<p>Options: yes or no. If set to no, entire section is ignored and no udp iperf3 test is run. When enabled, a udp iperf3 test will be run to the iperf3 server defined in <code>server_hostname</code> to the <code>port</code> network port for the <code>duration</code> period (in secs), attempting to achieve a data transfer rate of <code>bandwidth</code> bps. </p>
+<p>Default setting:</p>
+<pre><code>enabled: yes
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="server_hostname_1">server_hostname</h3>
+<p>The IP address or (resolvable) name of the server running the iperf3 service.</p>
+<p>Default setting:</p>
+<pre><code>server_hostname: 192.168.0.14
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="port_1">port</h3>
+<p>The network port on the server running iperf3 where the iperf3 service is available (5201 by default).</p>
+<p>Default setting:</p>
+<pre><code>port: 5201
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="duration_1">duration</h3>
+<p>The duration (in seconds) that the iperf3 test will be run for</p>
+<p>Default setting:</p>
+<pre><code>duration: 20
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="bandwidth">bandwidth</h3>
+<p>The data rate that will be attempted for the UDP iperf3 test in bps</p>
+<p>Default setting:</p>
+<pre><code>bandwidth: 20000000
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="iperf3_udp_data_file">iperf3_udp_data_file</h3>
+<p>(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for udp iperf3 tests in Splunk </p>
+<p>Default setting:</p>
+<pre><code>iperf3_udp_data_file: wiperf-iperf3-udp
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h2 id="dns_test-section">[DNS_test] Section</h2>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)</p>
+<h3 id="enabled_4">enabled</h3>
+<p>Options: yes or no. If set to no, entire section is ignored and no DNS tests are run. When enabled, DNS tests are run for each of the <code>dns_target</code> paramters defined in this section. Any targets that have no value entered will be ignored.</p>
+<p>Default setting:</p>
+<pre><code>enabled: yes
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="dns_target1">dns_target1</h3>
+<p>Hostname of first DNS target. No target details = no test run</p>
+<p>Default setting:</p>
+<pre><code>dns_target1: bbc.co.uk
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="dns_target2">dns_target2</h3>
+<p>Hostname of second DNS target. No target details = no test run</p>
+<p>Default setting:</p>
+<pre><code>dns_target2: cisco.com
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="dns_target3">dns_target3</h3>
+<p>Hostname of third DNS target. No target details = no test run</p>
+<p>Default setting:</p>
+<pre><code>dns_target3: google.com
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="dns_target4">dns_target4</h3>
+<p>Hostname of fourth DNS target. No target details = no test run</p>
+<p>Default setting:</p>
+<pre><code>dns_target4: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="dns_target5">dns_target5</h3>
+<p>Hostname of fifth DNS target. No target details = no test run</p>
+<p>Default setting:</p>
+<pre><code>dns_target5: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="dns_data_file">dns_data_file</h3>
+<p>(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for DNS tests in Splunk </p>
+<p>Default setting:</p>
+<pre><code>dns_data_file: wiperf-dns
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h2 id="http_test-section">[HTTP_test] Section</h2>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)</p>
+<h3 id="enabled_5">enabled</h3>
+<p>Options: yes or no. If set to no, entire section is ignored and no HTTP tests are run. When enabled, HTTP tests are run for each of the <code>http_target</code> paramters defined in this section. Any targets that have no value entered will be ignored.</p>
+<p>Targets must include the full url of each site to be queried (including http:// or https:// element). Valid site address examples:</p>
+<ul>
+<li>http://bbc.co.uk</li>
+<li>https://ebay.com</li>
+</ul>
+<p>A http get will be performed for each target and the result code returned.</p>
+<p>Default setting:</p>
+<pre><code>enabled: yes
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="http_target1">http_target1</h3>
+<p>Hostname of first HTTP target. No target details = no test run</p>
+<p>Default setting:</p>
+<pre><code>http_target1: https://ebay.co.uk
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="http_target2">http_target2</h3>
+<p>Hostname of second HTTP target. No target details = no test run</p>
+<p>Default setting:</p>
+<pre><code>http_target2: http://twitter.com
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="http_target3">http_target3</h3>
+<p>Hostname of third HTTP target. No target details = no test run</p>
+<p>Default setting:</p>
+<pre><code>http_target3: https://facebook.com
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="http_target4">http_target4</h3>
+<p>Hostname of fourth HTTP target. No target details = no test run</p>
+<p>Default setting:</p>
+<pre><code>http_target4: https://instagram.com
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="http_target5">http_target5</h3>
+<p>Hostname of fifth HTTP target. No target details = no test run</p>
+<p>Default setting: https://amazon.com</p>
+<pre><code>http_target5: 
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="http_data_file">http_data_file</h3>
+<p>(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for HTTP tests in Splunk </p>
+<p>Default setting:</p>
+<pre><code>http_data_file: wiperf-http
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h2 id="dhcp_test-section">[DHCP_test] Section</h2>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)</p>
+<h3 id="enabled_6">enabled</h3>
+<p>Options: yes or no. If set to no, entire section is ignored and no DHCP test is run.  Note that the DHCP test has 2 modes :</p>
+<ul>
+<li>passive: only a renewal request is sent (no release of IP)</li>
+<li>active: a release and renew request is performed.</li>
+</ul>
+<p>Note that the active setting has shown varying degrees of usefulness in esting. In some scenarios (e.g. when connected via ZeroTier), it has caused connectivity issues, hence the passive setting is a better choice. Obviously, the passive setting does not perform such a rigorous DHCP test and is completed much quicker than the active mode. However, it still provides a useful comparative measure of the reponsivemess of DHCP servers.</p>
+<p>Default setting:</p>
+<pre><code>enabled: yes
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="mode">mode</h3>
+<p>Available options:</p>
+<ul>
+<li>passive</li>
+<li>active</li>
+</ul>
+<p>The active settings performs a full release/request and may be disruptve to connectivity - use with caution. The passive setting is the recommended option for most situations.</p>
+<p>Default setting:</p>
+<pre><code>mode: passive
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+<h3 id="dhcp_data_file">dhcp_data_file</h3>
+<p>(Advanced setting, do not change) This the file name for modes where data files are dumped locally and also provides the data source for DHCP tests in Splunk </p>
+<p>Default setting:</p>
+<pre><code>dhcp_data_file: wiperf-dhcp
+</code></pre>
+
+<p><a href="#parameter-reference-guide">top</a></p>
+                
+                  
+                    
+
+<hr>
+<div class="md-source-date">
+  <small>
+    
+      Last update: July 1, 2020
+    
+  </small>
+</div>
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.83fe6e3c.min.js"></script>
+      <script src="../assets/javascripts/bundle.7e1cb91c.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.37585f48.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>

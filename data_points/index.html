@@ -1,0 +1,814 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-5.1.5">
+    
+    
+      
+        <title>Wiperf - Data Points Reference Guide - Wiperf Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.df84b5fe.min.css">
+      
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wiperf-data-points-reference-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href=".." title="Wiperf Documentation" class="md-header-nav__button md-logo" aria-label="Wiperf Documentation">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21l3.6-4.8c-1-.75-2.25-1.2-3.6-1.2s-2.6.45-3.6 1.2L12 21m0-18C7.95 3 4.21 4.34 1.2 6.6L3 9c2.5-1.88 5.62-3 9-3s6.5 1.12 9 3l1.8-2.4C19.79 4.34 16.05 3 12 3m0 6c-2.7 0-5.19.89-7.2 2.4l1.8 2.4C8.1 12.67 9.97 12 12 12c2.03 0 3.9.67 5.4 1.8l1.8-2.4C17.19 9.89 14.7 9 12 9z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Wiperf Documentation
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Wiperf - Data Points Reference Guide
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Wiperf Documentation" class="md-nav__button md-logo" aria-label="Wiperf Documentation">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21l3.6-4.8c-1-.75-2.25-1.2-3.6-1.2s-2.6.45-3.6 1.2L12 21m0-18C7.95 3 4.21 4.34 1.2 6.6L3 9c2.5-1.88 5.62-3 9-3s6.5 1.12 9 3l1.8-2.4C19.79 4.34 16.05 3 12 3m0 6c-2.7 0-5.19.89-7.2 2.4l1.8 2.4C8.1 12.67 9.97 12 12 12c2.03 0 3.9.67 5.4 1.8l1.8-2.4C17.19 9.89 14.7 9 12 9z"/></svg>
+
+    </a>
+    Wiperf Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../operation/" title="Operation Overview" class="md-nav__link">
+      Operation Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Data Server
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Data Server" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Data Server
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1">
+    
+    <label class="md-nav__link" for="nav-3-1">
+      Splunk
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Splunk" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Splunk
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../splunk_platform/" title="Splunk Platform" class="md-nav__link">
+      Splunk Platform
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../splunk_software/" title="Splunk Software" class="md-nav__link">
+      Splunk Software
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../splunk_install/" title="Splunk Installation" class="md-nav__link">
+      Splunk Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../splunk_configure/" title="Splunk Configuration" class="md-nav__link">
+      Splunk Configuration
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
+    
+    <label class="md-nav__link" for="nav-3-2">
+      Influx/Grafana
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Influx/Grafana" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-2">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Influx/Grafana
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../influx_platform/" title="Influx Platform" class="md-nav__link">
+      Influx Platform
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../influx_software/" title="Influx Software" class="md-nav__link">
+      Influx Software
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../influx_install/" title="Influx Installation" class="md-nav__link">
+      Influx Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../influx_configure/" title="Influx Configuration" class="md-nav__link">
+      Influx Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../grafana_platform/" title="Granafa Platform" class="md-nav__link">
+      Granafa Platform
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../grafana_software/" title="Grafana Software" class="md-nav__link">
+      Grafana Software
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../grafana_install/" title="Grafana Installation" class="md-nav__link">
+      Grafana Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../grafana_configure/" title="Grafana Configuration" class="md-nav__link">
+      Grafana Configuration
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Probe
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Probe" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Probe
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_platform.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_prepare.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_install.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_configure.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_deploy.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../troubleshooting/" title="Troubleshooting" class="md-nav__link">
+      Troubleshooting
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../faq/" title="FAQ" class="md-nav__link">
+      FAQ
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../about/" title="About" class="md-nav__link">
+      About
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    Background
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-points-details" class="md-nav__link">
+    Data Points Details
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Points Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wireless-network-connectivity" class="md-nav__link">
+    Wireless Network Connectivity
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#speedtest-results" class="md-nav__link">
+    Speedtest Results
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ping-results" class="md-nav__link">
+    Ping Results
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-results" class="md-nav__link">
+    DNS Results
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http-results" class="md-nav__link">
+    HTTP Results
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iperf3-tcp-results" class="md-nav__link">
+    iperf3 TCP Results
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iperf3-udp-results" class="md-nav__link">
+    iperf3 UDP Results
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dhcp-test-results" class="md-nav__link">
+    DHCP Test Results
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <h1 id="wiperf-data-points-reference-guide">Wiperf - Data Points Reference Guide</h1>
+<h2 id="background">Background</h2>
+<p>The wiperf probe collects a variety of data points about various aspects of network connectivity and performance. It then makes those data points available to a number of databases via their standard API (e.g. Splunk, InfluxDB etc.).</p>
+<p>The data collected in all instances is the same, but the format of the data presented to each type of database varies depending on the their API and formatting rules and syntax.</p>
+<p>This document details the data points collected by the probe. These field names and the data values should be the same no matter which database is used. </p>
+<p>The probe may collect data for the following network tests, depending upon its configuration:</p>
+<ul>
+<li><a href="#wireless-network-connectivity">Wireless network connectivity details</a></li>
+<li><a href="#speedtest-results">Speedtest testing results data</a></li>
+<li><a href="#ping-results">ICMP ping tests to various destinations</a></li>
+<li><a href="#dns-results">DNS lookup tests to various destinations</a>]</li>
+<li><a href="#http-results">HTTP (web) tests to various destinations</a></li>
+<li><a href="#iperf3-tcp-results">iperf3 TCP test to a nominated iperf3 server</a></li>
+<li><a href="#iperf3-udp-results">iperf3 UDP test to a nominated iperf3 server</a></li>
+<li><a href="#dhcp-test-results">DHCP renewal test to test DHCP performance on network to which the WLAN Pi is connected</a></li>
+</ul>
+<p>The tests are run each time the wiperf process is triggered (usually every 5 minutes from a local cron job). The tests that are run, together with test configuration parameters are configured in the config.ini file.</p>
+<p>Here are the data points that may be collected, displayed by test type:</p>
+<h2 id="data-points-details">Data Points Details</h2>
+<h3 id="wireless-network-connectivity">Wireless Network Connectivity</h3>
+<p><strong>(Data source: wiperf-network)</strong></p>
+<ul>
+<li>time : Unix timestamp of time test was performed</li>
+<li>ssid : The network name of the wireless network to which the wiperf probe is currently connected </li>
+<li>bssid : The basic service set identifier (i.e. MAC address) of the radio to which the wiperf probe is currently connected</li>
+<li>freq_ghz : The centre frequency of the channel on which the probe is operating (note this may be different to the primary channel centre freq if a bonded channel is in use)</li>
+<li>center_freq_ghz : The centre frequency of the primary channel on which the probe is operating </li>
+<li>channel : The channel number on which the probe is operating</li>
+<li>channel_width: The channel width (e.g. 20MHz, 40MHz, 80MHz) of the channel on which the probe is operating</li>
+<li>tx_rate_mbps : The PHY rate at which data is being sent from the probe to the AP (note this is not a throughput rate, just a physical connection rate)</li>
+<li>rx_rate_mbps : The PHY rate at which data is being sent from the AP to the probe (note this is not a throughput rate, just a physical connection rate)</li>
+<li>tx_mcs : For HT &amp; VHT connections, this is the the MCS value used by the probe to the AP</li>
+<li>rx_mcs : For HT &amp; VHT connections, this is the the MCS value used by the AP to the probe</li>
+<li>signal_level_dbm : The power level of the AP radio signal as observed by the probe (in dBm)</li>
+<li>tx_retries : The number of transmitted frames that have had to be sent gain (retried)</li>
+<li>ip_address : The IP address assigned to the probe WLAN NIC</li>
+</ul>
+<h3 id="speedtest-results">Speedtest Results</h3>
+<p><strong>(Data source: wiperf-speedtest)</strong></p>
+<ul>
+<li>time : Unix timestamp of time test was performed</li>
+<li>ping_time : The RTT of a ping test to the speedtest server</li>
+<li>download_rate_mbps : The throughput rate achieved when receiving data from the speedtest server in megabits per second</li>
+<li>upload_rate_mbps : The throughput rate achieved when sending data to the speedtest server in megabits per second</li>
+<li>server_name : The name of the speedtest server used for this test</li>
+</ul>
+<h3 id="ping-results">Ping Results</h3>
+<p><strong>(Data source: wiperf-ping)</strong></p>
+<ul>
+<li>time : Unix timestamp of time test was performed</li>
+<li>ping_index : wiperf runs up to 5 instances of ping test via its configuration file. This index uniquely identifies each instance.</li>
+<li>ping_host : The IP address or hostname of the target host/site being pinged</li>
+<li>pkts_tx : The number of ping request packets sent during the ping test</li>
+<li>pkts_rx : The number of ping response packets received back during the ping test</li>
+<li>percent_loss : The percentage (%) of packets lost during the test (i.e. how many responses were received compared to requests sent)</li>
+<li>test_time_ms : How long the ping test took in total</li>
+<li>rtt_min_ms : The minimum round trip time of all ping tests to this test instance in milliseconds</li>
+<li>rtt_avg_ms : The average round trip time of all ping tests to this test instance in milliseconds</li>
+<li>rtt_max_ms : The maximum round trip time of all ping tests to this test instance in milliseconds</li>
+<li>rtt_mdev_ms : Standard deviation of all ping tests to this test instance (...no, I don't know either...but you'll look cool at dinner parties if you mention it.)</li>
+</ul>
+<h3 id="dns-results">DNS Results</h3>
+<p><strong>(Data source: wiperf-ping)</strong></p>
+<ul>
+<li>time : Unix timestamp of time test was performed</li>
+<li>dns_index : wiperf runs up to 5 instances of DNS test via its configuration file. This index uniquely identifies each instance.</li>
+<li>dns_target : The domain name of the target host/site which is the subject of the DNS lookup test</li>
+<li>lookup_time_ms : The time taken to perform the DNS lookup in milliseconds</li>
+</ul>
+<h3 id="http-results">HTTP Results</h3>
+<p><strong>(Data source: wiperf-http)</strong></p>
+<ul>
+<li>time : Unix timestamp of time test was performed</li>
+<li>http_index : wiperf runs up to 5 instances of HTTP test via its configuration file. This index uniquely identifies each instance.</li>
+<li>http_target : The domain name (or IP address) of the target site which is the subject of the HTTP test</li>
+<li>lookup_time_ms : The time taken to retrieve the html page from the target site in milliseconds</li>
+<li>http_status_code : The HTTP status code returned from the target site in this test instance (200 is good, other values have varying meanings: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes )</li>
+</ul>
+<h3 id="iperf3-tcp-results">iperf3 TCP Results</h3>
+<p><strong>(Data source: wiperf-iperf3-tcp)</strong></p>
+<ul>
+<li>time : Unix timestamp of time test was performed</li>
+<li>sent_mbps : The transmit throughput achieved (in megabits per seconds) during the TCP iperf test</li>
+<li>received_mbps : The receive throughput achieved (in megabits per seconds) during the TCP iperf test</li>
+<li>sent_bytes : The number of bytes (i.e. data volume) sent from the probe to the iperf server during the test</li>
+<li>received_bytes : The number of bytes (i.e. data volume) received by the probe from the iperf server during the test</li>
+<li>retransmits : The number of times frames had to be re=transmitted during the test</li>
+</ul>
+<h3 id="iperf3-udp-results">iperf3 UDP Results</h3>
+<p><strong>(Data source: wiperf-iperf3-udp)</strong></p>
+<ul>
+<li>time : Unix timestamp of time test was performed</li>
+<li>bytes : The number of bytes transferred from the probe to the iperf server during the test</li>
+<li>mbps : The throughput achieved (in megabits per second) during the iperf test when sending data to the iperf server</li>
+<li>jitter_ms : The level of jitter measured (in milliseconds) during the test</li>
+<li>packets : The number of packets sent from the probe to the iperf server during the test</li>
+<li>lost_packets : The number of transmitted packets lost during the test</li>
+<li>lost_percent : The percentage of transmitted packets lost during the test</li>
+</ul>
+<h3 id="dhcp-test-results">DHCP Test Results</h3>
+<p><strong>(Data source: wiperf-dhcp)</strong></p>
+<ul>
+<li>time : Unix timestamp of time test was performed</li>
+<li>renewal_time_ms : The time taken for the probe to renew it's IP address in milliseconds</li>
+</ul>
+                
+                  
+                    
+
+<hr>
+<div class="md-source-date">
+  <small>
+    
+      Last update: July 1, 2020
+    
+  </small>
+</div>
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.83fe6e3c.min.js"></script>
+      <script src="../assets/javascripts/bundle.7e1cb91c.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.37585f48.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>

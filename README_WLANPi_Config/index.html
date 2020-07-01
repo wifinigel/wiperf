@@ -1,0 +1,884 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-5.1.5">
+    
+    
+      
+        <title>Contents - Wiperf Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.df84b5fe.min.css">
+      
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#contents" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href=".." title="Wiperf Documentation" class="md-header-nav__button md-logo" aria-label="Wiperf Documentation">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21l3.6-4.8c-1-.75-2.25-1.2-3.6-1.2s-2.6.45-3.6 1.2L12 21m0-18C7.95 3 4.21 4.34 1.2 6.6L3 9c2.5-1.88 5.62-3 9-3s6.5 1.12 9 3l1.8-2.4C19.79 4.34 16.05 3 12 3m0 6c-2.7 0-5.19.89-7.2 2.4l1.8 2.4C8.1 12.67 9.97 12 12 12c2.03 0 3.9.67 5.4 1.8l1.8-2.4C17.19 9.89 14.7 9 12 9z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Wiperf Documentation
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Contents
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Wiperf Documentation" class="md-nav__button md-logo" aria-label="Wiperf Documentation">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21l3.6-4.8c-1-.75-2.25-1.2-3.6-1.2s-2.6.45-3.6 1.2L12 21m0-18C7.95 3 4.21 4.34 1.2 6.6L3 9c2.5-1.88 5.62-3 9-3s6.5 1.12 9 3l1.8-2.4C19.79 4.34 16.05 3 12 3m0 6c-2.7 0-5.19.89-7.2 2.4l1.8 2.4C8.1 12.67 9.97 12 12 12c2.03 0 3.9.67 5.4 1.8l1.8-2.4C17.19 9.89 14.7 9 12 9z"/></svg>
+
+    </a>
+    Wiperf Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../operation/" title="Operation Overview" class="md-nav__link">
+      Operation Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Data Server
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Data Server" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Data Server
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1">
+    
+    <label class="md-nav__link" for="nav-3-1">
+      Splunk
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Splunk" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Splunk
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../splunk_platform/" title="Splunk Platform" class="md-nav__link">
+      Splunk Platform
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../splunk_software/" title="Splunk Software" class="md-nav__link">
+      Splunk Software
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../splunk_install/" title="Splunk Installation" class="md-nav__link">
+      Splunk Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../splunk_configure/" title="Splunk Configuration" class="md-nav__link">
+      Splunk Configuration
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
+    
+    <label class="md-nav__link" for="nav-3-2">
+      Influx/Grafana
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Influx/Grafana" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-2">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Influx/Grafana
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../influx_platform/" title="Influx Platform" class="md-nav__link">
+      Influx Platform
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../influx_software/" title="Influx Software" class="md-nav__link">
+      Influx Software
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../influx_install/" title="Influx Installation" class="md-nav__link">
+      Influx Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../influx_configure/" title="Influx Configuration" class="md-nav__link">
+      Influx Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../grafana_platform/" title="Granafa Platform" class="md-nav__link">
+      Granafa Platform
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../grafana_software/" title="Grafana Software" class="md-nav__link">
+      Grafana Software
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../grafana_install/" title="Grafana Installation" class="md-nav__link">
+      Grafana Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../grafana_configure/" title="Grafana Configuration" class="md-nav__link">
+      Grafana Configuration
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Probe
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
+      </span>
+    </label>
+    <nav class="md-nav" aria-label="Probe" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        </span>
+        Probe
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_platform.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_prepare.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_install.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_configure.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../probe_deploy.md" title="None" class="md-nav__link">
+      None
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../troubleshooting/" title="Troubleshooting" class="md-nav__link">
+      Troubleshooting
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../faq/" title="FAQ" class="md-nav__link">
+      FAQ
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../about/" title="About" class="md-nav__link">
+      About
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <h1 id="contents">Contents</h1>
+<ul>
+<li><a href="#wiperf---configuration-on-the-wlan-pi">Wiperf - Configuration on the WLAN Pi</a><ul>
+<li><a href="#-instructions-for-influxdb-testers-conf_pull-branch-">Instructions for InfluxDB Testers</a></li>
+<li><a href="#hostname">Hostname</a></li>
+<li><a href="#configuration-file-configini">Configuration File (config.ini)</a></li>
+<li><a href="#wireless-client-configuration-wpa_supplicantconf">Wireless Client Configuration (wpa_supplicant.conf)</a></li>
+<li><a href="#ethernet-client-configuration">Ethernet Client Configuration</a></li>
+</ul>
+</li>
+<li><a href="#testing">Testing</a></li>
+<li><a href="#updating">Updating</a></li>
+<li><a href="#known-issues">Known Issues</a><ul>
+<li><a href="#iperf-tests-fail">iperf Test Fail</a></li>
+<li><a href="#interface-bounce-failures">Interface Bounce Failures</a></li>
+<li><a href="#dns-lookup-order-issue">DNS Lookup Order Issue</a></li>
+<li><a href="#hostname-change-related-issues">Hostname Change Related Issues</a></li>
+<li><a href="#comfast-cf-912-80mhz-width-channels">Comfast CF-912 80MHz Width Channels</a></li>
+<li><a href="#mcs--rx-phy-rates-missing-from-reports">MCS &amp; Rx Phy rates Missing From Reports</a></li>
+<li><a href="#tests-fail-to-start-due-to-dns-failures">Tests Fail To Start Due to DNS Failures</a></li>
+</ul>
+</li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#additional-features">Additional Features</a><ul>
+<li><a href="#watchdog">Watchdog</a></li>
+<li><a href="#security">Security</a></li>
+<li><a href="#cli-mode-switch">CLI Mode Switch</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="instructions-for-influxdb-testers-conf_pull-branch"><strong><em> Instructions for InfluxDB Testers (conf_pull branch) </em></strong></h1>
+<ol>
+<li>Burn a new SD card with the V1.9.1 image</li>
+<li>Make sure WLAN Pi is connected to the Internet </li>
+<li>SSH to the WLAN Pi and execute the following command to install a missing required Python InfluxDB module:</li>
+</ol>
+<pre><code>sudo /usr/bin/python3 -m pip install influxdb
+</code></pre>
+
+<ol>
+<li>Install the latest version of wiperf with Influx support (in the same SSH session):</li>
+</ol>
+<pre><code>sudo pkg_admin -i wiperf -b v0.12-a1
+</code></pre>
+
+<p>Then, proceed with the instructions in the remainder of this document.</p>
+<h1 id="wiperf-configuration-on-the-wlan-pi">Wiperf - Configuration on the WLAN Pi</h1>
+<p>This instruction paper assumes you are running Wiperf on a WLAN Pi on an image version of v1.9 or later (which has Wiperf installed and available as part of the image.)</p>
+<p>(<strong>Special note for WLAN Pi image v1.9.0:</strong> please see the <a href="#known-issues">Known Issues</a>) section of this document)</p>
+<p>The Wiperf probe is activated via the front panel menu system (FPMS) of the WLAN Pi. But, before flipping in to the Wiperf mode, a few configuration steps need to be completed:</p>
+<p><a href="#contents">top</a></p>
+<h2 id="hostname">Hostname</h2>
+<p>It is strongly advised that you configure the hostname of your WLAN Pi before following the steps detailed below. The data sent to and stored in your reporting database (e.g. Splunk, Influx etc.) will be associated with the WLAN Pi hostname that is used when the data is forwarded. If you decide to subsequently change the hostname, then historical data from the unit will not be associated with the data sent with the new hostname.</p>
+<p>If you are running multiple WLAN Pi units, then you MUST change their hostnames, as you will not be able to differentiate their data within Splunk. All data, from all units, will be shown under the default 'wlanpi' hostname.</p>
+<p>To change the WLAN Pi hostname, please check out the following <a href="https://wlan-pi.github.io/wlanpi-documentation/faq/#how-do-i-change-the-hostname-of-my-wlan-pi">FAQ</a> page and complete all suggested steps: <a href="https://wlan-pi.github.io/wlanpi-documentation/faq/#how-do-i-change-the-hostname-of-my-wlan-pi">link</a></p>
+<p><a href="#contents">top</a></p>
+<h2 id="configuration-file-configini">Configuration File (config.ini)</h2>
+<p>The operation of Wiperf is configured using the file <code>'/home/wanpi/wiperf/config.ini'</code> This needs to be edited prior to entering Wiperf mode.</p>
+<p>Prior to the first use of Wiperf, the config.ini file does not exist in the required WLAN Pi directory. However, a default template config file (<code>config.default.ini</code>) is supplied that can be used to create the <code>config.ini</code> file. Here is the suggested workflow:</p>
+<p>Connect to the WLAN Pi, create a copy of the config template file and edit the newly created config (as the wlanpi user):</p>
+<pre><code>        cd /home/wlanpi/wiperf
+        cp ./config.default.ini ./config.ini
+        nano ./config.ini
+</code></pre>
+
+<p>By default, the configuration file is set to run all tests. However, there is a minimum configuration that must be applied for Wiperf mode to run out-of-the-box. The minimum configuration parameters you need to configure (just to get you going...) are outlined in the subsections below. In summary you need to:</p>
+<ul>
+<li>Configure the Wiperf global mode of operation (wireless or Ethernet) and the interface parameters that determine how the WLAN Pi is connected</li>
+<li>Configure the management platform you'll be sending data to</li>
+<li>Configure the tests you'd like to run</li>
+</ul>
+<h3 id="interface-parameters">Interface Parameters</h3>
+<p>As the WLAN Pi can now test over the ethernet or WLAN interfaces, we need to tell the software which mode is in use and which interfaces the test traffic and results data will be sent over. (Note that "ethernet" mode with mgt traffic sent over the wireless interface is not supported)</p>
+<pre><code>[General]
+; global test mode: wireless or ethernet
+; 
+; wireless mode: 
+;    - test traffic runs over wireless interface
+;    - management traffic (i.e. result data) sent over interface specified in mgt_if parameter
+; ethernet mode:
+;    - all test and management traffic sent over ethernet port (mgt_if parameter not used/ignored)
+;
+probe_mode: wireless
+
+; ------------- ethernet mode parameters ------------
+; eth interface name set this as per the output of an ifconfig command (usually eth0)
+; (no management interface required, as tests &amp; management traffic over same i/f)
+eth_if: eth0
+; ---------------------------------------------------
+
+; ------------- wireless mode parameters ------------
+; wlan interface name set this as per the output of an iwconfig command (usually wlan0)
+wlan_if: wlan0
+; interface name over which mgt traffic is sent (i.e. how we get to our management
+; server) - options: wlan0, eth0, zt
+mgt_if: wlan0
+; ---------------------------------------------------
+</code></pre>
+
+<h3 id="database-parameters">Database Parameters</h3>
+<p>Wiperf can send results data to Splunk, InfluxDB (v1.x) and InfluxDB2 data collectors through an exporter module for each collector type. The relevant authentication parameters need to be set for the collector in-use in the following sections (note these need to be configured on the data collector platform also before sending results data):</p>
+<pre><code>[General]
+; --------- Common Mgt Platform Params ------- 
+; set the data exporter type - current options: splunk, influxdb, influxdb2
+exporter_type: splunk
+; --------------------------------------------
+
+; -------------- Splunk Config ---------------
+; IP address or hostname of Splunk host
+splunk_host: 192.168.0.99
+; Splunk collector port (8088 by default)
+splunk_port: 8088
+; Splunk token to access Splunk server created by Splunk (example token: 84adb9ca-071c-48ad-8aa1-b1903c60310d)
+splunk_token: &lt;token_here&gt;
+;---------------------------------------------
+
+; -------------- InFlux1 Config ---------------
+; IP address or hostname of InfluxDB host
+influx_host:
+; InfluxDb collector port (8086 by default)
+influx_port: 8086
+influx_username: 
+influx_password: 
+influx_database:
+;---------------------------------------------
+
+; -------------- InFlux2 Config ---------------
+; IP address or hostname of InfluxDB2 host
+influx2_host:
+; InfluxDB2 collector port (443 by default)
+influx2_port: 443
+influx2_token:
+influx2_bucket: 
+influx2_org:
+;---------------------------------------------
+</code></pre>
+
+<h3 id="tests">Tests</h3>
+<p>Note that all network tests are enabled by default. If there are some tests you'd like to disable (e.g. if you don't have an iperf3 server set up), then you'll need to open up the config.ini file and look through each section for the "enabled" parameter for that test and set it to "no". For example, to disable the iperf tcp test: </p>
+<pre><code>[Iperf3_tcp_test]
+; yes = enabled, no = disabled
+enabled: no
+</code></pre>
+
+<p>For a full description of the configuration file parameters, please review the following page: <a href="README_Config.ini.md">config.ini reference guide</a>. The Splunk token is obtained from your Splunk server (see <a href="https://github.com/wifinigel/wiperf/raw/master/docs/WLANPi%20Wiperf%20Probe%20-%20Splunk%20Build.pdf">Splunk build guide</a>). </p>
+<p><a href="#contents">top</a></p>
+<h2 id="wireless-client-configuration-wpa_supplicantconf">Wireless Client Configuration (wpa_supplicant.conf)</h2>
+<p>If Wiperf is running in wireless mode, then WLAN Pi is flipped in to Wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in Wiperf mode) to allow the WLAN Pi to join a WLAN.</p>
+<p>Edit the following file with the configuration and credentials that will be used by the WLAN Pi to join the SSID under test once it is switched in to Wiperf mode (make edits logged in as the wlanpi user):</p>
+<pre><code>        cd /home/wlanpi/wiperf/conf/etc/wpa_supplicant
+        nano ./wpa_supplicant.conf
+</code></pre>
+
+<p><a href="#contents">top</a></p>
+<h2 id="ethernet-client-configuration">Ethernet Client Configuration</h2>
+<p>Note that no specific configuration is required for the Ethernet interface when running Wiperf in Ethernet mode. As long as the Ethernet port is connected to a switch port tht supplies an IP address via DHCP, then you're good to go. </p>
+<p><a href="#contents">top</a></p>
+<h1 id="testing">Testing</h1>
+<p>Once the required edits have been made to configure Wiperf mode, flip the WLAN Pi in to Wiperf mode using the following FPMS options:</p>
+<pre><code>        Actions &gt; Wiperf &gt; Confirm
+</code></pre>
+
+<p>If no errors are observed on the FPMS during flip-over, inspect the following files to double-check for errors &amp; verify that test data is generated (as indicated in the log messages):</p>
+<pre><code>    cat /home/wlanpi/wiperf/logs/agent.log
+    cat /home/wlanpi/wiperf/wiperf.log 
+</code></pre>
+
+<p>Note that by default the tests are run every 5 mins unless the interval has been changed in the <code>config.ini</code> file. Wait at least this interval before determining that there is an issue - the test cycle will NOT begin immediately upon entering Wiperf mode.</p>
+<p>Check your database platform and verify that data is being received.</p>
+<p><a href="#contents">top</a></p>
+<h1 id="updating">Updating</h1>
+<p>To get the latest updates from the GitHub repo (when available), use the following commands when logged in as the wlanpi user:</p>
+<pre><code>        cd ~/wiperf
+        git pull https://github.com/wifinigel/wiperf.git
+</code></pre>
+
+<p>(note that this will update config.default.ini but not config.ini, so remember to re-edit it after a pull if the config file format changes)</p>
+<p><a href="#contents">top</a></p>
+<h1 id="known-issues">Known Issues:</h1>
+<h2 id="iperf-tests-fail">iperf Tests Fail</h2>
+<p>There is an issue with the v1.9.0 WLAN Pi image that means that the iperf tests fail when running in wiperf mode. To get the fixed version, follow the update process detailed in the <a href="#updating">Updating</a> section of this document (3rd Jan 2020)</p>
+<p><a href="#contents">top</a></p>
+<h2 id="interface-bounce-failures">Interface Bounce Failures</h2>
+<p>There is an issue in WLAN Pi image versions v1.9.0 &amp; v1.9.1 with some required commands missing from the <code>/etc/sudoers.d/wlanpidump</code> file. This issue manifests itself with errors about WLAN interface bounce operations failing in the agent.log file. To fix this issue, please apply the following fix:</p>
+<p>Add the following entries to the /etc/sudoers.d/wlanpidump file:</p>
+<pre><code>/sbin/ifdown 
+/sbin/ifup
+</code></pre>
+
+<p>The modified file content should be as follows:</p>
+<pre><code>wlanpi ALL = (root) NOPASSWD: /sbin/iwconfig, /usr/sbin/iw, /sbin/dhclient, /sbin/ifconfig, /sbin/reboot, /bin/kill, /bin/date, /sbin/ifdown, /sbin/ifup
+</code></pre>
+
+<p>Reboot the WLAN Pi after applying this file update</p>
+<p><a href="#contents">top</a></p>
+<h2 id="dns-lookup-order-issue">DNS Lookup Order Issue</h2>
+<p>By default in WLAN Pi image versions up to and including v1.9.1, the DNS server value <code>8.8.8.8</code> has been hard-coded in to the DNS server lookup list. This has been achieved by configuring the following line in to the file <code>/etc/resolvconf/resolv.conf.d/head</code>:</p>
+<pre><code>nameserver 8.8.8.8
+</code></pre>
+
+<p>This ensures that the 8.8.8.8 address is always used as the first DNS lookup entry, even if the WLAN Pi receives a DNS server address during its DHCP process. This can be verified by performing a <code>cat /etc/resolv.conf</code> when the WLAN Pi is in wiperf mode - even though there may be two or more entries in the file, 8.8.8.8 will always be shown at the top of the file listing, and be used as the first lookup server. This may not be desirable behaviour, as 8.8.8.8 may not be available or DHCP assigned servers may be preferred. </p>
+<p>To ensure that the desired DNS environment is used, the following options exist:</p>
+<ol>
+<li>Remove the 8.8.8.8 entry completely: edit the file  <code>/etc/resolvconf/resolv.conf.d/head</code> and remove the offending entry completely. This will ensure only the DHCP assigned DNS server(s) will be used.</li>
+<li>Replace the 8.8.8.8 entry by editing the  <code>/etc/resolvconf/resolv.conf.d/head</code> and replacing it with a desired value</li>
+<li>Move the 8.8.8.8 entry from the <code>/etc/resolvconf/resolv.conf.d/head</code> file to the <code>/etc/resolvconf/resolv.conf.d/tail</code> file, so that 8.8.8.8 is still used, but is now the last option in the DNS server list (only used when other preceding servers do not return a result)</li>
+</ol>
+<p><a href="#contents">top</a></p>
+<h2 id="hostname-change-related-issues">Hostname Change Related Issues</h2>
+<p>There have been a number of issues reported that have been reported that are due to the WLAN Pi hostname being changed from the default, but it has not been updated in both the <code>/etc/hostname</code> AND <code>/etc/hosts</code> file. Please ensure you have followed <a href="https://wlan-pi.github.io/wlanpi-documentation/faq/#how-do-i-change-the-hostname-of-my-wlan-pi">this process</a> : <a href="https://wlan-pi.github.io/wlanpi-documentation/faq/#how-do-i-change-the-hostname-of-my-wlan-pi">Link</a></p>
+<p>The issue tends to manifest itself as various "weird" issues such as "sudo" commands failing for no apparent reason. </p>
+<p><a href="#contents">top</a></p>
+<h2 id="comfast-cf-912-80mhz-width-channels">Comfast CF-912 80MHz Width Channels</h2>
+<p>There seems to be an issue with the Comfast CF-912 adapter when using it with the WLAN Pi and associating as a client to SSIDs that use 80MHz width channels. If you hit an issue where the WLAN Pi seems to lock up or does not boot correctly, try a different adapter or a network that does not use 80Mhz channels.</p>
+<p><a href="#contents">top</a></p>
+<h2 id="mcs-rx-phy-rates-missing-from-reports">MCS &amp; Rx Phy rates Missing From Reports</h2>
+<p><a href="#contents">top</a></p>
+<p>In several dashboard reports, the reported MCS values &amp; Rx Phy rate may be blank. This is because these values are only reported by MediaTek wireless NICs. Therefore, the CF-912 will not show these values (as it is a Realtek NIC). Sorry, not much I can do about this.</p>
+<p><a href="#contents">top</a></p>
+<h2 id="tests-fail-to-start-due-to-dns-failures">Tests Fail To Start Due to DNS Failures</h2>
+<p>In versions of wiperf before version v0.10, the wiperf probe performed a series of tests to verify the health of the wireless connection prior to tests running. One of these tests included a DNS lookup to "bbc.co.uk" to verify Internet connectivity.</p>
+<p>In some environments, this may not be a valid test. To fix this issue, a new configuring parameter was added to the config.ini file that allows a custom lookup target to be provided, if requried: </p>
+<pre><code>connectivity_lookup: google.com
+</code></pre>
+
+<p><a href="#contents">top</a></p>
+<p><a href="#contents">top</a></p>
+<h1 id="additional-features">Additional Features:</h1>
+<h2 id="watchdog">Watchdog</h2>
+<p>Wiperf has a watchdog feature that it uses to try to reset things when it is having connectivity related difficulties.</p>
+<p>There may be instances when tests are continually failing or wireless connectivity is intermittent due to perhaps being stuck on a remote AP that is sub-optimal from a connectivity perspective.</p>
+<p>If persistent issues are detected, then Wiperf will reboot the WLAN Pi to try to remediate the issue. This will provide the opportunity to the reset all network connectivity and internal processes.</p>
+<p>Note that this is a last ditch mechanism. Wiperf will try bouncing the WLAN interface to remediate any short-term connectivity issues, which will likely fixe many issues without the need for a full reboot.</p>
+<p>If you observe your WLAN Pi rebooting on a regular basis (e.g. a couple of times a hour), then check its logs as it is very unhappy about something.</p>
+<p><a href="#contents">top</a></p>
+<h2 id="security">Security</h2>
+<p>Wiperf employs the following security mechanisms in an attempt to harden the WLAN Pi when deployed in Wiperf mode:</p>
+<ul>
+<li>No forwarding is allowed between interfaces</li>
+<li>The internal UFW firewall is configured to only allow incoming connectivity on port 22 on the wlan0 &amp; eth0 interfaces</li>
+</ul>
+<p><a href="#contents">top</a></p>
+<h2 id="cli-mode-switch">CLI Mode Switch</h2>
+<p>If you are remote from your WLAN Pi you may not be able to flip it in to Wiperf mode using the front panel buttons. However, it is possible to flip it in to Wiperf mode using the CLI (via an SSH session).</p>
+<p>To flip in to Wiperf mode using the CLI, SSH to your WLAN Pi and execute the following on the CLI (<strong>CAVEAT:</strong> make sure you have correctly configured the /home/wlanpi/wiperf/conf/etc/wpa_suplicant/wpa_supplicant.conf file before do this...otherwise you may lose comms with the WLAN Pi after it reboots if you rely on the WLAN connection for access):</p>
+<pre><code> # performed as the wlanpi user
+ cd ~/wiperf
+ sudo ./wiperf_switcher on
+ ```
+ After executing this command, the WLAN Pi will reboot in to the Wiperf mode.
+
+If you'd like to flip back from Wiperf mode, SSH to the WLAN Pi and execute:
+
+</code></pre>
+
+<p># performed as the wlanpi user
+ cd ~/wiperf
+ sudo ./wiperf_switcher off
+ ```</p>
+<p><a href="#contents">top</a></p>
+<!-- link list -->
+                
+                  
+                    
+
+<hr>
+<div class="md-source-date">
+  <small>
+    
+      Last update: July 1, 2020
+    
+  </small>
+</div>
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.83fe6e3c.min.js"></script>
+      <script src="../assets/javascripts/bundle.7e1cb91c.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.37585f48.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
