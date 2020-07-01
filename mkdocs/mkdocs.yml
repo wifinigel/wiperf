@@ -1,0 +1,40 @@
+site_name: Wiperf Documentation
+nav:
+    - Home: index.md
+    - Operation Overview: operation.md
+    - Data Server:
+        - Splunk:
+            - splunk_platform.md
+            - splunk_software.md
+            - splunk_install.md
+            - splunk_configure.md
+        - Influx/Grafana:
+            - influx_platform.md
+            - influx_software.md
+            - influx_install.md
+            - influx_configure.md
+            - grafana_platform.md
+            - grafana_software.md
+            - grafana_install.md
+            - grafana_configure.md
+    - Probe:
+        - probe_platform.md
+        - probe_prepare.md
+        - probe_install.md
+        - probe_configure.md
+        - probe_deploy.md
+    - Troubleshooting: troubleshooting.md
+    - FAQ: faq.md
+    - About: about.md
+theme:
+    name: 'material'
+    icon:
+        logo: material/wifi
+    language: en
+extra_css:
+  - extra.css
+markdown_extensions:
+  - admonition
+plugins:
+    - search
+    - git-revision-date-localized

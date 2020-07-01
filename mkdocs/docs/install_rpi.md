@@ -84,6 +84,11 @@ Configure RPi to join a wireless network. Edit files 'sudo nano /etc/wpa_supplic
         allow-hotplug wlan0
         iface wlan0 inet dhcp
         wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+        # RPi 3a+
+        # post-up iw dev wlan0 set power_save off
+        # RPi 3b+
+        # wireless-power off
+
 
         # Note eth0 has been set to a static address to avoid routing issues 
         # when both eth0 and wlan0 are on same network (traffic goes out of 

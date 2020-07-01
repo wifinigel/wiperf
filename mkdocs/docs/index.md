@@ -1,4 +1,9 @@
+Title: Wiperf documentation home page
+Authors: Nigel Bowden
+
 # wiperf
+
+![Probe Report](images/probe_summary.jpg)
 
 Wiperf is a utility that can be installed on to a WLAN Pi or a Raspberry Pi to act as a network probe running a series of  network tests. It is primarily intended to provide an indication of the end-user experience on a wireless network, but may also be used as a standalone ethernet-connected probe.
 
@@ -16,7 +21,7 @@ Tests may be performed over the wireless or ethernet interface of the probe unit
 
 Wiperf has been primarily designed to be a tactical tool for engineers to deploy on to a wireless network where perhaps issues are being experienced and some longer term monitoring may be required. It is not designed to replace large-scale commercial offerings that provide wireless and end-user experience monitoring in a far more comprehensive and user-friendly fashion.
 
-![Probe Report][probe_image]
+
 
 Tests are run on the wiperf probe at a configured interval (usually 5 minutes) and collected data is sent back to a data server over a network connection between the probe and data server (no connection = no data collection). The data server must be an instance of either:
 
@@ -37,7 +42,7 @@ Splunk is supported on all popular operating systems and is very easy to set up 
 
 The volume of data returned by the probe is very low, so the free tier of Splunk may be used to gather and report on data. For details on how to set up a Splunk server, visit this document: [Splunk build guide][splunk_build] (it's a lot easier than you might expect...honestly)
 
-- Splunk product web site: https://www.splunk.com/
+- Splunk product web site: [https://www.splunk.com/](https://www.splunk.com/)
 
 ### InfluxDB/Grafana
 
@@ -45,17 +50,17 @@ Grafana is a popular open-source data visualization tool. It is used to graph th
 
 For small-scale instances, Grafana & Influx may be installed on the same server platform and Grafana configured to use the local instance of Influx as its data source.
 
-- Grafana web site: https://grafana.com/
-- Influx web site (v.1.8): https://www.influxdata.com/
+- Grafana web site: [https://grafana.com/](https://grafana.com/)
+- Influx web site (v.1.8): [https://www.influxdata.com](https://www.influxdata.com)
 
 ## Workflow to Setup Wiperf
 
 The workflow to get Wiperf fully operational consists if a number of steps that break down in to two main areas:
 
-- Probe setup
-- Data server setup
+- Probe setup (the RPi or WLAN Pi)
+- Data server setup (the Splunk or Influx/Grafana server)
 
-The Data server setup tends to be a task that needs completion only once (or at least very infrequently). Conversely, some or all of the probe setup will need to be completed each time a probe is deployed.
+The Data server setup tends to be a task that needs completion only once (or at least very infrequently). Conversely, some or all of the probe setup will need to be completed each time a probe is deployed - this is mainly due to the fact that in each environment in which it is deployed, the connectivity for the probe will vary (e.g. different SSID, different network connection type). 
 
 Here is an overview of the workflow, with links to documentation for each step:
 
@@ -78,8 +83,8 @@ In addition to the setup and deployment of the components, there may also be a r
 
 ## Further Documentation References
 
-- Configuration file parameters
-- [Data points sent by the probe to the data server platform](docs/data_points.md)
+- [Configuration file parameters](config.ini.md)
+- [Data points sent by the probe to the data server platform](data_points.md)
 
 
 ![Speedtest Report][speedtest_image]
@@ -97,3 +102,5 @@ This free software is provided for you to use at your own risk. There are no gua
 # Developer
 
 Nigel Bowden (WifiNigel): https://twitter.com/wifinigel
+
+
