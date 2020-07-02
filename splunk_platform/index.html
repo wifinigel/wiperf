@@ -679,17 +679,19 @@
                 
                 
                 <h1 id="splunk-platform">Splunk Platform</h1>
-<p>To collect and view the test results data, an instance of Splunk is required. Splunk is a very flexible data collection and reporting package that can take data sent by the wiperf probe and present it in a very nice report format.  Splunk can be installed on a wide variety of platforms that can be viewed at : https://www.splunk.com/en_us/download/splunk-enterprise.html</p>
+<p>To collect and view the test results data, an instance of Splunk is required. Splunk is a very flexible data collection and reporting package that can take data sent by the wiperf probe and present it in a very nice report format.  Splunk can be installed on a wide variety of platforms that can be viewed at : <a href="https://www.splunk.com/en_us/download/splunk-enterprise.html">https://www.splunk.com/en_us/download/splunk-enterprise.html</a></p>
 <p>This guide does not cover all installation details of the software package, these may be obtained when downloading and installing the software. Note that a free account sign-up is required when downloading the software from the link listed above.</p>
-<p>To install Splunk and use it with a handful of probes, a modest server may be built (e.g. I use a low-end Intel NUC), so for testing purposes, don’t get too hung up on sourcing a high end server. </p>
+<p>To install Splunk and use it with a handful of probes, a modest server may be built (e.g. I use a low-end Intel NUC), so for testing purposes, don’t get too hung up on sourcing a high end server. If you'd like to look into server requirements further, then <a href="https://docs.splunk.com/Documentation/Splunk/latest/Installation/Systemrequirements">check out this page</a>.</p>
 <p>The product being installed is Splunk Enterprise. This is a paid-for product, but it has a free-tier for low data volumes (500Mbytes per day). Install initially with all the licensing defaults and then drop back to the free-tier by selecting Settings &gt; Licensing and selecting the free tier. The free tier is plenty for the low volume rates that the wiperf probe generates when deploying probes at small-scale.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>If you forget to select the free tier and your trial license expires, you may become locked out of the GUI with a “license expired” message. If this happens, from the CLI of your Splunk server, find the file “server.conf” and add the following line to the bottom of the file:</p>
-<p><code>[license]
-active_group = Lite_Free</code></p>
-<p>Then, restart the Splunk server and the login issue should be fixed.</p>
-<p>(The file is /opt/splunk/etc/system/local/server.conf on Linux)</p>
+<div class="highlight"><pre><span></span><code>    [license]
+    active_group = Lite_Free
+</code></pre></div>
+
+<p>Then, restart the Splunk server and the login issue should be fixed.
+(The file is /opt/splunk/etc/system/local/server.conf on Linux)</p>
 </div>
 <h2 id="connectivity-planning">Connectivity Planning</h2>
 <p>One area to consider is connectivity between the wiperf probe and the Splunk instance. The wiperf probe needs to be able to access the Splunk server to send its data. If the wiperf probe probe is being deployed on a wireless network, how is the performance data generated going to get back to the Splunk server?</p>
@@ -703,43 +705,48 @@ active_group = Lite_Free</code></p>
 <h3 id="results-data-over-wireless">Results Data Over Wireless</h3>
 <p><img alt="splunk_wireless_mgt" src="../images/splunk_wireless_mgt.png" /></p>
 <p>In this topology the wiperf probe is configured to join an SSID that has the Splunk server accessible via its WLAN interface. Typically, the Splunk server will reside in a cloud or perhaps on a publicly accessible VPS. The wiperf probe will continually run the performance tests over the wireless connection and then upload the results directly to the Splunk server over the WLAN connection.</p>
-<div class="admonition info">
-<p class="admonition-title">Info</p>
-<p>Config.ini settings:
-  mgt_if: wlan0
-  data_host: \&lt;public IP address of Splunk server> </p>
+<div class="admonition note">
+<p class="admonition-title">config.ini settings:</p>
+<div class="highlight"><pre><span></span><code>    mgt_if: wlan0
+    data_host: \&lt;public IP address of Splunk server\&gt; 
+</code></pre></div>
+
 </div>
 <h3 id="results-data-over-ethernet">Results data over Ethernet</h3>
 <p><img alt="splunk_ethernet_mgt" src="../images/splunk_ethernet_mgt.png" /></p>
 <p>If the Splunk server is being run on the inside of a network environment, it may be preferable to return results data via the Ethernet port of the wiperf probe. This topology also has the advantage of  results data not being impacted if there are wireless connectivity issues on the wiperf probe WLAN connection. To achieve the correct traffic flow, a static route for management traffic is automatically injected into the route table of the wiperf probe to force results data over the Ethernet port. </p>
-<div class="admonition info">
-<p class="admonition-title">Info</p>
-<p>config.ini settings:
-mgt_if: eth0
-data_host: <IP address of Splunk server> </p>
+<div class="admonition note">
+<p class="admonition-title">config.ini settings:</p>
+<div class="highlight"><pre><span></span><code>    mgt_if: eth0
+    data_host: &lt;IP address of Splunk server&gt; 
+</code></pre></div>
+
 </div>
 <h3 id="results-data-over-zerotierwireless">Results data over Zerotier/wireless</h3>
 <p><img alt="splunk_zerotier_mgt" src="../images/splunk_zerotier_mgt.png" /></p>
-<p>A very simple way of getting the wiperf probe talking with your Splunk server is to use the Zerotier service to create a virtual network. In summary, both the Splunk server and wiperf probe have the Zerotier client installed. Both are then added to your Zerotier dashboard (by you) and they start talking! Under the hood, both devices have a new virtual network interface created and they connect to the Zerotier cloud-based network service so that they can communicate on the same VLAN in the cloud. As they are on the same subnet from a networking perspective, there are no routing issues to worry about to get results data from the wiperf probe to the Splunk server.</p>
-<p>Zerotier has a free subscription tier which allows up to 100 devices to be hooked up without having to pay any fees, It’s very easy to use and get going, plus your Splunk server can be anywhere! (e.g. on your laptop at home). Both devices need access to the Internet for this solution to work.</p>
+<p>A very simple way of getting the wiperf probe talking with your Splunk server is to use the <a href="https://zerotier.com/">Zerotier</a> service to create a virtual network. </p>
+<p>In summary, both the Splunk server and wiperf probe have the <a href="https://zerotier.com/">Zerotier</a> client installed. Both are then added to your Zerotier dashboard (by you) and they start talking! Under the hood, both devices have a new virtual network interface created and they connect to the <a href="https://zerotier.com/">Zerotier</a> cloud-based network service so that they can communicate on the same VLAN in the cloud. As they are on the same subnet from a networking perspective, there are no routing issues to worry about to get results data from the wiperf probe to the Splunk server.</p>
+<p><a href="https://zerotier.com/">Zerotier</a> has a free subscription tier which allows up to 100 devices to be hooked up without having to pay any fees, It’s very easy to use and get going, plus your Splunk server can be anywhere! (e.g. on your laptop at home). Both devices need access to the Internet for this solution to work.</p>
 <p>You can sign up for free, create a virtual network and then just add the IDs that are created by the Splunk server and wiperf probe when the client is installed.
 Seriously, give it a go...it's quicker to try it than me explaining it here: https://www.zerotier.com/</p>
-<div class="admonition info">
-<p class="admonition-title">Info</p>
-<p>config.ini settings:
-mgt_if: ztxxxxxx (check your local ZeroTier interface designation using <code>ifconfig</code>)
-data_host: <IP address of Splunk server shown in Zerotier dashboard> </p>
+<div class="admonition note">
+<p class="admonition-title">config.ini settings:</p>
+<div class="highlight"><pre><span></span><code>    mgt_if: ztxxxxxx (check your local ZeroTier interface designation using ```ifconfig```)
+    data_host: &lt;IP address of Splunk server shown in Zerotier dashboard&gt; 
+</code></pre></div>
+
 </div>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
+<div class="admonition info">
+<p class="admonition-title">Install ZeroTier</p>
 <p>To install Zerotier on the wiperf probe (or an Ubuntu server), enter the following:</p>
-<p>```
-curl -s https://install.zerotier.com | sudo bash
-sudo zerotier-cli join <network number from your Zerotier dashboard>
-sudo zerotier-cli status</p>
-<h1 id="to-remove-at-a-later-date">To remove at a later date:</h1>
-<p>sudo apt remove zerotier-one
-```</p>
+<div class="highlight"><pre><span></span><code>    curl -s https://install.zerotier.com | sudo bash
+    sudo zerotier-cli join &lt;network number from your Zerotier dashboard&gt;
+    sudo zerotier-cli status
+
+    # To remove at a later date:
+    sudo apt remove zerotier-one
+</code></pre></div>
+
 </div>
                 
                   

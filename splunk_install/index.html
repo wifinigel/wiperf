@@ -575,6 +575,21 @@
                 
                 
                 <h1 id="splunk-installation">Splunk Installation</h1>
+<p>Once the software is downloaded, follow the instructions that are appropriate for your OS in the Splunk installation manual (you can look for the latest guides via Google, but at the time of writing it was this manual):</p>
+<p><a href="https://docs.splunk.com/Documentation/Splunk/latest/Installation/Chooseyourplatform">https://docs.splunk.com/Documentation/Splunk/latest/Installation/Chooseyourplatform</a></p>
+<p>The installation process for all platforms is very straightforward and is covered well in he official install guides, so will not be covered in detail here.</p>
+<div class="admonition note debian linux">
+<p class="admonition-title">Note</p>
+<p>When installing the Linux flavour of Splunk, make sure you do not miss the additional step required to ensure that Splunk starts after a server reboot. The following command needs to be executred after the software is installed (but please verify this isn the official installation documents):</p>
+<div class="highlight"><pre><span></span><code>    sudo /opt/splunk/bin/splunk enable boot-start
+</code></pre></div>
+
+</div>
+<p>Once installation has been completed, it should be possible to access the web dashboard of Splunk at the URL:</p>
+<div class="highlight"><pre><span></span><code>    http://&lt;Splunk_server_IP&gt;:8000
+</code></pre></div>
+
+<p><img alt="splunk_login" src="../images/splunk_login.png" /></p>
                 
                   
                     
@@ -583,7 +598,7 @@
 <div class="md-source-date">
   <small>
     
-      Last update: July 1, 2020
+      Last update: July 2, 2020
     
   </small>
 </div>

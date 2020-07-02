@@ -736,54 +736,54 @@
 <p>The configuration file can be updated by accessing the CLI of the probe (usually via SSH) and editing the file '/etc/wiperf/config.ini'. </p>
 <p>A default config template file is provided as a start point for the final configuration file ( '/etc/wiperf/config.default/ini'). It is best to take a copy of this file to create the final customised configuration file. When accessing the probe to create the configuration file, a Linux text editor such as 'nano' or 'vi' should be used.</p>
 <p>Here is a suggested workflow to create a probe configuration file:</p>
-<pre><code> cd /etc/wiperf
+<div class="highlight"><pre><span></span><code> cd /etc/wiperf
  sudo cp ./config.default.ini ./config.ini
  sudo nano ./config.ini
-</code></pre>
+</code></pre></div>
 
 <h3 id="cron">cron</h3>
 <p><em>(Note: This operation is required for the Raspberry Pi only. The WLAN Pi will automatically setup the required cron job during the mode switch)</em></p>
 <p>In addition to the creating a customised configuration file for the probe, a mechanism is required to run the wiperf utility on a regular basis (e.g. every 5 minutes). Cron is a Linux utility that can be used to run wiperf periodically to gather data over time.</p>
 <p>The following CLI commands must be used to add a cron job to the probe to gather data on a regular basis:</p>
-<pre><code> sudo crontab -e
-</code></pre>
+<div class="highlight"><pre><span></span><code> sudo crontab -e
+</code></pre></div>
 
 <p>Add the following line to run the configured tests every 5 minutes:</p>
-<pre><code> 0-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py &gt; /var/log/wiperf_cron.log 2&gt;&amp;1
-</code></pre>
+<div class="highlight"><pre><span></span><code> 0-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py &gt; /var/log/wiperf_cron.log 2&gt;&amp;1
+</code></pre></div>
 
 <h3 id="wpa_supplicant">wpa_supplicant</h3>
 <p>If the wiperf probe is to be connected to a wireless network, then details of the wireless network and the credentials to access the network need to be configured on the probe. This is achieved by configuring the following file:</p>
-<pre><code> # on the RPi, edit the following file:
+<div class="highlight"><pre><span></span><code> # on the RPi, edit the following file:
  sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
-</code></pre>
+</code></pre></div>
 
-<pre><code>  # on the WLAN Pi edit the following file:
+<div class="highlight"><pre><span></span><code>  # on the WLAN Pi edit the following file:
   sudo nano /etc/wiperf/confi/etc/wpa_supplicant/wpa_supplicant.conf
-</code></pre>
+</code></pre></div>
 
 <h2 id="logging">Logging</h2>
 <p>Following the completion of the configuration described above, if all is configured correctly, then wiperf will run every 5 minutes, perform the configured tests, and then send the data back to the data server.</p>
 <p>A number of logs are generated to provide support information around the installation and operation of the wiperf process. Each of the generated log files are detailed below:</p>
-<pre><code># This log provides details of the installation and upgrade processes, so
+<div class="highlight"><pre><span></span><code># This log provides details of the installation and upgrade processes, so
 # can be useful in diagnosing installation issues
 
  /var/log/wiperf_install.log
-</code></pre>
+</code></pre></div>
 
-<pre><code># This log file is updated by the main wiperf script each time 
+<div class="highlight"><pre><span></span><code># This log file is updated by the main wiperf script each time 
 # it is run. If the script appears to fail completely, this is 
 # a good place to check
 
  /var/log/wiperg_cron.log
-</code></pre>
+</code></pre></div>
 
-<pre><code># This log provides details of the tests performed each time
+<div class="highlight"><pre><span></span><code># This log provides details of the tests performed each time
 # that wiperf runs. It is the main file to use for diagnosing
 # issues with wiperf 
 
  /var/log/wiperf_agent.log
-</code></pre>
+</code></pre></div>
 
 <h2 id="reporting">Reporting</h2>
 <p>Gathering the data with a probe is only half of the story when using wiperf. The gathered data must be sent to a data collection server to allow it to be visualized to allow analysis of network performance. The data server must be an instance of either:</p>

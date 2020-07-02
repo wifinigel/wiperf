@@ -658,44 +658,42 @@
 <h2 id="pre-requisites">Pre-requisites</h2>
 <h3 id="package-updates">Package Updates</h3>
 <p>Update existing Linux packages:</p>
-<pre><code>        sudo apt-get update &amp;&amp; sudo apt-get upgrade -y
+<div class="highlight"><pre><span></span><code>        sudo apt-get update &amp;&amp; sudo apt-get upgrade -y
         sudo reboot
-</code></pre>
+</code></pre></div>
 
 <p>Install required Linux packages:</p>
-<pre><code>        sudo apt-get update
+<div class="highlight"><pre><span></span><code>        sudo apt-get update
         sudo apt-get install python3-pip iperf3 git -y
         sudo reboot
-</code></pre>
+</code></pre></div>
 
 <p>Install required python3 modules</p>
-<pre><code>        sudo pip3 install iperf3 speedtest-cli configparser
+<div class="highlight"><pre><span></span><code>        sudo pip3 install iperf3 speedtest-cli configparser
         sudo pip3 install git+git://github.com/georgestarcher/Splunk-Class-httpevent.git
 
-        # I've had the Splunk-Class-httpevent install fail a couple of times, you can 
+        # I&#39;ve had the Splunk-Class-httpevent install fail a couple of times, you can 
         # try this as a workaround if you hit a similar issue, but this is a bit of a kludge:
 
         sudo wget -P /usr/local/lib/python3.7/dist-packages/ https://raw.githubusercontent.com/georgestarcher/Splunk-Class-httpevent/master/splunk_http_event_collector.py)
-</code></pre>
+</code></pre></div>
 
 <h3 id="user-account">User Account</h3>
-<p>Create the wlanpi user:</p>
-<pre><code>        sudo adduser wlanpi
-</code></pre>
-
+<p>Create the wlanpi user:
+<div class="highlight"><pre><span></span><code>        sudo adduser wlanpi
+</code></pre></div></p>
 <p>Edit the sudoers file to enable the wlanpi user to run some commands that require elevated privilege:</p>
-<pre><code>        sudo visudo
-</code></pre>
+<div class="highlight"><pre><span></span><code>        sudo visudo
+</code></pre></div>
 
 <ul>
-<li>Add following line to bottom of file: </li>
+<li>Add following line to bottom of file: 
+<div class="highlight"><pre><span></span><code>        wlanpi  ALL=(ALL) NOPASSWD: ALL
+</code></pre></div></li>
 </ul>
-<pre><code>        wlanpi  ALL=(ALL) NOPASSWD: ALL
-</code></pre>
-
 <p>Reboot and log back in with the wlanpi user:</p>
-<pre><code>        sudo reboot
-</code></pre>
+<div class="highlight"><pre><span></span><code>        sudo reboot
+</code></pre></div>
 
 <h3 id="wireless-configuration">Wireless Configuration</h3>
 <p>Configure RPi to join a wireless network. Edit files 'sudo nano /etc/wpa_supplicant/wpa_supplicant.conf' and 'sudo nano /etc/network/interfaces'. The eth0 port is configured as static IP below, but can be left as dhcp if wlan0 &amp; eth0 are on different networks (otherwise Speedtest traffic goes out of eth0 port)
@@ -750,23 +748,23 @@
 <p>Reboot the RPi &amp; verify the it has joined the wireless network with iwconfig/ifconfig </p>
 <h2 id="installation">Installation</h2>
 <p>With the RPi connected to the Internet, login using the wlanpi user and clone this project:</p>
-<pre><code>        cd ~
+<div class="highlight"><pre><span></span><code>        cd ~
         git clone https://github.com/wifinigel/wiperf.git --depth 1
-</code></pre>
+</code></pre></div>
 
 <p>Edit the config file to customize the operation of the script:</p>
-<pre><code>        cd /home/wlanpi/wiperf
+<div class="highlight"><pre><span></span><code>        cd /home/wlanpi/wiperf
         cp ./config.default.ini ./config.ini
         nano ./config.ini
-</code></pre>
+</code></pre></div>
 
 <h3 id="testing">Testing</h3>
 <p>Test the script by running the following command as the wlanpi user (takes around 2 minutes to complete, depending on tests enabled):</p>
-<pre><code>        /usr/bin/env python3 /home/wlanpi/wiperf/wi-perf.py
-</code></pre>
+<div class="highlight"><pre><span></span><code>        /usr/bin/env python3 /home/wlanpi/wiperf/wi-perf.py
+</code></pre></div>
 
-<p>If no errors are observed when running it then check the following files to check for no errors &amp; that data is generated:</p>
-<pre><code>        cat /home/wlanpi/wiperf/logs/agent.log
+<p>If no errors are observed when running it then check the following files to check for no errors &amp; that data is generated:
+<div class="highlight"><pre><span></span><code>        cat /home/wlanpi/wiperf/logs/agent.log
         # (Note: none of the files below are created when using the HEC forwarder )
         cat /home/wlanpi/wiperf/data/wiperf-speedtest-splunk.json
         cat /home/wlanpi/wiperf/data/wiperf-ping-splunk.json
@@ -775,19 +773,17 @@
         .
         .
         etc...
-</code></pre>
-
+</code></pre></div></p>
 <h2 id="running-schedule-regular-job">Running: Schedule Regular Job</h2>
 <p>Create a cronjob to run the script very 5 mins:</p>
-<pre><code>        crontab -e
-</code></pre>
+<div class="highlight"><pre><span></span><code>        crontab -e
+</code></pre></div>
 
 <ul>
-<li>add line: </li>
+<li>add line: 
+<div class="highlight"><pre><span></span><code>        */5 * * * * /usr/bin/env python3 /home/wlanpi/wiperf/wi-perf.py &gt; /home/wlanpi/wiperf/wiperf.log 2&gt;&amp;1
+</code></pre></div></li>
 </ul>
-<pre><code>        */5 * * * * /usr/bin/env python3 /home/wlanpi/wiperf/wi-perf.py &gt; /home/wlanpi/wiperf/wiperf.log 2&gt;&amp;1
-</code></pre>
-
 <h2 id="account-tidy-up">Account Tidy-up</h2>
 <p>If this has been built using a new RPI image, remember to either update the default 'pi' username with a new password, or remove the account. Make sure you have successfully logged in with the 'wlanpi' user and are using it to perform the operations shown below.</p>
 <ul>
@@ -796,9 +792,9 @@
 </ul>
 <h2 id="updating">Updating</h2>
 <p>To get the latest updates from the GitHub repo , use the following commands when logged in as the wlanpi user:</p>
-<pre><code>        cd ~/wiperf
+<div class="highlight"><pre><span></span><code>        cd ~/wiperf
         git pull https://github.com/wifinigel/wiperf.git
-</code></pre>
+</code></pre></div>
 
 <p>(note that this will update config.default.ini but not config.ini, or remember to re-edit it after a pull if the format changes)</p>
 <h2 id="troubleshooting">Troubleshooting:</h2>

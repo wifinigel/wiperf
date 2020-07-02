@@ -706,20 +706,17 @@
                 
                 <h1 id="faq">FAQ</h1>
 <h2 id="i-see-bounce-command-error-messages-in-the-agentlog-file-what-is-going-on">I see bounce command error messages in the agent.log file, what is going on?</h2>
-<p>The following error messages may be seen in the agent.log file of wiperf if using the WLAN Pi v1.9.1 (or earlier) image:</p>
-<pre><code>ERROR - if bounce command appears to have failed. Error: sudo: no tty present and no askpass program specified
-</code></pre>
-
-<p>This occurs when connectivity issues are experienced and wiperf attempt to bounce the wireless interface to recover the wireless connection. To fix this issue, add the following entries to the /etc/sudoers.d/wlanpidump file:</p>
-<pre><code>/sbin/ifdown 
+<p>The following error messages may be seen in the agent.log file of wiperf if using the WLAN Pi v1.9.1 (or earlier) image:
+<div class="highlight"><pre><span></span><code>ERROR - if bounce command appears to have failed. Error: sudo: no tty present and no askpass program specified
+</code></pre></div>
+This occurs when connectivity issues are experienced and wiperf attempt to bounce the wireless interface to recover the wireless connection. To fix this issue, add the following entries to the /etc/sudoers.d/wlanpidump file:</p>
+<p><div class="highlight"><pre><span></span><code>/sbin/ifdown 
 /sbin/ifup
-</code></pre>
-
-<p>The modified file content should be as follows:</p>
-<pre><code>wlanpi ALL = (root) NOPASSWD: /sbin/iwconfig, /usr/sbin/iw, /sbin/dhclient, /sbin/ifconfig, /sbin/reboot, /bin/kill, /bin/date, /sbin/ifdown, /sbin/ifup
-</code></pre>
-
-<p>This will ensure that the wireless interface may be correctly bounced by wiperf if required.</p>
+</code></pre></div>
+The modified file content should be as follows:
+<div class="highlight"><pre><span></span><code>wlanpi ALL = (root) NOPASSWD: /sbin/iwconfig, /usr/sbin/iw, /sbin/dhclient, /sbin/ifconfig, /sbin/reboot, /bin/kill, /bin/date, /sbin/ifdown, /sbin/ifup
+</code></pre></div>
+This will ensure that the wireless interface may be correctly bounced by wiperf if required.</p>
 <h2 id="where-do-i-get-the-dashboard-reports-for-splunk">Where do I get the dashboard reports for Splunk?</h2>
 <p>Use SFTP/SCP and pull the xml files in /home/wlanpi/wiperf/dashboards from your WLAN Pi. See the [Splunk build guide][splunk_build] for details of how to add them to Splunk.</p>
 <h2 id="the-dashboard-reports-show-no-mcs-data-and-rx-phy-rate-data-why-not">The dashboard reports show no MCS data and RX PHY rate data - why not?</h2>
@@ -736,9 +733,9 @@
 <li>ssh to the WLAN Pi</li>
 <li>Run the following commands (assuming the WLAN Pi has Internet connectivity):</li>
 </ul>
-<pre><code>cd ~/wiperf
+<div class="highlight"><pre><span></span><code>cd ~/wiperf
 git pull https://github.com/wifinigel/wiperf.git
-</code></pre>
+</code></pre></div>
 
 <p>(It's best to do this is classic mode and redo you Wiperf configuration again after this operation - note that the config.default.ini file has new options you will probably like to use. Don't forget to check /home/wlanpi/wiperf/config/etc/wpa_supplicant/wpa_supplicant.conf too.)</p>
                 
