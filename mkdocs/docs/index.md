@@ -1,7 +1,7 @@
 Title: Home
 Authors: Nigel Bowden
 
-# wiperf
+# wiperf: An Open Source UX Performance Probe
 
 ![wiperf hardware](images/hardware.png)
 
