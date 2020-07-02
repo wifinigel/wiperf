@@ -172,9 +172,62 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Operation Overview
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
     <a href="./" title="Operation Overview" class="md-nav__link md-nav__link--active">
       Operation Overview
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    Configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cron" class="md-nav__link">
+    cron
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wpa_supplicant" class="md-nav__link">
+    wpa_supplicant
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -556,6 +609,43 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    Configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cron" class="md-nav__link">
+    cron
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wpa_supplicant" class="md-nav__link">
+    wpa_supplicant
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -571,6 +661,96 @@
                 
                 
                 <h1 id="overview-of-operation">Overview of Operation</h1>
+<p>Wiperf is an open source utility that runs on a Raspberry Pi or a WLAN Pi hardware device. It provides network probe functionality to gather performance data to give an indication of how a network looks from an end user perspective. </p>
+<p>It runs a series of tests to gather metrics on network connectivity and performance through the execution of tests such ICMP pings, DNS lookups and iperf. These are fully configurable by editing a local configuration file on the probe device at the time of deployment.</p>
+<h2 id="configuration">Configuration</h2>
+<p>To configure the details of the tests to be run on a probe, a local configuration file on the probe needs to be updated. This will provide information to the probe about items such as the required network connectivity (e.g. wireless/ethernet),  IP and credential information of the data server and test details.</p>
+<p>The configuration file can be updated by accessing the CLI of the probe (usually via SSH) and editing the file '/etc/wiperf/config.ini'. </p>
+<p>A default config template file is provided as a start point for the final configuration file ( '/etc/wiperf/config.default/ini'). It is best to take a copy of this file to create the final customised configuration file. When accessing the probe to create the configuration file, a Linux text editor such as 'nano' or 'vi' should be used.</p>
+<p>Here is a suggested workflow to create a probe configuration file:</p>
+<pre><code> cd /etc/wiperf
+ sudo cp ./config.default.ini ./config.ini
+ sudo nano ./config.ini
+</code></pre>
+
+<h3 id="cron">cron</h3>
+<p><em>(Note: This operation is required for the Raspberry Pi only. The WLAN Pi will automatically setup the required cron job during the mode switch)</em></p>
+<p>In addition to the creating a customised configuration file for the probe, a mechanism is required to run the wiperf utility on a regular basis (e.g. every 5 minutes). Cron is a Linux utility that can be used to run wiperf periodically to gather data over time.</p>
+<p>The following CLI commands must be used to add a cron job to the probe to gather data on a regular basis:</p>
+<pre><code> sudo crontab -e
+</code></pre>
+
+<p>Add the following line to run the configured tests every 5 minutes:</p>
+<pre><code> 0-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py &gt; /var/log/wiperf_cron.log 2&gt;&amp;1
+</code></pre>
+
+<h3 id="wpa_supplicant">wpa_supplicant</h3>
+<p>If the wiperf probe is to be connected to a wireless network, then details of the wireless network and the credentials to access the network need to be configured on the probe. This is achieved by configuring the following file:</p>
+<pre><code> # on the RPi, edit the following file:
+ sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+ ```
+
+ ```
+  # on the WLAN Pi edit the following file:
+ sudo nano /etc/wiperf/confi/etc/wpa_supplicant/wpa_supplicant.conf
+ ```
+
+## Logging
+Following the completion of the configuration described above, if all is configured correctly, then wiperf will run every 5 minutes, perform the configured tests, and then send the data back to the data server.
+
+A number of logs are generated to provide support information around the installation and operation of the wiperf process. Each of the generated log files are detailed below:
+
+</code></pre>
+
+<h1 id="this-log-provides-details-of-the-installation-and-upgrade-processes-so">This log provides details of the installation and upgrade processes, so</h1>
+<h1 id="can-be-useful-in-diagnosing-installation-issues">can be useful in diagnosing installation issues</h1>
+<p>/var/log/wiperf_install.log</p>
+<pre><code>
+</code></pre>
+
+<h1 id="this-log-file-is-updated-by-the-main-wiperf-script-each-time">This log file is updated by the main wiperf script each time</h1>
+<h1 id="it-is-run-if-the-script-appears-to-fail-completely-this-is">it is run. If the script appears to fail completely, this is</h1>
+<h1 id="a-good-place-to-check">a good place to check</h1>
+<p>/var/log/wiperg_cron.log</p>
+<pre><code>
+</code></pre>
+
+<h1 id="this-log-provides-details-of-the-tests-performed-each-time">This log provides details of the tests performed each time</h1>
+<h1 id="that-wiperf-runs-it-is-the-main-file-to-use-for-diagnosing">that wiperf runs. It is the main file to use for diagnosing</h1>
+<h1 id="issues-with-wiperf">issues with wiperf</h1>
+<p>/var/log/wiperf_agent.log
+``` </p>
+<h2 id="reporting">Reporting</h2>
+<p>Gathering the data with a probe is only half of the story when using wiperf. The gathered data must be sent to a data collection server to allow it to be visualized to allow analysis of network performance. The data server must be an instance of either:</p>
+<ul>
+<li>Splunk, or</li>
+<li>InfluxDB with Grafana  </li>
+</ul>
+<h3 id="splunk">Splunk</h3>
+<p><img alt="splunk_overview" src="../images/splunk_overview.png" /></p>
+<p>The graphic above outlines the collection of network performance data and how this is sent to Splunk by the wiperf probe. The Splunk instance may be provided anywhere that is convenient (e.g. on a server locally, via VPN, cloud etc.)</p>
+<p>In summary, the steps for data collection are as follows:</p>
+<ol>
+<li>A wiperf probe (i.e. a WLAN Pi or Raspberry Pi) is configured to perform tests and send results to a Splunk server</li>
+<li>The probe performs the configured tests (e.g. speedtest, iperf, http etc.)</li>
+<li>The results of each test are sent over https to the Splunk server for storage and later analysis</li>
+<li>The data is analyzed by accessing the dashboard (a web GUI) of the Splunk server</li>
+</ol>
+<p>(Note that the Splunk server acts as both the data repository and reporting platform for collected data)</p>
+<h3 id="grafanainflux">Grafana/Influx</h3>
+<p><img alt="grafana_overview" src="../images/grafana_overview.png" /></p>
+<p>The graphic above outlines the collection of network performance data and how this is sent to Influx &amp; Grafana by the wiperf probe. </p>
+<p>Grafana is a popular open-source data visualization tool. It is used to graph the performance data collected by wiperf. However, Grafana needs a data source from which to pull its network performance data. To meet this requirement, the Influx database server is used. Like Grafana, InfluxDB is also an open-source package. Note this contrasts with using Splunk, which allows us to use the same package to provide both the data storage and analysis/visualization functions.</p>
+<p>For small-scale instances, Grafana &amp; Influx may be installed on the same server platform and Grafana configured to use the local instance of Influx as its data source.</p>
+<p>Grafana &amp; Influx may be provided anywhere that is convenient (e.g. on a server locally, via VPN, cloud etc.). Note that wiperf only needs to be able to send data to Influx - it requires no communication with the Grafana instance.</p>
+<p>In summary, the steps for data collection are as follows:</p>
+<ol>
+<li>A wiperf probe (i.e. a WLAN Pi or Raspberry Pi) is configured to perform tests and send results to a Splunk server</li>
+<li>The probe performs the configured tests (e.g. speedtest, iperf, http etc.)</li>
+<li>The results of each test are sent over https to the Influx server for storage</li>
+<li>Grafana is configured to use Influx as its data source to allow visualization of performance data</li>
+<li>Data is analysed by accessing the dashboard (a web GUI) of the Grafana server, which pull the required dashboard data from Influx.</li>
+</ol>
                 
                   
                     
@@ -579,7 +759,7 @@
 <div class="md-source-date">
   <small>
     
-      Last update: July 1, 2020
+      Last update: July 2, 2020
     
   </small>
 </div>
