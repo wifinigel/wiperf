@@ -688,8 +688,8 @@
 <p>If you forget to select the free tier and your trial license expires, you may become locked out of the GUI with a “license expired” message. If this happens, from the CLI of your Splunk server, find the file “server.conf” and add the following line to the bottom of the file:</p>
 <p><code>[license]
 active_group = Lite_Free</code></p>
-<p>Then, restart the Splunk server and the login issue should be fixed.
-(The file is /opt/splunk/etc/system/local/server.conf on Linux)</p>
+<p>Then, restart the Splunk server and the login issue should be fixed.</p>
+<p>(The file is /opt/splunk/etc/system/local/server.conf on Linux)</p>
 </div>
 <h2 id="connectivity-planning">Connectivity Planning</h2>
 <p>One area to consider is connectivity between the wiperf probe and the Splunk instance. The wiperf probe needs to be able to access the Splunk server to send its data. If the wiperf probe probe is being deployed on a wireless network, how is the performance data generated going to get back to the Splunk server?</p>
