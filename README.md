@@ -1,5 +1,7 @@
 # wiperf
 
+![wiperf hardware](mkdocs/docs/images/hardware.png)
+
 Wiperf is a utility that can be installed on to a WLAN Pi or a Raspberry Pi to act as a network probe running a series of  network performance tests. It is primarily intended to provide an indication of the end-user experience on a wireless network, but may also be used as a standalone ethernet-connected probe to allow a wired experience to also be tested.
 
 The probe can run the following tests to give an indication of the performance of the network environment into which it has been deployed:
