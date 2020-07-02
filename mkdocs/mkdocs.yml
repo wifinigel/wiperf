@@ -34,7 +34,9 @@ theme:
 extra_css:
   - extra.css
 markdown_extensions:
-  - admonition
+  - markdown.extensions.admonition
+  - pymdownx.details
+  - pymdownx.superfences
 plugins:
     - search
     - git-revision-date-localized
