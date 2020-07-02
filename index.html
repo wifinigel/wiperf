@@ -689,7 +689,7 @@
                 
                 
                 <h1 id="wiperf">wiperf</h1>
-<p><img alt="Probe Report" src="images/probe_summary.jpg" /></p>
+<p><img alt="wiperf hardware" src="images/hardware.png" /></p>
 <p>Wiperf is a utility that can be installed on to a WLAN Pi or a Raspberry Pi to act as a network probe running a series of  network performance tests. It is primarily intended to provide an indication of the end-user experience on a wireless network, but may also be used as a standalone ethernet-connected probe.</p>
 <p>The probe can run the following tests to give an indication of the performance of the network environment into which it has been deployed:</p>
 <ul>
@@ -703,6 +703,7 @@
 </ul>
 <p>Tests may be performed over the wireless or ethernet interface of the probe unit. The results must then be sent back to a Splunk or InfluxDB server (which we'll call the "data server") to provide a reporting capability. (<em>NOTE: There is no graphing/reporting capability on the wiperf probe itself</em>)</p>
 <p>Wiperf has been primarily designed to be a tactical tool for engineers to deploy on to a wireless network where perhaps issues are being experienced and some longer term monitoring may be required. It is not designed to replace large-scale commercial offerings that provide wireless and end-user experience monitoring in a far more comprehensive and user-friendly fashion.</p>
+<p><img alt="Probe Report" src="images/probe_summary.jpg" /></p>
 <p>Tests are run on the wiperf probe at a configured interval (usually 5 minutes) and collected data is sent back to a data server over a network connection between the probe and data server (no connection = no data collection). The data server must be an instance of either:</p>
 <ul>
 <li>Splunk, or</li>
