@@ -43,12 +43,12 @@ If the wiperf probe is to be connected to a wireless network, then details of th
 ```
  # on the RPi, edit the following file:
  sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
- ```
+```
 
- ```
+```
   # on the WLAN Pi edit the following file:
- sudo nano /etc/wiperf/confi/etc/wpa_supplicant/wpa_supplicant.conf
- ```
+  sudo nano /etc/wiperf/confi/etc/wpa_supplicant/wpa_supplicant.conf
+```
 
 ## Logging
 Following the completion of the configuration described above, if all is configured correctly, then wiperf will run every 5 minutes, perform the configured tests, and then send the data back to the data server.
