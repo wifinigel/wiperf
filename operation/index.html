@@ -225,6 +225,40 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    Logging
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reporting" class="md-nav__link">
+    Reporting
+  </a>
+  
+    <nav class="md-nav" aria-label="Reporting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#splunk" class="md-nav__link">
+    Splunk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grafanainflux" class="md-nav__link">
+    Grafana/Influx
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -644,6 +678,40 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    Logging
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reporting" class="md-nav__link">
+    Reporting
+  </a>
+  
+    <nav class="md-nav" aria-label="Reporting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#splunk" class="md-nav__link">
+    Splunk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grafanainflux" class="md-nav__link">
+    Grafana/Influx
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -688,38 +756,35 @@
 <p>If the wiperf probe is to be connected to a wireless network, then details of the wireless network and the credentials to access the network need to be configured on the probe. This is achieved by configuring the following file:</p>
 <pre><code> # on the RPi, edit the following file:
  sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
- ```
-
- ```
-  # on the WLAN Pi edit the following file:
- sudo nano /etc/wiperf/confi/etc/wpa_supplicant/wpa_supplicant.conf
- ```
-
-## Logging
-Following the completion of the configuration described above, if all is configured correctly, then wiperf will run every 5 minutes, perform the configured tests, and then send the data back to the data server.
-
-A number of logs are generated to provide support information around the installation and operation of the wiperf process. Each of the generated log files are detailed below:
-
 </code></pre>
 
-<h1 id="this-log-provides-details-of-the-installation-and-upgrade-processes-so">This log provides details of the installation and upgrade processes, so</h1>
-<h1 id="can-be-useful-in-diagnosing-installation-issues">can be useful in diagnosing installation issues</h1>
-<p>/var/log/wiperf_install.log</p>
-<pre><code>
+<pre><code>  # on the WLAN Pi edit the following file:
+  sudo nano /etc/wiperf/confi/etc/wpa_supplicant/wpa_supplicant.conf
 </code></pre>
 
-<h1 id="this-log-file-is-updated-by-the-main-wiperf-script-each-time">This log file is updated by the main wiperf script each time</h1>
-<h1 id="it-is-run-if-the-script-appears-to-fail-completely-this-is">it is run. If the script appears to fail completely, this is</h1>
-<h1 id="a-good-place-to-check">a good place to check</h1>
-<p>/var/log/wiperg_cron.log</p>
-<pre><code>
+<h2 id="logging">Logging</h2>
+<p>Following the completion of the configuration described above, if all is configured correctly, then wiperf will run every 5 minutes, perform the configured tests, and then send the data back to the data server.</p>
+<p>A number of logs are generated to provide support information around the installation and operation of the wiperf process. Each of the generated log files are detailed below:</p>
+<pre><code># This log provides details of the installation and upgrade processes, so
+# can be useful in diagnosing installation issues
+
+ /var/log/wiperf_install.log
 </code></pre>
 
-<h1 id="this-log-provides-details-of-the-tests-performed-each-time">This log provides details of the tests performed each time</h1>
-<h1 id="that-wiperf-runs-it-is-the-main-file-to-use-for-diagnosing">that wiperf runs. It is the main file to use for diagnosing</h1>
-<h1 id="issues-with-wiperf">issues with wiperf</h1>
-<p>/var/log/wiperf_agent.log
-``` </p>
+<pre><code># This log file is updated by the main wiperf script each time 
+# it is run. If the script appears to fail completely, this is 
+# a good place to check
+
+ /var/log/wiperg_cron.log
+</code></pre>
+
+<pre><code># This log provides details of the tests performed each time
+# that wiperf runs. It is the main file to use for diagnosing
+# issues with wiperf 
+
+ /var/log/wiperf_agent.log
+</code></pre>
+
 <h2 id="reporting">Reporting</h2>
 <p>Gathering the data with a probe is only half of the story when using wiperf. The gathered data must be sent to a data collection server to allow it to be visualized to allow analysis of network performance. The data server must be an instance of either:</p>
 <ul>
