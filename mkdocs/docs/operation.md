@@ -1,5 +1,4 @@
-Title: Wiperf documentation operation overview page
-Authors: Nigel Bowden
+Title: Operation Overview
 
 # Overview of Operation
 Wiperf is an open source utility that runs on a Raspberry Pi or a WLAN Pi hardware device. It provides network probe functionality to gather performance data to give an indication of how a network looks from an end user perspective. 

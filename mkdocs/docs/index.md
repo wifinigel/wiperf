@@ -1,4 +1,4 @@
-Title: Wiperf documentation home page
+Title: Home
 Authors: Nigel Bowden
 
 # wiperf
