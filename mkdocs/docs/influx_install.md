@@ -2,7 +2,7 @@ Title: Influx Installation
 Authors: Nigel Bowden
 
 # Influx Installation
-Obtaining and installing the InfluxDB software is very straightforward. The following steps provide a high level over view of the steps required:
+<div style="float: right;">![influx_logo](images/influx_logo.png)</div>Obtaining and installing the InfluxDB software is very straightforward. The following steps provide a high level over view of the steps required:
 
 - Visit the InfluxDB v1.8 installation guide at [https://docs.influxdata.com/influxdb/v1.8/introduction/install/](https://docs.influxdata.com/influxdb/v1.8/introduction/install/)
 - Scroll down to the "Installing InfluxDB OSS" section

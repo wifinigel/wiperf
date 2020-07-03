@@ -2,8 +2,7 @@ Title: Splunk Installation
 Authors: Nigel Bowden
 
 # Splunk Installation
-
-Once the software is downloaded, follow the instructions that are appropriate for your OS in the Splunk installation manual (you can look for the latest guides via Google, but at the time of writing it was this manual):
+<div style="float: right;">![splunk_logo](images/splunk_logo.png)</div>Once the software is downloaded, follow the instructions that are appropriate for your OS in the Splunk installation manual (you can look for the latest guides via Google, but at the time of writing it was this manual):
 
 [https://docs.splunk.com/Documentation/Splunk/latest/Installation/Chooseyourplatform](https://docs.splunk.com/Documentation/Splunk/latest/Installation/Chooseyourplatform)
 

@@ -2,7 +2,7 @@ Title: InfluxDB Platform
 Authors: Nigel Bowden
 
 # InfluxDB Platform
-InfluxDB is a time-series database that we use to store the network performance data that is collected by wiperf probes. It has many other uses and is used by many organizations as a backing store for use cases involving large amounts of timestamped data, including DevOps monitoring, application metrics, IoT sensor data, and real-time analytics.
+<div style="float: right;">![influx_logo](images/influx_logo.png)</div>InfluxDB is a time-series database that we use to store the network performance data that is collected by wiperf probes. It has many other uses and is used by many organizations as a backing store for use cases involving large amounts of timestamped data, including DevOps monitoring, application metrics, IoT sensor data, and real-time analytics.
 
 InfluxDB does not show our network performance report data, but is used as a data repository source for Grafana in our use-case. Details about Grafana are provide later in this documentation. Note that for our use-case, we are using InfluxDB v1.8 (not v2.0).
 

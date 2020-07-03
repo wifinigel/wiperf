@@ -2,7 +2,7 @@ Title: Influx Configuration
 Authors: Nigel Bowden
 
 # Influx Configuration
-Now that we have the InfluxDB software installed, the next step is to create a database into which data from our wiperf probes will be stored.
+<div style="float: right;">![influx_logo](images/influx_logo.png)</div>Now that we have the InfluxDB software installed, the next step is to create a database into which data from our wiperf probes will be stored.
 
 To create the database, we need to execute a series of commands on the CLI of the Influx DB server. Follow the following steps to create the required database:
 

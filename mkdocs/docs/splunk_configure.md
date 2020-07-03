@@ -2,7 +2,7 @@ Title: Splunk Configuration
 Authors: Nigel Bowden
 
 # Splunk Configuration
-Now that we have a Splunk server setup, we need to customize it to report our probe data. The steps required are all via the Splunk web GUI and are the same for all OS flavours.
+<div style="float: right;">![splunk_logo](images/splunk_logo.png)</div>Now that we have a Splunk server setup, we need to customize it to report our probe data. The steps required are all via the Splunk web GUI and are the same for all OS flavours.
 
 ## Configure Data Input To Splunk
 We need to tell Splunk how we’ll be sending the data from our probe to Splunk. We need to configure a data input that will prepare SPlunk to receive the data and generate an authorization key to be used by the probe when sending data.

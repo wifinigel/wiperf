@@ -2,7 +2,7 @@ Title: Splunk Platform
 Authors: Nigel Bowden
 
 # Splunk Platform
-To collect and view the test results data, an instance of Splunk is required. Splunk is a very flexible data collection and reporting package that can take data sent by the wiperf probe and present it in a very nice report format.  Splunk can be installed on a wide variety of platforms that can be viewed at : [https://www.splunk.com/en_us/download/splunk-enterprise.html](https://www.splunk.com/en_us/download/splunk-enterprise.html)
+<div style="float: right;">![splunk_logo](images/splunk_logo.png)</div>To collect and view the test results data, an instance of Splunk is required. Splunk is a very flexible data collection and reporting package that can take data sent by the wiperf probe and present it in a very nice report format.  Splunk can be installed on a wide variety of platforms that can be viewed at : [https://www.splunk.com/en_us/download/splunk-enterprise.html](https://www.splunk.com/en_us/download/splunk-enterprise.html)
 
 This guide does not cover all installation details of the software package, these may be obtained when downloading and installing the software. Note that a free account sign-up is required when downloading the software from the link listed above.
 
