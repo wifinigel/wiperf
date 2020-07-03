@@ -10,7 +10,6 @@ nav:
             - splunk_configure.md
         - Influx/Grafana:
             - influx_platform.md
-            - influx_software.md
             - influx_install.md
             - influx_configure.md
             - grafana_platform.md
@@ -25,6 +24,9 @@ nav:
         - probe_deploy.md
     - Troubleshooting: troubleshooting.md
     - FAQ: faq.md
+    - Reference Docs:
+        - config.ini.md
+        - data_points.md
     - About: about.md
 theme:
     name: 'material'

@@ -2,7 +2,7 @@ Title: Operation Overview
 
 # Overview of Operation
 
-![splunk_wireless_mgt](images/splunk_wireless_mgt.png)
+![generic_overview](images/generic_overview.png)
 
 Wiperf is an open source utility that runs on a Raspberry Pi or a WLAN Pi hardware device. It provides network probe functionality to gather performance data to give an indication of how a network looks from an end user perspective. 
 
