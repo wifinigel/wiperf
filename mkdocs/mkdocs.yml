@@ -13,7 +13,6 @@ nav:
             - influx_install.md
             - influx_configure.md
             - grafana_platform.md
-            - grafana_software.md
             - grafana_install.md
             - grafana_configure.md
     - Probe:
