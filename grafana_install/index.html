@@ -344,20 +344,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../grafana_platform/" title="Granafa Platform" class="md-nav__link">
-      Granafa Platform
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../grafana_software/" title="Grafana Software" class="md-nav__link">
-      Grafana Software
+    <a href="../grafana_platform/" title="Grafana Platform" class="md-nav__link">
+      Grafana Platform
     </a>
   </li>
 
@@ -617,6 +605,23 @@
                 
                 
                 <h1 id="grafana-installation">Grafana Installation</h1>
+<p><div style="float: right;">
+<img alt="grafana_logo" src="../images/grafana_logo.png" />
+</div>Obtaining and installing the Grafana software is very straightforward. The following notes provide a high level overview of the steps required. Note that these instructions are for Grafana version 6.7 (other versions may work, but have not been tested):  </p>
+<ul>
+<li>Visit the Grafana 6.7 installation guide at <a href="https://grafana.com/docs/grafana/v6.7/">https://grafana.com/docs/grafana/v6.7/</a>. This provides acces to a wide variety of information about Grafanam including supported OS'es and platform concepts</li>
+<li>To download the code and to see the commands required for installation on the server CLI, visit the following download page: <a href="https://grafana.com/grafana/download">https://grafana.com/grafana/download</a><ul>
+<li>Select the required version, Enterprise Edition and your OS (most likely a Linux variant)</li>
+<li>Make a copy of the CLI commands provided to download and install the software for your OS</li>
+</ul>
+</li>
+<li>SSH to the server that will be used to host Grafana</li>
+<li>Make sure your server has Internet connectivity (as it will need to pull down the required software)</li>
+<li>On the CLI of your server, paste in the copied commands to kick-off the software download &amp; install</li>
+<li>Once installation is complete, start the InfluxDB processes with the server CLI command: <code>sudo systemctl start grafana</code></li>
+<li>Check the software is installed and running by executing the following command on the server CLI: <code>sudo systemctl status grafana</code> (ensure the process is "active (running)" )</li>
+</ul>
+<p>As a final check, ensure that the Grafana web GUI is available using the URL: http://<server IP>:3000/</p>
                 
                   
                     
@@ -625,7 +630,7 @@
 <div class="md-source-date">
   <small>
     
-      Last update: July 1, 2020
+      Last update: July 3, 2020
     
   </small>
 </div>
@@ -648,7 +653,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../grafana_software/" title="Grafana Software" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../grafana_platform/" title="Grafana Platform" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -657,7 +662,7 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Grafana Software
+                Grafana Platform
               </div>
             </div>
           </a>

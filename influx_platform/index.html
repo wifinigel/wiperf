@@ -413,20 +413,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../grafana_platform/" title="Granafa Platform" class="md-nav__link">
-      Granafa Platform
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../grafana_software/" title="Grafana Software" class="md-nav__link">
-      Grafana Software
+    <a href="../grafana_platform/" title="Grafana Platform" class="md-nav__link">
+      Grafana Platform
     </a>
   </li>
 
@@ -721,8 +709,8 @@
                 
                 
                 <h1 id="influxdb-platform">InfluxDB Platform</h1>
-<p>InfluxDB is a time-series database that we use to store the network performance data that is collected by wiperf probes. It has many other uses and is used by many organizations as a backing store for use cases involving large amounts of timestamped data, including DevOps monitoring, application metrics, IoT sensor data, and real-time analytics.</p>
-<p>InfluxDB does not show our network performance report data, but is used as a data repository for Grafana in our use-case. Details about Grafana are provide later in this documentation. Note that for our use-case, we are using InfluxDB v1.8 (not v2.0).</p>
+<p><div style="float: right;"><img alt="influx_logo" src="../images/influx_logo.png" /></div>InfluxDB is a time-series database that we use to store the network performance data that is collected by wiperf probes. It has many other uses and is used by many organizations as a backing store for use cases involving large amounts of timestamped data, including DevOps monitoring, application metrics, IoT sensor data, and real-time analytics.</p>
+<p>InfluxDB does not show our network performance report data, but is used as a data repository source for Grafana in our use-case. Details about Grafana are provide later in this documentation. Note that for our use-case, we are using InfluxDB v1.8 (not v2.0).</p>
 <p>Influx can be installed on a wide variety of Linux-based platforms that can be viewed at : <a href="https://docs.influxdata.com/influxdb/v1.8/introduction/install/">https://docs.influxdata.com/influxdb/v1.8/introduction/install/</a>. These include Ubuntu, Debian and macOS (no Windows)</p>
 <p>This guide does not cover all installation details of the software package, these may be obtained when downloading and installing the software.</p>
 <p>To install InfluxDB and use it with a handful of probes, a modest server may be built (e.g. I use a low-end Intel NUC), so for testing purposes, don’t get too hung up on sourcing a high end server. If you'd like to look into server requirements further, then <a href="https://docs.influxdata.com/influxdb/v1.8/guides/hardware_sizing/">check out this page</a>.</p>
