@@ -169,7 +169,7 @@ install () {
 
   if [ "$PLATFORM" = 'rpi' ]; then
 
-    if [ "$OPERATION" = 'install']; then
+    if [ "$OPERATION" = 'install' ]; then
       echo ""
       echo "================================================="
       echo "Don't forget to modify the following files before"
