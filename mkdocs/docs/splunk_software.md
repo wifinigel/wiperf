@@ -2,8 +2,7 @@ Title: Splunk Software
 Authors: Nigel Bowden
 
 # Splunk Software
-
-To obtain the Splunk software for your data server, get along to the Splunk web site and sign up for an account if you don’t already have one: [https://www.splunk.com/en_us/download/splunk-enterprise.html](https://www.splunk.com/en_us/download/splunk-enterprise.html)
+<div style="float: right;">![splunk_logo](images/splunk_logo.png)</div>To obtain the Splunk software for your data server, get along to the Splunk web site and sign up for an account if you don’t already have one: [https://www.splunk.com/en_us/download/splunk-enterprise.html](https://www.splunk.com/en_us/download/splunk-enterprise.html)
 
 Once you’re logged in to the Splunk site, you’ll have a number of OS options, so go ahead and choose your OS option ([supported platforms can be viewed here](https://docs.splunk.com/Documentation/Splunk/latest/Installation/Systemrequirements)). There are options for Windows, Linux & Mac OS:
 
