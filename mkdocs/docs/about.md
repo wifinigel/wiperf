@@ -1,8 +1,4 @@
-Title: WLAN Pi documentation about page
-Authors: Nigel Bowden
-
-# About
-Title: Wiperf documentation about page
+Title: About
 Authors: Nigel Bowden
 
 # About
