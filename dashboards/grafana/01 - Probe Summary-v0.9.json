@@ -68,7 +68,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1593428867743,
+  "iteration": 1593834210257,
   "links": [
     {
       "$$hashKey": "object:334",
@@ -1726,7 +1726,7 @@
               },
               {
                 "params": [
-                  "Ping RTT"
+                  "$PING_TARGET1"
                 ],
                 "type": "alias"
               }
@@ -1781,6 +1781,12 @@
               {
                 "params": [],
                 "type": "last"
+              },
+              {
+                "params": [
+                  "$PING_TARGET2"
+                ],
+                "type": "alias"
               }
             ]
           ],
@@ -1833,6 +1839,12 @@
               {
                 "params": [],
                 "type": "last"
+              },
+              {
+                "params": [
+                  "$PING_TARGET3"
+                ],
+                "type": "alias"
               }
             ]
           ],
@@ -1885,6 +1897,12 @@
               {
                 "params": [],
                 "type": "last"
+              },
+              {
+                "params": [
+                  "$PING_TARGET4"
+                ],
+                "type": "alias"
               }
             ]
           ],
@@ -1937,6 +1955,12 @@
               {
                 "params": [],
                 "type": "last"
+              },
+              {
+                "params": [
+                  "$PING_TARGET5"
+                ],
+                "type": "alias"
               }
             ]
           ],
@@ -3018,5 +3042,5 @@
   "variables": {
     "list": []
   },
-  "version": 112
+  "version": 113
 }

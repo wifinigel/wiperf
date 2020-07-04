@@ -50,7 +50,7 @@ Grafana is a popular open-source data visualization tool. It is used to graph th
 
 For small-scale instances, Grafana & Influx may be installed on the same server platform and Grafana configured to use the local instance of Influx as its data source.
 
-- Grafana web site: [https://grafana.com/](https://grafana.com/)
+- Grafana web site (v6.7): [https://grafana.com/](https://grafana.com/)
 - Influx web site (v.1.8): [https://www.influxdata.com](https://www.influxdata.com)
 
 ## Workflow to Setup Wiperf
