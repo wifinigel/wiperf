@@ -7,14 +7,6 @@
       "type": "datasource",
       "pluginId": "influxdb",
       "pluginName": "InfluxDB"
-    },
-    {
-      "name": "DS_GRAPHITE",
-      "label": "Graphite",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "graphite",
-      "pluginName": "Graphite"
     }
   ],
   "__requires": [
@@ -29,12 +21,6 @@
       "id": "graph",
       "name": "Graph",
       "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "graphite",
-      "name": "Graphite",
-      "version": "1.0.0"
     },
     {
       "type": "datasource",
@@ -68,7 +54,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1593409852339,
+  "iteration": 1593869172816,
   "links": [
     {
       "$$hashKey": "object:160",
@@ -83,7 +69,7 @@
   "panels": [
     {
       "collapsed": false,
-      "datasource": "${DS_GRAPHITE}",
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1900,7 +1886,7 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_GRAPHITE}",
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
