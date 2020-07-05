@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "6.7.4"
+      "version": "6.7.2"
     },
     {
       "type": "panel",
@@ -35,7 +35,7 @@
       "version": ""
     }
   ],
-    "annotations": {
+  "annotations": {
     "list": [
       {
         "$$hashKey": "object:692",
@@ -53,8 +53,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 18,
-  "iteration": 1593934489102,
+  "id": null,
+  "iteration": 1593937836156,
   "links": [
     {
       "icon": "dashboard",
@@ -105,7 +105,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "WiperfDB",
+      "datasource": "${DS_WIPERFDB}",
       "description": "",
       "fill": 1,
       "fillGradient": 0,
@@ -308,7 +308,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "WiperfDB",
+      "datasource": "${DS_WIPERFDB}",
       "fill": 0,
       "fillGradient": 4,
       "gridPos": {
@@ -553,7 +553,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "WiperfDB",
+      "datasource": "${DS_WIPERFDB}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -924,7 +924,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "WiperfDB",
+      "datasource": "${DS_WIPERFDB}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1009,7 +1009,7 @@
               },
               {
                 "params": [
-                  "${HTTP_TARGET1} - Server Response"
+                  "${HTTP_TARGET1}"
                 ],
                 "type": "alias"
               }
@@ -1067,7 +1067,7 @@
               },
               {
                 "params": [
-                  "${HTTP_TARGET2} -  Server Response"
+                  "${HTTP_TARGET2}"
                 ],
                 "type": "alias"
               }
@@ -1266,7 +1266,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "HTTP Server Response (mS) - $WLANPi",
+      "title": "HTTP Server Response Time (mS) - $WLANPi",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1309,7 +1309,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "WiperfDB",
+      "datasource": "${DS_WIPERFDB}",
       "fill": 2,
       "fillGradient": 8,
       "gridPos": {
@@ -1449,7 +1449,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "WiperfDB",
+      "datasource": "${DS_WIPERFDB}",
       "fill": 5,
       "fillGradient": 3,
       "gridPos": {
@@ -1614,7 +1614,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "WiperfDB",
+      "datasource": "${DS_WIPERFDB}",
       "fill": 5,
       "fillGradient": 2,
       "gridPos": {
@@ -1989,7 +1989,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "WiperfDB",
+      "datasource": "${DS_WIPERFDB}",
       "fill": 5,
       "fillGradient": 9,
       "gridPos": {
@@ -2127,7 +2127,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "WiperfDB",
+      "datasource": "${DS_WIPERFDB}",
       "fill": 5,
       "fillGradient": 10,
       "gridPos": {
@@ -2304,7 +2304,7 @@
     },
     {
       "columns": [],
-      "datasource": "WiperfDB",
+      "datasource": "${DS_WIPERFDB}",
       "fontSize": "100%",
       "gridPos": {
         "h": 7,
@@ -2601,11 +2601,8 @@
     "list": [
       {
         "allValue": null,
-        "current": {
-          "text": "bbc.co.uk",
-          "value": "bbc.co.uk"
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=1)",
         "hide": 2,
         "includeAll": false,
@@ -2627,11 +2624,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "text": "cisco.com",
-          "value": "cisco.com"
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=2)",
         "hide": 2,
         "includeAll": false,
@@ -2653,11 +2647,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "text": "instagram.com",
-          "value": "instagram.com"
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=3)",
         "hide": 2,
         "includeAll": false,
@@ -2679,11 +2670,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "text": "google.com",
-          "value": "google.com"
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=4)",
         "hide": 2,
         "includeAll": false,
@@ -2705,13 +2693,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=5)",
         "hide": 2,
         "includeAll": false,
@@ -2733,11 +2716,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "text": "https://bbc.co.uk",
-          "value": "https://bbc.co.uk"
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=1)",
         "hide": 2,
         "includeAll": false,
@@ -2759,11 +2739,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "text": "https://cisco.com",
-          "value": "https://cisco.com"
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=2)",
         "hide": 2,
         "includeAll": false,
@@ -2785,13 +2762,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=3)",
         "hide": 2,
         "includeAll": false,
@@ -2813,13 +2785,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=4)",
         "hide": 2,
         "includeAll": false,
@@ -2841,13 +2808,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=5)",
         "hide": 2,
         "includeAll": false,
@@ -2869,11 +2831,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "text": "bbc.co.uk",
-          "value": "bbc.co.uk"
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 1) ",
         "hide": 2,
         "includeAll": false,
@@ -2895,11 +2854,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "text": "cisco.com",
-          "value": "cisco.com"
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 2)",
         "hide": 2,
         "includeAll": false,
@@ -2921,13 +2877,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 3) ",
         "hide": 2,
         "includeAll": false,
@@ -2949,13 +2900,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 4) ",
         "hide": 2,
         "includeAll": false,
@@ -2977,13 +2923,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 5) ",
         "hide": 2,
         "includeAll": false,
@@ -3005,12 +2946,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "tags": [],
-          "text": "rpi3a",
-          "value": "rpi3a"
-        },
-        "datasource": "WiperfDB",
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
         "definition": "select  \"host\", \"network\" from \"wiperf-poll-status\" where time >= now() - 14d",
         "hide": 0,
         "includeAll": false,
