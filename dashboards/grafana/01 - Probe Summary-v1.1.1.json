@@ -54,7 +54,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1593937836156,
+  "iteration": 1593937836162,
   "links": [
     {
       "icon": "dashboard",
@@ -1125,7 +1125,7 @@
               },
               {
                 "params": [
-                  "${HTTP_TARGET3} -  Server Response"
+                  "${HTTP_TARGET3}"
                 ],
                 "type": "alias"
               }
@@ -1183,7 +1183,7 @@
               },
               {
                 "params": [
-                  "${HTTP_TARGET4} -  Server Response"
+                  "${HTTP_TARGET4}"
                 ],
                 "type": "alias"
               }
@@ -1241,7 +1241,7 @@
               },
               {
                 "params": [
-                  "${HTTP_TARGET5} -  Server Response"
+                  "${HTTP_TARGET5}"
                 ],
                 "type": "alias"
               }
@@ -2993,5 +2993,5 @@
   "variables": {
     "list": []
   },
-  "version": 1
+  "version": 3
 }
