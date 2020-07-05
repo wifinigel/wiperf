@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "6.7.2"
+      "version": "6.7.4"
     },
     {
       "type": "panel",
@@ -54,7 +54,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1593869172816,
+  "iteration": 1593904280513,
   "links": [
     {
       "$$hashKey": "object:160",
@@ -69,7 +69,7 @@
   "panels": [
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": "${DS_WIPERFDB}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -100,13 +100,13 @@
       "interval": "",
       "legend": {
         "alignAsTable": false,
-        "avg": true,
+        "avg": false,
         "current": false,
         "max": false,
         "min": false,
         "show": true,
         "total": false,
-        "values": true
+        "values": false
       },
       "lines": true,
       "linewidth": 1,
@@ -150,7 +150,7 @@
             [
               {
                 "params": [
-                  "lookup_time_ms"
+                  "http_server_response_time_ms"
                 ],
                 "type": "field"
               },
@@ -207,7 +207,7 @@
             [
               {
                 "params": [
-                  "lookup_time_ms"
+                  "http_server_response_time_ms"
                 ],
                 "type": "field"
               },
@@ -264,7 +264,7 @@
             [
               {
                 "params": [
-                  "lookup_time_ms"
+                  "http_server_response_time_ms"
                 ],
                 "type": "field"
               },
@@ -321,7 +321,7 @@
             [
               {
                 "params": [
-                  "lookup_time_ms"
+                  "http_server_response_time_ms"
                 ],
                 "type": "field"
               },
@@ -378,7 +378,7 @@
             [
               {
                 "params": [
-                  "lookup_time_ms"
+                  "http_server_response_time_ms"
                 ],
                 "type": "field"
               },
@@ -413,7 +413,379 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "HTTP Get Time (mS) - $WLANPi",
+      "title": "HTTP Server Response (mS) - $WLANPi",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:4511",
+          "decimals": null,
+          "format": "ms",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:4512",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_WIPERFDB}",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 1
+      },
+      "hiddenSeries": false,
+      "id": 28,
+      "interval": "",
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-http",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"lookup_time_ms\" AS \"${HTTP_TARGET1}\" FROM \"wiperf-http\" WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=1)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "http_get_time_ms"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "$HTTP_TARGET1"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "http_target",
+              "operator": "=~",
+              "value": "/^$HTTP_TARGET1$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-http",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"lookup_time_ms\" AS \"${HTTP_TARGET1}\" FROM \"wiperf-http\" WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=1)",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "http_get_time_ms"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "$HTTP_TARGET2"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "http_target",
+              "operator": "=~",
+              "value": "/^$HTTP_TARGET2$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-http",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"lookup_time_ms\" AS \"${HTTP_TARGET1}\" FROM \"wiperf-http\" WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=1)",
+          "rawQuery": false,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "http_get_time_ms"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "$HTTP_TARGET3"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "http_target",
+              "operator": "=~",
+              "value": "/^$HTTP_TARGET3$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-http",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"lookup_time_ms\" AS \"${HTTP_TARGET1}\" FROM \"wiperf-http\" WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=1)",
+          "rawQuery": false,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "http_get_time_ms"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "$HTTP_TARGET4"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "http_target",
+              "operator": "=~",
+              "value": "/^$HTTP_TARGET4$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-http",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"lookup_time_ms\" AS \"${HTTP_TARGET1}\" FROM \"wiperf-http\" WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=1)",
+          "rawQuery": false,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "http_get_time_ms"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "$HTTP_TARGET5"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "http_target",
+              "operator": "=~",
+              "value": "/^$HTTP_TARGET5$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "HTTP Page Load (mS) - $WLANPi",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -465,8 +837,8 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 12,
-        "y": 1
+        "x": 0,
+        "y": 9
       },
       "hiddenSeries": false,
       "id": 4,
@@ -810,7 +1182,7 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 0,
+        "x": 12,
         "y": 9
       },
       "hiddenSeries": false,
@@ -849,8 +1221,13 @@
         },
         {
           "$$hashKey": "object:7110",
-          "alias": "/Get/",
+          "alias": "/Page/",
           "color": "#C4162A"
+        },
+        {
+          "$$hashKey": "object:1431",
+          "alias": "/Server/",
+          "color": "#FADE2A"
         }
       ],
       "spaceLength": 10,
@@ -884,7 +1261,7 @@
             [
               {
                 "params": [
-                  "lookup_time_ms"
+                  "http_get_time_ms"
                 ],
                 "type": "field"
               },
@@ -894,7 +1271,25 @@
               },
               {
                 "params": [
-                  "${HTTP_TARGET1} Get Time"
+                  "${HTTP_TARGET1} Page Load"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "http_server_response_time_ms"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${HTTP_TARGET1} Server Response"
                 ],
                 "type": "alias"
               }
@@ -1027,8 +1422,8 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 12,
-        "y": 9
+        "x": 0,
+        "y": 17
       },
       "hiddenSeries": false,
       "id": 14,
@@ -1066,7 +1461,7 @@
         },
         {
           "$$hashKey": "object:3790",
-          "alias": "/Get Time/",
+          "alias": "/Page/",
           "color": "#FF780A"
         }
       ],
@@ -1101,7 +1496,7 @@
             [
               {
                 "params": [
-                  "lookup_time_ms"
+                  "http_get_time_ms"
                 ],
                 "type": "field"
               },
@@ -1111,7 +1506,25 @@
               },
               {
                 "params": [
-                  "${HTTP_TARGET2} Get Time"
+                  "${HTTP_TARGET2} Page Load"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "http_server_response_time_ms"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${HTTP_TARGET2} Server Response"
                 ],
                 "type": "alias"
               }
@@ -1244,7 +1657,7 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 0,
+        "x": 12,
         "y": 17
       },
       "hiddenSeries": false,
@@ -1283,7 +1696,7 @@
         },
         {
           "$$hashKey": "object:1544",
-          "alias": "/Get/",
+          "alias": "/Page/",
           "color": "#37872D"
         }
       ],
@@ -1318,7 +1731,7 @@
             [
               {
                 "params": [
-                  "lookup_time_ms"
+                  "http_get_time_ms"
                 ],
                 "type": "field"
               },
@@ -1328,7 +1741,25 @@
               },
               {
                 "params": [
-                  "${HTTP_TARGET3} Get Time"
+                  "${HTTP_TARGET3} Page Load"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "http_server_response_time_ms"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${HTTP_TARGET3} Server Response"
                 ],
                 "type": "alias"
               }
@@ -1461,8 +1892,8 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 12,
-        "y": 17
+        "x": 0,
+        "y": 25
       },
       "hiddenSeries": false,
       "id": 17,
@@ -1500,7 +1931,7 @@
         },
         {
           "$$hashKey": "object:10707",
-          "alias": "/Get/",
+          "alias": "/Page/",
           "color": "#8AB8FF"
         }
       ],
@@ -1535,7 +1966,7 @@
             [
               {
                 "params": [
-                  "lookup_time_ms"
+                  "http_get_time_ms"
                 ],
                 "type": "field"
               },
@@ -1545,7 +1976,25 @@
               },
               {
                 "params": [
-                  "${HTTP_TARGET4} Get Time"
+                  "${HTTP_TARGET4} Page Load"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "http_server_response_time_ms"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${HTTP_TARGET4} Server Response"
                 ],
                 "type": "alias"
               }
@@ -1678,7 +2127,7 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 0,
+        "x": 12,
         "y": 25
       },
       "hiddenSeries": false,
@@ -1717,7 +2166,7 @@
         },
         {
           "$$hashKey": "object:4885",
-          "alias": "/Get Time/",
+          "alias": "/Page/",
           "color": "#F2CC0C"
         }
       ],
@@ -1752,7 +2201,7 @@
             [
               {
                 "params": [
-                  "lookup_time_ms"
+                  "http_get_time_ms"
                 ],
                 "type": "field"
               },
@@ -1762,7 +2211,25 @@
               },
               {
                 "params": [
-                  "${HTTP_TARGET5} Get Time"
+                  "${HTTP_TARGET5} Page Load"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "http_server_response_time_ms"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${HTTP_TARGET5} Server Response"
                 ],
                 "type": "alias"
               }
@@ -1886,7 +2353,7 @@
     },
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": "${DS_WIPERFDB}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -3026,5 +3493,5 @@
   "variables": {
     "list": []
   },
-  "version": 34
+  "version": 6
 }
