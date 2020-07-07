@@ -17,7 +17,9 @@ Wiperf is baked in to the image of the WLAN Pi. It can be activated by switching
 
 Wiperf on the RPi has been tested on models that have an internal Wi-Fi NIC: 3b+, 3a+ and 4. It will likely work on most that have an internal NIC, but I don't have the resources or time to try them all. 
 
-Earlier versions that do no have a an internal NIC will need some type of USB wireless adapter, but as support for external wireless NICs is very poor and many tend to be 2.4GHz only, I've not explored this area in detail. Unfortunately, getting a 2 stream 802.11ac NIC going seems nigh-on impossible due to the lack of drivers available, so the internal single stream NIC is the best we can generally do. 
+Earlier versions that do not have a an internal NIC will need some type of USB wireless adapter, but as support for external wireless NICs is very poor and many tend to be 2.4GHz only, I've not explored this area in detail. 
+
+Unfortunately, getting a 2 stream 802.11ac NIC going seems nigh-on impossible due to the lack of drivers available, so the internal single stream NIC is the best we can generally do. 
 
 Using a single stream NIC has its limitations as speed performance is very limited, but as the main aim of wiperf is to monitor user experience (particularly changes in that experience), then it's good enough for many use-cases.
 
