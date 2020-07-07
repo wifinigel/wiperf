@@ -39,5 +39,22 @@ Once completed, if you hit 'Save and Test', the database connection test should 
 
 ## Adding Wiperf Dashboards
 
+Dashboards can be obtained from the '/usr/share/wiperf/dashboards' folder of the probe. These may be downloaded to your local laptop using a utlity such as SCP or SFTP. Alternatively, the dashboard files may be accessed in the main wiperf repo at :  [folder](https://github.com/wifinigel/wiperf/tree/master/dashboards)
+
+Once the dashboard files have been downloaded, they may be imported to Grafana using the following steps:
+
+- Use the menu option Dashboards > Manage > Import:
+
+![grafana_dashboard1](images/grafana_dashboard1.png)
+
+- Hit the 'Upload Json' button and select the dashboard file on your local laptop that you'd like to upload
+
+![grafana_dashboard2](images/grafana_dashboard2.png)
+
+- The name of the imported report will be shown as indicated. If you'd like to create or select a folder, this can be done in the 'Folder' field. The database connection previously created as the data source must also be selected to ensure the InfluxDB database can be queried: 
+
+![grafana_dashboard3](images/grafana_dashboard3.png)
+
+Once 'Import' is hit, the dashboard will be available in the main Grafana GUI.
 
 
