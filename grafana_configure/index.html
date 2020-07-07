@@ -677,10 +677,28 @@
 <li>Addition of the wiperf dashboards</li>
 </ul>
 <h2 id="integration-of-grafana-with-influxdb">Integration of Grafana with InfluxDB</h2>
+<p>Integration with InfluxDB is required to allow Grafana to send data queries to the InfluxDB database and turn the data in to graphical reports. To do this, Grafana needs to know:</p>
+<ul>
+<li>the data source is an InfluxDB database</li>
+<li>where it is (IP address &amp; port)</li>
+<li>the name of the database within Influx DB (as we previously configured)</li>
+<li>the access credentials to be used to pull the data out of InfluxDB</li>
+</ul>
+<p>The screen-shots below show the required steps:</p>
+<ol>
+<li>Configuration &gt; Data Sources &gt; Added Data Source:</li>
+</ol>
 <p><img alt="grafana_cfg1" src="../images/grafana_cfg1.png" /></p>
+<ol>
+<li>Select InfluxDB:</li>
+</ol>
 <p><img alt="grafana_cfg2" src="../images/grafana_cfg2.png" /></p>
+<ol>
+<li>Enter the name to be referenced for the connection, the URL, database name, username &amp; password (all highlighted below) - note the InfluxDB values use those configure previously when we set up InfluxDB (these settings must match those used in the InfluxDB setup):</li>
+</ol>
 <p><img alt="grafana_cfg3" src="../images/grafana_cfg3.png" /></p>
 <p><img alt="grafana_cfg4" src="../images/grafana_cfg4.png" /></p>
+<p>Once completed, if you hit 'Save and Test', the database connection test should indicate success if all information has been correctly entered.  </p>
 <h2 id="wiperf-dashboards">Wiperf Dashboards</h2>
                 
                   
