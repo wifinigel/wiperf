@@ -421,9 +421,56 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Probe Platform
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
     <a href="./" title="Probe Platform" class="md-nav__link md-nav__link--active">
       Probe Platform
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#wlan-pi" class="md-nav__link">
+    WLAN Pi
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raspberry-pi" class="md-nav__link">
+    Raspberry Pi
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-platforms" class="md-nav__link">
+    Other Platforms
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -588,6 +635,37 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#wlan-pi" class="md-nav__link">
+    WLAN Pi
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raspberry-pi" class="md-nav__link">
+    Raspberry Pi
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-platforms" class="md-nav__link">
+    Other Platforms
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -603,6 +681,17 @@
                 
                 
                 <h1 id="probe-platform">Probe Platform</h1>
+<p>Wiperf has been primarily designed to work on the NEO2 version of the WLAN Pi platform, together with the Raspberry Pi.</p>
+<h2 id="wlan-pi">WLAN Pi</h2>
+<p><img alt="WLAN Pi" src="../images/wlanpi.png" /></p>
+<p>Wiperf is baked in to the image of the WLAN Pi. It can be activated by switching in to wiperf mode on the WLAN Pi. Find out more details at the official documentation site for the WLAN Pi: <a href="https://wlan-pi.github.io/wlanpi-documentation/">https://wlan-pi.github.io/wlanpi-documentation/</a></p>
+<h2 id="raspberry-pi">Raspberry Pi</h2>
+<p><img alt="RPi" src="../images/rpi.png" /></p>
+<p>Wiperf on the RPi has been tested on models that have an internal Wi-Fi NIC: 3b+, 3a+ and 4. It will likely work on most that have an internal NIC, but I don't have the resources or time to try them all. </p>
+<p>Earlier versions that do no have a an internal NIC will need some type of USB wireless adapter, but as support for external wireless NICs is very poor and many tend to be 2.4GHz only, I've not explored this area in detail. Unfortunately, getting a 2 stream 802.11ac NIC going seems nigh-on impossible due to the lack of drivers available, so the internal single stream NIC is the best we can generally do. </p>
+<p>Using a single stream NIC has its limitations as speed performance is very limited, but as the main aim of wiperf is to monitor user experience (particularly changes in that experience), then it's good enough for many use-cases.</p>
+<h2 id="other-platforms">Other Platforms</h2>
+<p>In essence, wiperf is a series of python scripts &amp; modules, together with a few supporting bash scripts to glue a few things together. It will likely work on other Debian type systems, so it's worth giving it a go on other systems if you fancy tinkering around on another platform. When using the install script, install using the 'rpi' option. Let me know if you get it going on other platforms, as it will be interesting to share your experiences.</p>
                 
                   
                     
@@ -611,7 +700,7 @@
 <div class="md-source-date">
   <small>
     
-      Last update: July 3, 2020
+      Last update: July 7, 2020
     
   </small>
 </div>
