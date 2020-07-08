@@ -9,13 +9,15 @@ The wiperf probe needs to have a few pre-requisite activities completed prior to
 - Configure network connectivity
 - Add pre-requisite software packages.
 
+TODO: Image version, SSH access 
+
 ## WLAN Pi
 
 ### Hostname Configuration
 
-By default, the hostname of your WLAN Pi is : ```wlanpi```. It is strongly advised to change the hostname of your WLAN Pi if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices. 
+By default, the hostname of your WLAN Pi is : ```wlanpi```. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices. 
 
-If you'd like to change this to a more meaningful hostname, then you will need to SSH to your WLAN Pi and update the ```/etc/hostname``` and ```/etc/hosts``` files, followed by a reboot of the WLAN Pi:
+If you'd like to change to a more meaningful hostname, then you will need to SSH to your WLAN Pi and update the ```/etc/hostname``` and ```/etc/hosts``` files, followed by a reboot of the WLAN Pi:
 
 Edit the /etc/hostname file using the command:
 
@@ -66,7 +68,7 @@ Edit the following file with the configuration and credentials that will be used
 
 ### Hostname Configuration
 
-By default, the hostname of your WLAN Pi is : ```pi```. It is strongly advised to change the hostname of your RPi if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices. 
+By default, the hostname of your WLAN Pi is : ```pi```. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices.
 
 If you'd like to change this to a more meaningful hostname, then you will need to SSH to your WLAN Pi and update the ```/etc/hostname``` and ```/etc/hosts``` files, followed by a reboot of the RPi:
 
