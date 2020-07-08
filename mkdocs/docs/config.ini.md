@@ -923,7 +923,9 @@ enabled: yes
 ```
 [top](#parameter-reference-guide)
 
-### mode
+### mode (deprecated)
+
+__Note:__ This setting has been removed as it caused probe connectivity issues. The probe now only operates in the passive mode. These notes have bene left in for reference for those who used older versions of code or old configuration file. This setting is silently ignored if supplied.
 
 Available options:
 
