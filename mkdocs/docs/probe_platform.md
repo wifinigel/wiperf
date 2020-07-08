@@ -3,7 +3,7 @@ Authors: Nigel Bowden
 
 # Probe Platform
 
-Wiperf has been primarily designed to work on the NEO2 version of the WLAN Pi platform, together with the Raspberry Pi.
+Wiperf has been primarily designed to work on the NEO2 version of the WLAN Pi platform and the Raspberry Pi.
 
 ## WLAN Pi
 
@@ -21,7 +21,7 @@ Earlier versions that do not have a an internal NIC will need some type of USB w
 
 Unfortunately, getting a 2 stream 802.11ac NIC going seems nigh-on impossible due to the lack of drivers available, so the internal single stream NIC is the best we can generally do. 
 
-Using a single stream NIC has its limitations as speed performance is very limited, but as the main aim of wiperf is to monitor user experience (particularly changes in that experience), then it's good enough for many use-cases.
+Using a single stream NIC has its limitations as speed performance is very limited, but as the main aim of wiperf is to monitor user experience (particularly changes in that experience), then it's good enough for many use-cases where we are mainly interested in changes in relation to the usual baseline.
 
 ## Other Platforms
 
