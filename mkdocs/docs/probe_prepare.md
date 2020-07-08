@@ -5,6 +5,8 @@ Authors: Nigel Bowden
 
 The wiperf probe needs to have a few pre-requisite activities completed prior to the installation of the wiperf code. These vary slightly between the WLAN Pi and RPi platforms, but broadly break down as:
 
+- Software image preparation
+- CLI Access
 - Configure the device hostname
 - Configure network connectivity
 - Add pre-requisite software packages.
@@ -12,6 +14,14 @@ The wiperf probe needs to have a few pre-requisite activities completed prior to
 TODO: Image version, SSH access 
 
 ## WLAN Pi
+
+### Software Image
+
+There is little to do in terms of software image preparation for the WLAN Pi. Visit the WLAN Pi documentation site to find out how to obtain the WLAN Pi image: [https://wlan-pi.github.io/wlanpi-documentation/](https://wlan-pi.github.io/wlanpi-documentation/). If you install the a WLAN Pi image, wiperf will already be installed as part of the image. (Note: all information provided below assumes you are using a 2.0 or later version of the WLAN Pi image)
+
+### Probe CLI Access
+
+To perform some of the configuration activities required, CLI access to the WLAN Pi is required. The easiest way to achieve this is to SSH to the probe over an OTG connection, or plug the WLAN Pi in to an ethernet network port and SSH to its DHCP assigned IP address (shown on the front panel). Visit the WLAN Pi documentation site for more details: [https://wlan-pi.github.io/wlanpi-documentation/](https://wlan-pi.github.io/wlanpi-documentation/)
 
 ### Hostname Configuration
 
@@ -53,7 +63,7 @@ If the probe is to be connected by Ethernet only, then there is no additional co
 
 #### Wireless Configuration (wpa_supplicant.conf)
 
-If wiperf is running in wireless mode, then when the WLAN Pi is flipped in to wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in wiperf mode) to allow the WLAN Pi to join a WLAN.
+If wiperf is running in wireless mode, when the WLAN Pi is flipped in to wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in wiperf mode) to allow the WLAN Pi to join a WLAN.
 
 Edit the following file with the configuration and credentials that will be used by the WLAN Pi to join the SSID under test once it is switched in to wiperf mode:
 
@@ -62,9 +72,48 @@ Edit the following file with the configuration and credentials that will be used
         sudo nano ./wpa_supplicant.conf
 ```
 
+There are a number of sample configurations included in the default file provided (PSK, PEAP & Open auth). Uncomment the required section and add in the correct SSID & authentication details. (For EAP-TLS, it's time to check-out Google as I've not had opportunity to figure that scenario out...)
+
 (Note: This configuration is only used when the WLAN Pi is flipped in to wiperf mode, not for standard (classic mode) connectivity)
 
 ## Raspberry Pi
+
+### Software Image
+
+I would strongly recommend starting with a fresh image using the latest and greatest Raspberry Pi OS (previously called Raspbian): [https://www.raspberrypi.org/downloads/raspberry-pi-os/](https://www.raspberrypi.org/downloads/raspberry-pi-os/).
+
+For the development and testing of the wiperf code, version 10 (Buster) was used. You can check the version on your RPi using the ```cat /etc/os0-release``` command. Here is my sample output:
+
+```
+pi@probe7:~$ cat /etc/os-release 
+PRETTY_NAME="Raspbian GNU/Linux 10 (buster)"
+NAME="Raspbian GNU/Linux"
+VERSION_ID="10"
+VERSION="10 (buster)"
+VERSION_CODENAME=buster
+ID=raspbian
+ID_LIKE=debian
+HOME_URL="http://www.raspbian.org/"
+SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
+BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
+```
+
+Note that you will likely be able to use any recent version, so don't feel compelled to use this exact version.
+
+The download page provided above also has links to resources to guide you through burning the image on to your SD card. (You may also like to check out the 'Probe CLI Access' section below to setup SSH access to your headless RPI before booting from your new image) 
+
+Once you have burned your image, I'd also recommend you apply all latest updates & give it a reboot for good measure:
+
+```
+sudo apt-get update && sudo apt-get upgrade
+sudo reboot
+```
+
+### Probe CLI Access
+
+You will need CLI access to perform the required configuration steps for wiperf. There are a number of ways of gaining this access that are detailed in this document: [https://www.raspberrypi.org/documentation/remote-access/ssh/](https://www.raspberrypi.org/documentation/remote-access/ssh/). 
+
+My personal favourite is to enable SSH on a headless RPi by adding an 'ssh' file to the SD card prior to boot-up.
 
 ### Hostname Configuration
 
@@ -103,7 +152,19 @@ Finally, reboot your RPi:
 
 #### Ethernet
 
-If the probe is to be connected by Ethernet only, then there is no additional configuration required. By default, if a switch port that can supply a DHCP address is used, then the probe will have the required network connection.
+If the probe is to be connected by Ethernet you will need to make some additions to the `/etc/network/interfaces` file to ensure you have network connectivity. Add the following lines to configure the Ethernet port for DHCP connectivity:
+
+```
+ # Wired adapter #1
+ allow-hotplug eth0
+ iface eth0 inet dhcp
+```
+
+These lines may be added anywhere in the file, using a CLI editor such as nano:
+
+```
+ sudo nano /etc/network/interfaces
+```
 
 #### Wireless Configuration
 
