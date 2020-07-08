@@ -468,6 +468,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#software-image" class="md-nav__link">
+    Software Image
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probe-cli-access" class="md-nav__link">
+    Probe CLI Access
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#hostname-configuration" class="md-nav__link">
     Hostname Configuration
   </a>
@@ -513,6 +527,20 @@
   
     <nav class="md-nav" aria-label="Raspberry Pi">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#software-image_1" class="md-nav__link">
+    Software Image
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probe-cli-access_1" class="md-nav__link">
+    Probe CLI Access
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#hostname-configuration_1" class="md-nav__link">
@@ -725,6 +753,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#software-image" class="md-nav__link">
+    Software Image
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probe-cli-access" class="md-nav__link">
+    Probe CLI Access
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#hostname-configuration" class="md-nav__link">
     Hostname Configuration
   </a>
@@ -770,6 +812,20 @@
   
     <nav class="md-nav" aria-label="Raspberry Pi">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#software-image_1" class="md-nav__link">
+    Software Image
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probe-cli-access_1" class="md-nav__link">
+    Probe CLI Access
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#hostname-configuration_1" class="md-nav__link">
@@ -829,14 +885,21 @@
                 <h1 id="probe-preparation">Probe Preparation</h1>
 <p>The wiperf probe needs to have a few pre-requisite activities completed prior to the installation of the wiperf code. These vary slightly between the WLAN Pi and RPi platforms, but broadly break down as:</p>
 <ul>
+<li>Software image preparation</li>
+<li>CLI Access</li>
 <li>Configure the device hostname</li>
 <li>Configure network connectivity</li>
 <li>Add pre-requisite software packages.</li>
 </ul>
+<p>TODO: Image version, SSH access </p>
 <h2 id="wlan-pi">WLAN Pi</h2>
+<h3 id="software-image">Software Image</h3>
+<p>There is little to do in terms of software image preparation for the WLAN Pi. Visit the WLAN Pi documentation site to find out how to obtain the WLAN Pi image: <a href="https://wlan-pi.github.io/wlanpi-documentation/">https://wlan-pi.github.io/wlanpi-documentation/</a>. If you install the a WLAN Pi image, wiperf will already be installed as part of the image. (Note: all information provided below assumes you are using a 2.0 or later version of the WLAN Pi image)</p>
+<h3 id="probe-cli-access">Probe CLI Access</h3>
+<p>To perform some of the configuration activities required, CLI access to the WLAN Pi is required. The easiest way to achieve this is to SSH to the probe over an OTG connection, or plug the WLAN Pi in to an ethernet network port and SSH to its DHCP assigned IP address (shown on the front panel). Visit the WLAN Pi documentation site for more details: <a href="https://wlan-pi.github.io/wlanpi-documentation/">https://wlan-pi.github.io/wlanpi-documentation/</a></p>
 <h3 id="hostname-configuration">Hostname Configuration</h3>
-<p>By default, the hostname of your WLAN Pi is : <code>wlanpi</code>. It is strongly advised to change the hostname of your WLAN Pi if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices. </p>
-<p>If you'd like to change this to a more meaningful hostname, then you will need to SSH to your WLAN Pi and update the <code>/etc/hostname</code> and <code>/etc/hosts</code> files, followed by a reboot of the WLAN Pi:</p>
+<p>By default, the hostname of your WLAN Pi is : <code>wlanpi</code>. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices. </p>
+<p>If you'd like to change to a more meaningful hostname, then you will need to SSH to your WLAN Pi and update the <code>/etc/hostname</code> and <code>/etc/hosts</code> files, followed by a reboot of the WLAN Pi:</p>
 <p>Edit the /etc/hostname file using the command:</p>
 <div class="highlight"><pre><span></span><code> sudo nano /etc/hostname
 </code></pre></div>
@@ -858,16 +921,43 @@ Change each instance of 'wlanpi' to the new hostname (there are usually two inst
 <h4 id="ethernet">Ethernet</h4>
 <p>If the probe is to be connected by Ethernet only, then there is no additional configuration required. By default, if a switch port that can supply a DHCP address is used, then the probe will have the required network connection.</p>
 <h4 id="wireless-configuration-wpa_supplicantconf">Wireless Configuration (wpa_supplicant.conf)</h4>
-<p>If wiperf is running in wireless mode, then when the WLAN Pi is flipped in to wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in wiperf mode) to allow the WLAN Pi to join a WLAN.</p>
+<p>If wiperf is running in wireless mode, when the WLAN Pi is flipped in to wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in wiperf mode) to allow the WLAN Pi to join a WLAN.</p>
 <p>Edit the following file with the configuration and credentials that will be used by the WLAN Pi to join the SSID under test once it is switched in to wiperf mode:</p>
 <div class="highlight"><pre><span></span><code>        cd /etc/wiperf/conf/etc/wpa_supplicant
         sudo nano ./wpa_supplicant.conf
 </code></pre></div>
 
+<p>There are a number of sample configurations included in the default file provided (PSK, PEAP &amp; Open auth). Uncomment the required section and add in the correct SSID &amp; authentication details. (For EAP-TLS, it's time to check-out Google as I've not had opportunity to figure that scenario out...)</p>
 <p>(Note: This configuration is only used when the WLAN Pi is flipped in to wiperf mode, not for standard (classic mode) connectivity)</p>
 <h2 id="raspberry-pi">Raspberry Pi</h2>
+<h3 id="software-image_1">Software Image</h3>
+<p>I would strongly recommend starting with a fresh image using the latest and greatest Raspberry Pi OS (previously called Raspbian): <a href="https://www.raspberrypi.org/downloads/raspberry-pi-os/">https://www.raspberrypi.org/downloads/raspberry-pi-os/</a>.</p>
+<p>For the development and testing of the wiperf code, version 10 (Buster) was used. You can check the version on your RPi using the <code>cat /etc/os0-release</code> command. Here is my sample output:</p>
+<div class="highlight"><pre><span></span><code>pi@probe7:~$ cat /etc/os-release 
+PRETTY_NAME=&quot;Raspbian GNU/Linux 10 (buster)&quot;
+NAME=&quot;Raspbian GNU/Linux&quot;
+VERSION_ID=&quot;10&quot;
+VERSION=&quot;10 (buster)&quot;
+VERSION_CODENAME=buster
+ID=raspbian
+ID_LIKE=debian
+HOME_URL=&quot;http://www.raspbian.org/&quot;
+SUPPORT_URL=&quot;http://www.raspbian.org/RaspbianForums&quot;
+BUG_REPORT_URL=&quot;http://www.raspbian.org/RaspbianBugs&quot;
+</code></pre></div>
+
+<p>Note that you will likely be able to use any recent version, so don't feel compelled to use this exact version.</p>
+<p>The download page provided above also has links to resources to guide you through burning the image on to your SD card. (You may also like to check out the 'Probe CLI Access' section below to setup SSH access to your headless RPI before booting from your new image) </p>
+<p>Once you have burned your image, I'd also recommend you apply all latest updates &amp; give it a reboot for good measure:</p>
+<div class="highlight"><pre><span></span><code>sudo apt-get update &amp;&amp; sudo apt-get upgrade
+sudo reboot
+</code></pre></div>
+
+<h3 id="probe-cli-access_1">Probe CLI Access</h3>
+<p>You will need CLI access to perform the required configuration steps for wiperf. There are a number of ways of gaining this access that are detailed in this document: <a href="https://www.raspberrypi.org/documentation/remote-access/ssh/">https://www.raspberrypi.org/documentation/remote-access/ssh/</a>. </p>
+<p>My personal favourite is to enable SSH on a headless RPi by adding an 'ssh' file to the SD card prior to boot-up.</p>
 <h3 id="hostname-configuration_1">Hostname Configuration</h3>
-<p>By default, the hostname of your WLAN Pi is : <code>pi</code>. It is strongly advised to change the hostname of your RPi if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices. </p>
+<p>By default, the hostname of your WLAN Pi is : <code>pi</code>. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices.</p>
 <p>If you'd like to change this to a more meaningful hostname, then you will need to SSH to your WLAN Pi and update the <code>/etc/hostname</code> and <code>/etc/hosts</code> files, followed by a reboot of the RPi:</p>
 <p>Edit the /etc/hostname file using the command:</p>
 <div class="highlight"><pre><span></span><code> sudo nano /etc/hostname
@@ -888,7 +978,16 @@ Change each instance of 'pi' to the new hostname (there are usually two instance
 
 <h3 id="network-connectivity_1">Network Connectivity</h3>
 <h4 id="ethernet_1">Ethernet</h4>
-<p>If the probe is to be connected by Ethernet only, then there is no additional configuration required. By default, if a switch port that can supply a DHCP address is used, then the probe will have the required network connection.</p>
+<p>If the probe is to be connected by Ethernet you will need to make some additions to the <code>/etc/network/interfaces</code> file to ensure you have network connectivity. Add the following lines to configure the Ethernet port for DHCP connectivity:</p>
+<div class="highlight"><pre><span></span><code> # Wired adapter #1
+ allow-hotplug eth0
+ iface eth0 inet dhcp
+</code></pre></div>
+
+<p>These lines may be added anywhere in the file, using a CLI editor such as nano:</p>
+<div class="highlight"><pre><span></span><code> sudo nano /etc/network/interfaces
+</code></pre></div>
+
 <h4 id="wireless-configuration">Wireless Configuration</h4>
 <p>Configure RPi to join a wireless network. Edit files 'sudo nano /etc/wpa_supplicant/wpa_supplicant.conf' and 'sudo nano /etc/network/interfaces'. The eth0 port is configured as static IP below, but can be left as dhcp if wlan0 &amp; eth0 are on different networks (otherwise Speedtest traffic goes out of eth0 port)
 (note: wpa_supplicant.conf must have root:root ownership - 'chown root:root /etc/wpa_supplicant/wpa_supplicant.conf' if required)</p>
@@ -943,7 +1042,7 @@ Change each instance of 'pi' to the new hostname (there are usually two instance
 <div class="md-source-date">
   <small>
     
-      Last update: July 7, 2020
+      Last update: July 8, 2020
     
   </small>
 </div>
