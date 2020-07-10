@@ -569,6 +569,33 @@
     Wireless Configuration
   </a>
   
+    <nav class="md-nav" aria-label="Wireless Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etcnetworkinterfaces" class="md-nav__link">
+    /etc/network/interfaces
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etcwpa_supplicantwpa_supplicantconf" class="md-nav__link">
+    /etc/wpa_supplicant/wpa_supplicant.conf
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-wireless-connection" class="md-nav__link">
+    Test Wireless Connection
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -854,6 +881,33 @@
     Wireless Configuration
   </a>
   
+    <nav class="md-nav" aria-label="Wireless Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etcnetworkinterfaces" class="md-nav__link">
+    /etc/network/interfaces
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etcwpa_supplicantwpa_supplicantconf" class="md-nav__link">
+    /etc/wpa_supplicant/wpa_supplicant.conf
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-wireless-connection" class="md-nav__link">
+    Test Wireless Connection
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -988,51 +1042,82 @@ Change each instance of 'pi' to the new hostname (there are usually two instance
 </code></pre></div>
 
 <h4 id="wireless-configuration">Wireless Configuration</h4>
-<p>Configure RPi to join a wireless network. Edit files 'sudo nano /etc/wpa_supplicant/wpa_supplicant.conf' and 'sudo nano /etc/network/interfaces'. The eth0 port is configured as static IP below, but can be left as dhcp if wlan0 &amp; eth0 are on different networks (otherwise Speedtest traffic goes out of eth0 port)
-(note: wpa_supplicant.conf must have root:root ownership - 'chown root:root /etc/wpa_supplicant/wpa_supplicant.conf' if required)</p>
-<pre><code>*** Sample '/etc/wpa_supplicant/wpa_supplicant.conf':
+<p>The RPi needs to be configured to join the wireless network that you'd like to test. To join a network, we need to configure the wireless interface and provide the network credentials to join the network. To achieve this, we need to edit two files on the CLI of the RPI:</p>
+<div class="highlight"><pre><span></span><code>sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+sudo nano /etc/network/interfaces
+</code></pre></div>
 
-    ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-    update_config=1
-    ap_scan=1
+<p>Sample configurations for both files are provided below. </p>
+<h5 id="etcnetworkinterfaces">/etc/network/interfaces</h5>
+<div class="highlight"><pre><span></span><code># wiperf interface config file
 
-    network={
-            ssid="My_SSID"
-            psk="My_SSID_Key"
-    }
+# Wired adapter #1
+allow-hotplug eth0
+iface eth0 inet dhcp
 
-*** Sample '/etc/network/interfaces':
+# Wireless adapter #1
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+# wireless-power off
+# post-up iw dev wlan0 set power_save off
 
-    # interfaces(5) file used by ifup(8) and ifdown(8)
+# Local loopback
+auto lo
+iface lo inet loopback
+</code></pre></div>
 
-    # Please note that this file is written to be used with dhcpcd
-    # For static IP, consult /etc/dhcpcd.conf and 'man dhcpcd.conf'
+<p><strong>Note:</strong> The wireless power off commands are commented out in the file above. One of these needs to be uncommented to stop the wireless NC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. I fit doesn't fix the issue, try the other command.</p>
+<h5 id="etcwpa_supplicantwpa_supplicantconf">/etc/wpa_supplicant/wpa_supplicant.conf</h5>
+<p><div class="highlight"><pre><span></span><code>ap_scan=1
 
-    auto wlan0
-    allow-hotplug wlan0
-    iface wlan0 inet dhcp
-    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+# WPA2 PSK Network sample (highest priority - joined first)
+network={
+  ssid=&quot;enter SSID Name&quot;
+  psk=&quot;enter key&quot;
+  priority=10
+}
 
-    # Note eth0 has been set to a static address to avoid routing issues 
-    # when both eth0 and wlan0 are on same network (traffic goes out of 
-    # eth0 rather than wlan0). If they are on different networks, it's
-    # OK to set eth0 to DHCP, but may still need a static route to force
-    # Internet-bound traffic to use wlan0 rather than eth0
-    auto eth0
-    allow-hotplug eth0 
-    # iface eth0 inet dhcp 
-    iface eth0 inet static
-    address 192.168.254.1
-    netmask 255.255.255.0
+#######################################################################################
+# NOTE: to use the templates below, remove the hash symbols at the start of each line
+#######################################################################################
 
-    # Local loopback
-    auto lo
-    iface lo inet loopback
+# WPA2 PSK Network sample (next priority - joined if first priority not available) - don&#39;t unhash this line
 
-    # Include files from /etc/network/interfaces.d:
-    source-directory /etc/network/interfaces.d/*
-</code></pre>
-<p>Reboot the RPi &amp; verify the it has joined the wireless network with iwconfig/ifconfig </p>
+#network={
+#    ssid=&quot;enter SSID Name&quot;
+#    psk=&quot;enter key&quot;
+#    priority=3
+#}
+
+# WPA2 PEAP example (next priority - joined if second priority not available) - don&#39;t unhash this line
+
+#network={
+#  ssid=&quot;enter SSID Name&quot;
+#  key_mgmt=WPA-EAP
+#  eap=PEAP
+#  anonymous_identity=&quot;anonymous&quot;
+#  identity=&quot;enter your username&quot;
+#  password=&quot;enter your password&quot;
+#  phase2=&quot;autheap=MSCHAPV2&quot;
+#  priority=2
+#}
+
+# Open network example (lowest priority, only joined other 3 networks not available) - don&#39;t unhash this line
+
+#network={
+#   ssid=&quot;enter SSID Name&quot;
+#   key_mgmt=NONE
+#   priority=1
+#}
+</code></pre></div>
+Note that the file includes several samples for a variety of security methods. You will need to uncomment the security mthod for your environment and comment out all other methods. By default, the PSK method is used, bit requires that you enter an SSID and shared key. </p>
+<h5 id="test-wireless-connection">Test Wireless Connection</h5>
+<p>Once configuration is complete, reboot the RPI. </p>
+<p>To test if the wireless connection has come up OK, use the following commands to see if wireless interface has joined the wireless network and has an IP address:</p>
+<div class="highlight"><pre><span></span><code>iwconfig
+ifconfig
+</code></pre></div>
                 
                   
                     
