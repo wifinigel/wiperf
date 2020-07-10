@@ -197,7 +197,7 @@ auto lo
 iface lo inet loopback
 ```
 
-__Note:__ The wireless power off commands are commented out in the file above. One of these needs to be uncommented to stop the wireless NC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. I fit doesn't fix the issue, try the other command.
+__Note:__ The wireless power off commands are commented out in the file above. One of these needs to be uncommented to stop the wireless NC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. If it doesn't fix the issue, try the other command. (see this [article for more info](https://www.kalitut.com/2017/11/turn-off-power-saving-mode-of-wlan.html))
 
 ##### /etc/wpa_supplicant/wpa_supplicant.conf
 
