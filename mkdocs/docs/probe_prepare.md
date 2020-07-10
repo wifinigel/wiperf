@@ -11,8 +11,6 @@ The wiperf probe needs to have a few pre-requisite activities completed prior to
 - Configure network connectivity
 - Add pre-requisite software packages.
 
-TODO: Image version, SSH access 
-
 ## WLAN Pi
 
 ### Software Image
@@ -168,50 +166,93 @@ These lines may be added anywhere in the file, using a CLI editor such as nano:
 
 #### Wireless Configuration
 
-Configure RPi to join a wireless network. Edit files 'sudo nano /etc/wpa_supplicant/wpa_supplicant.conf' and 'sudo nano /etc/network/interfaces'. The eth0 port is configured as static IP below, but can be left as dhcp if wlan0 & eth0 are on different networks (otherwise Speedtest traffic goes out of eth0 port)
-(note: wpa_supplicant.conf must have root:root ownership - 'chown root:root /etc/wpa_supplicant/wpa_supplicant.conf' if required)
+The RPi needs to be configured to join the wireless network that you'd like to test. To join a network, we need to configure the wireless interface and provide the network credentials to join the network. To achieve this, we need to edit two files on the CLI of the RPI:
 
-    *** Sample '/etc/wpa_supplicant/wpa_supplicant.conf':
-    
-        ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-        update_config=1
-        ap_scan=1
 
-        network={
-                ssid="My_SSID"
-                psk="My_SSID_Key"
-        }
-    
-    *** Sample '/etc/network/interfaces':
-    
-        # interfaces(5) file used by ifup(8) and ifdown(8)
+```
+sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+sudo nano /etc/network/interfaces
+```
 
-        # Please note that this file is written to be used with dhcpcd
-        # For static IP, consult /etc/dhcpcd.conf and 'man dhcpcd.conf'
+Sample configurations for both files are provided below. 
 
-        auto wlan0
-        allow-hotplug wlan0
-        iface wlan0 inet dhcp
-        wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+##### /etc/network/interfaces
 
-        # Note eth0 has been set to a static address to avoid routing issues 
-        # when both eth0 and wlan0 are on same network (traffic goes out of 
-        # eth0 rather than wlan0). If they are on different networks, it's
-        # OK to set eth0 to DHCP, but may still need a static route to force
-        # Internet-bound traffic to use wlan0 rather than eth0
-        auto eth0
-        allow-hotplug eth0 
-        # iface eth0 inet dhcp 
-        iface eth0 inet static
-        address 192.168.254.1
-        netmask 255.255.255.0
+```
+# wiperf interface config file
 
-        # Local loopback
-        auto lo
-        iface lo inet loopback
+# Wired adapter #1
+allow-hotplug eth0
+iface eth0 inet dhcp
 
-        # Include files from /etc/network/interfaces.d:
-        source-directory /etc/network/interfaces.d/*
+# Wireless adapter #1
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+# wireless-power off
+# post-up iw dev wlan0 set power_save off
 
-Reboot the RPi & verify the it has joined the wireless network with iwconfig/ifconfig 
+# Local loopback
+auto lo
+iface lo inet loopback
+```
 
+__Note:__ The wireless power off commands are commented out in the file above. One of these needs to be uncommented to stop the wireless NC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. I fit doesn't fix the issue, try the other command.
+
+##### /etc/wpa_supplicant/wpa_supplicant.conf
+
+```
+ap_scan=1
+
+# WPA2 PSK Network sample (highest priority - joined first)
+network={
+  ssid="enter SSID Name"
+  psk="enter key"
+  priority=10
+}
+
+#######################################################################################
+# NOTE: to use the templates below, remove the hash symbols at the start of each line
+#######################################################################################
+
+# WPA2 PSK Network sample (next priority - joined if first priority not available) - don't unhash this line
+
+#network={
+#    ssid="enter SSID Name"
+#    psk="enter key"
+#    priority=3
+#}
+
+# WPA2 PEAP example (next priority - joined if second priority not available) - don't unhash this line
+
+#network={
+#  ssid="enter SSID Name"
+#  key_mgmt=WPA-EAP
+#  eap=PEAP
+#  anonymous_identity="anonymous"
+#  identity="enter your username"
+#  password="enter your password"
+#  phase2="autheap=MSCHAPV2"
+#  priority=2
+#}
+
+# Open network example (lowest priority, only joined other 3 networks not available) - don't unhash this line
+
+#network={
+#   ssid="enter SSID Name"
+#   key_mgmt=NONE
+#   priority=1
+#}
+```
+Note that the file includes several samples for a variety of security methods. You will need to uncomment the security mthod for your environment and comment out all other methods. By default, the PSK method is used, bit requires that you enter an SSID and shared key. 
+
+##### Test Wireless Connection
+
+Once configuration is complete, reboot the RPI. 
+
+To test if the wireless connection has come up OK, use the following commands to see if wireless interface has joined the wireless network and has an IP address:
+
+```
+iwconfig
+ifconfig
+```
