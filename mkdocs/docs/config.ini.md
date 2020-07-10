@@ -1,4 +1,4 @@
-# Wiperf - config.ini reference guide
+# Wiperf - config.ini reference guide  (In development - old version)
 
 ## Background
 
