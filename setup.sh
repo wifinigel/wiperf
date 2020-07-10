@@ -63,7 +63,7 @@ install () {
 
   ### install the wiperf poller from PyPi - exit if errors
   echo "(ok) Installing wiperf python module (please wait)..."  | tee -a $LOG_FILE
-  pip3 install wiperf_poller >> $LOG_FILE 2>&1
+  pip3 install --upgrade wiperf_poller >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
       echo "(fail) pip installation of wiperf_poller failed. Exiting." | tee -a $LOG_FILE 
       exit 1
