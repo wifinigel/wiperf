@@ -1,212 +1,49 @@
 Title: Probe Installation
 Authors: Nigel Bowden
 
-# Probe Installation (In development - old version)
+# Probe Installation
 
-This section take a look at how we install the required software on to our probe. This includes any pre-requisite software packages and the wiperf software itself.
+This section takes a look at how we install various additional required software packages on to our probe. This includes any pre-requisite software packages and the wiperf software itself.
 
 ## WLAN Pi
 
-Good news! If you're using a WLAN Pi, you already have the software you require - it is part of the WLAN Pi software image. Go to the next section of this documentation site.
+Good news! If you're using a WLAN Pi (v2.x image), you already have the software you require - it's part of the WLAN Pi software image. Go to the [next section of this documentation site](probe_configure.md).
 
-# Raspberry Pi
+## Raspberry Pi
 
-The RPi requires a few pre-requisite packages before we can install the wiperf software itself. Once these are installed, we can install the wiperf code. Note that the probe must be connected to a network (via ethernet or wireless) that has access to the Internet to download the required code.
+The RPi requires a few pre-requisite Linux packages before we can install the wiperf software itself. Note that the probe must be connected to a network (via ethernet or wireless) that has access to the Internet to download the required code.
 
-## Pre-requisites
+You will need CLI access to the probe to perform the steps detailed below.
 
 ### Package Updates
 
-Update existing Linux packages:
+Before we start adding pre-requisite packages, it's always a good idea to update the existing Linux packages on our RPi to make sure we have the "latest and greatest". This may take a few minutes to complete as many files may be downloaded & updated, depending on when/if your RPi was last updated:
 
 ```
-        sudo apt-get update && sudo apt-get upgrade -y
-        sudo reboot
+sudo apt-get update && sudo apt-get upgrade -y
+sudo reboot
 ```
 
-Install required Linux packages:
+### Pre-requisite Packages
+
+Next, we need to install additional Linux packages that are not included as part of the standard RPi distribution: pip3, iperf3 and git. These are installed as follows:
 
 ```
-        sudo apt-get update
-        sudo apt-get install python3-pip iperf3 git -y
-        sudo reboot
+sudo apt-get update
+sudo apt-get install python3-pip iperf3 git -y
+sudo reboot
 ```
+
+### wiperf Software Installation
+
+To install the wiperf code itself on to the RPi, execute the following command:
+
+```
+curl -s https://raw.githubusercontent.com/wifinigel/wiperf/setup.sh | sudo bash -s install rpi
+```
+
+This will initiate the download and installation of a number of python packages, together with the wiperf code itself. This will take a few minutes to complete.
+
+
+Once installation is complete, our final step is to [configure the wiperf probe](probe_configure.md) to perform the tests we'd like to perform, and provide details of were the probe needs to send its data (i.e. our data server).
      
-Install required python3 modules
-
-```
-        sudo pip3 install iperf3 speedtest-cli configparser
-        sudo pip3 install git+git://github.com/georgestarcher/Splunk-Class-httpevent.git
-
-        # I've had the Splunk-Class-httpevent install fail a couple of times, you can 
-        # try this as a workaround if you hit a similar issue, but this is a bit of a kludge:
-        
-        sudo wget -P /usr/local/lib/python3.7/dist-packages/ https://raw.githubusercontent.com/georgestarcher/Splunk-Class-httpevent/master/splunk_http_event_collector.py)
-```
-
-### User Account
-
-Create the wlanpi user:
-```
-        sudo adduser wlanpi
-```
-
-Edit the sudoers file to enable the wlanpi user to run some commands that require elevated privilege:
-
-```
-        sudo visudo
-```
-
-- Add following line to bottom of file: 
-```
-        wlanpi  ALL=(ALL) NOPASSWD: ALL
-```
-
-Reboot and log back in with the wlanpi user:
-
-```
-        sudo reboot
-```
-
-### Wireless Configuration
-
-Configure RPi to join a wireless network. Edit files 'sudo nano /etc/wpa_supplicant/wpa_supplicant.conf' and 'sudo nano /etc/network/interfaces'. The eth0 port is configured as static IP below, but can be left as dhcp if wlan0 & eth0 are on different networks (otherwise Speedtest traffic goes out of eth0 port)
-(note: wpa_supplicant.conf must have root:root ownership - 'chown root:root /etc/wpa_supplicant/wpa_supplicant.conf' if required)
-
-    *** Sample '/etc/wpa_supplicant/wpa_supplicant.conf':
-    
-        ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-        update_config=1
-        ap_scan=1
-
-        network={
-                ssid="My_SSID"
-                psk="My_SSID_Key"
-        }
-    
-    *** Sample '/etc/network/interfaces':
-    
-        # interfaces(5) file used by ifup(8) and ifdown(8)
-
-        # Please note that this file is written to be used with dhcpcd
-        # For static IP, consult /etc/dhcpcd.conf and 'man dhcpcd.conf'
-
-        auto wlan0
-        allow-hotplug wlan0
-        iface wlan0 inet dhcp
-        wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
-        # RPi 3a+
-        # post-up iw dev wlan0 set power_save off
-        # RPi 3b+
-        # wireless-power off
-
-
-        # Note eth0 has been set to a static address to avoid routing issues 
-        # when both eth0 and wlan0 are on same network (traffic goes out of 
-        # eth0 rather than wlan0). If they are on different networks, it's
-        # OK to set eth0 to DHCP, but may still need a static route to force
-        # Internet-bound traffic to use wlan0 rather than eth0
-        auto eth0
-        allow-hotplug eth0 
-        # iface eth0 inet dhcp 
-        iface eth0 inet static
-        address 192.168.254.1
-        netmask 255.255.255.0
-
-        # Local loopback
-        auto lo
-        iface lo inet loopback
-
-        # Include files from /etc/network/interfaces.d:
-        source-directory /etc/network/interfaces.d/*
-
-Reboot the RPi & verify the it has joined the wireless network with iwconfig/ifconfig 
-
-## Installation
-
-With the RPi connected to the Internet, login using the wlanpi user and clone this project:
-
-```
-        cd ~
-        git clone https://github.com/wifinigel/wiperf.git --depth 1
-```
-
-Edit the config file to customize the operation of the script:
-
-```
-        cd /home/wlanpi/wiperf
-        cp ./config.default.ini ./config.ini
-        nano ./config.ini
-```
-
-### Testing
-
-Test the script by running the following command as the wlanpi user (takes around 2 minutes to complete, depending on tests enabled):
-
-```
-        /usr/bin/env python3 /home/wlanpi/wiperf/wi-perf.py
-```
-
-If no errors are observed when running it then check the following files to check for no errors & that data is generated:
-```    
-        cat /home/wlanpi/wiperf/logs/agent.log
-        # (Note: none of the files below are created when using the HEC forwarder )
-        cat /home/wlanpi/wiperf/data/wiperf-speedtest-splunk.json
-        cat /home/wlanpi/wiperf/data/wiperf-ping-splunk.json
-        cat /home/wlanpi/wiperf/data/wiperf-iperf3-udp-splunk.json
-        cat /home/wlanpi/wiperf/data/wiperf-iperf3-tcp-splunk.json
-        .
-        .
-        etc...
-```
-
-## Running: Schedule Regular Job
-
-Create a cronjob to run the script very 5 mins:
-
-```
-        crontab -e
-```
-
-- add line: 
-```
-        */5 * * * * /usr/bin/env python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1
-```
-## Account Tidy-up
-
-If this has been built using a new RPI image, remember to either update the default 'pi' username with a new password, or remove the account. Make sure you have successfully logged in with the 'wlanpi' user and are using it to perform the operations shown below.
-
-- Change password : sudo passwd pi
-- Remove account: sudo userdel pi
-
-## Updating
-
-To get the latest updates from the GitHub repo , use the following commands when logged in as the wlanpi user:
-
-```
-        cd ~/wiperf
-        git pull https://github.com/wifinigel/wiperf.git
-```
-
-(note that this will update config.default.ini but not config.ini, or remember to re-edit it after a pull if the format changes)
-
-## Troubleshooting:
-
-If things seem to be going wrong, try the following:
-
-- Run the script from the command line and watch for errors (/usr/bin/python3 /home/wlanpi/wiperf/wi-perf.py)
-- SSH to the device & tail the log files in real-time: tail -f /home/wlanpi/wiperf/logs/agent.log
-- Try disabling tests & see if one specific test is causing an issue
-- Make sure all pre-reqs have definitely been fulfilled
-
-
-# WLAN Pi
-If you have a WLAN Pi with image version v1.9 or later, the good news is you're good to go! If not, you will need to update your WLAN Pi image (see this video on [YouTube][wlanpi_reimage]). Note: if you have the v1.9 image, you need to check this out and update the wiperf code before you start configuring wiperf: [FAQ note](#im-running-the-v19-wlan-pi-image-and-the-iperf-tests-dont-workwhats-going-on)
-
-Assuming your image is up to date, you need to complete the following steps:
-
-- Data Server:
-    - Splunk: Setup your Splunk server and obtain the HEC token from your Splunk instance (see this doc: [Splunk build guide][splunk_build])
-    - InfluxDB: Setup your InfluxDB server and a Grafana server to graph the performance data received.
-- SSH to your WLAN Pi and configure your WLAN Pi as detailed in this guide: [WLANPi initial config & test guide][wlanpi_config]
-- Flip your WLAN Pi in to wiperf mode and wait for your data to appear (Front panel option : Menu > Mode > Wiperf)
