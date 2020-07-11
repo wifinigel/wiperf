@@ -445,9 +445,42 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Probe Installation
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
     <a href="./" title="Probe Installation" class="md-nav__link md-nav__link--active">
       Probe Installation
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#wlan-pi" class="md-nav__link">
+    WLAN Pi
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -588,6 +621,23 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#wlan-pi" class="md-nav__link">
+    WLAN Pi
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -603,7 +653,11 @@
                 
                 
                 <h1 id="probe-installation-in-development-old-version">Probe Installation (In development - old version)</h1>
+<p>This section take a look at how we install the required software on to our probe. This includes any pre-requisite software packages and the wiperf software itself.</p>
+<h2 id="wlan-pi">WLAN Pi</h2>
+<p>Good news! If you're using a WLAN Pi, you already have the software you require - it is part of the WLAN Pi software image. Go to the next section of this documentation site.</p>
 <h1 id="raspberry-pi">Raspberry Pi</h1>
+<p>The RPi requires a few pre-requisite packages before we can install the wiperf software itself. Once these are installed, we can install the wiperf code. Note that the probe must be connected to a network (via ethernet or wireless) that has access to the Internet to download the required code.</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
 <h3 id="package-updates">Package Updates</h3>
 <p>Update existing Linux packages:</p>
@@ -754,7 +808,7 @@
 <li>Try disabling tests &amp; see if one specific test is causing an issue</li>
 <li>Make sure all pre-reqs have definitely been fulfilled</li>
 </ul>
-<h1 id="wlan-pi">WLAN Pi</h1>
+<h1 id="wlan-pi_1">WLAN Pi</h1>
 <p>If you have a WLAN Pi with image version v1.9 or later, the good news is you're good to go! If not, you will need to update your WLAN Pi image (see this video on [YouTube][wlanpi_reimage]). Note: if you have the v1.9 image, you need to check this out and update the wiperf code before you start configuring wiperf: <a href="#im-running-the-v19-wlan-pi-image-and-the-iperf-tests-dont-workwhats-going-on">FAQ note</a></p>
 <p>Assuming your image is up to date, you need to complete the following steps:</p>
 <ul>
@@ -774,7 +828,7 @@
 <div class="md-source-date">
   <small>
     
-      Last update: July 10, 2020
+      Last update: July 11, 2020
     
   </small>
 </div>
