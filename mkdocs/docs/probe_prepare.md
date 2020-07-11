@@ -113,6 +113,12 @@ You will need CLI access to perform the required configuration steps for wiperf.
 
 My personal favourite is to enable SSH on a headless RPi by adding an 'ssh' file to the SD card prior to boot-up.
 
+#### Default Login Account Password
+
+If using a fresh RPI image (which is recommended), remember to either update the default 'pi' username with a new password so that your are not running with the default login of : ```pi/raspberry``` (user/pwd)
+
+- Change password : ```sudo passwd pi```
+
 ### Hostname Configuration
 
 By default, the hostname of your WLAN Pi is : ```pi```. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices.
