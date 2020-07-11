@@ -506,8 +506,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tests" class="md-nav__link">
-    Tests
+  <a href="#network-tests" class="md-nav__link">
+    Network Tests
   </a>
   
 </li>
@@ -518,15 +518,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#wireless-client-configuration-wpa_supplicantconf" class="md-nav__link">
-    Wireless Client Configuration (wpa_supplicant.conf)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ethernet-client-configuration" class="md-nav__link">
-    Ethernet Client Configuration
+  <a href="#running-regular-tests" class="md-nav__link">
+    Running Regular Tests
   </a>
   
 </li>
@@ -693,8 +686,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tests" class="md-nav__link">
-    Tests
+  <a href="#network-tests" class="md-nav__link">
+    Network Tests
   </a>
   
 </li>
@@ -705,15 +698,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#wireless-client-configuration-wpa_supplicantconf" class="md-nav__link">
-    Wireless Client Configuration (wpa_supplicant.conf)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ethernet-client-configuration" class="md-nav__link">
-    Ethernet Client Configuration
+  <a href="#running-regular-tests" class="md-nav__link">
+    Running Regular Tests
   </a>
   
 </li>
@@ -830,26 +816,24 @@ influx_database:
 ;---------------------------------------------
 </code></pre></div>
 
-<h3 id="tests">Tests</h3>
+<h3 id="network-tests">Network Tests</h3>
 <p>Note that all network tests are enabled by default. If there are some tests you'd like to disable (e.g. if you don't have an iperf3 server set up), then you'll need to open up the config.ini file and look through each section for the "enabled" parameter for that test and set it to "no". For example, to disable the iperf tcp test: </p>
 <div class="highlight"><pre><span></span><code>[Iperf3_tcp_test]
 ; yes = enabled, no = disabled
 enabled: no
 </code></pre></div>
 
-<p>For a full description of the configuration file parameters, please review the following page: <a href="README_Config.ini.md">config.ini reference guide</a>. The Splunk token is obtained from your Splunk server (see [Splunk build guide][splunk_build]). </p>
-<p><a href="#contents">top</a></p>
-<h2 id="wireless-client-configuration-wpa_supplicantconf">Wireless Client Configuration (wpa_supplicant.conf)</h2>
-<p>If Wiperf is running in wireless mode, then WLAN Pi is flipped in to Wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in Wiperf mode) to allow the WLAN Pi to join a WLAN.</p>
-<p>Edit the following file with the configuration and credentials that will be used by the WLAN Pi to join the SSID under test once it is switched in to Wiperf mode (make edits logged in as the wlanpi user):</p>
-<div class="highlight"><pre><span></span><code>        cd /home/wlanpi/wiperf/conf/etc/wpa_supplicant
-        nano ./wpa_supplicant.conf
+<p>For a full description of the configuration file parameters, please review the following page: <a href="../config.ini/">config.ini reference guide</a>. </p>
+<h2 id="running-regular-tests">Running Regular Tests</h2>
+<p>Create a cronjob to run the script very 5 mins:</p>
+<div class="highlight"><pre><span></span><code>        crontab -e
 </code></pre></div>
 
-<p><a href="#contents">top</a></p>
-<h2 id="ethernet-client-configuration">Ethernet Client Configuration</h2>
-<p>Note that no specific configuration is required for the Ethernet interface when running Wiperf in Ethernet mode. As long as the Ethernet port is connected to a switch port tht supplies an IP address via DHCP, then you're good to go. </p>
-<p><a href="#contents">top</a></p>
+<ul>
+<li>add line: 
+<div class="highlight"><pre><span></span><code>        */5 * * * * /usr/bin/env python3 /home/wlanpi/wiperf/wi-perf.py &gt; /home/wlanpi/wiperf/wiperf.log 2&gt;&amp;1
+</code></pre></div></li>
+</ul>
 <h1 id="testing">Testing</h1>
 <p>Once the required edits have been made to configure Wiperf mode, flip the WLAN Pi in to Wiperf mode using the following FPMS options:</p>
 <div class="highlight"><pre><span></span><code>        Actions &gt; Wiperf &gt; Confirm
