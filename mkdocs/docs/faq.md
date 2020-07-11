@@ -1,5 +1,12 @@
 # FAQ  (In development - old version)
 
+## Proxy
+
+
+## Connectivity check (internal)
+
+
+
 ## I see bounce command error messages in the agent.log file, what is going on?
 
 The following error messages may be seen in the agent.log file of wiperf if using the WLAN Pi v1.9.1 (or earlier) image:
