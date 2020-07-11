@@ -603,79 +603,105 @@
                 
                 
                 <h1 id="probe-configuration-in-development-old-version">Probe Configuration  (In development - old version)</h1>
-<h1 id="contents">Contents</h1>
+<h1 id="wlan-pi">WLAN Pi</h1>
+<p>If you have a WLAN Pi with image version v1.9 or later, the good news is you're good to go! If not, you will need to update your WLAN Pi image (see this video on [YouTube][wlanpi_reimage]). Note: if you have the v1.9 image, you need to check this out and update the wiperf code before you start configuring wiperf: <a href="#im-running-the-v19-wlan-pi-image-and-the-iperf-tests-dont-workwhats-going-on">FAQ note</a></p>
+<p>Assuming your image is up to date, you need to complete the following steps:</p>
 <ul>
-<li><a href="#wiperf---configuration-on-the-wlan-pi">Wiperf - Configuration on the WLAN Pi</a><ul>
-<li><a href="#-instructions-for-influxdb-testers-conf_pull-branch-">Instructions for InfluxDB Testers</a></li>
-<li><a href="#hostname">Hostname</a></li>
-<li><a href="#configuration-file-configini">Configuration File (config.ini)</a></li>
-<li><a href="#wireless-client-configuration-wpa_supplicantconf">Wireless Client Configuration (wpa_supplicant.conf)</a></li>
-<li><a href="#ethernet-client-configuration">Ethernet Client Configuration</a></li>
+<li>Data Server:<ul>
+<li>Splunk: Setup your Splunk server and obtain the HEC token from your Splunk instance (see this doc: <a href="https://github.com/wifinigel/wiperf/raw/master/docs/WLANPi%20Wiperf%20Probe%20-%20Splunk%20Build.pdf">Splunk build guide</a>)</li>
+<li>InfluxDB: Setup your InfluxDB server and a Grafana server to graph the performance data received.</li>
 </ul>
 </li>
-<li><a href="#testing">Testing</a></li>
-<li><a href="#updating">Updating</a></li>
-<li><a href="#known-issues">Known Issues</a><ul>
-<li><a href="#iperf-tests-fail">iperf Test Fail</a></li>
-<li><a href="#interface-bounce-failures">Interface Bounce Failures</a></li>
-<li><a href="#dns-lookup-order-issue">DNS Lookup Order Issue</a></li>
-<li><a href="#hostname-change-related-issues">Hostname Change Related Issues</a></li>
-<li><a href="#comfast-cf-912-80mhz-width-channels">Comfast CF-912 80MHz Width Channels</a></li>
-<li><a href="#mcs--rx-phy-rates-missing-from-reports">MCS &amp; Rx Phy rates Missing From Reports</a></li>
-<li><a href="#tests-fail-to-start-due-to-dns-failures">Tests Fail To Start Due to DNS Failures</a></li>
+<li>SSH to your WLAN Pi and configure your WLAN Pi as detailed in this guide: <a href="docs/README_WLANPi_Config.md">WLANPi initial config &amp; test guide</a></li>
+<li>Flip your WLAN Pi in to wiperf mode and wait for your data to appear (Front panel option : Menu &gt; Mode &gt; Wiperf)</li>
 </ul>
-</li>
-<li><a href="#troubleshooting">Troubleshooting</a></li>
-<li><a href="#additional-features">Additional Features</a><ul>
-<li><a href="#watchdog">Watchdog</a></li>
-<li><a href="#security">Security</a></li>
-<li><a href="#cli-mode-switch">CLI Mode Switch</a></li>
-</ul>
-</li>
-</ul>
-<h1 id="instructions-for-influxdb-testers-conf_pull-branch"><strong><em> Instructions for InfluxDB Testers (conf_pull branch) </em></strong></h1>
-<ol>
-<li>Burn a new SD card with the V1.9.1 image</li>
-<li>Make sure WLAN Pi is connected to the Internet </li>
-<li>SSH to the WLAN Pi and execute the following command to install a missing required Python InfluxDB module:</li>
-</ol>
-<div class="highlight"><pre><span></span><code>sudo /usr/bin/python3 -m pip install influxdb
+<h2 id="running-schedule-regular-job">Running: Schedule Regular Job</h2>
+<p>Create a cronjob to run the script very 5 mins:</p>
+<div class="highlight"><pre><span></span><code>        crontab -e
 </code></pre></div>
 
-<ol>
-<li>Install the latest version of wiperf with Influx support (in the same SSH session):
-<div class="highlight"><pre><span></span><code>sudo pkg_admin -i wiperf -b v0.12-a1
-</code></pre></div></li>
-</ol>
-<p>Then, proceed with the instructions in the remainder of this document.</p>
-<h1 id="wiperf-configuration-on-the-wlan-pi">Wiperf - Configuration on the WLAN Pi</h1>
-<p>This instruction paper assumes you are running Wiperf on a WLAN Pi on an image version of v1.9 or later (which has Wiperf installed and available as part of the image.)</p>
-<p>(<strong>Special note for WLAN Pi image v1.9.0:</strong> please see the <a href="#known-issues">Known Issues</a>) section of this document)</p>
-<p>The Wiperf probe is activated via the front panel menu system (FPMS) of the WLAN Pi. But, before flipping in to the Wiperf mode, a few configuration steps need to be completed:</p>
-<p><a href="#contents">top</a></p>
-<h2 id="hostname">Hostname</h2>
-<p>It is strongly advised that you configure the hostname of your WLAN Pi before following the steps detailed below. The data sent to and stored in your reporting database (e.g. Splunk, Influx etc.) will be associated with the WLAN Pi hostname that is used when the data is forwarded. If you decide to subsequently change the hostname, then historical data from the unit will not be associated with the data sent with the new hostname.</p>
-<p>If you are running multiple WLAN Pi units, then you MUST change their hostnames, as you will not be able to differentiate their data within Splunk. All data, from all units, will be shown under the default 'wlanpi' hostname.</p>
-<p>To change the WLAN Pi hostname, please check out the following <a href="https://wlan-pi.github.io/wlanpi-documentation/faq/#how-do-i-change-the-hostname-of-my-wlan-pi">FAQ</a> page and complete all suggested steps: <a href="https://wlan-pi.github.io/wlanpi-documentation/faq/#how-do-i-change-the-hostname-of-my-wlan-pi">link</a></p>
-<p><a href="#contents">top</a></p>
-<h2 id="configuration-file-configini">Configuration File (config.ini)</h2>
-<p>The operation of Wiperf is configured using the file <code>'/home/wanpi/wiperf/config.ini'</code> This needs to be edited prior to entering Wiperf mode.</p>
-<p>Prior to the first use of Wiperf, the config.ini file does not exist in the required WLAN Pi directory. However, a default template config file (<code>config.default.ini</code>) is supplied that can be used to create the <code>config.ini</code> file. Here is the suggested workflow:</p>
-<p>Connect to the WLAN Pi, create a copy of the config template file and edit the newly created config (as the wlanpi user):</p>
-<div class="highlight"><pre><span></span><code>        cd /home/wlanpi/wiperf
+<ul>
+<li>add line: 
+<div class="highlight"><pre><span></span><code>        */5 * * * * /usr/bin/env python3 /home/wlanpi/wiperf/wi-perf.py &gt; /home/wlanpi/wiperf/wiperf.log 2&gt;&amp;1
+
+# Contents
+
+- [Wiperf - Configuration on the WLAN Pi](#wiperf---configuration-on-the-wlan-pi)
+    - [Instructions for InfluxDB Testers](#-instructions-for-influxdb-testers-conf_pull-branch-)
+    - [Hostname](#hostname)
+    - [Configuration File (config.ini)](#configuration-file-configini)
+    - [Wireless Client Configuration (wpa_supplicant.conf)](#wireless-client-configuration-wpa_supplicantconf)
+    - [Ethernet Client Configuration](#ethernet-client-configuration)
+- [Testing](#testing)
+- [Updating](#updating)
+- [Known Issues](#known-issues)
+    - [iperf Test Fail](#iperf-tests-fail)
+    - [Interface Bounce Failures](#interface-bounce-failures)
+    - [DNS Lookup Order Issue](#dns-lookup-order-issue)
+    - [Hostname Change Related Issues](#hostname-change-related-issues)
+    - [Comfast CF-912 80MHz Width Channels](#comfast-cf-912-80mhz-width-channels)
+    - [MCS &amp; Rx Phy rates Missing From Reports](#mcs--rx-phy-rates-missing-from-reports)
+    - [Tests Fail To Start Due to DNS Failures](#tests-fail-to-start-due-to-dns-failures)
+- [Troubleshooting](#troubleshooting)
+- [Additional Features](#additional-features)
+    - [Watchdog](#watchdog)
+    - [Security](#security)
+    - [CLI Mode Switch](#cli-mode-switch)
+
+# *** Instructions for InfluxDB Testers (conf_pull branch) ***
+
+1. Burn a new SD card with the V1.9.1 image
+2. Make sure WLAN Pi is connected to the Internet 
+3. SSH to the WLAN Pi and execute the following command to install a missing required Python InfluxDB module:
+</code></pre></div>
+sudo /usr/bin/python3 -m pip install influxdb
+<div class="highlight"><pre><span></span><code>4. Install the latest version of wiperf with Influx support (in the same SSH session):
+</code></pre></div>
+sudo pkg_admin -i wiperf -b v0.12-a1
+<div class="highlight"><pre><span></span><code>Then, proceed with the instructions in the remainder of this document.
+
+# Wiperf - Configuration on the WLAN Pi
+
+This instruction paper assumes you are running Wiperf on a WLAN Pi on an image version of v1.9 or later (which has Wiperf installed and available as part of the image.)
+
+(**Special note for WLAN Pi image v1.9.0:** please see the [Known Issues](#known-issues)) section of this document)
+
+The Wiperf probe is activated via the front panel menu system (FPMS) of the WLAN Pi. But, before flipping in to the Wiperf mode, a few configuration steps need to be completed:
+
+[top](#contents)
+
+## Hostname
+
+It is strongly advised that you configure the hostname of your WLAN Pi before following the steps detailed below. The data sent to and stored in your reporting database (e.g. Splunk, Influx etc.) will be associated with the WLAN Pi hostname that is used when the data is forwarded. If you decide to subsequently change the hostname, then historical data from the unit will not be associated with the data sent with the new hostname.
+
+If you are running multiple WLAN Pi units, then you MUST change their hostnames, as you will not be able to differentiate their data within Splunk. All data, from all units, will be shown under the default &#39;wlanpi&#39; hostname.
+
+To change the WLAN Pi hostname, please check out the following [FAQ][hostname_faq] page and complete all suggested steps: [link][hostname_faq]
+
+[top](#contents)
+
+## Configuration File (config.ini)
+
+The operation of Wiperf is configured using the file `&#39;/home/wanpi/wiperf/config.ini&#39;` This needs to be edited prior to entering Wiperf mode.
+
+Prior to the first use of Wiperf, the config.ini file does not exist in the required WLAN Pi directory. However, a default template config file (`config.default.ini`) is supplied that can be used to create the `config.ini` file. Here is the suggested workflow:
+
+Connect to the WLAN Pi, create a copy of the config template file and edit the newly created config (as the wlanpi user):
+</code></pre></div>
+        cd /home/wlanpi/wiperf
         cp ./config.default.ini ./config.ini
         nano ./config.ini
-</code></pre></div>
+<div class="highlight"><pre><span></span><code>By default, the configuration file is set to run all tests. However, there is a minimum configuration that must be applied for Wiperf mode to run out-of-the-box. The minimum configuration parameters you need to configure (just to get you going...) are outlined in the subsections below. In summary you need to:
 
-<p>By default, the configuration file is set to run all tests. However, there is a minimum configuration that must be applied for Wiperf mode to run out-of-the-box. The minimum configuration parameters you need to configure (just to get you going...) are outlined in the subsections below. In summary you need to:</p>
-<ul>
-<li>Configure the Wiperf global mode of operation (wireless or Ethernet) and the interface parameters that determine how the WLAN Pi is connected</li>
-<li>Configure the management platform you'll be sending data to</li>
-<li>Configure the tests you'd like to run</li>
-</ul>
-<h3 id="interface-parameters">Interface Parameters</h3>
-<p>As the WLAN Pi can now test over the ethernet or WLAN interfaces, we need to tell the software which mode is in use and which interfaces the test traffic and results data will be sent over. (Note that "ethernet" mode with mgt traffic sent over the wireless interface is not supported)</p>
-<div class="highlight"><pre><span></span><code>[General]
+* Configure the Wiperf global mode of operation (wireless or Ethernet) and the interface parameters that determine how the WLAN Pi is connected
+* Configure the management platform you&#39;ll be sending data to
+* Configure the tests you&#39;d like to run
+
+### Interface Parameters
+
+As the WLAN Pi can now test over the ethernet or WLAN interfaces, we need to tell the software which mode is in use and which interfaces the test traffic and results data will be sent over. (Note that &quot;ethernet&quot; mode with mgt traffic sent over the wireless interface is not supported)
+</code></pre></div>
+[General]
 ; global test mode: wireless or ethernet
 ; 
 ; wireless mode: 
@@ -684,41 +710,38 @@
 ; ethernet mode:
 ;    - all test and management traffic sent over ethernet port (mgt_if parameter not used/ignored)
 ;
-probe_mode: wireless
-
-; ------------- ethernet mode parameters ------------
+probe_mode: wireless</li>
+</ul>
+<p>; ------------- ethernet mode parameters ------------
 ; eth interface name set this as per the output of an ifconfig command (usually eth0)
 ; (no management interface required, as tests &amp; management traffic over same i/f)
 eth_if: eth0
-; ---------------------------------------------------
-
-; ------------- wireless mode parameters ------------
+; ---------------------------------------------------</p>
+<p>; ------------- wireless mode parameters ------------
 ; wlan interface name set this as per the output of an iwconfig command (usually wlan0)
 wlan_if: wlan0
 ; interface name over which mgt traffic is sent (i.e. how we get to our management
 ; server) - options: wlan0, eth0, zt
 mgt_if: wlan0
 ; ---------------------------------------------------
-</code></pre></div>
+<div class="highlight"><pre><span></span><code>### Database Parameters
 
-<h3 id="database-parameters">Database Parameters</h3>
-<p>Wiperf can send results data to Splunk, InfluxDB (v1.x) and InfluxDB2 data collectors through an exporter module for each collector type. The relevant authentication parameters need to be set for the collector in-use in the following sections (note these need to be configured on the data collector platform also before sending results data):</p>
-<div class="highlight"><pre><span></span><code>[General]
+Wiperf can send results data to Splunk, InfluxDB (v1.x) and InfluxDB2 data collectors through an exporter module for each collector type. The relevant authentication parameters need to be set for the collector in-use in the following sections (note these need to be configured on the data collector platform also before sending results data):
+</code></pre></div>
+[General]
 ; --------- Common Mgt Platform Params ------- 
 ; set the data exporter type - current options: splunk, influxdb, influxdb2
 exporter_type: splunk
-; --------------------------------------------
-
-; -------------- Splunk Config ---------------
+; --------------------------------------------</p>
+<p>; -------------- Splunk Config ---------------
 ; IP address or hostname of Splunk host
 splunk_host: 192.168.0.99
 ; Splunk collector port (8088 by default)
 splunk_port: 8088
 ; Splunk token to access Splunk server created by Splunk (example token: 84adb9ca-071c-48ad-8aa1-b1903c60310d)
-splunk_token: &lt;token_here&gt;
-;---------------------------------------------
-
-; -------------- InFlux1 Config ---------------
+splunk_token: <token_here>
+;---------------------------------------------</p>
+<p>; -------------- InFlux1 Config ---------------
 ; IP address or hostname of InfluxDB host
 influx_host:
 ; InfluxDb collector port (8086 by default)
@@ -726,9 +749,8 @@ influx_port: 8086
 influx_username: 
 influx_password: 
 influx_database:
-;---------------------------------------------
-
-; -------------- InFlux2 Config ---------------
+;---------------------------------------------</p>
+<p>; -------------- InFlux2 Config ---------------
 ; IP address or hostname of InfluxDB2 host
 influx2_host:
 ; InfluxDB2 collector port (443 by default)
@@ -737,123 +759,171 @@ influx2_token:
 influx2_bucket: 
 influx2_org:
 ;---------------------------------------------
-</code></pre></div>
+<div class="highlight"><pre><span></span><code>### Tests
 
-<h3 id="tests">Tests</h3>
-<p>Note that all network tests are enabled by default. If there are some tests you'd like to disable (e.g. if you don't have an iperf3 server set up), then you'll need to open up the config.ini file and look through each section for the "enabled" parameter for that test and set it to "no". For example, to disable the iperf tcp test: </p>
-<div class="highlight"><pre><span></span><code>[Iperf3_tcp_test]
+Note that all network tests are enabled by default. If there are some tests you&#39;d like to disable (e.g. if you don&#39;t have an iperf3 server set up), then you&#39;ll need to open up the config.ini file and look through each section for the &quot;enabled&quot; parameter for that test and set it to &quot;no&quot;. For example, to disable the iperf tcp test: 
+</code></pre></div>
+[Iperf3_tcp_test]
 ; yes = enabled, no = disabled
 enabled: no
-</code></pre></div>
+<div class="highlight"><pre><span></span><code>For a full description of the configuration file parameters, please review the following page: [config.ini reference guide](README_Config.ini.md). The Splunk token is obtained from your Splunk server (see [Splunk build guide][splunk_build]). 
 
-<p>For a full description of the configuration file parameters, please review the following page: <a href="README_Config.ini.md">config.ini reference guide</a>. The Splunk token is obtained from your Splunk server (see <a href="https://github.com/wifinigel/wiperf/raw/master/docs/WLANPi%20Wiperf%20Probe%20-%20Splunk%20Build.pdf">Splunk build guide</a>). </p>
-<p><a href="#contents">top</a></p>
-<h2 id="wireless-client-configuration-wpa_supplicantconf">Wireless Client Configuration (wpa_supplicant.conf)</h2>
-<p>If Wiperf is running in wireless mode, then WLAN Pi is flipped in to Wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in Wiperf mode) to allow the WLAN Pi to join a WLAN.</p>
-<p>Edit the following file with the configuration and credentials that will be used by the WLAN Pi to join the SSID under test once it is switched in to Wiperf mode (make edits logged in as the wlanpi user):</p>
-<div class="highlight"><pre><span></span><code>        cd /home/wlanpi/wiperf/conf/etc/wpa_supplicant
+[top](#contents)
+
+## Wireless Client Configuration (wpa_supplicant.conf)
+
+If Wiperf is running in wireless mode, then WLAN Pi is flipped in to Wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in Wiperf mode) to allow the WLAN Pi to join a WLAN.
+
+Edit the following file with the configuration and credentials that will be used by the WLAN Pi to join the SSID under test once it is switched in to Wiperf mode (make edits logged in as the wlanpi user):
+</code></pre></div>
+        cd /home/wlanpi/wiperf/conf/etc/wpa_supplicant
         nano ./wpa_supplicant.conf
-</code></pre></div>
+<div class="highlight"><pre><span></span><code>[top](#contents)
 
-<p><a href="#contents">top</a></p>
-<h2 id="ethernet-client-configuration">Ethernet Client Configuration</h2>
-<p>Note that no specific configuration is required for the Ethernet interface when running Wiperf in Ethernet mode. As long as the Ethernet port is connected to a switch port tht supplies an IP address via DHCP, then you're good to go. </p>
-<p><a href="#contents">top</a></p>
-<h1 id="testing">Testing</h1>
-<p>Once the required edits have been made to configure Wiperf mode, flip the WLAN Pi in to Wiperf mode using the following FPMS options:</p>
-<div class="highlight"><pre><span></span><code>        Actions &gt; Wiperf &gt; Confirm
-</code></pre></div>
+## Ethernet Client Configuration
 
-<p>If no errors are observed on the FPMS during flip-over, inspect the following files to double-check for errors &amp; verify that test data is generated (as indicated in the log messages):
-<div class="highlight"><pre><span></span><code>    cat /home/wlanpi/wiperf/logs/agent.log
+Note that no specific configuration is required for the Ethernet interface when running Wiperf in Ethernet mode. As long as the Ethernet port is connected to a switch port tht supplies an IP address via DHCP, then you&#39;re good to go. 
+
+[top](#contents)
+
+# Testing
+
+Once the required edits have been made to configure Wiperf mode, flip the WLAN Pi in to Wiperf mode using the following FPMS options:
+</code></pre></div>
+        Actions &gt; Wiperf &gt; Confirm
+<div class="highlight"><pre><span></span><code>If no errors are observed on the FPMS during flip-over, inspect the following files to double-check for errors &amp; verify that test data is generated (as indicated in the log messages):
+</code></pre></div>
+    cat /home/wlanpi/wiperf/logs/agent.log
     cat /home/wlanpi/wiperf/wiperf.log 
+<div class="highlight"><pre><span></span><code>Note that by default the tests are run every 5 mins unless the interval has been changed in the `config.ini` file. Wait at least this interval before determining that there is an issue - the test cycle will NOT begin immediately upon entering Wiperf mode.
+
+Check your database platform and verify that data is being received.
+
+[top](#contents)
+
+# Updating
+
+To get the latest updates from the GitHub repo (when available), use the following commands when logged in as the wlanpi user:
 </code></pre></div>
-Note that by default the tests are run every 5 mins unless the interval has been changed in the <code>config.ini</code> file. Wait at least this interval before determining that there is an issue - the test cycle will NOT begin immediately upon entering Wiperf mode.</p>
-<p>Check your database platform and verify that data is being received.</p>
-<p><a href="#contents">top</a></p>
-<h1 id="updating">Updating</h1>
-<p>To get the latest updates from the GitHub repo (when available), use the following commands when logged in as the wlanpi user:</p>
-<div class="highlight"><pre><span></span><code>        cd ~/wiperf
+        cd ~/wiperf
         git pull https://github.com/wifinigel/wiperf.git
-</code></pre></div>
+<div class="highlight"><pre><span></span><code>(note that this will update config.default.ini but not config.ini, so remember to re-edit it after a pull if the config file format changes)
 
-<p>(note that this will update config.default.ini but not config.ini, so remember to re-edit it after a pull if the config file format changes)</p>
-<p><a href="#contents">top</a></p>
-<h1 id="known-issues">Known Issues:</h1>
-<h2 id="iperf-tests-fail">iperf Tests Fail</h2>
-<p>There is an issue with the v1.9.0 WLAN Pi image that means that the iperf tests fail when running in wiperf mode. To get the fixed version, follow the update process detailed in the <a href="#updating">Updating</a> section of this document (3rd Jan 2020)</p>
-<p><a href="#contents">top</a></p>
-<h2 id="interface-bounce-failures">Interface Bounce Failures</h2>
-<p>There is an issue in WLAN Pi image versions v1.9.0 &amp; v1.9.1 with some required commands missing from the <code>/etc/sudoers.d/wlanpidump</code> file. This issue manifests itself with errors about WLAN interface bounce operations failing in the agent.log file. To fix this issue, please apply the following fix:</p>
-<p>Add the following entries to the /etc/sudoers.d/wlanpidump file:</p>
-<p><div class="highlight"><pre><span></span><code>/sbin/ifdown 
+[top](#contents)
+
+# Known Issues:
+
+## iperf Tests Fail
+
+There is an issue with the v1.9.0 WLAN Pi image that means that the iperf tests fail when running in wiperf mode. To get the fixed version, follow the update process detailed in the [Updating](#updating) section of this document (3rd Jan 2020)
+
+[top](#contents)
+
+## Interface Bounce Failures
+
+There is an issue in WLAN Pi image versions v1.9.0 &amp; v1.9.1 with some required commands missing from the ```/etc/sudoers.d/wlanpidump``` file. This issue manifests itself with errors about WLAN interface bounce operations failing in the agent.log file. To fix this issue, please apply the following fix:
+
+ Add the following entries to the /etc/sudoers.d/wlanpidump file:
+</code></pre></div>
+/sbin/ifdown 
 /sbin/ifup
+<div class="highlight"><pre><span></span><code>The modified file content should be as follows:
 </code></pre></div>
-The modified file content should be as follows:
-<div class="highlight"><pre><span></span><code>wlanpi ALL = (root) NOPASSWD: /sbin/iwconfig, /usr/sbin/iw, /sbin/dhclient, /sbin/ifconfig, /sbin/reboot, /bin/kill, /bin/date, /sbin/ifdown, /sbin/ifup
-</code></pre></div>
-Reboot the WLAN Pi after applying this file update</p>
-<p><a href="#contents">top</a></p>
-<h2 id="dns-lookup-order-issue">DNS Lookup Order Issue</h2>
-<p>By default in WLAN Pi image versions up to and including v1.9.1, the DNS server value <code>8.8.8.8</code> has been hard-coded in to the DNS server lookup list. This has been achieved by configuring the following line in to the file <code>/etc/resolvconf/resolv.conf.d/head</code>:</p>
-<p><div class="highlight"><pre><span></span><code>nameserver 8.8.8.8
-</code></pre></div>
-This ensures that the 8.8.8.8 address is always used as the first DNS lookup entry, even if the WLAN Pi receives a DNS server address during its DHCP process. This can be verified by performing a <code>cat /etc/resolv.conf</code> when the WLAN Pi is in wiperf mode - even though there may be two or more entries in the file, 8.8.8.8 will always be shown at the top of the file listing, and be used as the first lookup server. This may not be desirable behaviour, as 8.8.8.8 may not be available or DHCP assigned servers may be preferred. </p>
-<p>To ensure that the desired DNS environment is used, the following options exist:</p>
-<ol>
-<li>Remove the 8.8.8.8 entry completely: edit the file  <code>/etc/resolvconf/resolv.conf.d/head</code> and remove the offending entry completely. This will ensure only the DHCP assigned DNS server(s) will be used.</li>
-<li>Replace the 8.8.8.8 entry by editing the  <code>/etc/resolvconf/resolv.conf.d/head</code> and replacing it with a desired value</li>
-<li>Move the 8.8.8.8 entry from the <code>/etc/resolvconf/resolv.conf.d/head</code> file to the <code>/etc/resolvconf/resolv.conf.d/tail</code> file, so that 8.8.8.8 is still used, but is now the last option in the DNS server list (only used when other preceding servers do not return a result)</li>
-</ol>
-<p><a href="#contents">top</a></p>
-<h2 id="hostname-change-related-issues">Hostname Change Related Issues</h2>
-<p>There have been a number of issues reported that have been reported that are due to the WLAN Pi hostname being changed from the default, but it has not been updated in both the <code>/etc/hostname</code> AND <code>/etc/hosts</code> file. Please ensure you have followed <a href="https://wlan-pi.github.io/wlanpi-documentation/faq/#how-do-i-change-the-hostname-of-my-wlan-pi">this process</a> : <a href="https://wlan-pi.github.io/wlanpi-documentation/faq/#how-do-i-change-the-hostname-of-my-wlan-pi">Link</a></p>
-<p>The issue tends to manifest itself as various "weird" issues such as "sudo" commands failing for no apparent reason. </p>
-<p><a href="#contents">top</a></p>
-<h2 id="comfast-cf-912-80mhz-width-channels">Comfast CF-912 80MHz Width Channels</h2>
-<p>There seems to be an issue with the Comfast CF-912 adapter when using it with the WLAN Pi and associating as a client to SSIDs that use 80MHz width channels. If you hit an issue where the WLAN Pi seems to lock up or does not boot correctly, try a different adapter or a network that does not use 80Mhz channels.</p>
-<p><a href="#contents">top</a></p>
-<h2 id="mcs-rx-phy-rates-missing-from-reports">MCS &amp; Rx Phy rates Missing From Reports</h2>
-<p><a href="#contents">top</a></p>
-<p>In several dashboard reports, the reported MCS values &amp; Rx Phy rate may be blank. This is because these values are only reported by MediaTek wireless NICs. Therefore, the CF-912 will not show these values (as it is a Realtek NIC). Sorry, not much I can do about this.</p>
-<p><a href="#contents">top</a></p>
-<h2 id="tests-fail-to-start-due-to-dns-failures">Tests Fail To Start Due to DNS Failures</h2>
-<p>In versions of wiperf before version v0.10, the wiperf probe performed a series of tests to verify the health of the wireless connection prior to tests running. One of these tests included a DNS lookup to "bbc.co.uk" to verify Internet connectivity.</p>
-<p>In some environments, this may not be a valid test. To fix this issue, a new configuring parameter was added to the config.ini file that allows a custom lookup target to be provided, if requried: 
-<div class="highlight"><pre><span></span><code>connectivity_lookup: google.com
-</code></pre></div></p>
-<p><a href="#contents">top</a></p>
-<p><a href="#contents">top</a></p>
-<h1 id="additional-features">Additional Features:</h1>
-<h2 id="watchdog">Watchdog</h2>
-<p>Wiperf has a watchdog feature that it uses to try to reset things when it is having connectivity related difficulties.</p>
-<p>There may be instances when tests are continually failing or wireless connectivity is intermittent due to perhaps being stuck on a remote AP that is sub-optimal from a connectivity perspective.</p>
-<p>If persistent issues are detected, then Wiperf will reboot the WLAN Pi to try to remediate the issue. This will provide the opportunity to the reset all network connectivity and internal processes.</p>
-<p>Note that this is a last ditch mechanism. Wiperf will try bouncing the WLAN interface to remediate any short-term connectivity issues, which will likely fixe many issues without the need for a full reboot.</p>
-<p>If you observe your WLAN Pi rebooting on a regular basis (e.g. a couple of times a hour), then check its logs as it is very unhappy about something.</p>
-<p><a href="#contents">top</a></p>
-<h2 id="security">Security</h2>
-<p>Wiperf employs the following security mechanisms in an attempt to harden the WLAN Pi when deployed in Wiperf mode:</p>
-<ul>
-<li>No forwarding is allowed between interfaces</li>
-<li>The internal UFW firewall is configured to only allow incoming connectivity on port 22 on the wlan0 &amp; eth0 interfaces</li>
-</ul>
-<p><a href="#contents">top</a></p>
-<h2 id="cli-mode-switch">CLI Mode Switch</h2>
-<p>If you are remote from your WLAN Pi you may not be able to flip it in to Wiperf mode using the front panel buttons. However, it is possible to flip it in to Wiperf mode using the CLI (via an SSH session).</p>
-<p>To flip in to Wiperf mode using the CLI, SSH to your WLAN Pi and execute the following on the CLI (<strong>CAVEAT:</strong> make sure you have correctly configured the /home/wlanpi/wiperf/conf/etc/wpa_suplicant/wpa_supplicant.conf file before do this...otherwise you may lose comms with the WLAN Pi after it reboots if you rely on the WLAN connection for access):</p>
-<p><div class="highlight"><pre><span></span><code> # performed as the wlanpi user
- cd ~/wiperf
- sudo ./wiperf_switcher on
- ```
- After executing this command, the WLAN Pi will reboot in to the Wiperf mode.
+wlanpi ALL = (root) NOPASSWD: /sbin/iwconfig, /usr/sbin/iw, /sbin/dhclient, /sbin/ifconfig, /sbin/reboot, /bin/kill, /bin/date, /sbin/ifdown, /sbin/ifup
+<div class="highlight"><pre><span></span><code>Reboot the WLAN Pi after applying this file update
 
-If you&#39;d like to flip back from Wiperf mode, SSH to the WLAN Pi and execute:
+[top](#contents)
+
+## DNS Lookup Order Issue
+
+By default in WLAN Pi image versions up to and including v1.9.1, the DNS server value ```8.8.8.8``` has been hard-coded in to the DNS server lookup list. This has been achieved by configuring the following line in to the file ```/etc/resolvconf/resolv.conf.d/head```:
+</code></pre></div>
+nameserver 8.8.8.8
+<div class="highlight"><pre><span></span><code>This ensures that the 8.8.8.8 address is always used as the first DNS lookup entry, even if the WLAN Pi receives a DNS server address during its DHCP process. This can be verified by performing a ```cat /etc/resolv.conf``` when the WLAN Pi is in wiperf mode - even though there may be two or more entries in the file, 8.8.8.8 will always be shown at the top of the file listing, and be used as the first lookup server. This may not be desirable behaviour, as 8.8.8.8 may not be available or DHCP assigned servers may be preferred. 
+
+To ensure that the desired DNS environment is used, the following options exist:
+
+1. Remove the 8.8.8.8 entry completely: edit the file  ```/etc/resolvconf/resolv.conf.d/head``` and remove the offending entry completely. This will ensure only the DHCP assigned DNS server(s) will be used.
+2. Replace the 8.8.8.8 entry by editing the  ```/etc/resolvconf/resolv.conf.d/head``` and replacing it with a desired value
+3. Move the 8.8.8.8 entry from the ```/etc/resolvconf/resolv.conf.d/head``` file to the ```/etc/resolvconf/resolv.conf.d/tail``` file, so that 8.8.8.8 is still used, but is now the last option in the DNS server list (only used when other preceding servers do not return a result)
+
+[top](#contents)
+
+## Hostname Change Related Issues 
+
+There have been a number of issues reported that have been reported that are due to the WLAN Pi hostname being changed from the default, but it has not been updated in both the ```/etc/hostname``` AND ```/etc/hosts``` file. Please ensure you have followed [this process][hostname_faq] : [Link][hostname_faq]
+
+The issue tends to manifest itself as various &quot;weird&quot; issues such as &quot;sudo&quot; commands failing for no apparent reason. 
+
+[top](#contents)
+
+## Comfast CF-912 80MHz Width Channels
+
+There seems to be an issue with the Comfast CF-912 adapter when using it with the WLAN Pi and associating as a client to SSIDs that use 80MHz width channels. If you hit an issue where the WLAN Pi seems to lock up or does not boot correctly, try a different adapter or a network that does not use 80Mhz channels.
+
+[top](#contents)
+
+## MCS &amp; Rx Phy rates Missing From Reports
+
+[top](#contents)
+
+In several dashboard reports, the reported MCS values &amp; Rx Phy rate may be blank. This is because these values are only reported by MediaTek wireless NICs. Therefore, the CF-912 will not show these values (as it is a Realtek NIC). Sorry, not much I can do about this.
+
+[top](#contents)
+
+## Tests Fail To Start Due to DNS Failures
+
+In versions of wiperf before version v0.10, the wiperf probe performed a series of tests to verify the health of the wireless connection prior to tests running. One of these tests included a DNS lookup to &quot;bbc.co.uk&quot; to verify Internet connectivity.
+
+In some environments, this may not be a valid test. To fix this issue, a new configuring parameter was added to the config.ini file that allows a custom lookup target to be provided, if requried: 
+</code></pre></div>
+connectivity_lookup: google.com
+<div class="highlight"><pre><span></span><code>[top](#contents)
+
+
+
+[top](#contents)
+
+# Additional Features:
+
+## Watchdog
+
+Wiperf has a watchdog feature that it uses to try to reset things when it is having connectivity related difficulties.
+
+There may be instances when tests are continually failing or wireless connectivity is intermittent due to perhaps being stuck on a remote AP that is sub-optimal from a connectivity perspective.
+
+If persistent issues are detected, then Wiperf will reboot the WLAN Pi to try to remediate the issue. This will provide the opportunity to the reset all network connectivity and internal processes.
+
+Note that this is a last ditch mechanism. Wiperf will try bouncing the WLAN interface to remediate any short-term connectivity issues, which will likely fixe many issues without the need for a full reboot.
+
+If you observe your WLAN Pi rebooting on a regular basis (e.g. a couple of times a hour), then check its logs as it is very unhappy about something.
+
+[top](#contents)
+
+## Security
+
+Wiperf employs the following security mechanisms in an attempt to harden the WLAN Pi when deployed in Wiperf mode:
+
+- No forwarding is allowed between interfaces
+- The internal UFW firewall is configured to only allow incoming connectivity on port 22 on the wlan0 &amp; eth0 interfaces
+
+[top](#contents)
+
+## CLI Mode Switch
+
+If you are remote from your WLAN Pi you may not be able to flip it in to Wiperf mode using the front panel buttons. However, it is possible to flip it in to Wiperf mode using the CLI (via an SSH session).
+
+To flip in to Wiperf mode using the CLI, SSH to your WLAN Pi and execute the following on the CLI (**CAVEAT:** make sure you have correctly configured the /home/wlanpi/wiperf/conf/etc/wpa_suplicant/wpa_supplicant.conf file before do this...otherwise you may lose comms with the WLAN Pi after it reboots if you rely on the WLAN connection for access):
 </code></pre></div>
  # performed as the wlanpi user
  cd ~/wiperf
- sudo ./wiperf_switcher off
- ```</p>
+ sudo ./wiperf_switcher on
+ ```
+ After executing this command, the WLAN Pi will reboot in to the Wiperf mode.</p>
+<p>If you'd like to flip back from Wiperf mode, SSH to the WLAN Pi and execute:</p>
+<p><code># performed as the wlanpi user
+ cd ~/wiperf
+ sudo ./wiperf_switcher off</code></p>
 <p><a href="#contents">top</a></p>
 <!-- link list -->
                 
