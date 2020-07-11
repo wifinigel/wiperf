@@ -36,16 +36,6 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-# Figure out platform type from config file - not really needed at present
-# echo "Checking platform type configured..." > $LOG_FILE
-# PLATFORM=`cat ${CFG_FILE} | grep platform\: | awk -F'[: ]*' '{print $2}'` || true
-# if  [ -z "$PLATFORM" ]; then
-#  echo "No platform type found in config file" | tee -a $LOG_FILE 
-#  exit 1
-# else
-#  echo "Selected platform type in cfg file: $PLATFORM" >> $LOG_FILE 
-# fi
-
 ###############################################################################
 #
 # Activate wiperf:
