@@ -1,4 +1,4 @@
-Title: Home
+Title: Wiperf Documentation
 Authors: Nigel Bowden
 
 # wiperf: An Open Source UX Performance Probe
