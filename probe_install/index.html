@@ -50,7 +50,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#probe-installation-in-development-old-version" class="md-skip">
+        <a href="#probe-installation" class="md-skip">
           Skip to content
         </a>
       
@@ -720,24 +720,24 @@
                   
                 
                 
-                <h1 id="probe-installation-in-development-old-version">Probe Installation (In development - old version)</h1>
-<p>This section take a look at how we install the required software on to our probe. This includes any pre-requisite software packages and the wiperf software itself.</p>
+                <h1 id="probe-installation">Probe Installation</h1>
+<p>This section takes a look at how we install various additional required software packages on to our probe. This includes any pre-requisite software packages and the wiperf software itself.</p>
 <h2 id="wlan-pi">WLAN Pi</h2>
-<p>Good news! If you're using a WLAN Pi (v2.x image), you already have the software you require - it's part of the WLAN Pi software image. Go to the next section of this documentation site.</p>
+<p>Good news! If you're using a WLAN Pi (v2.x image), you already have the software you require - it's part of the WLAN Pi software image. Go to the <a href="../probe_configure/">next section of this documentation site</a>.</p>
 <h2 id="raspberry-pi">Raspberry Pi</h2>
-<p>The RPi requires a few pre-requisite packages before we can install the wiperf software itself. Once these are installed, we can install the wiperf code. Note that the probe must be connected to a network (via ethernet or wireless) that has access to the Internet, to download the required code.</p>
-<p>You will need CLI access to perform the steps detailed below.</p>
+<p>The RPi requires a few pre-requisite Linux packages before we can install the wiperf software itself. Note that the probe must be connected to a network (via ethernet or wireless) that has access to the Internet to download the required code.</p>
+<p>You will need CLI access to the probe to perform the steps detailed below.</p>
 <h3 id="package-updates">Package Updates</h3>
-<p>Before we start adding pre-requisite packages, it's always a good idea to update the existing Linux packages on our RPi to make sure we have the "latest and greatest". This make take a few minutes to complete as many files may be downloaded &amp; updated, depending on when/if your RPi was last updated:</p>
-<div class="highlight"><pre><span></span><code>        sudo apt-get update &amp;&amp; sudo apt-get upgrade -y
-        sudo reboot
+<p>Before we start adding pre-requisite packages, it's always a good idea to update the existing Linux packages on our RPi to make sure we have the "latest and greatest". This may take a few minutes to complete as many files may be downloaded &amp; updated, depending on when/if your RPi was last updated:</p>
+<div class="highlight"><pre><span></span><code>sudo apt-get update &amp;&amp; sudo apt-get upgrade -y
+sudo reboot
 </code></pre></div>
 
 <h3 id="pre-requisite-packages">Pre-requisite Packages</h3>
-<p>Next, we install some additional Linux packages that are not included as part of the standard RPi distribution: pip3, iperf3 and git. These are installed as follows:</p>
-<div class="highlight"><pre><span></span><code>        sudo apt-get update
-        sudo apt-get install python3-pip iperf3 git -y
-        sudo reboot
+<p>Next, we need to install additional Linux packages that are not included as part of the standard RPi distribution: pip3, iperf3 and git. These are installed as follows:</p>
+<div class="highlight"><pre><span></span><code>sudo apt-get update
+sudo apt-get install python3-pip iperf3 git -y
+sudo reboot
 </code></pre></div>
 
 <h3 id="wiperf-software-installation">wiperf Software Installation</h3>
@@ -746,7 +746,7 @@
 </code></pre></div>
 
 <p>This will initiate the download and installation of a number of python packages, together with the wiperf code itself. This will take a few minutes to complete.</p>
-<p>Once installation is complete, our final step is to configure the wiperf probe to perform the tests we'd like to perform, and provide details of were the probe needs to send its data (i.e. our data server).</p>
+<p>Once installation is complete, our final step is to <a href="../probe_configure/">configure the wiperf probe</a> to perform the tests we'd like to perform, and provide details of were the probe needs to send its data (i.e. our data server).</p>
                 
                   
                     
