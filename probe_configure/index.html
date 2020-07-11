@@ -484,11 +484,11 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#configuration-file-configini" class="md-nav__link">
-    Configuration File (config.ini)
+  <a href="#configuration-file" class="md-nav__link">
+    Configuration File
   </a>
   
-    <nav class="md-nav" aria-label="Configuration File (config.ini)">
+    <nav class="md-nav" aria-label="Configuration File">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -671,11 +671,11 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#configuration-file-configini" class="md-nav__link">
-    Configuration File (config.ini)
+  <a href="#configuration-file" class="md-nav__link">
+    Configuration File
   </a>
   
-    <nav class="md-nav" aria-label="Configuration File (config.ini)">
+    <nav class="md-nav" aria-label="Configuration File">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -735,13 +735,13 @@
                 
                 
                 <h1 id="probe-configuration">Probe Configuration</h1>
-<p>The final step in getting our probe ready to deploy is to configure the wiperf software to perform the tests we like to perform, and to tell wiperf where it can find the data server to provide reporting.</p>
+<p>The final step in getting our probe ready to deploy is to configure the wiperf software to perform the tests we'd like to perform, and to tell wiperf where it can find the data server that will provide reporting.</p>
 <p>The configuration tasks break down as follows:</p>
 <ul>
-<li>Edit the config.ini file to configure tests and data server details</li>
-<li>Add a cron job to run wiperf every 5 mins to perform its tests</li>
+<li>Edit the probe config.ini file to configure tests and data server details</li>
+<li>Add a cron job on the probe to run wiperf every 5 mins to perform its tests</li>
 </ul>
-<h2 id="configuration-file-configini">Configuration File (config.ini)</h2>
+<h2 id="configuration-file">Configuration File</h2>
 <p><em>Note: the details in this section apply to both the WLAN Pi and RPi probe</em></p>
 <p>The operation of wiperf is configured using the file <code>/etc/wiperf/config.ini</code> This needs to be edited prior to running the wiperf software to perform tests. (Tests are initiated on the WLAN Pi by switching on to wiperf mode. On the RPi, tests are started by configuring a cron job - more on this later in this document)</p>
 <p>Prior to the first use of wiperf, the config.ini file does not exist. However, a default template config file (<code>/etc/wiperf/config.default.ini</code>) is supplied that can be used as the template to create the <code>config.ini</code> file. Here is the suggested workflow to create the <code>config.ini</code> file:</p>
