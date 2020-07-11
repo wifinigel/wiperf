@@ -1,7 +1,7 @@
-Title: Probe Installation
+Title: Probe Software Installation
 Authors: Nigel Bowden
 
-# Probe Installation
+# Probe Software Installation
 
 This section takes a look at how we install various additional required software packages on to our probe. This includes any pre-requisite software packages and the wiperf software itself.
 
