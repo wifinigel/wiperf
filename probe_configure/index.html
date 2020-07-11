@@ -457,9 +457,42 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Probe Configuration
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
     <a href="./" title="Probe Configuration" class="md-nav__link md-nav__link--active">
       Probe Configuration
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#running-schedule-regular-job" class="md-nav__link">
+    Running: Schedule Regular Job
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -588,6 +621,23 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#running-schedule-regular-job" class="md-nav__link">
+    Running: Schedule Regular Job
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -603,17 +653,11 @@
                 
                 
                 <h1 id="probe-configuration-in-development-old-version">Probe Configuration  (In development - old version)</h1>
-<h1 id="wlan-pi">WLAN Pi</h1>
-<p>If you have a WLAN Pi with image version v1.9 or later, the good news is you're good to go! If not, you will need to update your WLAN Pi image (see this video on [YouTube][wlanpi_reimage]). Note: if you have the v1.9 image, you need to check this out and update the wiperf code before you start configuring wiperf: <a href="#im-running-the-v19-wlan-pi-image-and-the-iperf-tests-dont-workwhats-going-on">FAQ note</a></p>
-<p>Assuming your image is up to date, you need to complete the following steps:</p>
+<p>The final step in getting our probe ready to deploy is to configure the wiperf software to perform the tests we like to perform, and to tell wiperf where it can find our data server that will provide out reporting.</p>
+<p>The configuration tasks break down as follows:</p>
 <ul>
-<li>Data Server:<ul>
-<li>Splunk: Setup your Splunk server and obtain the HEC token from your Splunk instance (see this doc: <a href="https://github.com/wifinigel/wiperf/raw/master/docs/WLANPi%20Wiperf%20Probe%20-%20Splunk%20Build.pdf">Splunk build guide</a>)</li>
-<li>InfluxDB: Setup your InfluxDB server and a Grafana server to graph the performance data received.</li>
-</ul>
-</li>
-<li>SSH to your WLAN Pi and configure your WLAN Pi as detailed in this guide: <a href="docs/README_WLANPi_Config.md">WLANPi initial config &amp; test guide</a></li>
-<li>Flip your WLAN Pi in to wiperf mode and wait for your data to appear (Front panel option : Menu &gt; Mode &gt; Wiperf)</li>
+<li>Edit the config.ini file to configure tests and data server details</li>
+<li>Add a cron job to run wiperf every 5 mins to perform its tests</li>
 </ul>
 <h2 id="running-schedule-regular-job">Running: Schedule Regular Job</h2>
 <p>Create a cronjob to run the script very 5 mins:</p>
@@ -647,38 +691,6 @@
     - [Watchdog](#watchdog)
     - [Security](#security)
     - [CLI Mode Switch](#cli-mode-switch)
-
-# *** Instructions for InfluxDB Testers (conf_pull branch) ***
-
-1. Burn a new SD card with the V1.9.1 image
-2. Make sure WLAN Pi is connected to the Internet 
-3. SSH to the WLAN Pi and execute the following command to install a missing required Python InfluxDB module:
-</code></pre></div>
-sudo /usr/bin/python3 -m pip install influxdb
-<div class="highlight"><pre><span></span><code>4. Install the latest version of wiperf with Influx support (in the same SSH session):
-</code></pre></div>
-sudo pkg_admin -i wiperf -b v0.12-a1
-<div class="highlight"><pre><span></span><code>Then, proceed with the instructions in the remainder of this document.
-
-# Wiperf - Configuration on the WLAN Pi
-
-This instruction paper assumes you are running Wiperf on a WLAN Pi on an image version of v1.9 or later (which has Wiperf installed and available as part of the image.)
-
-(**Special note for WLAN Pi image v1.9.0:** please see the [Known Issues](#known-issues)) section of this document)
-
-The Wiperf probe is activated via the front panel menu system (FPMS) of the WLAN Pi. But, before flipping in to the Wiperf mode, a few configuration steps need to be completed:
-
-[top](#contents)
-
-## Hostname
-
-It is strongly advised that you configure the hostname of your WLAN Pi before following the steps detailed below. The data sent to and stored in your reporting database (e.g. Splunk, Influx etc.) will be associated with the WLAN Pi hostname that is used when the data is forwarded. If you decide to subsequently change the hostname, then historical data from the unit will not be associated with the data sent with the new hostname.
-
-If you are running multiple WLAN Pi units, then you MUST change their hostnames, as you will not be able to differentiate their data within Splunk. All data, from all units, will be shown under the default &#39;wlanpi&#39; hostname.
-
-To change the WLAN Pi hostname, please check out the following [FAQ][hostname_faq] page and complete all suggested steps: [link][hostname_faq]
-
-[top](#contents)
 
 ## Configuration File (config.ini)
 

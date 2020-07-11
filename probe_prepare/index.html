@@ -978,6 +978,7 @@
 <p>To perform some of the configuration activities required, CLI access to the WLAN Pi is required. The easiest way to achieve this is to SSH to the probe over an OTG connection, or plug the WLAN Pi in to an ethernet network port and SSH to its DHCP assigned IP address (shown on the front panel). Visit the WLAN Pi documentation site for more details: <a href="https://wlan-pi.github.io/wlanpi-documentation/">https://wlan-pi.github.io/wlanpi-documentation/</a></p>
 <h3 id="hostname-configuration">Hostname Configuration</h3>
 <p>By default, the hostname of your WLAN Pi is : <code>wlanpi</code>. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices. </p>
+<p><em>(Note that if you decide to skip this step and subsequently change the hostname, historical data from the probe will not be associated with the data sent with the new hostname in your data server)</em></p>
 <p>If you'd like to change to a more meaningful hostname, then you will need to SSH to your WLAN Pi and update the <code>/etc/hostname</code> and <code>/etc/hosts</code> files, followed by a reboot of the WLAN Pi:</p>
 <p>Edit the /etc/hostname file using the command:</p>
 <div class="highlight"><pre><span></span><code> sudo nano /etc/hostname
@@ -1041,7 +1042,8 @@ sudo reboot
 <li>Change password : <code>sudo passwd pi</code></li>
 </ul>
 <h3 id="hostname-configuration_1">Hostname Configuration</h3>
-<p>By default, the hostname of your WLAN Pi is : <code>pi</code>. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices.</p>
+<p>By default, the hostname of your RPi is : <code>pi</code>. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices.</p>
+<p><em>(Note that if you decide to skip this step and subsequently change the hostname, historical data from the probe will not be associated with the data sent with the new hostname in your data server)</em></p>
 <p>If you'd like to change this to a more meaningful hostname, then you will need to SSH to your WLAN Pi and update the <code>/etc/hostname</code> and <code>/etc/hosts</code> files, followed by a reboot of the RPi:</p>
 <p>Edit the /etc/hostname file using the command:</p>
 <div class="highlight"><pre><span></span><code> sudo nano /etc/hostname
