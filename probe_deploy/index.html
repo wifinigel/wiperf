@@ -606,10 +606,12 @@
 <p>Once the probe is configured and tested, it's time to deploy it out in the real world.</p>
 <p>When deploying, here are a few thinks to check and remember:</p>
 <ol>
-<li>Verify that the probe has the network connectivity that you expect once it has been deployed. The following CLI commands will help to check connectivity:</li>
+<li>Verify that the probe has the network connectivity that you expect once it has been deployed. The following CLI commands will help to check connectivity:<ol>
 <li>Wireless NIC: <code>iwconfig</code> (is the probe joining the wireless network?)</li>
 <li>IP address: <code>ifconfig</code> (do the interfaces being used have an IP address?)</li>
 <li>Internet connectivity: <code>ping google.com</code> (can the probe get to the Internet, if that is expected?)</li>
+</ol>
+</li>
 <li>Is the probe deployed in the topology you originally intended? If the environment is not as you expected and you need to use a different interface, make sure you have updated <code>config.ini</code> so that wiperf knows where to send traffic (otherwise, you may hit routing issues)</li>
 <li>Check the output of <code>/var/log/wiperf_agent.log</code> to make sure everything is working with no issues once deployed. If there are hitches, they will generally be highlighted in this file, with a detailed explanation of what has failed. </li>
 </ol>
