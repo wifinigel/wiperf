@@ -25,6 +25,8 @@ To perform some of the configuration activities required, CLI access to the WLAN
 
 By default, the hostname of your WLAN Pi is : ```wlanpi```. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices. 
 
+*(Note that if you decide to skip this step and subsequently change the hostname, historical data from the probe will not be associated with the data sent with the new hostname in your data server)*
+
 If you'd like to change to a more meaningful hostname, then you will need to SSH to your WLAN Pi and update the ```/etc/hostname``` and ```/etc/hosts``` files, followed by a reboot of the WLAN Pi:
 
 Edit the /etc/hostname file using the command:
@@ -121,7 +123,9 @@ If using a fresh RPI image (which is recommended), remember to either update the
 
 ### Hostname Configuration
 
-By default, the hostname of your WLAN Pi is : ```pi```. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices.
+By default, the hostname of your RPi is : ```pi```. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices.
+
+*(Note that if you decide to skip this step and subsequently change the hostname, historical data from the probe will not be associated with the data sent with the new hostname in your data server)*
 
 If you'd like to change this to a more meaningful hostname, then you will need to SSH to your WLAN Pi and update the ```/etc/hostname``` and ```/etc/hosts``` files, followed by a reboot of the RPi:
 
