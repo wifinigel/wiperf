@@ -10,7 +10,7 @@ If you are suspect network connectivity issues, your best course of action is to
 Once interfaces have been verified, trying to access specific targets via network connectivity checks can also be useful. 
 
 1. The following CLI commands will help to check the status of probe interfaces:
-    1. Wireless NIC: ```iwconfig``` (Is the probe joining the wireless network? The SSID to which is is joined shuld be shown in the "ESSID" field)
+    1. Wireless NIC: ```iwconfig``` (Is the probe joining the wireless network? The SSID to which is is joined should be shown in the "ESSID" field)
     2. IP address: ```ifconfig eth0```, ```ifconfig wlan0``` (Are the interfaces up? Do they have an IP address?)
 2. Network connectivity to a specific host: ```ping 192.168.0.254```
 3. Internet connectivity: ```ping google.com``` (Can the probe get to the Internet, if that is expected?)
