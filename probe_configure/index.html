@@ -525,8 +525,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
-    Testing
+  <a href="#initial-probe-testing" class="md-nav__link">
+    Initial Probe Testing
   </a>
   
 </li>
@@ -712,8 +712,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
-    Testing
+  <a href="#initial-probe-testing" class="md-nav__link">
+    Initial Probe Testing
   </a>
   
 </li>
@@ -846,7 +846,7 @@ enabled: no
 <div class="highlight"><pre><span></span><code>0-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py &gt; /var/log/wiperf_cron.log 2&gt;&amp;1
 </code></pre></div>
 This command will run the main wiperf script to run the tests configured within config.ini at an interval of 5 minutes. It will also dump all script output to the file  <code>/var/log/wiperf_cron.log</code> (this is a good place to look if you hit any issues with wiperf not running as expected)</p>
-<h2 id="testing">Testing</h2>
+<h2 id="initial-probe-testing">Initial Probe Testing</h2>
 <p>Once the cron job has been configured, the case of the RPi, or the WLAN Pi has been put in to wiperf mode, it's time to check if the probe is working as expected.</p>
 <p>To perform tests, the probe will need to be connected to a network and able to reach the data server.</p>
 <p>The easiest way to monitor the operation of the probe is to SSH in to the probe and monitor the output of the log file <code>/var/log/wiperf_agent.log</code>. This file is created the first time that wiperf runs. If the file is not created after 5 minutes, then check the log file <code>/var/log/wiperf_cron.log</code> for error messages, as something fundamental is wrong with the installation.</p>

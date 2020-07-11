@@ -469,56 +469,9 @@
       
     
     
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Probe Deployment
-        <span class="md-nav__icon md-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
-        </span>
-      </label>
-    
     <a href="./" title="Probe Deployment" class="md-nav__link md-nav__link--active">
       Probe Deployment
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-      </span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#dns-lookup-order-issue" class="md-nav__link">
-    DNS Lookup Order Issue
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mcs-rx-phy-rates-missing-from-reports" class="md-nav__link">
-    MCS &amp; Rx Phy rates Missing From Reports
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tests-fail-to-start-due-to-dns-failures" class="md-nav__link">
-    Tests Fail To Start Due to DNS Failures
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
     
   </li>
 
@@ -635,37 +588,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-      </span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#dns-lookup-order-issue" class="md-nav__link">
-    DNS Lookup Order Issue
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mcs-rx-phy-rates-missing-from-reports" class="md-nav__link">
-    MCS &amp; Rx Phy rates Missing From Reports
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tests-fail-to-start-due-to-dns-failures" class="md-nav__link">
-    Tests Fail To Start Due to DNS Failures
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -681,45 +603,16 @@
                 
                 
                 <h1 id="probe-deployment">Probe Deployment</h1>
-<p>TBA</p>
-<h2 id="dns-lookup-order-issue">DNS Lookup Order Issue</h2>
-<p>By default in WLAN Pi image versions up to and including v1.9.1, the DNS server value <code>8.8.8.8</code> has been hard-coded in to the DNS server lookup list. This has been achieved by configuring the following line in to the file <code>/etc/resolvconf/resolv.conf.d/head</code>:</p>
-<p><div class="highlight"><pre><span></span><code>nameserver 8.8.8.8
-</code></pre></div>
-This ensures that the 8.8.8.8 address is always used as the first DNS lookup entry, even if the WLAN Pi receives a DNS server address during its DHCP process. This can be verified by performing a <code>cat /etc/resolv.conf</code> when the WLAN Pi is in wiperf mode - even though there may be two or more entries in the file, 8.8.8.8 will always be shown at the top of the file listing, and be used as the first lookup server. This may not be desirable behaviour, as 8.8.8.8 may not be available or DHCP assigned servers may be preferred. </p>
-<p>To ensure that the desired DNS environment is used, the following options exist:</p>
+<p>Once the probe is configured and tested, it's time to deploy it out in the real world.</p>
+<p>When deploying, here are a few thinks to check and remember:</p>
 <ol>
-<li>Remove the 8.8.8.8 entry completely: edit the file  <code>/etc/resolvconf/resolv.conf.d/head</code> and remove the offending entry completely. This will ensure only the DHCP assigned DNS server(s) will be used.</li>
-<li>Replace the 8.8.8.8 entry by editing the  <code>/etc/resolvconf/resolv.conf.d/head</code> and replacing it with a desired value</li>
-<li>Move the 8.8.8.8 entry from the <code>/etc/resolvconf/resolv.conf.d/head</code> file to the <code>/etc/resolvconf/resolv.conf.d/tail</code> file, so that 8.8.8.8 is still used, but is now the last option in the DNS server list (only used when other preceding servers do not return a result)</li>
+<li>Verify that the probe has the network connectivity that you expect once it has been deployed. The following CLI commands will help to check connectivity:</li>
+<li>Wireless NIC: <code>iwconfig</code> (is the probe joining the wireless network?)</li>
+<li>IP address: <code>ifconfig</code> (do the interfaces being used have an IP address?)</li>
+<li>Internet connectivity: <code>ping google.com</code> (can the probe get to the Internet, if that is expected?)</li>
+<li>Is the probe deployed in the topology you originally intended? If the environment is not as you expected and you need to use a different interface, make sure you have updated <code>config.ini</code> so that wiperf knows where to send traffic (otherwise, you may hit routing issues)</li>
+<li>Check the output of <code>/var/log/wiperf_agent.log</code> to make sure everything is working with no issues once deployed. If there are hitches, they will generally be highlighted in this file, with a detailed explanation of what has failed. </li>
 </ol>
-<p><a href="#contents">top</a></p>
-<h2 id="mcs-rx-phy-rates-missing-from-reports">MCS &amp; Rx Phy rates Missing From Reports</h2>
-<p><a href="#contents">top</a></p>
-<p>In several dashboard reports, the reported MCS values &amp; Rx Phy rate may be blank. This is because these values are only reported by MediaTek wireless NICs. Therefore, the CF-912 will not show these values (as it is a Realtek NIC). Sorry, not much I can do about this.</p>
-<p><a href="#contents">top</a></p>
-<h2 id="tests-fail-to-start-due-to-dns-failures">Tests Fail To Start Due to DNS Failures</h2>
-<p>In versions of wiperf before version v0.10, the wiperf probe performed a series of tests to verify the health of the wireless connection prior to tests running. One of these tests included a DNS lookup to "bbc.co.uk" to verify Internet connectivity.</p>
-<p>In some environments, this may not be a valid test. To fix this issue, a new configuring parameter was added to the config.ini file that allows a custom lookup target to be provided, if requried: 
-<div class="highlight"><pre><span></span><code>connectivity_lookup: google.com
-</code></pre></div></p>
-<p><a href="#contents">top</a></p>
-<p><a href="#contents">top</a></p>
-<h1 id="additional-features">Additional Features:</h1>
-<h2 id="watchdog">Watchdog</h2>
-<p>Wiperf has a watchdog feature that it uses to try to reset things when it is having connectivity related difficulties.</p>
-<p>There may be instances when tests are continually failing or wireless connectivity is intermittent due to perhaps being stuck on a remote AP that is sub-optimal from a connectivity perspective.</p>
-<p>If persistent issues are detected, then Wiperf will reboot the WLAN Pi to try to remediate the issue. This will provide the opportunity to the reset all network connectivity and internal processes.</p>
-<p>Note that this is a last ditch mechanism. Wiperf will try bouncing the WLAN interface to remediate any short-term connectivity issues, which will likely fixe many issues without the need for a full reboot.</p>
-<p>If you observe your WLAN Pi rebooting on a regular basis (e.g. a couple of times a hour), then check its logs as it is very unhappy about something.</p>
-<p><a href="#contents">top</a></p>
-<h2 id="security">Security</h2>
-<p>Wiperf employs the following security mechanisms in an attempt to harden the WLAN Pi when deployed in Wiperf mode:</p>
-<ul>
-<li>No forwarding is allowed between interfaces</li>
-<li>The internal UFW firewall is configured to only allow incoming connectivity on port 22 on the wlan0 &amp; eth0 interfaces</li>
-</ul>
-<p><a href="#contents">top</a></p>
                 
                   
                     
