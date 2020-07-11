@@ -822,15 +822,16 @@ enabled: no
 
 <p>For a full description of the configuration file parameters, please review the following page: <a href="../config.ini/" target="_blank">config.ini reference guide</a>. </p>
 <h2 id="running-regular-tests">Running Regular Tests</h2>
-<p>Create a cronjob to run the script very 5 mins:</p>
-<div class="highlight"><pre><span></span><code>        crontab -e
+<p>Once the wiperf software has been configured, the final job is to configure a 'cron job' on the probe to run the software every 5 minutes. Cron is a scheduler utility within Linux that will run a software task at configured intervals.</p>
+<p>(<strong>Note: This step is not required on the WLAN Pi, as the cron job is added automatically when the WLAN Pi is switched in to wiperf mode</strong>)</p>
+<p>To configure cron, on the CLI of the probe, open the cron editor:</p>
+<div class="highlight"><pre><span></span><code>sudo crontab -e
 </code></pre></div>
 
-<ul>
-<li>add line: 
-<div class="highlight"><pre><span></span><code>        */5 * * * * /usr/bin/env python3 /home/wlanpi/wiperf/wi-perf.py &gt; /home/wlanpi/wiperf/wiperf.log 2&gt;&amp;1
-</code></pre></div></li>
-</ul>
+<p>Next, with the editor open, add following line to the open file: 
+<div class="highlight"><pre><span></span><code>0-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py &gt; /var/log/wiperf_cron.log 2&gt;&amp;1
+</code></pre></div>
+This command will run the main wiperf script to run the tests configured within config.ini at an interval of 5 minutes. It will also dump all script output to the file  <code>/var/log/wiperf_cron.log</code> (this is a good place to look if you hit any issues with wiperf not running as expected)</p>
 <h1 id="testing">Testing</h1>
 <p>Once the required edits have been made to configure Wiperf mode, flip the WLAN Pi in to Wiperf mode using the following FPMS options:</p>
 <div class="highlight"><pre><span></span><code>        Actions &gt; Wiperf &gt; Confirm
