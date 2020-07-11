@@ -1,5 +1,5 @@
-Title: Dashboard - Probe Summary
+Title: Probe Summary
 Authors: Nigel Bowden
 
 # Dashboard - Probe Summary
-TBA
+Help page - TBA

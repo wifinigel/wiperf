@@ -1,5 +1,5 @@
-Title: Dashboard - HTTP
+Title: HTTP
 Authors: Nigel Bowden
 
 # Dashboard - HTTP
-TBA
+Help page - TBA

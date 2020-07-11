@@ -1,5 +1,5 @@
-Title: Dashboard - Speedtest
+Title: Speedtest
 Authors: Nigel Bowden
 
 # Dashboard - Speedtest
-TBA
+Help page - TBA

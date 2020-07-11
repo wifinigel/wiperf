@@ -1,5 +1,5 @@
-Title: Dashboard - UDP iperf3
+Title: UDP iperf3
 Authors: Nigel Bowden
 
 # Dashboard - UDP iperf3
-TBA
+Help page - TBA
