@@ -3,7 +3,15 @@ Authors: Nigel Bowden
 
 # Probe Installation (In development - old version)
 
+This section take a look at how we install the required software on to our probe. This includes any pre-requisite software packages and the wiperf software itself.
+
+## WLAN Pi
+
+Good news! If you're using a WLAN Pi, you already have the software you require - it is part of the WLAN Pi software image. Go to the next section of this documentation site.
+
 # Raspberry Pi
+
+The RPi requires a few pre-requisite packages before we can install the wiperf software itself. Once these are installed, we can install the wiperf code. Note that the probe must be connected to a network (via ethernet or wireless) that has access to the Internet to download the required code.
 
 ## Pre-requisites
 
