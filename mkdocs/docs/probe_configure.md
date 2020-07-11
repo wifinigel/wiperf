@@ -20,9 +20,9 @@ Prior to the first use of wiperf, the config.ini file does not exist. However, a
 Connect to the CLI of the probe (e.g. via SSH), create a copy of the config template file and edit the newly created config:
 
 ```
-        cd /etc/wiperf
-        cp ./config.default.ini ./config.ini
-        sudo nano ./config.ini
+cd /etc/wiperf
+cp ./config.default.ini ./config.ini
+sudo nano ./config.ini
 ```
 
 By default, the configuration file is set to run all tests (which may or may not suit your needs). However, there is a minimum configuration that must be applied to successfully run tests. The minimum configuration parameters you need to configure (just to get you going) are outlined in the subsections below. Once you've got your probe going, you're likely going to want to spend a little more time customising the file for your environment. In summary you need to:
@@ -70,9 +70,6 @@ wlan_if: wlan0
 ; server) - options: wlan0, eth0, ztxxxxxx (ZeroTier), lo (local instance of Influx)
 mgt_if: wlan0
 ; ---------------------------------------------------
-
-; Platform architecture - choices: 'wlanpi' (WLPC WLAN-Pi),'rpi' (Raspberry Pi) 
-platform: wlanpi
 ```
 ### Data Server Parameters
 
@@ -113,7 +110,7 @@ influx_database:
 ;---------------------------------------------
 ```
 
-### Tests
+### Network Tests
 
 Note that all network tests are enabled by default. If there are some tests you'd like to disable (e.g. if you don't have an iperf3 server set up), then you'll need to open up the config.ini file and look through each section for the "enabled" parameter for that test and set it to "no". For example, to disable the iperf tcp test: 
 
@@ -123,28 +120,21 @@ Note that all network tests are enabled by default. If there are some tests you'
 enabled: no
 ```
 
-For a full description of the configuration file parameters, please review the following page: [config.ini reference guide](README_Config.ini.md). The Splunk token is obtained from your Splunk server (see [Splunk build guide][splunk_build]). 
+For a full description of the configuration file parameters, please review the following page: [config.ini reference guide](config.ini.md){target=_blank}. 
 
-[top](#contents)
 
-## Wireless Client Configuration (wpa_supplicant.conf)
+## Running Regular Tests
 
-If Wiperf is running in wireless mode, then WLAN Pi is flipped in to Wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in Wiperf mode) to allow the WLAN Pi to join a WLAN.
-
-Edit the following file with the configuration and credentials that will be used by the WLAN Pi to join the SSID under test once it is switched in to Wiperf mode (make edits logged in as the wlanpi user):
+Create a cronjob to run the script very 5 mins:
 
 ```
-        cd /home/wlanpi/wiperf/conf/etc/wpa_supplicant
-        nano ./wpa_supplicant.conf
+        crontab -e
 ```
 
-[top](#contents)
-
-## Ethernet Client Configuration
-
-Note that no specific configuration is required for the Ethernet interface when running Wiperf in Ethernet mode. As long as the Ethernet port is connected to a switch port tht supplies an IP address via DHCP, then you're good to go. 
-
-[top](#contents)
+- add line: 
+```
+        */5 * * * * /usr/bin/env python3 /home/wlanpi/wiperf/wi-perf.py > /home/wlanpi/wiperf/wiperf.log 2>&1
+```
 
 # Testing
 

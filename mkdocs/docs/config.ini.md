@@ -149,7 +149,8 @@ mgt_if: wlan0
 ```
 [top](#parameter-reference-guide)
 
-### platform
+### platform (Deprecated)
+*(This setting is now deprecated (and unused) - it has been included for historical reference)*
 
 Wiperf is supported on both the WLANPi and Raspberry Pi platforms.  The available options are:
 
