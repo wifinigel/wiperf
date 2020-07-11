@@ -17,12 +17,12 @@ Wiperf is baked in to the image of the WLAN Pi. It can be activated by switching
 
 Wiperf on the RPi has been tested on models that have an internal Wi-Fi NIC: 3b+, 3a+ and 4. It will likely work on most that have an internal NIC, but I don't have the resources or time to try them all. 
 
-Earlier versions that do not have a an internal NIC will need some type of USB wireless adapter, but as support for external wireless NICs is very poor and many tend to be 2.4GHz only, I've not explored this area in detail. 
+Earlier versions of the RPi that do not have a an internal NIC will need some type of USB wireless adapter, but as support for external wireless NICs is very poor and many tend to be 2.4GHz only, I've not explored this area in detail. 
 
-Unfortunately, getting a 2 stream 802.11ac NIC going seems nigh-on impossible due to the lack of drivers available, so the internal single stream NIC is the best we can generally do. 
+Unfortunately, getting a 2 stream 802.11ac NIC going seems nigh-on impossible due to the lack of drivers available, so the internal, single stream NIC is the best we can generally do. 
 
 Using a single stream NIC has its limitations as speed performance is very limited, but as the main aim of wiperf is to monitor user experience (particularly changes in that experience), then it's good enough for many use-cases where we are mainly interested in changes in relation to the usual baseline.
 
 ## Other Platforms
 
-In essence, wiperf is a series of python scripts & modules, together with a few supporting bash scripts to glue a few things together. It will likely work on other Debian type systems, so it's worth giving it a go on other systems if you fancy tinkering around on another platform. When using the install script, install using the 'rpi' option. Let me know if you get it going on other platforms, as it will be interesting to share your experiences.
+In essence, wiperf is a series of python scripts & modules, together with a few supporting bash scripts to glue a few things together. It will likely work on other Debian-type systems, so it's worth giving it a go on other systems if you fancy tinkering around on another platform. When using the install script, install using the 'rpi' option. Let me know if you get it going on other platforms, as it will be interesting to share your experiences.

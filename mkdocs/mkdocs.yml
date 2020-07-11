@@ -26,6 +26,12 @@ nav:
     - Reference Docs:
         - config.ini.md
         - data_points.md
+        - Dashboards:
+            - db_probe_summary.md
+            - db_speedtest.md
+            - db_udp_iperf3.md
+            - db_tcp_iperf3.md
+            - db_http.md
     - About: about.md
 theme:
     name: 'material'
