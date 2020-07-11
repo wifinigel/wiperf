@@ -1,4 +1,4 @@
-# Wiperf - Data Points Reference Guide  (In development)
+# Data Points Reference Guide  (In development)
 
 ## Background
 
