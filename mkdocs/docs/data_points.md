@@ -1,4 +1,4 @@
-# Data Points Reference Guide  (In development)
+# Data Points Reference Guide
 
 ## Background
 
@@ -87,7 +87,8 @@ Here are the data points that may be collected, displayed by test type:
 * time : Unix timestamp of time test was performed
 * http_index : wiperf runs up to 5 instances of HTTP test via its configuration file. This index uniquely identifies each instance.
 * http_target : The domain name (or IP address) of the target site which is the subject of the HTTP test
-* lookup_time_ms : The time taken to retrieve the html page from the target site in milliseconds
+* http_get_time_ms : The time taken (in mS) to retrieve the html page from the target site in milliseconds
+* http_server_reponse_time_ms: The time taken (in mS) to receive the response headers from the target site. This is a more useful figure in many instances, as it does not include the page load time to is more indicative of the web server RTT.
 * http_status_code : The HTTP status code returned from the target site in this test instance (200 is good, other values have varying meanings: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes )
 
 ### iperf3 TCP Results
