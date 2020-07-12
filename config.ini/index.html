@@ -2028,8 +2028,8 @@
                 
                 <h1 id="configini-reference-guide-in-development">config.ini reference guide  (In development)</h1>
 <h2 id="background">Background</h2>
-<p>The config.ini file controls the operation of the Wiperf utility. It has many options available for maximum flexiblity, but some may need some clarification.</p>
-<p>Many options will be fine using the defaults that are supplied with the installed package. However, some will definitely require configuration as they may require values such as IP addresses and port numbers which will vary in each instance where Wiperf is used.</p>
+<p>The config.ini file controls the operation of the wiperf utility. It has many options available for maximum flexibility, but some may need some clarification.</p>
+<p>Many options will be fine using the defaults that are supplied with the installed package. However, some will definitely require configuration as they may require values such as IP addresses and port numbers which will vary in each instance where wiperf is used.</p>
 <p>The config.ini file is located in the directory : /home/wlanpi/wiperf</p>
 <p>The file is organised in a number of sections that relate to different areas of operation. Each section begins with a name enclosed is square brackets, like this:</p>
 <div class="highlight"><pre><span></span><code>[Speedtest]
@@ -2039,7 +2039,7 @@
 <div class="highlight"><pre><span></span><code>parameter: value
 </code></pre></div>
 
-<p>You may also see some lines that begin with a semi-colon. These are comments and have no effect on the operation of Wiperf. You may add, remove or change these as you wish. Here is an example comment:</p>
+<p>You may also see some lines that begin with a semi-colon. These are comments and have no effect on the operation of wiperf. You may add, remove or change these as you wish. Here is an example comment:</p>
 <div class="highlight"><pre><span></span><code>; wlan interface name set this as per the output of an iwconfig command (usually wlan0)
 </code></pre></div>
 
@@ -2149,7 +2149,7 @@
 </li>
 </ul>
 <h2 id="general-section">[General] Section</h2>
-<p>Note: any changes to this section on the WLANPi should only be made when it is running in classic mode (not while in Wiperf mode).</p>
+<p>Note: any changes to this section on the WLANPi should only be made when it is running in classic mode (not while in wiperf mode).</p>
 <h3 id="wlan_if">wlan_if</h3>
 <p>This parameter contains the name of the WLAN interface on the Pi. This will almost always be 'wlan0', but is provided in case of new use-cases in the future. You can see the WLAN interface name by running the 'ifconfig' command from the CLI of the Pi</p>
 <p>Default setting:
@@ -2302,7 +2302,7 @@
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="data_format">data_format</h3>
-<p>(Not currently operational) Wiperf has the capability to output data in a number of formats. The current options are: csv or json</p>
+<p>(Not currently operational) wiperf has the capability to output data in a number of formats. The current options are: csv or json</p>
 <p>However this field is not currently used, as selecting the 'hec' transport mode (the only supported transport currently) over-rides this field. The value in this filed is currently irrelevant, but it s recommended to leave it at the default setting of <code>json</code></p>
 <p>Default setting:
 <div class="highlight"><pre><span></span><code>data_format: json
@@ -2377,7 +2377,7 @@ This parameter is commented out by default as it is obviously not something you 
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h2 id="speedtest-section">[Speedtest] Section</h2>
-<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)</p>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)</p>
 <h3 id="enabled">enabled</h3>
 <p>Options: yes or no. If set to no, entire section is ignored and no Speedtest is run. When enabled, a speedtest to the Ookla speedtest service is run each test cycle.</p>
 <p>Default setting:
@@ -2414,7 +2414,7 @@ no_proxy:
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h2 id="ping_test-section">[Ping_Test] Section</h2>
-<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)</p>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)</p>
 <h3 id="enabled_1">enabled</h3>
 <p>Options: yes or no. If set to no, entire section is ignored and no ping tests are run. When enabled, up to 5 entries will be targetted with an ICMP ping and the RRT times recorded</p>
 <p>Default setting:
@@ -2464,7 +2464,7 @@ no_proxy:
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h2 id="iperf3_tcp_test-section">[Iperf3_tcp_test] Section</h2>
-<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)</p>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)</p>
 <h3 id="enabled_2">enabled</h3>
 <p>Options: yes or no. If set to no, entire section is ignored and no tcp iperf3 test is run. When enabled, a tcp iperf3 test will be run to the iperf3 server defined in <code>server_hostname</code> to the <code>port</code> network port for the <code>duration</code> period (in secs) </p>
 <p>Default setting:
@@ -2496,7 +2496,7 @@ no_proxy:
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h2 id="iperf3_udp_test-section">[Iperf3_udp_test] Section</h2>
-<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)</p>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)</p>
 <h3 id="enabled_3">enabled</h3>
 <p>Options: yes or no. If set to no, entire section is ignored and no udp iperf3 test is run. When enabled, a udp iperf3 test will be run to the iperf3 server defined in <code>server_hostname</code> to the <code>port</code> network port for the <code>duration</code> period (in secs), attempting to achieve a data transfer rate of <code>bandwidth</code> bps. </p>
 <p>Default setting:
@@ -2534,7 +2534,7 @@ no_proxy:
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h2 id="dns_test-section">[DNS_test] Section</h2>
-<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)</p>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)</p>
 <h3 id="enabled_4">enabled</h3>
 <p>Options: yes or no. If set to no, entire section is ignored and no DNS tests are run. When enabled, DNS tests are run for each of the <code>dns_target</code> paramters defined in this section. Any targets that have no value entered will be ignored.</p>
 <p>Default setting:
@@ -2578,7 +2578,7 @@ no_proxy:
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h2 id="http_test-section">[HTTP_test] Section</h2>
-<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)</p>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)</p>
 <h3 id="enabled_5">enabled</h3>
 <p>Options: yes or no. If set to no, entire section is ignored and no HTTP tests are run. When enabled, HTTP tests are run for each of the <code>http_target</code> paramters defined in this section. Any targets that have no value entered will be ignored.</p>
 <p>Targets must include the full url of each site to be queried (including http:// or https:// element). Valid site address examples:</p>
@@ -2628,7 +2628,7 @@ no_proxy:
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h2 id="dhcp_test-section">[DHCP_test] Section</h2>
-<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)</p>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)</p>
 <h3 id="enabled_6">enabled</h3>
 <p>Options: yes or no. If set to no, entire section is ignored and no DHCP test is run.  Note that the DHCP test has 2 modes :</p>
 <ul>
@@ -2666,7 +2666,7 @@ no_proxy:
 <div class="md-source-date">
   <small>
     
-      Last update: July 11, 2020
+      Last update: July 12, 2020
     
   </small>
 </div>
