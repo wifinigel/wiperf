@@ -92,7 +92,7 @@ Now that we have data arriving at our Splunk server, we need to view the data in
 
 In the WLANPi’s ```/usr/share/wiperf/dashboards``` directory, a number of pre-canned dashboard files have been provided to allow a dashboard to be copied and pasted easily. These are also available on the GitHub page of the Wiperf project:
 
-- [https://github.com/wifinigel/wiperf/tree/master/dashboards](https://github.com/wifinigel/wiperf/tree/master/dashboards)
+- [https://github.com/wifinigel/wiperf/tree/main/dashboards](https://github.com/wifinigel/wiperf/tree/main/dashboards)
 
 Use an SFTP client to pull the “probe_summary.xml” file from your probe or open the file on the GitHub page and select “Raw” to copy and paste the code in to a local file on your laptop.
 

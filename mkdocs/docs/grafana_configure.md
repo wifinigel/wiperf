@@ -39,7 +39,7 @@ Once completed, if you hit 'Save and Test', the database connection test should 
 
 ## Adding Wiperf Dashboards
 
-Dashboards can be obtained from the '/usr/share/wiperf/dashboards' folder of the probe. These may be downloaded to your local laptop using a utlity such as SCP or SFTP. Alternatively, the dashboard files may be accessed in the main wiperf repo at :  [folder](https://github.com/wifinigel/wiperf/tree/master/dashboards)
+Dashboards can be obtained from the '/usr/share/wiperf/dashboards' folder of the probe. These may be downloaded to your local laptop using a utlity such as SCP or SFTP. Alternatively, the dashboard files may be accessed in the main wiperf repo at :  [folder](https://github.com/wifinigel/wiperf/tree/main/dashboards)
 
 Once the dashboard files have been downloaded, they may be imported to Grafana using the following steps:
 
