@@ -56,7 +56,7 @@ install () {
 
   # check that pip3 is available
   echo "(ok) Checking we have pip3 available..."
-  pip3 -v  >> $LOG_FILE 2>&1
+  pip3 -V  >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
     echo "(fail) Unable to proceed as pip3 not installed...please install with command 'apt-get install python3-pip' " | tee -a $LOG_FILE
     exit 1
@@ -66,7 +66,7 @@ install () {
 
   ### install the wiperf poller from PyPi - exit if errors
   echo "(ok) Installing wiperf python module (please wait)..."  | tee -a $LOG_FILE
-  pip3 install -Iv wiperf_poller==$POLLER_VERSION >> $LOG_FILE 2>&1
+  pip3 install wiperf_poller==$POLLER_VERSION >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
       echo "(fail) pip installation of wiperf_poller failed. Exiting." | tee -a $LOG_FILE 
       exit 1
