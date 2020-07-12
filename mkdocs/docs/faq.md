@@ -1,4 +1,4 @@
-# FAQ  (In development)
+# FAQ
 
 ## How do I use wiperf with a proxy in my network?
 If you need to deal with using a proxy on your network, please complete the details of your proxy by completing the following section in your ```/etc/wiperf/config.ini``` file:
