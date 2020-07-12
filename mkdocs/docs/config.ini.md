@@ -1,4 +1,4 @@
-# config.ini reference guide  (In development)
+# config.ini Reference Guide
 
 ## Background
 
@@ -6,7 +6,7 @@ The config.ini file controls the operation of the wiperf utility. It has many op
 
 Many options will be fine using the defaults that are supplied with the installed package. However, some will definitely require configuration as they may require values such as IP addresses and port numbers which will vary in each instance where wiperf is used.
 
-The config.ini file is located in the directory : /home/wlanpi/wiperf
+The config.ini file is located in the directory : /etc/wiperf
 
 The file is organised in a number of sections that relate to different areas of operation. Each section begins with a name enclosed is square brackets, like this:
 
@@ -30,6 +30,8 @@ You may also see some lines that begin with a semi-colon. These are comments and
 We'll take a look at each section of the config file and provide some guidance on suitable parameter values:
 
 - [General Section](#general-section)
+    - [probe_mode](#probe_mode)
+    - [eth_if](#eth_if)
     - [wlan_if](#wlan_if)
     - [mgt_if](#mgt_if)
     - [platform](#platform)
@@ -117,9 +119,34 @@ We'll take a look at each section of the config file and provide some guidance o
 
 Note: any changes to this section on the WLANPi should only be made when it is running in classic mode (not while in wiperf mode).
 
+## probe_mode
+
+The probe may be run in one of two modes:
+
+- wireless
+- ethernet
+
+In 'wireless' mode, all tests are run over the Wi-Fi NIC interface to test wireless connectivity & performance. In 'ethernet' mode, all tests are performed over the wired, ethernet interface.
+
+Default setting:
+```
+probe_mode: wireless
+```
+[top](#parameter-reference-guide)
+
+## eth_if
+
+This parameter contains the name of the ethernet interface on the probe. This will almost always be 'eth0', but is provided in case of new use-cases in the future. You can see the Ethernet interface name by running the 'ifconfig' command from the CLI of the probe.
+
+Default setting:
+```
+eth_if: eth0
+```
+[top](#parameter-reference-guide)
+
 ### wlan_if
 
-This parameter contains the name of the WLAN interface on the Pi. This will almost always be 'wlan0', but is provided in case of new use-cases in the future. You can see the WLAN interface name by running the 'ifconfig' command from the CLI of the Pi
+This parameter contains the name of the WLAN interface on the probe. This will almost always be 'wlan0', but is provided in case of new use-cases in the future. You can see the WLAN interface name by running the 'ifconfig' command from the CLI of the probe.
 
 Default setting:
 ```
@@ -568,7 +595,7 @@ IP address or hostname of first ping target. No target details = no test run
 
 Default setting:
 ```
-ping_host1: bbc.co.uk
+ping_host1: google.com
 ```
 [top](#parameter-reference-guide)
 
@@ -588,7 +615,7 @@ IP address or hostname of third ping target. No target details = no test run
 
 Default setting:
 ```
-ping_host3: google.com
+ping_host3: 
 ```
 [top](#parameter-reference-guide)
 
@@ -652,7 +679,7 @@ The IP address or (resolvable) name of the server running the iperf3 service.
 
 Default setting:
 ```
-server_hostname: 192.168.0.14
+server_hostname: 
 ```
 [top](#parameter-reference-guide)
 
@@ -672,7 +699,7 @@ The duration (in seconds) that the iperf3 test will be run for
 
 Default setting:
 ```
-duration: 20
+duration: 10
 ```
 [top](#parameter-reference-guide)
 
@@ -706,7 +733,7 @@ The IP address or (resolvable) name of the server running the iperf3 service.
 
 Default setting:
 ```
-server_hostname: 192.168.0.14
+server_hostname: 
 ```
 [top](#parameter-reference-guide)
 
@@ -726,7 +753,7 @@ The duration (in seconds) that the iperf3 test will be run for
 
 Default setting:
 ```
-duration: 20
+duration: 10
 ```
 [top](#parameter-reference-guide)
 
@@ -736,7 +763,7 @@ The data rate that will be attempted for the UDP iperf3 test in bps
 
 Default setting:
 ```
-bandwidth: 20000000
+bandwidth: 2000000
 ```
 [top](#parameter-reference-guide)
 
@@ -770,7 +797,7 @@ Hostname of first DNS target. No target details = no test run
 
 Default setting:
 ```
-dns_target1: bbc.co.uk
+dns_target1: google.com
 ```
 [top](#parameter-reference-guide)
 
@@ -790,7 +817,7 @@ Hostname of third DNS target. No target details = no test run
 
 Default setting:
 ```
-dns_target3: google.com
+dns_target3: 
 ```
 [top](#parameter-reference-guide)
 
@@ -851,7 +878,7 @@ Hostname of first HTTP target. No target details = no test run
 
 Default setting:
 ```
-http_target1: https://ebay.co.uk
+http_target1: https://google.com
 ```
 [top](#parameter-reference-guide)
 
@@ -861,7 +888,7 @@ Hostname of second HTTP target. No target details = no test run
 
 Default setting:
 ```
-http_target2: http://twitter.com
+http_target2: https://cisco.com
 ```
 [top](#parameter-reference-guide)
 
@@ -871,7 +898,7 @@ Hostname of third HTTP target. No target details = no test run
 
 Default setting:
 ```
-http_target3: https://facebook.com
+http_target3: 
 ```
 [top](#parameter-reference-guide)
 
@@ -881,7 +908,7 @@ Hostname of fourth HTTP target. No target details = no test run
 
 Default setting:
 ```
-http_target4: https://instagram.com
+http_target4: 
 ```
 [top](#parameter-reference-guide)
 
@@ -889,7 +916,7 @@ http_target4: https://instagram.com
 
 Hostname of fifth HTTP target. No target details = no test run
 
-Default setting: https://amazon.com
+Default setting: 
 ```
 http_target5: 
 ```
