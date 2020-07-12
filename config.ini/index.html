@@ -2179,7 +2179,7 @@
 </li>
 </ul>
 <h2 id="general-section">[General] Section</h2>
-<p>Note: any changes to this section on the WLANPi should only be made when it is running in classic mode (not while in wiperf mode).</p>
+<p>Note: any changes to this section on the WLAN Pi should only be made when it is running in classic mode (not while in wiperf mode).</p>
 <h2 id="probe_mode">probe_mode</h2>
 <p>The probe may be run in one of two modes:</p>
 <ul>
@@ -2208,11 +2208,11 @@
 <p>Getting this parameter correct for your environment is very important to ensure that test results data makes it back to your reporting server.</p>
 <p>The available options are:</p>
 <ul>
-<li>wlan0 (the first available WLAN port - usually a USB dongle plugged in to the WLANPi)</li>
-<li>eth0 (the internal Ethernet port of the WLANPi)</li>
+<li>wlan0 (the first available WLAN port - usually a USB dongle plugged in to the WLAN Pi, or the internal wireless NIC on the RPi)</li>
+<li>eth0 (the internal Ethernet port of the probe)</li>
 <li>zt  (Zerotier (the virtual network service) is installed and used to connect to the reporting server)</li>
 </ul>
-<p>The WANPi is configured to assign a higher cost default route to eth0 by default so that all traffic (tests &amp; test results) will choose the default route provided by wlan0. If eth0 is used as the path to return test results to the reporting server, then a static route is injected in to the WLANPi route table on start-up to ensure correct routing.</p>
+<p>The WANPi is configured to assign a higher cost default route to eth0 by default so that all traffic (tests &amp; test results) will choose the default route provided by wlan0. If eth0 is used as the path to return test results to the reporting server, then a static route is injected in to the probe route table on start-up to ensure correct routing.</p>
 <p>If this parameter is not correctly set, then results data may not make it back to the reporting server.</p>
 <p>Default setting:
 <div class="highlight"><pre><span></span><code>mgt_if: wlan0
@@ -2220,7 +2220,7 @@
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="platform-deprecated">platform (Deprecated)</h3>
 <p><em>(This setting is now deprecated (and unused) - it has been included for historical reference)</em></p>
-<p>Wiperf is supported on both the WLANPi and Raspberry Pi platforms.  The available options are:</p>
+<p>Wiperf is supported on both the WLAN Pi and Raspberry Pi platforms.  The available options are:</p>
 <ul>
 <li>wlanpi</li>
 <li>rpi</li>
@@ -2241,7 +2241,7 @@
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="splunk_host">splunk_host</h3>
-<p>This is the hostname or IP address of the Splunk platform where test result data is sent to. If the hostname of the Splunk server is used, it must be resolvable by the WLANPi. </p>
+<p>This is the hostname or IP address of the Splunk platform where test result data is sent to. If the hostname of the Splunk server is used, it must be resolvable by the probe. </p>
 <p>(Note: If using Zerotier, make sure this is the address of the IP assigned to your Splunk server in the Zerotier dashboard for your network)</p>
 <p>Default setting (none):
 <div class="highlight"><pre><span></span><code>splunk_host: 
@@ -2261,7 +2261,7 @@
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="influx_host">influx_host</h3>
-<p>This is the hostname or IP address of the Influx (v1.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the WLANPi. </p>
+<p>This is the hostname or IP address of the Influx (v1.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the probe. </p>
 <p>(Note: If using Zerotier, make sure this is the address of the IP assigned to your Splunk server in the Zerotier dashboard for your network)</p>
 <p>Default setting (none):
 <div class="highlight"><pre><span></span><code>influx_host: 
@@ -2292,7 +2292,7 @@
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="influx2_host">influx2_host</h3>
-<p>This is the hostname or IP address of the Influx (v2.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the WLANPi. </p>
+<p>This is the hostname or IP address of the Influx (v2.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the probe. </p>
 <p>(Note: If using Zerotier, make sure this is the address of the IP assigned to your InfluxDb2 server in the Zerotier dashboard for your network)</p>
 <p>Default setting (none):
 <div class="highlight"><pre><span></span><code>influx2_host: 
@@ -2323,14 +2323,14 @@
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="test_interval">test_interval</h3>
-<p>(WLANPi only) This is the interval (in minutes) at which we would like to run the performance tests. The recommened minimum is 5, which is also the default.</p>
+<p>(WLAN Pi only) This is the interval (in minutes) at which we would like to run the performance tests. The recommened minimum is 5, which is also the default.</p>
 <p>(Note: if this setting is too low, scheduled tests may try to run before the previous test sequence has completed, which could cause gaps in your data)</p>
 <p>Default setting:
 <div class="highlight"><pre><span></span><code>test_interval: 5
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="test_offset">test_offset</h3>
-<p>(WLANPi only) By default test run at the interval specified by the <code>test_interval</code> parameter, which is referenced to the to of the hours (e.g. 5 mins interval will run at 5, 10, 15, 20, 25...etc. mins past the hour). If multiple proes are running, it mau be useful to stagger their start times. By setting <code>test_offset</code> to a value of one, this will offset all test start times by 1 minutes (i.e. 6,11,16,21,26...etc. mins past the hour)</p>
+<p>(WLAN Pi only) By default test run at the interval specified by the <code>test_interval</code> parameter, which is referenced to the to of the hours (e.g. 5 mins interval will run at 5, 10, 15, 20, 25...etc. mins past the hour). If multiple proes are running, it mau be useful to stagger their start times. By setting <code>test_offset</code> to a value of one, this will offset all test start times by 1 minutes (i.e. 6,11,16,21,26...etc. mins past the hour)</p>
 <p>The default value is zero which means that the default 5,10,15,20... run pattern will be used.</p>
 <p>Default setting:
 <div class="highlight"><pre><span></span><code>test_offset: 0
@@ -2356,7 +2356,7 @@
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="data_dir">data_dir</h3>
-<p>This is the directory on the WLANPi/RPi where test result data is dumped. <strong>Do not change this value from the default</strong>. This field is provided for future configuration options if required.</p>
+<p>This is the directory on the WLAN Pi/RPi where test result data is dumped. <strong>Do not change this value from the default</strong>. This field is provided for future configuration options if required.</p>
 <p>Default setting:
 <div class="highlight"><pre><span></span><code>data_dir: /home/wlanpi/wiperf/data
 </code></pre></div>
@@ -2424,7 +2424,7 @@ This parameter is commented out by default as it is obviously not something you 
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h2 id="speedtest-section">[Speedtest] Section</h2>
-<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)</p>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)</p>
 <h3 id="enabled">enabled</h3>
 <p>Options: yes or no. If set to no, entire section is ignored and no Speedtest is run. When enabled, a speedtest to the Ookla speedtest service is run each test cycle.</p>
 <p>Default setting:
@@ -2461,7 +2461,7 @@ no_proxy:
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h2 id="ping_test-section">[Ping_Test] Section</h2>
-<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)</p>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)</p>
 <h3 id="enabled_1">enabled</h3>
 <p>Options: yes or no. If set to no, entire section is ignored and no ping tests are run. When enabled, up to 5 entries will be targetted with an ICMP ping and the RRT times recorded</p>
 <p>Default setting:
@@ -2511,7 +2511,7 @@ no_proxy:
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h2 id="iperf3_tcp_test-section">[Iperf3_tcp_test] Section</h2>
-<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)</p>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)</p>
 <h3 id="enabled_2">enabled</h3>
 <p>Options: yes or no. If set to no, entire section is ignored and no tcp iperf3 test is run. When enabled, a tcp iperf3 test will be run to the iperf3 server defined in <code>server_hostname</code> to the <code>port</code> network port for the <code>duration</code> period (in secs) </p>
 <p>Default setting:
@@ -2543,7 +2543,7 @@ no_proxy:
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h2 id="iperf3_udp_test-section">[Iperf3_udp_test] Section</h2>
-<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)</p>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)</p>
 <h3 id="enabled_3">enabled</h3>
 <p>Options: yes or no. If set to no, entire section is ignored and no udp iperf3 test is run. When enabled, a udp iperf3 test will be run to the iperf3 server defined in <code>server_hostname</code> to the <code>port</code> network port for the <code>duration</code> period (in secs), attempting to achieve a data transfer rate of <code>bandwidth</code> bps. </p>
 <p>Default setting:
@@ -2581,7 +2581,7 @@ no_proxy:
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h2 id="dns_test-section">[DNS_test] Section</h2>
-<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)</p>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)</p>
 <h3 id="enabled_4">enabled</h3>
 <p>Options: yes or no. If set to no, entire section is ignored and no DNS tests are run. When enabled, DNS tests are run for each of the <code>dns_target</code> paramters defined in this section. Any targets that have no value entered will be ignored.</p>
 <p>Default setting:
@@ -2625,7 +2625,7 @@ no_proxy:
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h2 id="http_test-section">[HTTP_test] Section</h2>
-<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)</p>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)</p>
 <h3 id="enabled_5">enabled</h3>
 <p>Options: yes or no. If set to no, entire section is ignored and no HTTP tests are run. When enabled, HTTP tests are run for each of the <code>http_target</code> paramters defined in this section. Any targets that have no value entered will be ignored.</p>
 <p>Targets must include the full url of each site to be queried (including http:// or https:// element). Valid site address examples:</p>
@@ -2675,7 +2675,7 @@ no_proxy:
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h2 id="dhcp_test-section">[DHCP_test] Section</h2>
-<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)</p>
+<p>(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)</p>
 <h3 id="enabled_6">enabled</h3>
 <p>Options: yes or no. If set to no, entire section is ignored and no DHCP test is run.  Note that the DHCP test has 2 modes :</p>
 <ul>
