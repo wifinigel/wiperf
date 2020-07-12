@@ -15,7 +15,7 @@
     
     
       
-        <title>config.ini reference guide (In development) - Wiperf V2 Documentation</title>
+        <title>config.ini Reference Guide - Wiperf V2 Documentation</title>
       
     
     
@@ -50,7 +50,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#configini-reference-guide-in-development" class="md-skip">
+        <a href="#configini-reference-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -78,7 +78,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              config.ini reference guide  (In development)
+              config.ini Reference Guide
             
           </span>
         </div>
@@ -536,14 +536,14 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        config.ini reference guide  (In development)
+        config.ini Reference Guide
         <span class="md-nav__icon md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
         </span>
       </label>
     
-    <a href="./" title="config.ini reference guide (In development)" class="md-nav__link md-nav__link--active">
-      config.ini reference guide  (In development)
+    <a href="./" title="config.ini Reference Guide" class="md-nav__link md-nav__link--active">
+      config.ini Reference Guide
     </a>
     
       
@@ -580,7 +580,21 @@
     [General] Section
   </a>
   
-    <nav class="md-nav" aria-label="[General] Section">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probe_mode" class="md-nav__link">
+    probe_mode
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eth_if" class="md-nav__link">
+    eth_if
+  </a>
+  
+    <nav class="md-nav" aria-label="eth_if">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1380,7 +1394,21 @@
     [General] Section
   </a>
   
-    <nav class="md-nav" aria-label="[General] Section">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probe_mode" class="md-nav__link">
+    probe_mode
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eth_if" class="md-nav__link">
+    eth_if
+  </a>
+  
+    <nav class="md-nav" aria-label="eth_if">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2026,11 +2054,11 @@
                   
                 
                 
-                <h1 id="configini-reference-guide-in-development">config.ini reference guide  (In development)</h1>
+                <h1 id="configini-reference-guide">config.ini Reference Guide</h1>
 <h2 id="background">Background</h2>
 <p>The config.ini file controls the operation of the wiperf utility. It has many options available for maximum flexibility, but some may need some clarification.</p>
 <p>Many options will be fine using the defaults that are supplied with the installed package. However, some will definitely require configuration as they may require values such as IP addresses and port numbers which will vary in each instance where wiperf is used.</p>
-<p>The config.ini file is located in the directory : /home/wlanpi/wiperf</p>
+<p>The config.ini file is located in the directory : /etc/wiperf</p>
 <p>The file is organised in a number of sections that relate to different areas of operation. Each section begins with a name enclosed is square brackets, like this:</p>
 <div class="highlight"><pre><span></span><code>[Speedtest]
 </code></pre></div>
@@ -2047,6 +2075,8 @@
 <p>We'll take a look at each section of the config file and provide some guidance on suitable parameter values:</p>
 <ul>
 <li><a href="#general-section">General Section</a><ul>
+<li><a href="#probe_mode">probe_mode</a></li>
+<li><a href="#eth_if">eth_if</a></li>
 <li><a href="#wlan_if">wlan_if</a></li>
 <li><a href="#mgt_if">mgt_if</a></li>
 <li><a href="#platform">platform</a></li>
@@ -2150,8 +2180,25 @@
 </ul>
 <h2 id="general-section">[General] Section</h2>
 <p>Note: any changes to this section on the WLANPi should only be made when it is running in classic mode (not while in wiperf mode).</p>
+<h2 id="probe_mode">probe_mode</h2>
+<p>The probe may be run in one of two modes:</p>
+<ul>
+<li>wireless</li>
+<li>ethernet</li>
+</ul>
+<p>In 'wireless' mode, all tests are run over the Wi-Fi NIC interface to test wireless connectivity &amp; performance. In 'ethernet' mode, all tests are performed over the wired, ethernet interface.</p>
+<p>Default setting:
+<div class="highlight"><pre><span></span><code>probe_mode: wireless
+</code></pre></div>
+<a href="#parameter-reference-guide">top</a></p>
+<h2 id="eth_if">eth_if</h2>
+<p>This parameter contains the name of the ethernet interface on the probe. This will almost always be 'eth0', but is provided in case of new use-cases in the future. You can see the Ethernet interface name by running the 'ifconfig' command from the CLI of the probe.</p>
+<p>Default setting:
+<div class="highlight"><pre><span></span><code>eth_if: eth0
+</code></pre></div>
+<a href="#parameter-reference-guide">top</a></p>
 <h3 id="wlan_if">wlan_if</h3>
-<p>This parameter contains the name of the WLAN interface on the Pi. This will almost always be 'wlan0', but is provided in case of new use-cases in the future. You can see the WLAN interface name by running the 'ifconfig' command from the CLI of the Pi</p>
+<p>This parameter contains the name of the WLAN interface on the probe. This will almost always be 'wlan0', but is provided in case of new use-cases in the future. You can see the WLAN interface name by running the 'ifconfig' command from the CLI of the probe.</p>
 <p>Default setting:
 <div class="highlight"><pre><span></span><code>wlan_if: wlan0
 </code></pre></div>
@@ -2424,7 +2471,7 @@ no_proxy:
 <h3 id="ping_host1">ping_host1</h3>
 <p>IP address or hostname of first ping target. No target details = no test run</p>
 <p>Default setting:
-<div class="highlight"><pre><span></span><code>ping_host1: bbc.co.uk
+<div class="highlight"><pre><span></span><code>ping_host1: google.com
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="ping_host2">ping_host2</h3>
@@ -2436,7 +2483,7 @@ no_proxy:
 <h3 id="ping_host3">ping_host3</h3>
 <p>IP address or hostname of third ping target. No target details = no test run</p>
 <p>Default setting:
-<div class="highlight"><pre><span></span><code>ping_host3: google.com
+<div class="highlight"><pre><span></span><code>ping_host3: 
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="ping_host4">ping_host4</h3>
@@ -2474,7 +2521,7 @@ no_proxy:
 <h3 id="server_hostname">server_hostname</h3>
 <p>The IP address or (resolvable) name of the server running the iperf3 service.</p>
 <p>Default setting:
-<div class="highlight"><pre><span></span><code>server_hostname: 192.168.0.14
+<div class="highlight"><pre><span></span><code>server_hostname: 
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="port">port</h3>
@@ -2486,7 +2533,7 @@ no_proxy:
 <h3 id="duration">duration</h3>
 <p>The duration (in seconds) that the iperf3 test will be run for</p>
 <p>Default setting:
-<div class="highlight"><pre><span></span><code>duration: 20
+<div class="highlight"><pre><span></span><code>duration: 10
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="iperf3_tcp_data_file">iperf3_tcp_data_file</h3>
@@ -2506,7 +2553,7 @@ no_proxy:
 <h3 id="server_hostname_1">server_hostname</h3>
 <p>The IP address or (resolvable) name of the server running the iperf3 service.</p>
 <p>Default setting:
-<div class="highlight"><pre><span></span><code>server_hostname: 192.168.0.14
+<div class="highlight"><pre><span></span><code>server_hostname: 
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="port_1">port</h3>
@@ -2518,13 +2565,13 @@ no_proxy:
 <h3 id="duration_1">duration</h3>
 <p>The duration (in seconds) that the iperf3 test will be run for</p>
 <p>Default setting:
-<div class="highlight"><pre><span></span><code>duration: 20
+<div class="highlight"><pre><span></span><code>duration: 10
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="bandwidth">bandwidth</h3>
 <p>The data rate that will be attempted for the UDP iperf3 test in bps</p>
 <p>Default setting:
-<div class="highlight"><pre><span></span><code>bandwidth: 20000000
+<div class="highlight"><pre><span></span><code>bandwidth: 2000000
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="iperf3_udp_data_file">iperf3_udp_data_file</h3>
@@ -2544,7 +2591,7 @@ no_proxy:
 <h3 id="dns_target1">dns_target1</h3>
 <p>Hostname of first DNS target. No target details = no test run</p>
 <p>Default setting:
-<div class="highlight"><pre><span></span><code>dns_target1: bbc.co.uk
+<div class="highlight"><pre><span></span><code>dns_target1: google.com
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="dns_target2">dns_target2</h3>
@@ -2556,7 +2603,7 @@ no_proxy:
 <h3 id="dns_target3">dns_target3</h3>
 <p>Hostname of third DNS target. No target details = no test run</p>
 <p>Default setting:
-<div class="highlight"><pre><span></span><code>dns_target3: google.com
+<div class="highlight"><pre><span></span><code>dns_target3: 
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="dns_target4">dns_target4</h3>
@@ -2594,30 +2641,30 @@ no_proxy:
 <h3 id="http_target1">http_target1</h3>
 <p>Hostname of first HTTP target. No target details = no test run</p>
 <p>Default setting:
-<div class="highlight"><pre><span></span><code>http_target1: https://ebay.co.uk
+<div class="highlight"><pre><span></span><code>http_target1: https://google.com
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="http_target2">http_target2</h3>
 <p>Hostname of second HTTP target. No target details = no test run</p>
 <p>Default setting:
-<div class="highlight"><pre><span></span><code>http_target2: http://twitter.com
+<div class="highlight"><pre><span></span><code>http_target2: https://cisco.com
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="http_target3">http_target3</h3>
 <p>Hostname of third HTTP target. No target details = no test run</p>
 <p>Default setting:
-<div class="highlight"><pre><span></span><code>http_target3: https://facebook.com
+<div class="highlight"><pre><span></span><code>http_target3: 
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="http_target4">http_target4</h3>
 <p>Hostname of fourth HTTP target. No target details = no test run</p>
 <p>Default setting:
-<div class="highlight"><pre><span></span><code>http_target4: https://instagram.com
+<div class="highlight"><pre><span></span><code>http_target4: 
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="http_target5">http_target5</h3>
 <p>Hostname of fifth HTTP target. No target details = no test run</p>
-<p>Default setting: https://amazon.com
+<p>Default setting: 
 <div class="highlight"><pre><span></span><code>http_target5: 
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
