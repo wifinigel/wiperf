@@ -62,7 +62,7 @@ The workflow to get Wiperf fully operational consists if a number of steps that 
 
 The Data server setup tends to be a task that needs completion only once (or at least very infrequently). Conversely, some or all of the probe setup will need to be completed each time a probe is deployed - this is mainly due to the fact that in each environment in which it is deployed, the connectivity for the probe will vary (e.g. different SSID, different network connection type). 
 
-Here is an overview of the workflow, with links to documentation for each step:
+Here is an overview of the workflow::
 
 - Data server setup:
     - Prepare a server platform
@@ -76,10 +76,15 @@ Here is an overview of the workflow, with links to documentation for each step:
     - Configure the wiperf software
     - Deploy & test the wiperf probe
 
+Links:
+- Start here for Splunk: [link](splunk_platform.md)
+- Start here for InfluxDB/Grafana: [link](influx_plaform.md)
+- Start here for the probe: [link](probe_platform.md)
+
 In addition to the setup and deployment of the components, there may also be a requirement to troubleshoot the setup. This may involve:
 
-- Troubleshooting steps
-- Review known issues
+- [Troubleshooting steps](troubleshooting.md)
+- [Review known issues / FAQ](faq/md)]
 
 ## Further Documentation References
 
