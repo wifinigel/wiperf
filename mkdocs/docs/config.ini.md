@@ -122,7 +122,7 @@ We'll take a look at each section of the config file and provide some guidance o
 
 Note: any changes to this section on the WLAN Pi should only be made when it is running in classic mode (not while in wiperf mode).
 
-## probe_mode
+### probe_mode
 
 The probe may be run in one of two modes:
 
@@ -137,7 +137,7 @@ probe_mode: wireless
 ```
 [top](#parameter-reference-guide)
 
-## eth_if
+### eth_if
 
 This parameter contains the name of the ethernet interface on the probe. This will almost always be 'eth0', but is provided in case of new use-cases in the future. You can see the Ethernet interface name by running the 'ifconfig' command from the CLI of the probe.
 
