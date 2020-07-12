@@ -265,6 +265,7 @@ case "$1" in
         echo ""
         echo "wiperf version: $VERSION"
         echo ""
+        ;;
   install)
         install
         ;;
