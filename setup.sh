@@ -223,7 +223,7 @@ uninstall () {
   rm -rf $INSTALL_DIR  >> $LOG_FILE 2>&1
   echo "(ok) Removing config dir" | tee -a $LOG_FILE
   mv $CFG_DIR "${BACKUP_DIR}" >> $LOG_FILE 2>&1
-  #rm -rf $CFG_DIR  >> $LOG_FILE 2>&1
+
   echo "(ok) Removing switcher script" | tee -a $LOG_FILE
   rm -f /usr/bin/wiperf_switcher  >> $LOG_FILE 2>&1
 
