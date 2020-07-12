@@ -120,7 +120,7 @@ We'll take a look at each section of the config file and provide some guidance o
 
 ## [General] Section
 
-Note: any changes to this section on the WLANPi should only be made when it is running in classic mode (not while in wiperf mode).
+Note: any changes to this section on the WLAN Pi should only be made when it is running in classic mode (not while in wiperf mode).
 
 ## probe_mode
 
@@ -165,11 +165,11 @@ Getting this parameter correct for your environment is very important to ensure 
 
 The available options are:
 
-- wlan0 (the first available WLAN port - usually a USB dongle plugged in to the WLANPi)
-- eth0 (the internal Ethernet port of the WLANPi)
+- wlan0 (the first available WLAN port - usually a USB dongle plugged in to the WLAN Pi, or the internal wireless NIC on the RPi)
+- eth0 (the internal Ethernet port of the probe)
 - zt  (Zerotier (the virtual network service) is installed and used to connect to the reporting server)
 
-The WANPi is configured to assign a higher cost default route to eth0 by default so that all traffic (tests & test results) will choose the default route provided by wlan0. If eth0 is used as the path to return test results to the reporting server, then a static route is injected in to the WLANPi route table on start-up to ensure correct routing.
+The WANPi is configured to assign a higher cost default route to eth0 by default so that all traffic (tests & test results) will choose the default route provided by wlan0. If eth0 is used as the path to return test results to the reporting server, then a static route is injected in to the probe route table on start-up to ensure correct routing.
 
 If this parameter is not correctly set, then results data may not make it back to the reporting server.
 
@@ -182,7 +182,7 @@ mgt_if: wlan0
 ### platform (Deprecated)
 *(This setting is now deprecated (and unused) - it has been included for historical reference)*
 
-Wiperf is supported on both the WLANPi and Raspberry Pi platforms.  The available options are:
+Wiperf is supported on both the WLAN Pi and Raspberry Pi platforms.  The available options are:
 
 - wlanpi
 - rpi
@@ -209,7 +209,7 @@ exporter_type: splunk
 
 ### splunk_host
 
-This is the hostname or IP address of the Splunk platform where test result data is sent to. If the hostname of the Splunk server is used, it must be resolvable by the WLANPi. 
+This is the hostname or IP address of the Splunk platform where test result data is sent to. If the hostname of the Splunk server is used, it must be resolvable by the probe. 
 
 (Note: If using Zerotier, make sure this is the address of the IP assigned to your Splunk server in the Zerotier dashboard for your network)
 
@@ -243,7 +243,7 @@ splunk_token:
 
 ### influx_host
 
-This is the hostname or IP address of the Influx (v1.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the WLANPi. 
+This is the hostname or IP address of the Influx (v1.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the probe. 
 
 (Note: If using Zerotier, make sure this is the address of the IP assigned to your Splunk server in the Zerotier dashboard for your network)
 
@@ -296,7 +296,7 @@ influx_database:
 
 ### influx2_host
 
-This is the hostname or IP address of the Influx (v2.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the WLANPi. 
+This is the hostname or IP address of the Influx (v2.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the probe. 
 
 (Note: If using Zerotier, make sure this is the address of the IP assigned to your InfluxDb2 server in the Zerotier dashboard for your network)
 
@@ -349,7 +349,7 @@ influx2_org:
 
 ### test_interval
 
-(WLANPi only) This is the interval (in minutes) at which we would like to run the performance tests. The recommened minimum is 5, which is also the default.
+(WLAN Pi only) This is the interval (in minutes) at which we would like to run the performance tests. The recommened minimum is 5, which is also the default.
 
 (Note: if this setting is too low, scheduled tests may try to run before the previous test sequence has completed, which could cause gaps in your data)
 
@@ -361,7 +361,7 @@ test_interval: 5
 
 ### test_offset
 
-(WLANPi only) By default test run at the interval specified by the ```test_interval``` parameter, which is referenced to the to of the hours (e.g. 5 mins interval will run at 5, 10, 15, 20, 25...etc. mins past the hour). If multiple proes are running, it mau be useful to stagger their start times. By setting ```test_offset``` to a value of one, this will offset all test start times by 1 minutes (i.e. 6,11,16,21,26...etc. mins past the hour)
+(WLAN Pi only) By default test run at the interval specified by the ```test_interval``` parameter, which is referenced to the to of the hours (e.g. 5 mins interval will run at 5, 10, 15, 20, 25...etc. mins past the hour). If multiple proes are running, it mau be useful to stagger their start times. By setting ```test_offset``` to a value of one, this will offset all test start times by 1 minutes (i.e. 6,11,16,21,26...etc. mins past the hour)
 
 The default value is zero which means that the default 5,10,15,20... run pattern will be used.
 
@@ -404,7 +404,7 @@ data_format: json
 
 ### data_dir
 
-This is the directory on the WLANPi/RPi where test result data is dumped. __Do not change this value from the default__. This field is provided for future configuration options if required.
+This is the directory on the WLAN Pi/RPi where test result data is dumped. __Do not change this value from the default__. This field is provided for future configuration options if required.
 
 Default setting:
 ```
@@ -518,7 +518,7 @@ network_data_file: wiperf-network
 
 ## [Speedtest] Section
 
-(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)
 
 ### enabled
 
@@ -580,7 +580,7 @@ speedtest_data_file: wiperf-speedtest
 
 ## [Ping_Test] Section
 
-(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)
 
 ### enabled
 
@@ -664,7 +664,7 @@ ping_data_file: wiperf-ping
 
 ## [Iperf3_tcp_test] Section
 
-(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)
 
 ### enabled
 
@@ -718,7 +718,7 @@ iperf3_tcp_data_file: wiperf-iperf3-tcp
 
 ## [Iperf3_udp_test] Section
 
-(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)
 
 ### enabled
 
@@ -782,7 +782,7 @@ iperf3_udp_data_file: wiperf-iperf3-udp
 
 ## [DNS_test] Section
 
-(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)
 
 ### enabled
 
@@ -856,7 +856,7 @@ dns_data_file: wiperf-dns
 
 ## [HTTP_test] Section
 
-(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)
 
 ### enabled
 
@@ -937,7 +937,7 @@ http_data_file: wiperf-http
 
 ## [DHCP_test] Section
 
-(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)
 
 ### enabled
 
