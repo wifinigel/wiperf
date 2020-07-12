@@ -228,7 +228,8 @@ uninstall () {
 
   # remove log files
   echo "(ok) Removing log files" | tee -a $LOG_FILE
-  rm -f /var/log/wiperf*.log
+  rm -f /var/log/wiperf_agent.log  >> $LOG_FILE 2>&1
+  rm -f /var/log/wiperf_cron.log  >> $LOG_FILE 2>&1
   echo "(ok) Done"
 }
 
