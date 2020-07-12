@@ -1,6 +1,6 @@
-# wiperf
+# wiperf V2
 
-(Looking for the old pre-v2 docs? Try this: [link](https://github.com/wifinigel/wiperf/tree/v0.10))
+*(Looking for the old pre-v2 docs? Try this: [link](https://github.com/wifinigel/wiperf/tree/v0.10))*
 
 ![wiperf hardware](mkdocs/docs/images/hardware.png)
 
