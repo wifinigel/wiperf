@@ -15,7 +15,7 @@
     
     
       
-        <title>Data Points Reference Guide (In development) - Wiperf V2 Documentation</title>
+        <title>Data Points Reference Guide - Wiperf V2 Documentation</title>
       
     
     
@@ -50,7 +50,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#data-points-reference-guide-in-development" class="md-skip">
+        <a href="#data-points-reference-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -78,7 +78,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Data Points Reference Guide  (In development)
+              Data Points Reference Guide
             
           </span>
         </div>
@@ -548,14 +548,14 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Data Points Reference Guide  (In development)
+        Data Points Reference Guide
         <span class="md-nav__icon md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
         </span>
       </label>
     
-    <a href="./" title="Data Points Reference Guide (In development)" class="md-nav__link md-nav__link--active">
-      Data Points Reference Guide  (In development)
+    <a href="./" title="Data Points Reference Guide" class="md-nav__link md-nav__link--active">
+      Data Points Reference Guide
     </a>
     
       
@@ -880,7 +880,7 @@
                   
                 
                 
-                <h1 id="data-points-reference-guide-in-development">Data Points Reference Guide  (In development)</h1>
+                <h1 id="data-points-reference-guide">Data Points Reference Guide</h1>
 <h2 id="background">Background</h2>
 <p>The wiperf probe collects a variety of data points about various aspects of network connectivity and performance. It then makes those data points available to a number of databases via their standard API (e.g. Splunk, InfluxDB etc.).</p>
 <p>The data collected in all instances is the same, but the format of the data presented to each type of database varies depending on the their API and formatting rules and syntax.</p>
@@ -955,7 +955,8 @@
 <li>time : Unix timestamp of time test was performed</li>
 <li>http_index : wiperf runs up to 5 instances of HTTP test via its configuration file. This index uniquely identifies each instance.</li>
 <li>http_target : The domain name (or IP address) of the target site which is the subject of the HTTP test</li>
-<li>lookup_time_ms : The time taken to retrieve the html page from the target site in milliseconds</li>
+<li>http_get_time_ms : The time taken (in mS) to retrieve the html page from the target site in milliseconds</li>
+<li>http_server_reponse_time_ms: The time taken (in mS) to receive the response headers from the target site. This is a more useful figure in many instances, as it does not include the page load time to is more indicative of the web server RTT.</li>
 <li>http_status_code : The HTTP status code returned from the target site in this test instance (200 is good, other values have varying meanings: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes )</li>
 </ul>
 <h3 id="iperf3-tcp-results">iperf3 TCP Results</h3>
@@ -993,7 +994,7 @@
 <div class="md-source-date">
   <small>
     
-      Last update: July 11, 2020
+      Last update: July 12, 2020
     
   </small>
 </div>
