@@ -530,8 +530,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#my-probe-only-needs-to-hit-internal-network-targets-how-do-i-stop-the-connectivity-check-to-googlecom" class="md-nav__link">
-    My probe only needs to hit internal network targets. How do I stop the connectivity check to google.com?
+  <a href="#my-probe-only-needs-to-hit-internal-network-targets-how-do-i-stop-the-dns-check-to-googlecom" class="md-nav__link">
+    My probe only needs to hit internal network targets. How do I stop the DNS check to google.com?
   </a>
   
 </li>
@@ -576,6 +576,40 @@
   <a href="#rpi" class="md-nav__link">
     RPi
   </a>
+  
+    <nav class="md-nav" aria-label="RPi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-ufw" class="md-nav__link">
+    Install ufw
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-firewall-rules" class="md-nav__link">
+    Add Firewall Rules
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#activate-firewall" class="md-nav__link">
+    Activate Firewall
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-commands" class="md-nav__link">
+    Useful Commands
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -801,8 +835,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#my-probe-only-needs-to-hit-internal-network-targets-how-do-i-stop-the-connectivity-check-to-googlecom" class="md-nav__link">
-    My probe only needs to hit internal network targets. How do I stop the connectivity check to google.com?
+  <a href="#my-probe-only-needs-to-hit-internal-network-targets-how-do-i-stop-the-dns-check-to-googlecom" class="md-nav__link">
+    My probe only needs to hit internal network targets. How do I stop the DNS check to google.com?
   </a>
   
 </li>
@@ -847,6 +881,40 @@
   <a href="#rpi" class="md-nav__link">
     RPi
   </a>
+  
+    <nav class="md-nav" aria-label="RPi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-ufw" class="md-nav__link">
+    Install ufw
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-firewall-rules" class="md-nav__link">
+    Add Firewall Rules
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#activate-firewall" class="md-nav__link">
+    Activate Firewall
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-commands" class="md-nav__link">
+    Useful Commands
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -894,13 +962,27 @@
                 
                 <h1 id="faq-in-development">FAQ  (In development)</h1>
 <h2 id="how-do-i-use-wiperf-with-a-proxy-in-my-network">How do I use wiperf with a proxy in my network?</h2>
-<p>TBA</p>
-<h2 id="my-probe-only-needs-to-hit-internal-network-targets-how-do-i-stop-the-connectivity-check-to-googlecom">My probe only needs to hit internal network targets. How do I stop the connectivity check to google.com?</h2>
-<p>TBA</p>
+<p>If you need to deal with using a proxy on your network, please complete the details of your proxy by completing the following section in your <code>/etc/wiperf/config.ini</code> file:</p>
+<div class="highlight"><pre><span></span><code>; If proxy server access is required to run a speedtest, enter the proxy server details here for https &amp; https
+; e.g. https_proxy: http://10.1.1.1:8080
+;
+; For sites that are not accessed via proxy, use no_proxy (make sure value enclosed in quotes &amp; comma separated for mutiple values)
+; e.g. no_proxy: &quot;mail.local, intranet.local&quot;
+http_proxy: 
+https_proxy:
+no_proxy:
+</code></pre></div>
+
+<h2 id="my-probe-only-needs-to-hit-internal-network-targets-how-do-i-stop-the-dns-check-to-googlecom">My probe only needs to hit internal network targets. How do I stop the DNS check to google.com?</h2>
+<p>Before commencing tests, wiperf will perform a test DNS lookup to ensure that DNS is working OK. By default, the DNS target in <code>/etc/wiperf/config.ini</code> is set to 'google.com'. If your DNS is internal to your network and does not resolve public Internet targets, yo can change the section below to point at an internal target.</p>
+<div class="highlight"><pre><span></span><code>; connectivity DNS lookup - site used for initial DNS lookup when assessing if DNS working OK
+connectivity_lookup: google.com
+</code></pre></div>
+
 <h2 id="how-do-i-change-the-hostname-of-my-probe">How do I change the hostname of my probe?</h2>
-<p>TBA</p>
+<p>Please see the details in this help page: <a href="../probe_prepare/">link</a></p>
 <h2 id="why-are-mcs-rx-phy-rates-missing-from-my-reports">Why are MCS &amp; Rx Phy rates missing from my reports?</h2>
-<p>In several dashboard reports, the reported MCS values &amp; Rx Phy rate may be blank. This is because these values are only reported by MediaTek wireless NICs. Therefore, the CF-912 will not show these values (as it is a Realtek NIC). Sorry, not much I can do about this.</p>
+<p>In several dashboard reports, the reported MCS values &amp; Rx Phy rate may be blank. This is because these values simply are not reported by many NICs. Sorry, there's not much I can do about this as I don't write the wireless NIC drivers.</p>
 <h2 id="my-probe-seems-to-reboot-itself-intermittently-why">My probe seems to reboot itself intermittently. Why?</h2>
 <p>Wiperf has a watchdog feature that it uses to try to reset things when it is having connectivity related difficulties.</p>
 <p>There may be instances when tests are continually failing or wireless connectivity is intermittent due to perhaps being stuck on a remote AP that is sub-optimal from a connectivity perspective.</p>
@@ -909,13 +991,40 @@
 <p>If you observe your probe rebooting on a regular basis (e.g. a couple of times a hour), then check its logs as it is very unhappy about something.</p>
 <h2 id="security">Security</h2>
 <h3 id="wlan-pi">WLAN Pi</h3>
-<p>Wiperf employs the following security mechanisms in an attempt to harden the WLAN Pi when deployed in Wiperf mode:</p>
+<p>Wiperf employs the following security mechanisms in an attempt to harden the WLAN Pi when deployed in wiperf mode:</p>
 <ul>
 <li>No forwarding is allowed between interfaces</li>
 <li>The internal UFW firewall is configured to only allow incoming connectivity on port 22 on the wlan0 &amp; eth0 interfaces</li>
 </ul>
 <h3 id="rpi">RPi</h3>
-<p>TBA (suggest add ufw &amp; apply rules)</p>
+<p>If you'd like to harden the RPi when deployed in a network, a quick solution is to install &amp; activate the 'ufw' firewall. This can be configured to stop all incoming connections except those on SSH, which will still allow remote administration. All outgoing traffic from the probe (i.e. network tests and management traffic) will not be disrupted.</p>
+<h4 id="install-ufw">Install ufw</h4>
+<div class="highlight"><pre><span></span><code>apt-get update
+apt-get install ufw
+</code></pre></div>
+
+<h4 id="add-firewall-rules">Add Firewall Rules</h4>
+<div class="highlight"><pre><span></span><code>ufw allow in on eth0 to any port ssh
+ufw deny in on eth0
+ufw allow in on wlan0 to any port ssh
+ufw deny in on wlan0
+</code></pre></div>
+
+<h4 id="activate-firewall">Activate Firewall</h4>
+<div class="highlight"><pre><span></span><code>ufw enable
+</code></pre></div>
+
+<h4 id="useful-commands">Useful Commands</h4>
+<div class="highlight"><pre><span></span><code># Disable the firewall comletely
+ufw enable
+
+# List fw rules with numbers
+ufw status numbered
+
+# See firewall status
+ufw status
+</code></pre></div>
+
 <h2 id="where-do-i-get-the-dashboard-reports-for-splunk-and-grafana">Where do I get the dashboard reports for Splunk and Grafana?</h2>
 <p>Use SFTP/SCP and pull the xml files in <code>/usr/share/wiperf/dashboards</code> from your probe. </p>
 <h2 id="can-i-make-a-feature-suggestion">Can I make a feature suggestion?</h2>
