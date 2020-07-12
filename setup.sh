@@ -141,9 +141,9 @@ install () {
 
   # if we have old config files, copy them back im
   if [ -e "${BACKUP_DIR}/config.ini" ] ; then
-    echo "(ok) Restoring old config files..." | tee -a $LOG_FILE
+    echo "(ok) Restoring old config file..." | tee -a $LOG_FILE
     # copy files back in to retain old config & connectivity
-    cp -R ".${CFG_DIR}/*" ${CFG_DIR}  >> $LOG_FILE 2>&1
+    cp "${BACKUP_DIR}/config.ini" ${CFG_DIR}  >> $LOG_FILE 2>&1
   fi
 
   ### copy across the wiperf switcher if this is a WLAN Pi, remove if rpi 
