@@ -10,6 +10,7 @@ LOG_FILE="/var/log/wiperf_install.log"
 CLONE_DIR="/usr/share"
 INSTALL_DIR="$CLONE_DIR/wiperf"
 CFG_DIR="/etc/wiperf"
+BACKUP_DIR="/etc/.wiperf"
 GITHUB_REPO="https://github.com/wifinigel/wiperf.git"
 GITHUB_BRANCH='dev'
 OPERATION=$1
@@ -139,7 +140,7 @@ install () {
   fi 
 
   # if we have old config files, copy them back im
-  if [ -e ".${CFG_DIR}/config.ini" ] ; then
+  if [ -e "${BACKUP_DIR}/config.ini" ] ; then
     echo "(ok) Restoring old config files..." | tee -a $LOG_FILE
     # copy files back in to retain old config & connectivity
     cp -R ".${CFG_DIR}/*" ${CFG_DIR}  >> $LOG_FILE 2>&1
@@ -221,7 +222,7 @@ uninstall () {
   echo "(ok) Removing install dir" | tee -a $LOG_FILE
   rm -rf $INSTALL_DIR  >> $LOG_FILE 2>&1
   echo "(ok) Removing config dir" | tee -a $LOG_FILE
-  mv $CFG_DIR ".${CFG_DIR}" >> $LOG_FILE 2>&1
+  mv $CFG_DIR "${BACKUP_DIR}" >> $LOG_FILE 2>&1
   #rm -rf $CFG_DIR  >> $LOG_FILE 2>&1
   echo "(ok) Removing switcher script" | tee -a $LOG_FILE
   rm -f /usr/bin/wiperf_switcher  >> $LOG_FILE 2>&1
