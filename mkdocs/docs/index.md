@@ -1,7 +1,7 @@
-Title: Wiperf Documentation
+Title: Wiperf V2 Documentation
 Authors: Nigel Bowden
 
-# wiperf: An Open Source UX Performance Probe
+# wiperf V2: An Open Source UX Performance Probe
 
 ![wiperf hardware](images/hardware.png)
 

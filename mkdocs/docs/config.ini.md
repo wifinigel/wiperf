@@ -2,9 +2,9 @@
 
 ## Background
 
-The config.ini file controls the operation of the Wiperf utility. It has many options available for maximum flexiblity, but some may need some clarification.
+The config.ini file controls the operation of the wiperf utility. It has many options available for maximum flexibility, but some may need some clarification.
 
-Many options will be fine using the defaults that are supplied with the installed package. However, some will definitely require configuration as they may require values such as IP addresses and port numbers which will vary in each instance where Wiperf is used.
+Many options will be fine using the defaults that are supplied with the installed package. However, some will definitely require configuration as they may require values such as IP addresses and port numbers which will vary in each instance where wiperf is used.
 
 The config.ini file is located in the directory : /home/wlanpi/wiperf
 
@@ -20,7 +20,7 @@ Within each section are a number of configurable parameters that are in the form
 parameter: value
 ```
 
-You may also see some lines that begin with a semi-colon. These are comments and have no effect on the operation of Wiperf. You may add, remove or change these as you wish. Here is an example comment:
+You may also see some lines that begin with a semi-colon. These are comments and have no effect on the operation of wiperf. You may add, remove or change these as you wish. Here is an example comment:
 
 ```
 ; wlan interface name set this as per the output of an iwconfig command (usually wlan0)
@@ -115,7 +115,7 @@ We'll take a look at each section of the config file and provide some guidance o
 
 ## [General] Section
 
-Note: any changes to this section on the WLANPi should only be made when it is running in classic mode (not while in Wiperf mode).
+Note: any changes to this section on the WLANPi should only be made when it is running in classic mode (not while in wiperf mode).
 
 ### wlan_if
 
@@ -362,7 +362,7 @@ location:
 [top](#parameter-reference-guide)
 
 ### data_format
-(Not currently operational) Wiperf has the capability to output data in a number of formats. The current options are: csv or json
+(Not currently operational) wiperf has the capability to output data in a number of formats. The current options are: csv or json
 
 However this field is not currently used, as selecting the 'hec' transport mode (the only supported transport currently) over-rides this field. The value in this filed is currently irrelevant, but it s recommended to leave it at the default setting of ```json```
 
@@ -488,7 +488,7 @@ network_data_file: wiperf-network
 
 ## [Speedtest] Section
 
-(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)
 
 ### enabled
 
@@ -550,7 +550,7 @@ speedtest_data_file: wiperf-speedtest
 
 ## [Ping_Test] Section
 
-(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)
 
 ### enabled
 
@@ -634,7 +634,7 @@ ping_data_file: wiperf-ping
 
 ## [Iperf3_tcp_test] Section
 
-(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)
 
 ### enabled
 
@@ -688,7 +688,7 @@ iperf3_tcp_data_file: wiperf-iperf3-tcp
 
 ## [Iperf3_udp_test] Section
 
-(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)
 
 ### enabled
 
@@ -752,7 +752,7 @@ iperf3_udp_data_file: wiperf-iperf3-udp
 
 ## [DNS_test] Section
 
-(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)
 
 ### enabled
 
@@ -826,7 +826,7 @@ dns_data_file: wiperf-dns
 
 ## [HTTP_test] Section
 
-(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)
 
 ### enabled
 
@@ -907,7 +907,7 @@ http_data_file: wiperf-http
 
 ## [DHCP_test] Section
 
-(Changes made in this section will be used in next test cycle and may be made on the fly while in Wiperf mode on the WLANPi)
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLANPi)
 
 ### enabled
 
