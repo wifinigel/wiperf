@@ -580,22 +580,22 @@
     [General] Section
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="[General] Section">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#probe_mode" class="md-nav__link">
     probe_mode
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#eth_if" class="md-nav__link">
     eth_if
   </a>
   
-    <nav class="md-nav" aria-label="eth_if">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
   <a href="#wlan_if" class="md-nav__link">
@@ -1394,22 +1394,22 @@
     [General] Section
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="[General] Section">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#probe_mode" class="md-nav__link">
     probe_mode
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#eth_if" class="md-nav__link">
     eth_if
   </a>
   
-    <nav class="md-nav" aria-label="eth_if">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
   <a href="#wlan_if" class="md-nav__link">
@@ -2180,7 +2180,7 @@
 </ul>
 <h2 id="general-section">[General] Section</h2>
 <p>Note: any changes to this section on the WLAN Pi should only be made when it is running in classic mode (not while in wiperf mode).</p>
-<h2 id="probe_mode">probe_mode</h2>
+<h3 id="probe_mode">probe_mode</h3>
 <p>The probe may be run in one of two modes:</p>
 <ul>
 <li>wireless</li>
@@ -2191,7 +2191,7 @@
 <div class="highlight"><pre><span></span><code>probe_mode: wireless
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
-<h2 id="eth_if">eth_if</h2>
+<h3 id="eth_if">eth_if</h3>
 <p>This parameter contains the name of the ethernet interface on the probe. This will almost always be 'eth0', but is provided in case of new use-cases in the future. You can see the Ethernet interface name by running the 'ifconfig' command from the CLI of the probe.</p>
 <p>Default setting:
 <div class="highlight"><pre><span></span><code>eth_if: eth0
