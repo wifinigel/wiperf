@@ -1,3 +1,6 @@
+Title: config.ini Reference Guide
+Authors: Nigel Bowden
+
 # config.ini Reference Guide
 
 ## Background
