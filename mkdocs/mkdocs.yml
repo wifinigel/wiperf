@@ -1,4 +1,4 @@
-site_name: Wiperf Documentation
+site_name: Wiperf V2 Documentation
 nav:
     - Home: index.md
     - Operation Overview: operation.md
