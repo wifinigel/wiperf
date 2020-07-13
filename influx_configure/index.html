@@ -781,25 +781,25 @@
                 
                 
                 <h1 id="influx-configuration">Influx Configuration</h1>
-<p><div style="float: right;"><img alt="influx_logo" src="../images/influx_logo.png" /></div>Now that we have the InfluxDB software installed, the next step is to create a database into which data from our wiperf probes will be stored.</p>
+<p><div style="float: right;"><img alt="influx_logo" src="../images/influx_logo.png" /></div>Now that we have the InfluxDB software installed, the next step is to create a database in which data from our wiperf probes will be stored.</p>
 <p>To create the database, we need to execute a series of commands on the CLI of the Influx DB server. Follow the following steps to create the required database:</p>
 <ul>
 <li>Check the InfluxDB service is running before starting <code>sudo systemctl status influxdb</code> (ensure the process is "active (running)" )</li>
-<li>Enter the InfluxDB shell using the following command: <code>sudo influx</code> (indicated by the new "&gt;" prompt)<ul>
-<li>Create an admin user to administer Influx:<ul>
+<li>Enter the InfluxDB shell using the following command: <code>sudo influx</code> (shell is indicated by the new "&gt;" prompt)<ul>
+<li>Create an admin user to administer InfluxDB:<ul>
 <li><code>CREATE USER admin WITH PASSWORD 'letmein' WITH ALL PRIVILEGES</code></li>
 </ul>
 </li>
 </ul>
 </li>
-<li>Exit the InfluxDB shell with the command <code>exit</code></li>
+<li>Exit the InfluxDB shell with the command <code>exit</code> to return to the standard Linux CLI</li>
 <li>Edit the InfluxDB configuration file (/etc/influxdb/influxdb.conf):<ul>
 <li><code>sudo nano /etc/influxdb/influxdb.conf</code></li>
 <li>uncomment the line <code># auth-enabled = false</code> in the <code>[http]</code> section and change to <code>auth-enabled = true</code> to enable authentication of access to the database</li>
 <li>restart the InfluxDB process for the change to take effect: <code>sudo systemctl restart influxdb</code></li>
 </ul>
 </li>
-<li>Enter the InfluxDB shell using the following command: <code>sudo influx -username admin -password letmein</code> (now using authentication)<ul>
+<li>Enter the InfluxDB shell again using the following command: <code>sudo influx -username admin -password letmein</code> (now using authentication)<ul>
 <li>Create a new database with the following commands:<ul>
 <li><code>CREATE DATABASE wiperf</code></li>
 <li>Check the new database exists using: <code>SHOW DATABASES</code> (the database "wiperf" should be shown in the list)</li>
@@ -810,16 +810,16 @@
 <li><code>GRANT WRITE ON "wiperf" TO "wiperf_probe"</code></li>
 </ul>
 </li>
-<li>Create and assign a user who can read fro the wiperf database (i.e. the Grafana program) using the following CLI commands (note the single and double quotes are signifcant for the user &amp; pwd fields):<ul>
+<li>Create and assign a user who can read from the wiperf database (i.e. the Grafana program) using the following CLI commands (note the single and double quotes are signifcant for the user &amp; pwd fields):<ul>
 <li><code>CREATE USER "grafana" WITH PASSWORD 'R34dth3DB'</code></li>
 <li><code>GRANT read ON "wiperf" TO "grafana"</code></li>
 </ul>
 </li>
 </ul>
 </li>
-<li>Exit the InfluxDB shell with the command <code>exit</code></li>
+<li>Exit the InfluxDB shell with the command <code>exit</code> t return to the Linux CLI</li>
 </ul>
-<p>At this point, the InfluxDB service is ready to receive data from a probe. If you have any probes ready to go, make sure they used the "wiperf_probe" user credentials in their configuration file so that they can add their data to the database.</p>
+<p>At this point, the InfluxDB service is ready to receive data from a probe. If you have any probes ready to go, make sure they use the "wiperf_probe" user credentials in their configuration file so that they can add their data to the database.</p>
 <p>If you believe you have a probe that has successfully sent data, you can check the database contents using the following commands in the InfluxDB shell:</p>
 <ul>
 <li><code>USE wiperf</code></li>
