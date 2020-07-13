@@ -5,7 +5,7 @@ If things seem to be going wrong, here are a few tips to guide you in your diagn
 
 ## Network Connectivity
 
-If you are suspect network connectivity issues, your best course of action is to check the status of any interfaces being used by the probe. This can be done by accessing the CLI if the probe and running some of the commands provided below.
+If you suspect network connectivity issues, your best course of action is to check the status of any interfaces being used by the probe. This can be done by accessing the CLI of the probe and running some of the commands provided below.
 
 Once interfaces have been verified, trying to access specific targets via network connectivity checks can also be useful. 
 
