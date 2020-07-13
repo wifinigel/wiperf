@@ -901,11 +901,13 @@
 </div>
 <h2 id="connectivity-planning">Connectivity Planning</h2>
 <p>One area to consider is network connectivity between the wiperf probe and the Splunk instance. The wiperf probe needs to be able to access the Splunk server to send its results data. If the wiperf probe probe is being deployed on a wireless network, how is the results data generated going to get back to the Splunk server?</p>
-<p>If the probe is being deployed on a customer network to perform temporary monitoring, it will need to join the wireless network under test (or be plugged in to an ethernet switch port if testing a wired connection). But how is the wiperf probe going to send its data to the Splunk server ? Many environments may not be comfortable with hooking up the wiperf probe to their wired network, hence (potentially) bridging wired and wireless networks. Therefore, in many instances an alternative is required (e.g. send the results data over the wireless network itself out to the Internet to a cloud instance or via a VPN solution such as Zerotier.</p>
-<p>Three topology deployment options are supported:
-- Results data over wireless
-- Results data over Ethernet
-- Results data over VPN/wireless </p>
+<p>If the probe is being deployed on a customer network to perform temporary monitoring, it will need to join the wireless network under test (or be plugged in to an ethernet switch port if testing a wired connection). But, how is the wiperf probe going to send its data to the Splunk server ? Many environments may not be comfortable with hooking up the wiperf probe to their internal wired network, potentially bridging wired and wireless networks. In some instances an alternative is required (e.g. send the results data over the wireless network itself out to the Internet to a cloud instance or via a VPN solution such as Zerotier.</p>
+<p>Three topology deployment options are supported:</p>
+<ul>
+<li>Results data over wireless</li>
+<li>Results data over Ethernet</li>
+<li>Results data over VPN/wireless </li>
+</ul>
 <p>The method used is configured on the wiperf probe probe in its config.ini file. It is important to understand the (viable) connectivity path prior to deploying both the probe and the Splunk server.</p>
 <p>The 3 connectivity options are discussed below.</p>
 <h3 id="results-data-over-wireless">Results Data Over Wireless</h3>
