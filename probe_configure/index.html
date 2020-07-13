@@ -1024,9 +1024,9 @@ enabled: no
 
 <p>For a full description of the configuration file parameters, please review the following page: <a href="../config.ini/" target="_blank">config.ini reference guide</a>. </p>
 <h2 id="running-regular-tests">Running Regular Tests</h2>
-<p>Once the wiperf software has been configured, the final job is to configure a 'cron job' on the probe to run the software every 5 minutes. Cron is a scheduler utility within Linux that will run a software task at configured intervals.</p>
+<p>Once the wiperf software has been configured, the final job is to configure a 'cron job' on the probe to run the wiperf testing script every 5 minutes. Cron is a scheduler utility within Linux that will run a software task at configured intervals.</p>
 <p>(<strong>Note: This step is not required on the WLAN Pi, as the cron job is added automatically when the WLAN Pi is switched in to wiperf mode</strong>)</p>
-<p>To configure cron, on the CLI of the probe, open the cron editor:</p>
+<p>To configure cron (remember, only required on the RPi), on the CLI of the probe, open the cron editor:</p>
 <div class="highlight"><pre><span></span><code>sudo crontab -e
 </code></pre></div>
 
