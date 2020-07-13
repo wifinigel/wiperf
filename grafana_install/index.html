@@ -795,9 +795,10 @@
 <li>Make sure your server has Internet connectivity (as it will need to pull down the required software)</li>
 <li>On the CLI of your server, paste in the copied commands to kick-off the software download &amp; install</li>
 <li>Once installation is complete, start the InfluxDB processes with the server CLI command: <code>sudo systemctl start grafana</code></li>
+<li>Ensure that the service will be started in the server is rebooted with: <code>sudo systemctl enable grafana</code></li>
 <li>Check the software is installed and running by executing the following command on the server CLI: <code>sudo systemctl status grafana</code> (ensure the process is "active (running)" )</li>
 </ul>
-<p>As a final check, ensure that the Grafana web GUI is available using the URL: http://<server IP>:3000/</p>
+<p>As a final check, ensure that the Grafana web GUI is available using the URL: http://server_IP&gt;:3000/</p>
                 
                   
                     
