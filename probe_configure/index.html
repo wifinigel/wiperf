@@ -919,9 +919,10 @@
 </ul>
 <h2 id="configuration-file">Configuration File</h2>
 <p><em>Note: the details in this section apply equally to both the WLAN Pi and RPi probe</em></p>
-<p>The operation of wiperf is configured using the file <code>/etc/wiperf/config.ini</code> This needs to be edited prior to running the wiperf software to perform tests. (Tests are initiated on the WLAN Pi by switching on to wiperf mode. On the RPi, tests are started by configuring a cron job - more on this later in this document)</p>
-<p>Prior to the first use of wiperf, the config.ini file does not exist. However, a default template config file (<code>/etc/wiperf/config.default.ini</code>) is supplied that can be used as the template to create the <code>config.ini</code> file. Here is the suggested workflow to create the <code>config.ini</code> file:</p>
-<p>Connect to the CLI of the probe (e.g. via SSH), create a copy of the config template file and edit the newly created config:</p>
+<p>The operation of wiperf is configured using the file <code>/etc/wiperf/config.ini</code> This needs to be edited prior to running the wiperf software.</p>
+<p>Network tests are initiated on the WLAN Pi by switching on to wiperf mode. On the RPi, tests are started by configuring a cron job to regularly run the wiperf software (more on this later in this document)</p>
+<p>By default, the config.ini file does not exist. However, a default template config file (<code>/etc/wiperf/config.default.ini</code>) is supplied that can be used as the template to create the <code>config.ini</code> file. Here is the suggested workflow to create the <code>config.ini</code> file:</p>
+<p>Connect to the CLI of the probe (e.g. via SSH), create a copy of the config template file and edit the newly created configuration file:</p>
 <div class="highlight"><pre><span></span><code>cd /etc/wiperf
 # take a copy of the default configuration file
 cp ./config.default.ini ./config.ini
@@ -929,7 +930,7 @@ cp ./config.default.ini ./config.ini
 sudo nano ./config.ini
 </code></pre></div>
 
-<p>By default, the configuration file is set to run all tests (which may or may not suit your needs). However, there is a minimum configuration that must be applied to successfully run tests. The minimum configuration parameters you need to configure (just to get you going) are outlined in the subsections below. Once you've got your probe going, you're likely going to want to spend a little more time customising the file for your environment. In summary you need to:</p>
+<p>By default, the configuration file is set to run all tests except the iperf tests (which may or may not suit your needs). However, there is still an additional minimum configuration that must be applied to successfully run tests. This is outlined in the subsections below. Once you've got your probe going, you're likely going to want to spend a little more time customising the configuration file for your environment. In summary you need to:</p>
 <ul>
 <li>Configure the wiperf global mode of operation (wireless or Ethernet) and the interface parameters that determine how the probe is connected to its network</li>
 <li>Configure the management platform you'll be sending data to</li>
