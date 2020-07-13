@@ -903,7 +903,7 @@
 <p>The configuration file can be updated by accessing the CLI of the probe (usually via SSH) and editing the file <code>/etc/wiperf/config.ini</code>. </p>
 <p>In addition, configuration is also required to connect the probed to the network under test, and run wiperf tests on a regular basis. More details about the probe configuration can be found on <a href="../probe_configure/">this page</a>.</p>
 <h2 id="logging">Logging</h2>
-<p>Following the completion of the configuration described above, if all is configured correctly, then wiperf will run every 5 minutes, perform the configured tests, and then send the data back to the data server.</p>
+<p>Following the completion of the configuration steps, wiperf will run every 5 minutes, performing the configured network tests and sending results data to the data server.</p>
 <p>A number of logs are generated to provide support information around the installation and operation of the wiperf process. For more information about the logs created, please visit our <a href="../troubleshooting/#logging">troubleshooting page</a>.</p>
 <h2 id="reporting">Reporting</h2>
 <p>Gathering the data with a probe is only half of the story when using wiperf. The gathered data must be sent to a data collection server to allow it to be visualized to allow analysis of network performance. The data server must be an instance of either:</p>
