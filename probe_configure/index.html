@@ -972,13 +972,17 @@ mgt_if: wlan0
 </code></pre></div>
 
 <h3 id="data-server-parameters">Data Server Parameters</h3>
-<p>Wiperf can send results data to Splunk and InfluxDB (v1.x) data collectors through an exporter module for each collector type. The relevant authentication parameters need to be set for the collector in-use in the following sections (note these also need to be configured on the data collector platform also before sending results data - see here for more info: <a href="../splunk_configure/">Splunk</a> / <a href="../influx_configure/">InfluxDB</a>)</p>
-<p>In summary, the workflow to configure the data server parameters in the probe configuration file is to:</p>
+<p>Wiperf can send results data to Splunk or InfluxDB (v1.x) data collectors through an exporter module for each collector type. The relevant authentication parameters need to be set for the collector in-use in the following sections 
+(<em>note that corresponding authentication parameters also need to be configured on the data collector platform also before sending results data - see here for more info: <a href="../splunk_configure/">Splunk</a> / <a href="../influx_configure/">InfluxDB</a></em>)</p>
+<p>In summary, the workflow to configure the data server parameters in the probe configuration file is:</p>
 <ul>
 <li>Set the exporter type (splunk/influxdb)</li>
+<li>In the appropriate platform section (i.e. Splunk <em>OR</em> InfluxDB)<ul>
 <li>configure the server address of the target data server</li>
 <li>configure data server port details (if defaults changed)</li>
 <li>configure data server credential and database information</li>
+</ul>
+</li>
 </ul>
 <p>The relevant section of the <code>config.ini</code> file is shown below:</p>
 <div class="highlight"><pre><span></span><code>; --------- Common Mgt Platform Params ------- 
