@@ -22,6 +22,11 @@ nav:
         - probe_configure.md
         - probe_deploy.md
     - Troubleshooting: troubleshooting.md
+    - Advanced Configuration:
+        - adv_proxy.md
+        - adv_remote_cfg.md
+        - adv_rpi_standalone.md
+        - adv_secure.md
     - FAQ: faq.md
     - Reference Docs:
         - config.ini.md

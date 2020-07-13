@@ -1,18 +1,7 @@
 # FAQ
 
 ## How do I use wiperf with a proxy in my network?
-If you need to deal with using a proxy on your network, please complete the details of your proxy by completing the following section in your ```/etc/wiperf/config.ini``` file:
-
-```
-; If proxy server access is required to run a speedtest, enter the proxy server details here for https & https
-; e.g. https_proxy: http://10.1.1.1:8080
-;
-; For sites that are not accessed via proxy, use no_proxy (make sure value enclosed in quotes & comma separated for mutiple values)
-; e.g. no_proxy: "mail.local, intranet.local"
-http_proxy: 
-https_proxy:
-no_proxy:
-```
+Please see this advanced configuration note: [link](adv_proxy.md)
 
 ## My probe only needs to hit internal network targets. How do I stop the DNS check to google.com?
 Before commencing tests, wiperf will perform a test DNS lookup to ensure that DNS is working OK. By default, the DNS target in ```/etc/wiperf/config.ini``` is set to 'google.com'. If your DNS is internal to your network and does not resolve public Internet targets, yo can change the section below to point at an internal target.
@@ -39,50 +28,9 @@ Note that this is a last ditch mechanism. Wiperf will try bouncing network inter
 
 If you observe your probe rebooting on a regular basis (e.g. a couple of times a hour), then check its logs as it is very unhappy about something.
 
-## Security
+## How Can I Harden the Probe Security?
+Please see this note for some suggestions for hardening the probe: [link](adv_secure.md)
 
-### WLAN Pi
-Wiperf employs the following security mechanisms in an attempt to harden the WLAN Pi when deployed in wiperf mode:
-
-- No forwarding is allowed between interfaces
-- The internal UFW firewall is configured to only allow incoming connectivity on port 22 on the wlan0 & eth0 interfaces
-
-### RPi
-If you'd like to harden the RPi when deployed in a network, a quick solution is to install & activate the 'ufw' firewall. This can be configured to stop all incoming connections except those on SSH, which will still allow remote administration. All outgoing traffic from the probe (i.e. network tests and management traffic) will not be disrupted.
-
-#### Install ufw
-
-```
-apt-get update
-apt-get install ufw
-```
-
-#### Add Firewall Rules
-
-```
-ufw allow in on eth0 to any port ssh
-ufw deny in on eth0
-ufw allow in on wlan0 to any port ssh
-ufw deny in on wlan0
-```
-
-#### Activate Firewall
-```
-ufw enable
-```
-
-#### Useful Commands
-
-```
-# Disable the firewall comletely
-ufw enable
-
-# List fw rules with numbers
-ufw status numbered
-
-# See firewall status
-ufw status
-```
 
 ## Where do I get the dashboard reports for Splunk and Grafana?
 Use SFTP/SCP and pull the xml files in ```/usr/share/wiperf/dashboards``` from your probe. 
