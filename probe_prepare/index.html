@@ -1149,9 +1149,9 @@
 </ul>
 <h2 id="wlan-pi">WLAN Pi</h2>
 <h3 id="software-image">Software Image</h3>
-<p>There is little to do in terms of software image preparation for the WLAN Pi. Visit the WLAN Pi documentation site to find out how to obtain the WLAN Pi image: <a href="https://wlan-pi.github.io/wlanpi-documentation/">https://wlan-pi.github.io/wlanpi-documentation/</a>. If you install the a WLAN Pi image, wiperf will already be installed as part of the image. (Note: all information provided below assumes you are using a 2.0 or later version of the WLAN Pi image)</p>
+<p>There is little to do in terms of software image preparation for the WLAN Pi. Visit the WLAN Pi documentation site to find out how to obtain the WLAN Pi image: <a href="https://wlan-pi.github.io/wlanpi-documentation/" target="_blank">https://wlan-pi.github.io/wlanpi-documentation/</a>. If you install the a WLAN Pi image, wiperf will already be installed as part of the image. (Note: all information provided below assumes you are using a 2.0 or later version of the WLAN Pi image)</p>
 <h3 id="probe-cli-access">Probe CLI Access</h3>
-<p>To perform some of the configuration activities required, CLI access to the WLAN Pi is required. The easiest way to achieve this is to SSH to the probe over an OTG connection, or plug the WLAN Pi in to an ethernet network port and SSH to its DHCP assigned IP address (shown on the front panel). Visit the WLAN Pi documentation site for more details: <a href="https://wlan-pi.github.io/wlanpi-documentation/">https://wlan-pi.github.io/wlanpi-documentation/</a></p>
+<p>To perform some of the configuration activities required, CLI access to the WLAN Pi is required. The easiest way to achieve this is to SSH to the probe over an OTG connection, or plug the WLAN Pi in to an ethernet network port and SSH to its DHCP assigned IP address (shown on the front panel). Visit the WLAN Pi documentation site for more details: <a href="https://wlan-pi.github.io/wlanpi-documentation/" target="_blank">https://wlan-pi.github.io/wlanpi-documentation/</a></p>
 <h3 id="hostname-configuration">Hostname Configuration</h3>
 <p>By default, the hostname of your WLAN Pi is : <code>wlanpi</code>. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices. </p>
 <p><em>(Note that if you decide to skip this step and subsequently change the hostname, historical data from the probe will not be associated with the data sent with the new hostname in your data server)</em></p>
@@ -1187,7 +1187,7 @@ Change each instance of 'wlanpi' to the new hostname (there are usually two inst
 <p>(Note: This configuration is only used when the WLAN Pi is flipped in to wiperf mode, not for standard (classic mode) connectivity)</p>
 <h2 id="raspberry-pi">Raspberry Pi</h2>
 <h3 id="software-image_1">Software Image</h3>
-<p>I would strongly recommend starting with a fresh image using the latest and greatest Raspberry Pi OS (previously called Raspbian): <a href="https://www.raspberrypi.org/downloads/raspberry-pi-os/">https://www.raspberrypi.org/downloads/raspberry-pi-os/</a>.</p>
+<p>I would strongly recommend starting with a fresh image using the latest and greatest Raspberry Pi OS (previously called Raspbian): <a href="https://www.raspberrypi.org/downloads/raspberry-pi-os/" target="_blank">https://www.raspberrypi.org/downloads/raspberry-pi-os/</a>.</p>
 <p>For the development and testing of the wiperf code, version 10 (Buster) was used. You can check the version on your RPi using the <code>cat /etc/os0-release</code> command. Here is my sample output:</p>
 <div class="highlight"><pre><span></span><code>pi@probe7:~$ cat /etc/os-release 
 PRETTY_NAME=&quot;Raspbian GNU/Linux 10 (buster)&quot;
@@ -1210,7 +1210,7 @@ sudo reboot
 </code></pre></div>
 
 <h3 id="probe-cli-access_1">Probe CLI Access</h3>
-<p>You will need CLI access to perform the required configuration steps for wiperf. There are a number of ways of gaining this access that are detailed in this document: <a href="https://www.raspberrypi.org/documentation/remote-access/ssh/">https://www.raspberrypi.org/documentation/remote-access/ssh/</a>. </p>
+<p>You will need CLI access to perform the required configuration steps for wiperf. There are a number of ways of gaining this access that are detailed in this document: <a href="https://www.raspberrypi.org/documentation/remote-access/ssh/" target="_blank">https://www.raspberrypi.org/documentation/remote-access/ssh/</a>. </p>
 <p>My personal favourite is to enable SSH on a headless RPi by adding an 'ssh' file to the SD card prior to boot-up.</p>
 <h4 id="default-login-account-password">Default Login Account Password</h4>
 <p>If using a fresh RPI image (which is recommended), remember to either update the default 'pi' username with a new password so that your are not running with the default login of : <code>pi/raspberry</code> (user/pwd)</p>
@@ -1276,7 +1276,7 @@ auto lo
 iface lo inet loopback
 </code></pre></div>
 
-<p><strong>Note:</strong> The wireless power off commands are commented out in the file above. One of these needs to be uncommented to stop the wireless NC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. If it doesn't fix the issue, try the other command. (see this <a href="https://www.kalitut.com/2017/11/turn-off-power-saving-mode-of-wlan.html">article for more info</a>)</p>
+<p><strong>Note:</strong> The wireless power off commands are commented out in the file above. One of these needs to be uncommented to stop the wireless NC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. If it doesn't fix the issue, try the other command. (see this <a href="https://www.kalitut.com/2017/11/turn-off-power-saving-mode-of-wlan.html" target="_blank">article for more info</a>)</p>
 <h5 id="etcwpa_supplicantwpa_supplicantconf">/etc/wpa_supplicant/wpa_supplicant.conf</h5>
 <p><div class="highlight"><pre><span></span><code>ap_scan=1
 
