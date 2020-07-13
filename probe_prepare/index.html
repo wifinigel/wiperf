@@ -1166,11 +1166,7 @@
 </code></pre></div>
 
 <p>There is a single line that says 'wlanpi'. Change this to your required hostname. Then hit Ctrl-X  and "y" to save your changes.</p>
-<p>Alternatively, you may also use the following CLI command to achieve the same result:</p>
-<div class="highlight"><pre><span></span><code>sudo hostnamectl set-hostname &lt;name&gt;
-</code></pre></div>
-
-<p>Whichever method is used to update the hostname file, next edit the /etc/hosts file:</p>
+<p>Next, edit the /etc/hosts file:</p>
 <p><div class="highlight"><pre><span></span><code> sudo nano /etc/hosts
 </code></pre></div>
 Change each instance of 'wlanpi' to the new hostname (there are usually two instances). Then hit Ctrl-X  and "y" to save your changes.</p>
