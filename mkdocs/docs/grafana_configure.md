@@ -20,41 +20,43 @@ Integration with InfluxDB is required to allow Grafana to send data queries to t
 
 The screen-shots below show the required steps:
 
-- Configuration > Data Sources > Added Data Source:
+- __Configuration > Data Sources > Add Data Source__:
 
 ![grafana_cfg1](images/grafana_cfg1.png)
 
-- Select InfluxDB:
+- Select __InfluxDB__:
 
 ![grafana_cfg2](images/grafana_cfg2.png)
 
-- Enter the name to be referenced for the connection, the URL, database name, username & password (all highlighted below) - note the InfluxDB values use those configure previously when we set up InfluxDB (these settings must match those used in the InfluxDB setup):
+- Enter the name to be referenced for the connection, the URL, database name, username & password (all highlighted below) - note the InfluxDB values use those configure previously when we set up InfluxDB (the datbase name, username & password settings must match those used in the InfluxDB setup):
 
 ![grafana_cfg3](images/grafana_cfg3.png)
 
 ![grafana_cfg4](images/grafana_cfg4.png)
 
-Once completed, if you hit 'Save and Test', the database connection test should indicate success if all information has been correctly entered.  
+Once completed, if you hit __'Save and Test'__, the database connection test should indicate success if all information has been correctly entered.  
 
 
 ## Adding Wiperf Dashboards
 
-Dashboards can be obtained from the '/usr/share/wiperf/dashboards' folder of the probe. These may be downloaded to your local laptop using a utlity such as SCP or SFTP. Alternatively, the dashboard files may be accessed in the main wiperf repo at :  [folder](https://github.com/wifinigel/wiperf/tree/main/dashboards)
+Dashboard xml files can be obtained from the ```/usr/share/wiperf/dashboards``` folder of the probe. These may be downloaded to your local laptop using a utlity such as SCP or SFTP. Alternatively, the dashboard files may be accessed in the main wiperf repo at :  [folder](https://github.com/wifinigel/wiperf/tree/main/dashboards){target=_blank}
 
 Once the dashboard files have been downloaded, they may be imported to Grafana using the following steps:
 
-- Use the menu option Dashboards > Manage > Import:
+- Use the menu option __Dashboards > Manage > Import__:
 
 ![grafana_dashboard1](images/grafana_dashboard1.png)
 
-- Hit the 'Upload Json' button and select the dashboard file on your local laptop that you'd like to upload
+- Hit the __'Upload Json'__ button and select the dashboard file on your local laptop that you'd like to upload
 
 ![grafana_dashboard2](images/grafana_dashboard2.png)
 
-- The name of the imported report will be shown as indicated. If you'd like to create or select a folder, this can be done in the 'Folder' field. The database connection previously created as the data source must also be selected to ensure the InfluxDB database can be queried: 
+- The name of the imported report will be shown as indicated. If you'd like to create or select a folder, this can be done in the __'Folder'__ field. The database connection previously created as the data source must also be selected to ensure the InfluxDB database can be queried: 
 
 ![grafana_dashboard3](images/grafana_dashboard3.png)
 
-Once 'Import' is hit, the dashboard will be available in the main Grafana GUI.
+Once __'Import'__ is hit, the dashboard will be available in the main Grafana GUI.
+
+To find out more about usng Grafana, visit the [Grafana getting started pages.](https://grafana.com/docs/grafana/latest/getting-started/getting-started/){target=_blank}
 
 
