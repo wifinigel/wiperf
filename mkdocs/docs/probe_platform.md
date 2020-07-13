@@ -3,13 +3,13 @@ Authors: Nigel Bowden
 
 # Probe Platform
 
-Wiperf has been primarily designed to work on the NEO2 version of the WLAN Pi platform and the Raspberry Pi.
+Wiperf has been primarily designed to work on the NEO2 version of the WLAN Pi platform and the Raspberry Pi platforms.
 
 ## WLAN Pi
 
 ![WLAN Pi](images/wlanpi.png)
 
-Wiperf is baked in to the image of the WLAN Pi. It can be activated by switching in to wiperf mode on the WLAN Pi. Find out more details at the official documentation site for the WLAN Pi: [https://wlan-pi.github.io/wlanpi-documentation/](https://wlan-pi.github.io/wlanpi-documentation/)
+Wiperf is baked in to the image of the WLAN Pi. It can be activated by switching in to wiperf mode on the WLAN Pi. Find out more details at the official documentation site for the WLAN Pi: [https://wlan-pi.github.io/wlanpi-documentation/](https://wlan-pi.github.io/wlanpi-documentation/){target=_blank}
 
 ## Raspberry Pi
 

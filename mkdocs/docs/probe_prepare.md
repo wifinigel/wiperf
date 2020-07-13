@@ -3,26 +3,28 @@ Authors: Nigel Bowden
 
 # Probe Preparation
 
-The wiperf probe needs to have a few pre-requisite activities completed prior to the installation of the wiperf code. These vary slightly between the WLAN Pi and RPi platforms, but broadly break down as:
+The wiperf probe needs to have a few pre-requisite activities completed prior to the installation of wiperf code. These vary slightly between the WLAN Pi and RPi platforms, but broadly break down as:
 
 - Software image preparation
-- CLI Access
+- Obtain CLI Access
 - Configure the device hostname
 - Configure network connectivity
 - Add pre-requisite software packages.
 
+__Choose the Instructions for your probe type:__
+
+- [Go to WLAN Pi instructions](#wlan-pi)
+- [Go to Raspberry Pi instructions](#raspberry-pi)
+
 ## WLAN Pi
 
 ### Software Image
-
-There is little to do in terms of software image preparation for the WLAN Pi. Visit the WLAN Pi documentation site to find out how to obtain the WLAN Pi image: [https://wlan-pi.github.io/wlanpi-documentation/](https://wlan-pi.github.io/wlanpi-documentation/). If you install the a WLAN Pi image, wiperf will already be installed as part of the image. (Note: all information provided below assumes you are using a 2.0 or later version of the WLAN Pi image)
+There is little to do in terms of software image preparation for the WLAN Pi. Visit the WLAN Pi documentation site to find out how to obtain the WLAN Pi image: [link](https://wlan-pi.github.io/wlanpi-documentation/){target=_blank}. If you install a WLAN Pi image, wiperf will already be installed as part of the image. (Note: *all information provided below assumes you are using a 2.0 or later version of the WLAN Pi image*)
 
 ### Probe CLI Access
-
-To perform some of the configuration activities required, CLI access to the WLAN Pi is required. The easiest way to achieve this is to SSH to the probe over an OTG connection, or plug the WLAN Pi in to an ethernet network port and SSH to its DHCP assigned IP address (shown on the front panel). Visit the WLAN Pi documentation site for more details: [https://wlan-pi.github.io/wlanpi-documentation/](https://wlan-pi.github.io/wlanpi-documentation/)
+To perform some of the configuration activities required, CLI access to the WLAN Pi is required. The easiest way to achieve this is to SSH to the probe over an OTG connection, or plug the WLAN Pi in to an ethernet network port and SSH to its DHCP assigned IP address (shown on the front panel). Visit the WLAN Pi documentation site for more details of how to gain access to the WLAN Pi: [link](https://wlan-pi.github.io/wlanpi-documentation/){target=_blank}
 
 ### Hostname Configuration
-
 By default, the hostname of your WLAN Pi is : ```wlanpi```. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices. 
 
 *(Note that if you decide to skip this step and subsequently change the hostname, historical data from the probe will not be associated with the data sent with the new hostname in your data server)*
@@ -32,55 +34,48 @@ If you'd like to change to a more meaningful hostname, then you will need to SSH
 Edit the /etc/hostname file using the command:
 
 ```
- sudo nano /etc/hostname
+sudo nano /etc/hostname
 ```
 
 There is a single line that says 'wlanpi'. Change this to your required hostname. Then hit Ctrl-X  and "y" to save your changes.
 
-Alternatively, you may also use the following CLI command to achieve the same result:
+Next, edit the /etc/hosts file:
 
 ```
-sudo hostnamectl set-hostname <name>
-```
-
-Whichever method is used to update the hostname file, next edit the /etc/hosts file:
-
-```
- sudo nano /etc/hosts
+sudo nano /etc/hosts
 ```
 Change each instance of 'wlanpi' to the new hostname (there are usually two instances). Then hit Ctrl-X  and "y" to save your changes.
 
 Finally, reboot your WLAN Pi:
 
 ```
- sudo reboot
+sudo reboot
 ```
 ### Network Connectivity
 
 #### Ethernet
-
-If the probe is to be connected by Ethernet only, then there is no additional configuration required. By default, if a switch port that can supply a DHCP address is used, then the probe will have the required network connection.
+If the probe is to be connected to Ethernet only, then there is no additional configuration required. By default, if a switch port that can supply a DHCP address is used, the probe will have the required network connectivity.
 
 #### Wireless Configuration (wpa_supplicant.conf)
-
-If wiperf is running in wireless mode, when the WLAN Pi is flipped in to wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in wiperf mode) to allow the WLAN Pi to join a WLAN.
+If wiperf is running in wireless mode, when the WLAN Pi is flipped in to wiperf mode, it will need to join the SSID under test to run the configured network tests. We need to provide a configuration (that is only used in wiperf mode) to allow the WLAN Pi to join a WLAN.
 
 Edit the following file with the configuration and credentials that will be used by the WLAN Pi to join the SSID under test once it is switched in to wiperf mode:
 
 ```
-        cd /etc/wiperf/conf/etc/wpa_supplicant
-        sudo nano ./wpa_supplicant.conf
+cd /etc/wiperf/conf/etc/wpa_supplicant
+sudo nano ./wpa_supplicant.conf
 ```
 
 There are a number of sample configurations included in the default file provided (PSK, PEAP & Open auth). Uncomment the required section and add in the correct SSID & authentication details. (For EAP-TLS, it's time to check-out Google as I've not had opportunity to figure that scenario out...)
 
-(Note: This configuration is only used when the WLAN Pi is flipped in to wiperf mode, not for standard (classic mode) connectivity)
+(__Note:__ *This wireless configuration is only used when the WLAN Pi is flipped in to wiperf mode, not for standard (classic mode) wireless connectivity*)
+
+At this point, the pre-requisite activities for the WLAN Pi are complete. Next, move on to the [probe configuration](probe_configure.md).
 
 ## Raspberry Pi
 
 ### Software Image
-
-I would strongly recommend starting with a fresh image using the latest and greatest Raspberry Pi OS (previously called Raspbian): [https://www.raspberrypi.org/downloads/raspberry-pi-os/](https://www.raspberrypi.org/downloads/raspberry-pi-os/).
+I would strongly recommend starting with a fresh image using the latest and greatest Raspberry Pi OS (previously called Raspbian): [https://www.raspberrypi.org/downloads/raspberry-pi-os/](https://www.raspberrypi.org/downloads/raspberry-pi-os/){target=_blank}.
 
 For the development and testing of the wiperf code, version 10 (Buster) was used. You can check the version on your RPi using the ```cat /etc/os0-release``` command. Here is my sample output:
 
@@ -100,7 +95,7 @@ BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
 
 Note that you will likely be able to use any recent version, so don't feel compelled to use this exact version.
 
-The download page provided above also has links to resources to guide you through burning the image on to your SD card. (You may also like to check out the 'Probe CLI Access' section below to setup SSH access to your headless RPI before booting from your new image) 
+The download page provided above also has links to resources to guide you through how to burn the fresh image on to your SD card. (*You may also like to check out the ['Probe CLI Access'](#probe-cli-access) section below to setup SSH access to your headless RPI before booting from your new image*) 
 
 Once you have burned your image, I'd also recommend you apply all latest updates & give it a reboot for good measure:
 
@@ -110,24 +105,21 @@ sudo reboot
 ```
 
 ### Probe CLI Access
-
-You will need CLI access to perform the required configuration steps for wiperf. There are a number of ways of gaining this access that are detailed in this document: [https://www.raspberrypi.org/documentation/remote-access/ssh/](https://www.raspberrypi.org/documentation/remote-access/ssh/). 
+You will need CLI access to perform the required configuration steps for wiperf. There are a number of ways of gaining this access that are detailed in this document: [https://www.raspberrypi.org/documentation/remote-access/ssh/](https://www.raspberrypi.org/documentation/remote-access/ssh/){target=_blank}. 
 
 My personal favourite is to enable SSH on a headless RPi by adding an 'ssh' file to the SD card prior to boot-up.
 
 #### Default Login Account Password
-
-If using a fresh RPI image (which is recommended), remember to either update the default 'pi' username with a new password so that your are not running with the default login of : ```pi/raspberry``` (user/pwd)
+If using a fresh RPI image (which is recommended), remember to update the default 'pi' username with a new password so that your are not running with the default login of : ```pi/raspberry``` (user/pwd)
 
 - Change password : ```sudo passwd pi```
 
 ### Hostname Configuration
-
 By default, the hostname of your RPi is : ```pi```. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices.
 
 *(Note that if you decide to skip this step and subsequently change the hostname, historical data from the probe will not be associated with the data sent with the new hostname in your data server)*
 
-If you'd like to change this to a more meaningful hostname, then you will need to SSH to your WLAN Pi and update the ```/etc/hostname``` and ```/etc/hosts``` files, followed by a reboot of the RPi:
+If you'd like to change this to a more meaningful hostname, then you will need to SSH to your RPi and update the ```/etc/hostname``` and ```/etc/hosts``` files, followed by a reboot of the RPi:
 
 Edit the /etc/hostname file using the command:
 
@@ -137,13 +129,7 @@ Edit the /etc/hostname file using the command:
 
 There is a single line that says 'pi'. Change this to your required hostname. Then hit Ctrl-X  and "y" to save your changes.
 
-Alternatively, you may also use the following CLI command to achieve the same result:
-
-```
-sudo hostnamectl set-hostname <name>
-```
-
-Whichever method is used to update the hostname file, next edit the /etc/hosts file:
+Next, edit the /etc/hosts file:
 
 ```
  sudo nano /etc/hosts
@@ -159,8 +145,7 @@ Finally, reboot your RPi:
 ### Network Connectivity
 
 #### Ethernet
-
-If the probe is to be connected by Ethernet you will need to make some additions to the `/etc/network/interfaces` file to ensure you have network connectivity. Add the following lines to configure the Ethernet port for DHCP connectivity:
+If the RPi is to be connected by Ethernet you will need to make some additions to the `/etc/network/interfaces` file to ensure you have network connectivity. Add the following lines to configure the Ethernet port for DHCP connectivity:
 
 ```
  # Wired adapter #1
@@ -175,9 +160,7 @@ These lines may be added anywhere in the file, using a CLI editor such as nano:
 ```
 
 #### Wireless Configuration
-
-The RPi needs to be configured to join the wireless network that you'd like to test. To join a network, we need to configure the wireless interface and provide the network credentials to join the network. To achieve this, we need to edit two files on the CLI of the RPI:
-
+The RPi needs to be configured to join the wireless network that you'd like to test. To join a network, we need to configure the wireless interface and provide the network credentials to join the network. To achieve this, we need to edit two files via the CLI of the RPI:
 
 ```
 sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
@@ -207,7 +190,7 @@ auto lo
 iface lo inet loopback
 ```
 
-__Note:__ The wireless power off commands are commented out in the file above. One of these needs to be uncommented to stop the wireless NC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. If it doesn't fix the issue, try the other command. (see this [article for more info](https://www.kalitut.com/2017/11/turn-off-power-saving-mode-of-wlan.html))
+__Note:__ The wireless power off commands are commented out in the file above. One of these needs to be uncommented to stop the wireless NIC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. If it doesn't fix the issue, try the other command. (see this [article for more info](https://www.kalitut.com/2017/11/turn-off-power-saving-mode-of-wlan.html){target=_blank})
 
 ##### /etc/wpa_supplicant/wpa_supplicant.conf
 
@@ -254,7 +237,7 @@ network={
 #   priority=1
 #}
 ```
-Note that the file includes several samples for a variety of security methods. You will need to uncomment the security mthod for your environment and comment out all other methods. By default, the PSK method is used, bit requires that you enter an SSID and shared key. 
+Note that the file includes several samples for a variety of security methods. You will need to uncomment the network section that corresponds to the security method for your environment and comment out all other methods. By default, the PSK method is used (and uncommented), bit requires that you enter an SSID and shared key. 
 
 ##### Test Wireless Connection
 
@@ -266,3 +249,5 @@ To test if the wireless connection has come up OK, use the following commands to
 iwconfig
 ifconfig
 ```
+
+Next, we need to [install a few software packages on to the RPi probe](probe_install.md#raspberry-pi).
