@@ -937,14 +937,16 @@
                 <h1 id="overview-of-operation">Overview of Operation</h1>
 <p><img alt="generic_overview" src="../images/generic_overview.png" /></p>
 <p>Wiperf is an open source utility that runs on a Raspberry Pi or a WLAN Pi hardware device. It provides network probe functionality to gather performance data to give an indication of how a network looks from an end user perspective. </p>
-<p>It runs a series of tests to gather metrics on network connectivity and performance through the execution of tests such ICMP pings, DNS lookups and iperf. These are fully configurable by editing a local configuration file on the probe device at the time of deployment.</p>
+<p>It runs a series of tests to gather metrics on network connectivity and performance through the execution of tests such ICMP ping, DNS lookups and iperf. These are fully configurable by editing a local configuration file on the probe device at the time of deployment.</p>
 <h2 id="configuration">Configuration</h2>
-<p>To configure the details of the tests to be run on a probe, a local configuration file on the probe needs to be updated. This will provide information to the probe about items such as the required network connectivity (e.g. wireless/ethernet),  IP and credential information of the data server and test details.</p>
-<p>The configuration file can be updated by accessing the CLI of the probe (usually via SSH) and editing the file '/etc/wiperf/config.ini'. </p>
-<p>A default config template file is provided as a start point for the final configuration file ( '/etc/wiperf/config.default/ini'). It is best to take a copy of this file to create the final customised configuration file. When accessing the probe to create the configuration file, a Linux text editor such as 'nano' or 'vi' should be used.</p>
+<p>To configure the details of the tests to be run on a probe, a local configuration file on the probe needs to be updated. This will provide information to the probe about items such as the required network connectivity (e.g. wireless/ethernet),  IP and credential information for the data server and test details.</p>
+<p>The configuration file can be updated by accessing the CLI of the probe (usually via SSH) and editing the file <code>/etc/wiperf/config.ini</code>. </p>
+<p>A default config template file is provided as a start point for the final configuration file ( <code>/etc/wiperf/config.default/ini</code>). It is best to take a copy of this file to create the final customised configuration file. When accessing the probe to create the configuration file, a Linux text editor such as 'nano' or 'vi' should be used.</p>
 <p>Here is a suggested workflow to create a probe configuration file:</p>
 <div class="highlight"><pre><span></span><code> cd /etc/wiperf
+ # take a copy the default config file
  sudo cp ./config.default.ini ./config.ini
+ # edit the new file with the required probe configuration
  sudo nano ./config.ini
 </code></pre></div>
 
@@ -971,7 +973,7 @@
 
 <h2 id="logging">Logging</h2>
 <p>Following the completion of the configuration described above, if all is configured correctly, then wiperf will run every 5 minutes, perform the configured tests, and then send the data back to the data server.</p>
-<p>A number of logs are generated to provide support information around the installation and operation of the wiperf process. Each of the generated log files are detailed below:</p>
+<p>A number of logs are generated to provide support information around the installation and operation of the wiperf process. For more information about the logs created, please visit our <a href="../troubleshooting/#logging">troubleshooting page</a>.</p>
 <div class="highlight"><pre><span></span><code># This log provides details of the installation and upgrade processes, so
 # can be useful in diagnosing installation issues
 

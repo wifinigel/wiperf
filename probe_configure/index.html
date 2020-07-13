@@ -923,7 +923,9 @@
 <p>Prior to the first use of wiperf, the config.ini file does not exist. However, a default template config file (<code>/etc/wiperf/config.default.ini</code>) is supplied that can be used as the template to create the <code>config.ini</code> file. Here is the suggested workflow to create the <code>config.ini</code> file:</p>
 <p>Connect to the CLI of the probe (e.g. via SSH), create a copy of the config template file and edit the newly created config:</p>
 <div class="highlight"><pre><span></span><code>cd /etc/wiperf
+# take a copy of the default configuration file
 cp ./config.default.ini ./config.ini
+# edit the config file with the required probe settings (ctrl-x to exit the editor)
 sudo nano ./config.ini
 </code></pre></div>
 
