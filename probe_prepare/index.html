@@ -1238,7 +1238,7 @@ Change each instance of 'pi' to the new hostname (there are usually two instance
 
 <h3 id="network-connectivity_1">Network Connectivity</h3>
 <h4 id="ethernet_1">Ethernet</h4>
-<p>If the probe is to be connected by Ethernet you will need to make some additions to the <code>/etc/network/interfaces</code> file to ensure you have network connectivity. Add the following lines to configure the Ethernet port for DHCP connectivity:</p>
+<p>If the RPi is to be connected by Ethernet you will need to make some additions to the <code>/etc/network/interfaces</code> file to ensure you have network connectivity. Add the following lines to configure the Ethernet port for DHCP connectivity:</p>
 <div class="highlight"><pre><span></span><code> # Wired adapter #1
  allow-hotplug eth0
  iface eth0 inet dhcp
@@ -1249,7 +1249,7 @@ Change each instance of 'pi' to the new hostname (there are usually two instance
 </code></pre></div>
 
 <h4 id="wireless-configuration">Wireless Configuration</h4>
-<p>The RPi needs to be configured to join the wireless network that you'd like to test. To join a network, we need to configure the wireless interface and provide the network credentials to join the network. To achieve this, we need to edit two files on the CLI of the RPI:</p>
+<p>The RPi needs to be configured to join the wireless network that you'd like to test. To join a network, we need to configure the wireless interface and provide the network credentials to join the network. To achieve this, we need to edit two files via the CLI of the RPI:</p>
 <div class="highlight"><pre><span></span><code>sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 sudo nano /etc/network/interfaces
 </code></pre></div>
@@ -1274,7 +1274,7 @@ auto lo
 iface lo inet loopback
 </code></pre></div>
 
-<p><strong>Note:</strong> The wireless power off commands are commented out in the file above. One of these needs to be uncommented to stop the wireless NC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. If it doesn't fix the issue, try the other command. (see this <a href="https://www.kalitut.com/2017/11/turn-off-power-saving-mode-of-wlan.html" target="_blank">article for more info</a>)</p>
+<p><strong>Note:</strong> The wireless power off commands are commented out in the file above. One of these needs to be uncommented to stop the wireless NIC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. If it doesn't fix the issue, try the other command. (see this <a href="https://www.kalitut.com/2017/11/turn-off-power-saving-mode-of-wlan.html" target="_blank">article for more info</a>)</p>
 <h5 id="etcwpa_supplicantwpa_supplicantconf">/etc/wpa_supplicant/wpa_supplicant.conf</h5>
 <p><div class="highlight"><pre><span></span><code>ap_scan=1
 
@@ -1318,13 +1318,15 @@ network={
 #   priority=1
 #}
 </code></pre></div>
-Note that the file includes several samples for a variety of security methods. You will need to uncomment the security mthod for your environment and comment out all other methods. By default, the PSK method is used, bit requires that you enter an SSID and shared key. </p>
+Note that the file includes several samples for a variety of security methods. You will need to uncomment the network section that corresponds to the security method for your environment and comment out all other methods. By default, the PSK method is used (and uncommented), bit requires that you enter an SSID and shared key. </p>
 <h5 id="test-wireless-connection">Test Wireless Connection</h5>
 <p>Once configuration is complete, reboot the RPI. </p>
 <p>To test if the wireless connection has come up OK, use the following commands to see if wireless interface has joined the wireless network and has an IP address:</p>
 <div class="highlight"><pre><span></span><code>iwconfig
 ifconfig
 </code></pre></div>
+
+<p>Next, we need to <a href="../probe_install/#raspberry-pi">install a few software packages on to the RPi probe</a>.</p>
                 
                   
                     
