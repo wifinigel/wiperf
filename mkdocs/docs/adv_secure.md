@@ -11,7 +11,7 @@ Wiperf employs the following security mechanisms in an attempt to harden the WLA
 
 
 ### RPi
-If you'd like to harden the RPi when deployed in a network, a quick solution is to install & activate the 'ufw' firewall. This can be configured to stop all incoming connections except those on SSH, which will still allow remote administration. All outgoing traffic from the probe (i.e. network tests and management traffic) will not be disrupted.
+If you'd like to harden the RPi when deployed in a network, a quick solution is to install & activate the 'ufw' firewall. This can be configured to stop all incoming connections except those on SSH, which will still allow remote administration. All outgoing traffic from the probe (i.e. network tests and management traffic) will flow as normal.
 
 #### Install ufw
 
