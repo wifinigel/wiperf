@@ -1178,14 +1178,14 @@ Change each instance of 'wlanpi' to the new hostname (there are usually two inst
 <h4 id="ethernet">Ethernet</h4>
 <p>If the probe is to be connected to Ethernet only, then there is no additional configuration required. By default, if a switch port that can supply a DHCP address is used, the probe will have the required network connectivity.</p>
 <h4 id="wireless-configuration-wpa_supplicantconf">Wireless Configuration (wpa_supplicant.conf)</h4>
-<p>If wiperf is running in wireless mode, when the WLAN Pi is flipped in to wiperf mode, it will need to join the SSID under test to run the configured tests. We need to provide a configuration (that is only used in wiperf mode) to allow the WLAN Pi to join a WLAN.</p>
+<p>If wiperf is running in wireless mode, when the WLAN Pi is flipped in to wiperf mode, it will need to join the SSID under test to run the configured network tests. We need to provide a configuration (that is only used in wiperf mode) to allow the WLAN Pi to join a WLAN.</p>
 <p>Edit the following file with the configuration and credentials that will be used by the WLAN Pi to join the SSID under test once it is switched in to wiperf mode:</p>
-<div class="highlight"><pre><span></span><code>        cd /etc/wiperf/conf/etc/wpa_supplicant
-        sudo nano ./wpa_supplicant.conf
+<div class="highlight"><pre><span></span><code>cd /etc/wiperf/conf/etc/wpa_supplicant
+sudo nano ./wpa_supplicant.conf
 </code></pre></div>
 
 <p>There are a number of sample configurations included in the default file provided (PSK, PEAP &amp; Open auth). Uncomment the required section and add in the correct SSID &amp; authentication details. (For EAP-TLS, it's time to check-out Google as I've not had opportunity to figure that scenario out...)</p>
-<p>(Note: This configuration is only used when the WLAN Pi is flipped in to wiperf mode, not for standard (classic mode) connectivity)</p>
+<p>(<strong>Note:</strong> <em>This configuration is only used when the WLAN Pi is flipped in to wiperf mode, not for standard (classic mode) connectivity</em>)</p>
 <h2 id="raspberry-pi">Raspberry Pi</h2>
 <h3 id="software-image_1">Software Image</h3>
 <p>I would strongly recommend starting with a fresh image using the latest and greatest Raspberry Pi OS (previously called Raspbian): <a href="https://www.raspberrypi.org/downloads/raspberry-pi-os/" target="_blank">https://www.raspberrypi.org/downloads/raspberry-pi-os/</a>.</p>
