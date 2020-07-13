@@ -1038,11 +1038,11 @@ This command will run the main wiperf script to run the tests configured within 
 <p>Once the cron job has been configured, the case of the RPi, or the WLAN Pi has been put in to wiperf mode, it's time to check if the probe is working as expected.</p>
 <p>To perform tests, the probe will need to be connected to a network and able to reach the data server.</p>
 <p>The easiest way to monitor the operation of the probe is to SSH in to the probe and monitor the output of the log file <code>/var/log/wiperf_agent.log</code>. This file is created the first time that wiperf runs. If the file is not created after 5 minutes, then check the log file <code>/var/log/wiperf_cron.log</code> for error messages, as something fundamental is wrong with the installation.</p>
-<p>To watch the output of <code>/var/log/wiperf_agent.log</code> in real-time and view activity as data is collected every 5 minutes, run the following command on the CLI of the probe:</p>
+<p>To watch the output of <code>/var/log/wiperf_agent.log</code> in real-time and view activity as data is collected every 5 minutes, run the following command on the CLI of the probe (note this command will fail if wiperf has not run correctly and the file does not yet exist):</p>
 <div class="highlight"><pre><span></span><code>tail -f /var/log/wiperf_agent.log
 </code></pre></div>
 
-<p>Every 5 minutes, new log output will be seen that look similar to this:</p>
+<p>Every 5 minutes, new log output will be seen that looks similar to this:</p>
 <div class="highlight"><pre><span></span><code>2020-07-11 11:47:04,214 - Probe_Log - INFO - *****************************************************
 2020-07-11 11:47:04,215 - Probe_Log - INFO -  Starting logging...
 2020-07-11 11:47:04,216 - Probe_Log - INFO - *****************************************************
@@ -1083,7 +1083,7 @@ This command will run the main wiperf script to run the tests configured within 
 </code></pre></div>
 
 <p>The output is quite verbose and detailed, but it will provide a good indication of where wiperf is having difficulties.</p>
-<p>Once wiperf is running with no issues indicated in the logs, then it's time to check for results data on your data server. Hopefully, you'll see performance data being recorded over time as the probe runs its tests and sends the results to the data server. </p>
+<p>Once wiperf is running with no issues indicated in the logs, then it's time to check for results data on your data server. Hopefully, you'll see performance data being recorded over time as the probe runs its tests and sends the results to the data server. The next step is to <a href="../probe_deploy/">deploy the probe</a>.</p>
                 
                   
                     
