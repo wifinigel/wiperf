@@ -942,7 +942,7 @@
 <h2 id="how-do-i-use-wiperf-with-a-proxy-in-my-network">How do I use wiperf with a proxy in my network?</h2>
 <p>Please see this advanced configuration note: <a href="../adv_proxy/">link</a></p>
 <h2 id="my-probe-only-needs-to-hit-internal-network-targets-how-do-i-stop-the-dns-check-to-googlecom">My probe only needs to hit internal network targets. How do I stop the DNS check to google.com?</h2>
-<p>Before commencing tests, wiperf will perform a test DNS lookup to ensure that DNS is working OK. By default, the DNS target in <code>/etc/wiperf/config.ini</code> is set to 'google.com'. If your DNS is internal to your network and does not resolve public Internet targets, yo can change the section below to point at an internal target.</p>
+<p>Before commencing tests, wiperf will perform a test DNS lookup to ensure that DNS is working OK. By default, the DNS target in <code>/etc/wiperf/config.ini</code> is set to 'google.com'. If your DNS is internal to your network and does not resolve public Internet targets, you can change the section below to point at an internal lookup target (that will pass a lookup!).</p>
 <div class="highlight"><pre><span></span><code>; connectivity DNS lookup - site used for initial DNS lookup when assessing if DNS working OK
 connectivity_lookup: google.com
 </code></pre></div>
@@ -950,21 +950,21 @@ connectivity_lookup: google.com
 <h2 id="how-do-i-change-the-hostname-of-my-probe">How do I change the hostname of my probe?</h2>
 <p>Please see the details in this help page: <a href="../probe_prepare/">link</a></p>
 <h2 id="why-are-mcs-rx-phy-rates-missing-from-my-reports">Why are MCS &amp; Rx Phy rates missing from my reports?</h2>
-<p>In several dashboard reports, the reported MCS values &amp; Rx Phy rate may be blank. This is because these values simply are not reported by many NICs. Sorry, there's not much I can do about this as I don't write the wireless NIC drivers.</p>
+<p>In several dashboard reports, the reported MCS values &amp; Rx Phy rate may be blank or permanently zero. This is because these values simply are not reported by many NICs. Sorry, there's not much I can do about this as I don't write the wireless NIC drivers.</p>
 <h2 id="my-probe-seems-to-reboot-itself-intermittently-why">My probe seems to reboot itself intermittently. Why?</h2>
 <p>Wiperf has a watchdog feature that it uses to try to reset things when it is having connectivity related difficulties.</p>
 <p>There may be instances when tests are continually failing or wireless connectivity is intermittent due to perhaps being stuck on a remote AP that is sub-optimal from a connectivity perspective.</p>
 <p>If persistent issues are detected, then wiperf will reboot the probe to try to remediate the issue. This will provide the opportunity to the reset all network connectivity and internal processes.</p>
-<p>Note that this is a last ditch mechanism. Wiperf will try bouncing network interfaces to remediate any short-term connectivity issues, which will likely fix many issues without the need for a full reboot.</p>
+<p>Note that this is a last ditch mechanism. Wiperf will also try bouncing network interfaces to remediate any short-term connectivity issues, which will likely fix many issues without the need for a full reboot.</p>
 <p>If you observe your probe rebooting on a regular basis (e.g. a couple of times a hour), then check its logs as it is very unhappy about something.</p>
 <h2 id="how-can-i-harden-the-probe-security">How Can I Harden the Probe Security?</h2>
 <p>Please see this note for some suggestions for hardening the probe: <a href="../adv_secure/">link</a></p>
 <h2 id="where-do-i-get-the-dashboard-reports-for-splunk-and-grafana">Where do I get the dashboard reports for Splunk and Grafana?</h2>
-<p>Use SFTP/SCP and pull the xml files in <code>/usr/share/wiperf/dashboards</code> from your probe. </p>
+<p>Use SFTP/SCP and pull the xml files in <code>/usr/share/wiperf/dashboards</code> from your probe. Or, visit the wiperf GitHub site <a href="https://github.com/wifinigel/wiperf/tree/main/dashboards" target="_blank">here</a></p>
 <h2 id="can-i-make-a-feature-suggestion">Can I make a feature suggestion?</h2>
-<p>Yes, get along to the GitHub site and post your suggestion in the 'Issues' section: https://github.com/wifinigel/wiperf/issues. It will be added to my "todo" list.</p>
+<p>Yes, get along to the GitHub site and post your suggestion in the <a href="https://github.com/wifinigel/wiperf/issues" target="_blank">'Issues' section</a>. It will be added to my "todo" list.</p>
 <h2 id="can-i-run-tests-over-the-ethernet-interface-of-the-wlan-pi">Can I run tests over the Ethernet interface of the WLAN Pi?</h2>
-<p>Yes, from wiperf v2.</p>
+<p>Yes, from wiperf v2 onwards.</p>
                 
                   
                     
