@@ -6,7 +6,7 @@ In wiperf V2, we have added a rudimentary remote configuration server to allow t
 
 To help understand how this can work for you, and to understand the limitations of the solution, here is an overview of the process:
 
-- A private GitHub repo must be created at GitHub - it must be private, otherwise the whole world can read your config files :) (See this doc for details on creating a private repo: [https://docs.github.com/en/enterprise/2.16/user/github/getting-started-with-github/create-a-repo](https://docs.github.com/en/enterprise/2.16/user/github/getting-started-with-github/create-a-repo)
+- A private GitHub repo must be created at GitHub - it must be private, otherwise the whole world can read your config files :) (See this doc for details on creating a private repo: [https://docs.github.com/en/github/getting-started-with-github/create-a-repo](https://docs.github.com/en/github/getting-started-with-github/create-a-repo))
 - An authorization token for the GitHub repo must be created to allow the probe to access it and read its config file
 - Each time test cycle starts (i.e. every 5 mins), wiperf will check its local configuration file ```config.ini``` to see if a remote repository is configured
 - If a remote repo is configured, then the wiperf process will check to see if it is time to check its remote config file - it doesn't check every poll cycle, to keep the network traffic overhead low.
