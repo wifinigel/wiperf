@@ -1011,8 +1011,13 @@ influx_database:
 </code></pre></div>
 
 <h3 id="network-tests">Network Tests</h3>
-<p>Note that all network tests are enabled by default. If there are some tests you'd like to disable (e.g. if you don't have an iperf3 server set up), then you'll need to open up the config.ini file and look through each section for the "enabled" parameter for that test and set it to "no". For example, to disable the iperf tcp test: </p>
-<div class="highlight"><pre><span></span><code>[Iperf3_tcp_test]
+<p>Note that all network tests are enabled by default, apart from the iperf3 tests. If there are some tests you'd like to disable (e.g. if you don't want to run HTTP tests), then you'll need to open up the config.ini file and look through each section for the "enabled" parameter for that test and set it to "no". For example, to disable the HTTP tests: </p>
+<div class="highlight"><pre><span></span><code>; ====================================================================
+;  HTTP tests settings
+;  (Changes made in this section will be used in next test cycle
+;   and may be made while in Wiperf mode on the WLANPi)
+; ====================================================================
+[HTTP_test]
 ; yes = enabled, no = disabled
 enabled: no
 </code></pre></div>
