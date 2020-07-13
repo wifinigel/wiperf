@@ -908,15 +908,15 @@
 <li>Results data over Ethernet</li>
 <li>Results data over VPN/wireless </li>
 </ul>
-<p>The method used is configured on the wiperf probe probe in its config.ini file. It is important to understand the (viable) connectivity path prior to deploying both the probe and the Splunk server.</p>
+<p>The method used is configured on the wiperf probe in its config.ini file. It is important to understand the (viable) connectivity path prior to deploying both the probe and the Splunk server.</p>
 <p>The 3 connectivity options are discussed below.</p>
 <h3 id="results-data-over-wireless">Results Data Over Wireless</h3>
 <p><img alt="splunk_wireless_mgt" src="../images/splunk_wireless_mgt.png" /></p>
 <p>In this topology the wiperf probe is configured to join an SSID that has the Splunk server accessible via its WLAN interface. Typically, the Splunk server will reside in a cloud or perhaps on a publicly accessible VPS. The wiperf probe will continually run the performance tests over the wireless connection and then upload the results directly to the Splunk server over the WLAN connection.</p>
 <div class="admonition note">
 <p class="admonition-title">config.ini settings:</p>
-<div class="highlight"><pre><span></span><code>    mgt_if: wlan0
-    data_host: \&lt;public IP address of Splunk server\&gt; 
+<div class="highlight"><pre><span></span><code>mgt_if: wlan0
+data_host: &lt;public IP address of Splunk server&gt; 
 </code></pre></div>
 
 </div>
