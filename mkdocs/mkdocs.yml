@@ -43,6 +43,9 @@ theme:
     icon:
         logo: material/wifi
     language: en
+    palette:
+        primary: green
+        accent: green
 extra_css:
   - extra.css
 markdown_extensions:
