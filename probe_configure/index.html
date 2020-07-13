@@ -930,15 +930,15 @@ cp ./config.default.ini ./config.ini
 sudo nano ./config.ini
 </code></pre></div>
 
-<p>By default, the configuration file is set to run all tests except the iperf tests (which may or may not suit your needs). However, there is still an additional minimum configuration that must be applied to successfully run tests. This is outlined in the subsections below. Once you've got your probe going, you're likely going to want to spend a little more time customising the configuration file for your environment. In summary you need to:</p>
+<p>By default, the configuration file is set to run all tests except the iperf tests (which may or may not suit your needs). However, there is still an additional minimum configuration that must be applied to successfully run tests. This is outlined in the subsections below. Once you've got your probe going, you're likely going to want to spend a little more time customising the configuration file for your environment. In summary you will need to:</p>
 <ul>
 <li>Configure the wiperf global mode of operation (wireless or Ethernet) and the interface parameters that determine how the probe is connected to its network</li>
 <li>Configure the management platform you'll be sending data to</li>
 <li>Configure the tests you'd like to run</li>
 </ul>
 <h3 id="modeinterface-parameters">Mode/Interface Parameters</h3>
-<p>The probe can be used to perform its tests over its wireless interface, or its ethernet interface. These are known as 'wireless' or 'ethernet' mode in the config.ini file. </p>
-<p>In addition, the probe needs to know which interface is used to send results data back to the data server. It is possible to perform tests and send results data over the same interface, or it may be preferable to have tests performed over the wireless interface and return results over the ethernet interface. The final choice is determined by the environment in to which the probe is deployed.</p>
+<p>The probe can be used to perform its tests over its wireless interface, or its ethernet interface. These are known as the 'wireless' or 'ethernet' mode within the <code>config.ini</code> file. </p>
+<p>In addition, the probe needs to know which interface should ne used to send results data back to the data server. It is possible to perform tests and send results data over the same interface, or it may be preferable to have tests performed over the wireless interface and return results over the ethernet interface. The final choice is determined by the environment in to which the probe is deployed.</p>
 <p>(Note: if you choose to use Zerotier for management connectivity, the Zerotier interface is also an option available).</p>
 <p>The interfaces available in the probe for ethernet and wireless connectivity will generally be <code>eth0</code> and <code>wlan0</code>. However, these may vary in some platforms, there the option to change the actual names of the interfaces of the probe is available if required.</p>
 <p>The relevant section of the config.ini file is shown below for reference (note that lines that start with a semi-colon (;) are comments and are ignored. Blank lines are also ignored.):</p>
