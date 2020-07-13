@@ -2,22 +2,24 @@ Title: Probe Configuration
 Authors: Nigel Bowden
 
 # Probe Configuration
-The final step in getting our probe ready to deploy is to configure the wiperf software to perform the tests we'd like to perform, and to tell wiperf where it can find the data server that will provide reporting.
+The final step in preparing the probe for deployment is to configure the wiperf software to perform the tests we'd like to perform. We also need to tell wiperf where it can find the data server that will provide reporting.
 
 The configuration tasks break down as follows:
 
 - Edit the probe config.ini file to configure tests and data server details
-- Add a cron job on the probe to run wiperf every 5 mins to perform its tests
+- Configure a cron job on the probe to run wiperf every 5 mins to perform its network performance tests
 
 
 ## Configuration File
-*Note: the details in this section apply to both the WLAN Pi and RPi probe*
+*Note: the details in this section apply equally to both the WLAN Pi and RPi probe*
 
-The operation of wiperf is configured using the file ```/etc/wiperf/config.ini``` This needs to be edited prior to running the wiperf software to perform tests. (Tests are initiated on the WLAN Pi by switching on to wiperf mode. On the RPi, tests are started by configuring a cron job - more on this later in this document)
+The operation of wiperf is configured using the file ```/etc/wiperf/config.ini``` This needs to be edited prior to running the wiperf software.
 
-Prior to the first use of wiperf, the config.ini file does not exist. However, a default template config file (```/etc/wiperf/config.default.ini```) is supplied that can be used as the template to create the `config.ini` file. Here is the suggested workflow to create the ```config.ini``` file:
+Network tests are initiated on the WLAN Pi by switching on to wiperf mode. On the RPi, tests are started by configuring a cron job to regularly run the wiperf software (more on this later in this document)
 
-Connect to the CLI of the probe (e.g. via SSH), create a copy of the config template file and edit the newly created config:
+By default, the config.ini file does not exist. However, a default template config file (```/etc/wiperf/config.default.ini```) is supplied that can be used as the template to create the `config.ini` file. Here is the suggested workflow to create the ```config.ini``` file:
+
+Connect to the CLI of the probe (e.g. via SSH), create a copy of the config template file and edit the newly created configuration file:
 
 ```
 cd /etc/wiperf
@@ -27,20 +29,20 @@ cp ./config.default.ini ./config.ini
 sudo nano ./config.ini
 ```
 
-By default, the configuration file is set to run all tests (which may or may not suit your needs). However, there is a minimum configuration that must be applied to successfully run tests. The minimum configuration parameters you need to configure (just to get you going) are outlined in the subsections below. Once you've got your probe going, you're likely going to want to spend a little more time customising the file for your environment. In summary you need to:
+By default, the configuration file is set to run all tests except the iperf tests (which may or may not suit your needs). However, there is still an additional minimum configuration that must be applied to successfully run tests. This is outlined in the subsections below. Once you've got your probe going, you're likely going to want to spend a little more time customising the configuration file for your environment. In summary you will need to:
 
 * Configure the wiperf global mode of operation (wireless or Ethernet) and the interface parameters that determine how the probe is connected to its network
 * Configure the management platform you'll be sending data to
 * Configure the tests you'd like to run
 
 ### Mode/Interface Parameters
-The probe can be used to perform its tests over its wireless interface, or its ethernet interface. These are known as 'wireless' or 'ethernet' mode in the config.ini file. 
+The probe can be used to perform its tests over its wireless interface, or its ethernet interface. These are known as the 'wireless' or 'ethernet' mode within the ```config.ini``` file. 
 
-In addition, the probe needs to know which interface is used to send results data back to the data server. It is possible to perform tests and send results data over the same interface, or it may be preferable to have tests performed over the wireless interface and return results over the ethernet interface. The final choice is determined by the environment in to which the probe is deployed.
+In addition, the probe needs to know which interface should ne used to send results data back to the data server. It is possible to perform both tests and send results data over the same interface, or it may be preferable to have tests performed over the wireless interface and return results data over the ethernet interface. The final choice is determined by the environment in to which the probe is deployed.
 
-(Note: if you choose to use Zerotier for management connectivity, the Zerotier interface is also an option available).
+(*Note: if you choose to use Zerotier for management connectivity, the Zerotier interface is also an available option to carry results data back to the data server*)
 
-The interfaces available in the probe for ethernet and wireless connectivity will generally be ```eth0``` and ```wlan0```. However, these may vary in some platforms, there the option to change the actual names of the interfaces of the probe is available if required.
+The interfaces available in the probe for ethernet and wireless connectivity will generally be ```eth0``` and ```wlan0```. However, these names may vary in some platforms.  An option to change the actual names of the interfaces of the probe is available if required.
 
 The relevant section of the config.ini file is shown below for reference (note that lines that start with a semi-colon (;) are comments and are ignored. Blank lines are also ignored.):
 
@@ -74,15 +76,16 @@ mgt_if: wlan0
 ; ---------------------------------------------------
 ```
 ### Data Server Parameters
+Wiperf can send results data to Splunk or InfluxDB (v1.x) data collectors through an exporter module for each collector type. The relevant authentication parameters need to be set for the collector in-use in the following sections 
+(*note that corresponding authentication parameters also need to be configured on the data collector platform also before sending results data - see here for more info: [Splunk](splunk_configure.md) / [InfluxDB](influx_configure.md)*)
 
-Wiperf can send results data to Splunk and InfluxDB (v1.x) data collectors through an exporter module for each collector type. The relevant authentication parameters need to be set for the collector in-use in the following sections (note these also need to be configured on the data collector platform also before sending results data - see here for more info: [Splunk](splunk_configure.md) / [InfluxDB](influx_configure.md))
-
-In summary, the workflow to configure the data server parameters in the probe configuration file is to:
+In summary, the workflow to configure the data server parameters in the probe configuration file is:
 
 - Set the exporter type (splunk/influxdb)
-- configure the server address of the target data server
-- configure data server port details (if defaults changed)
-- configure data server credential and database information
+- In the appropriate platform section (i.e. Splunk *OR* InfluxDB)
+    - configure the server address of the target data server
+    - configure data server port details (if defaults changed)
+    - configure data server credential and database information
 
 The relevant section of the ```config.ini``` file is shown below:
 
@@ -113,11 +116,15 @@ influx_database:
 ```
 
 ### Network Tests
-
-Note that all network tests are enabled by default. If there are some tests you'd like to disable (e.g. if you don't have an iperf3 server set up), then you'll need to open up the config.ini file and look through each section for the "enabled" parameter for that test and set it to "no". For example, to disable the iperf tcp test: 
+Note that all network tests are enabled by default, apart from the iperf3 tests. If there are some tests you'd like to disable (e.g. if you don't want to run HTTP tests), then you'll need to open up the config.ini file and look through each section for the "enabled" parameter for that test and set it to "no". For example, to disable the HTTP tests: 
 
 ```
-[Iperf3_tcp_test]
+; ====================================================================
+;  HTTP tests settings
+;  (Changes made in this section will be used in next test cycle
+;   and may be made while in Wiperf mode on the WLANPi)
+; ====================================================================
+[HTTP_test]
 ; yes = enabled, no = disabled
 enabled: no
 ```
@@ -126,11 +133,11 @@ For a full description of the configuration file parameters, please review the f
 
 
 ## Running Regular Tests
-Once the wiperf software has been configured, the final job is to configure a 'cron job' on the probe to run the software every 5 minutes. Cron is a scheduler utility within Linux that will run a software task at configured intervals.
+Once the wiperf software has been configured, the final job is to configure a 'cron job' on the probe to run the wiperf testing script every 5 minutes. Cron is a scheduler utility within Linux that will run a software task at configured intervals.
 
 (__Note: This step is not required on the WLAN Pi, as the cron job is added automatically when the WLAN Pi is switched in to wiperf mode__)
 
-To configure cron, on the CLI of the probe, open the cron editor:
+To configure cron (remember, only required on the RPi), on the CLI of the probe, open the cron editor:
 
 ```
 sudo crontab -e
@@ -149,13 +156,13 @@ To perform tests, the probe will need to be connected to a network and able to r
 
 The easiest way to monitor the operation of the probe is to SSH in to the probe and monitor the output of the log file ```/var/log/wiperf_agent.log```. This file is created the first time that wiperf runs. If the file is not created after 5 minutes, then check the log file ```/var/log/wiperf_cron.log``` for error messages, as something fundamental is wrong with the installation.
 
-To watch the output of ```/var/log/wiperf_agent.log``` in real-time and view activity as data is collected every 5 minutes, run the following command on the CLI of the probe:
+To watch the output of ```/var/log/wiperf_agent.log``` in real-time and view activity as data is collected every 5 minutes, run the following command on the CLI of the probe (note this command will fail if wiperf has not run correctly and the file does not yet exist):
 
 ```
 tail -f /var/log/wiperf_agent.log
 ```
 
-Every 5 minutes, new log output will be seen that look similar to this:
+Every 5 minutes, new log output will be seen that looks similar to this:
 
 ```
 2020-07-11 11:47:04,214 - Probe_Log - INFO - *****************************************************
@@ -199,4 +206,4 @@ Every 5 minutes, new log output will be seen that look similar to this:
 
 The output is quite verbose and detailed, but it will provide a good indication of where wiperf is having difficulties.
 
-Once wiperf is running with no issues indicated in the logs, then it's time to check for results data on your data server. Hopefully, you'll see performance data being recorded over time as the probe runs its tests and sends the results to the data server. 
+Once wiperf is running with no issues indicated in the logs, then it's time to check for results data on your data server. Hopefully, you'll see performance data being recorded over time as the probe runs its tests and sends the results to the data server. The next step is to [deploy the probe](probe_deploy.md).
