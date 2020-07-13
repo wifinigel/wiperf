@@ -449,6 +449,7 @@ cfg_url:
 ### cfg_username
 
 If username/pasword credentials are used to retrieve the centralized config, this field specifies the usename to be used.
+(Note: using an access token is a MUCH better idea...see below)
 
 Default setting (none):
 ```
@@ -459,6 +460,7 @@ cfg_username:
 ### cfg_password
 
 If username/pasword credentials are used to retrieve the centralized config, this field specifies the password to be used.
+(Note: using an access token is a MUCH better idea...see below)
 
 Default setting (none):
 ```
@@ -469,6 +471,8 @@ cfg_password:
 ### cfg_token
 
 If a GitHub authentication token is used to retrieve the centralized config, this field specifies the token to be used. (Note: this is used instead of a username/pwd)
+
+Check out this page to find out more about creating access tokens: [https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
 
 Default setting (none):
 ```
