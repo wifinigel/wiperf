@@ -918,7 +918,7 @@
 <li>The internal UFW firewall is configured to only allow incoming connectivity on port 22 on the wlan0 &amp; eth0 interfaces</li>
 </ul>
 <h3 id="rpi">RPi</h3>
-<p>If you'd like to harden the RPi when deployed in a network, a quick solution is to install &amp; activate the 'ufw' firewall. This can be configured to stop all incoming connections except those on SSH, which will still allow remote administration. All outgoing traffic from the probe (i.e. network tests and management traffic) will not be disrupted.</p>
+<p>If you'd like to harden the RPi when deployed in a network, a quick solution is to install &amp; activate the 'ufw' firewall. This can be configured to stop all incoming connections except those on SSH, which will still allow remote administration. All outgoing traffic from the probe (i.e. network tests and management traffic) will flow as normal.</p>
 <h4 id="install-ufw">Install ufw</h4>
 <div class="highlight"><pre><span></span><code>apt-get update
 apt-get install ufw
