@@ -6,7 +6,7 @@ Authors: Nigel Bowden
 
 This guide does not cover all installation details of the software package, these may be obtained when downloading and installing the software. Note that a free account sign-up is required when downloading the software from the link listed above.
 
-To install Splunk and use it with a handful of probes, a modest server may be built (e.g. I use a low-end Intel NUC), so for testing purposes, don’t get too hung up on sourcing a high end server. If you'd like to look into server requirements further, then [check out this page](https://docs.splunk.com/Documentation/Splunk/latest/Installation/Systemrequirements).
+To install Splunk and use it with a handful of probes, a modest server may be built (e.g. I use a low-end Intel NUC running Ubuntu), so for testing purposes, don’t get too hung up on sourcing a high end server. If you'd like to look into server requirements further, then [check out this page](https://docs.splunk.com/Documentation/Splunk/latest/Installation/Systemrequirements).
 
 The product being installed is Splunk Enterprise. This is a paid-for product, but it has a free-tier for low data volumes (500Mbytes per day). Install initially with all the licensing defaults and then drop back to the free-tier by selecting Settings > Licensing and selecting the free tier. The free tier is plenty for the low volume rates that the wiperf probe generates when deploying probes at small-scale.
 
@@ -25,7 +25,7 @@ The product being installed is Splunk Enterprise. This is a paid-for product, bu
 ## Connectivity Planning
 One area to consider is network connectivity between the wiperf probe and the Splunk instance. The wiperf probe needs to be able to access the Splunk server to send its results data. If the wiperf probe probe is being deployed on a wireless network, how is the results data generated going to get back to the Splunk server?
 
-If the probe is being deployed on a customer network to perform temporary monitoring, it will need to join the wireless network under test (or be plugged in to an ethernet switch port if testing a wired connection). But, how is the wiperf probe going to send its data to the Splunk server ? Many environments may not be comfortable with hooking up the wiperf probe to their internal wired network, potentially bridging wired and wireless networks. In some instances an alternative is required (e.g. send the results data over the wireless network itself out to the Internet to a cloud instance or via a VPN solution such as Zerotier.
+If the probe is being deployed on a customer network to perform temporary monitoring, it will need to join the wireless network under test (or be plugged in to an ethernet switch port if testing a wired connection). But, how is the wiperf probe going to send its data to the Splunk server ? Many environments may not be comfortable with hooking up the wiperf probe to their internal wired network, potentially bridging wired and wireless networks. In some instances an alternative is required (e.g. send the results data over the wireless network itself out to the Internet to a cloud instance or via a VPN solution such as Zerotier.)
 
 Three topology deployment options are supported:
 
@@ -73,7 +73,6 @@ In summary, both the Splunk server and wiperf probe have a [Zerotier](https://ze
 [Zerotier](https://zerotier.com/) has a free subscription tier which allows up to 100 devices to be hooked up without having to pay any fees. It’s very easy to use, plus your Splunk server can be anywhere! (e.g. on your laptop at home). Both devices need access to the Internet for this solution to work.
 
 You can sign up for free, create a virtual network and then just add the IDs that are created by the Splunk server and wiperf probe when the client is installed.
-Seriously, give it a go...it's quicker to try it than me explaining it here: https://www.zerotier.com/
 
 !!! note "config.ini settings:"
     ```
