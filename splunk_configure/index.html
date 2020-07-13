@@ -915,7 +915,7 @@
                 <h1 id="splunk-configuration">Splunk Configuration</h1>
 <p><div style="float: right;"><img alt="splunk_logo" src="../images/splunk_logo.png" /></div>Now that we have a Splunk server setup, we need to customize it to report our probe data. The steps required are all via the Splunk web GUI and are the same for all OS flavours.</p>
 <h2 id="configure-data-input-to-splunk">Configure Data Input To Splunk</h2>
-<p>We need to tell Splunk how we’ll be sending the data from our probe to Splunk. We need to configure a data input that will prepare SPlunk to receive the data and generate an authorization key to be used by the probe when sending data.</p>
+<p>We need to tell Splunk how we’ll be sending the data from our probe in to Splunk. We need to configure a data input that will prepare Splunk to receive the data, and to generate an authorization key to be used by the probe when sending its results data.</p>
 <h3 id="log-in-to-splunk">Log In To Splunk</h3>
 <p>The first step is to login to Splunk using the credentials created during the Splunk install. The URL to use is:</p>
 <div class="highlight"><pre><span></span><code>    http://&lt;Splunk_server_IP&gt;:8000
@@ -933,34 +933,34 @@
 <p><img alt="splunk_cfg5" src="../images/splunk_cfg5.png" /></p>
 <p>Ensure the panel is configured to look like the example shown above. This should require the following steps:</p>
 <ul>
-<li><strong>Make sure you hit the All Tokens &gt; Enable button</strong> (disabled by default which stops everything working)</li>
+<li><strong>Make sure you hit the All Tokens &gt; Enabled button</strong> (this is disabled by default which stops everything working)</li>
 <li>Default Source Type: Structured &gt; _json</li>
 <li>Hit:  Save to take you back to the HTTP Event Collector page </li>
 </ul>
 <h3 id="create-a-hec-token">Create a HEC Token</h3>
-<p>After returning to the  HTTP Event Collector page, hit the New Token button. This will start a token creation wizard.</p>
+<p>After returning to the  HTTP Event Collector page, hit the <strong>New Token</strong> button. This will start a token creation wizard.</p>
 <p><img alt="splunk_cfg6" src="../images/splunk_cfg6.png" /></p>
-<p>Enter a name for the token (probe HEC Token) then hit Next &gt;  :</p>
+<p>Enter a name for the token (probe HEC Token) then hit <strong>Next</strong> &gt;  :</p>
 <p><img alt="splunk_cfg7" src="../images/splunk_cfg7.png" /></p>
-<p>In the next wizard panel select Source type: Select &gt; Structured &gt; _json :</p>
+<p>In the next wizard panel select Source type: <strong>Select &gt; Structured &gt; _json</strong> :</p>
 <p><img alt="splunk_cfg8" src="../images/splunk_cfg8.png" /></p>
 <p>Scroll down to the indexes and make the following selections:</p>
 <ul>
-<li>Select Allowed Indexes &gt; add all</li>
-<li>Default Index : main</li>
+<li>Select Allowed Indexes &gt; <strong>add all</strong></li>
+<li>Default Index : <strong>main</strong></li>
 </ul>
-<p>Next, hit the Review &gt;  button:</p>
+<p>Next, hit the <strong>Review</strong> &gt;  button:</p>
 <p><img alt="splunk_cfg9" src="../images/splunk_cfg9.png" /></p>
-<p>The token review panel is now should and should look like the graphic below. Finally hit the  Submit &gt;  button:</p>
+<p>The token review panel is now should and should look like the graphic below. Finally hit the  <strong>Submit&gt;</strong>  button:</p>
 <p><img alt="splunk_cfg10" src="../images/splunk_cfg10.png" /></p>
 <p>A final confirmation message will be provided as shown below:</p>
 <p><img alt="splunk_cfg11" src="../images/splunk_cfg11.png" /></p>
-<p>If you return to Settings &gt; Data Input &gt; HTTPS Event Collector, you will now see the token your probe will need to communicate with the Splunk server:</p>
+<p>If you return to <strong>Settings &gt; Data Input &gt; HTTPS Event Collector</strong>, you will now see the token your probe will need to communicate with the Splunk server:</p>
 <p><img alt="splunk_cfg12" src="../images/splunk_cfg12.png" /></p>
 <p>At this point, the Splunk server is ready to receive data from the probe. Ensure that your probe has been configured with the correct server IP address, port number and the token we have just created above (copy and paste the “Token Value” in to your probe config.ini file). </p>
 <p>If using the WLAN Pi, ensure that it is flipped in to wiperf mode. On the RPI, ensure that the required cron job has been configured to start polling.  </p>
 <h3 id="perform-a-test-search">Perform a Test Search</h3>
-<p>After a few minutes, when the probe has run a test cycle, data should start to appear in Splunk. The quickest way to check is to do a general search for data in Splunk and see what is being received. Go to “Apps : Search &amp; Reporting &gt;   Search &amp; Reporting” (top menu bar) and enter a “*” in the “New Search” text box. Results data should be seen as shown below:</p>
+<p>After a few minutes, when the probe has run a test cycle, data should start to appear in Splunk. The quickest way to check is to do a general search for data in Splunk and see what is being received. Go to <strong>“Apps : Search &amp; Reporting &gt; Search &amp; Reporting”</strong> (top menu bar) and enter a “*” in the <strong>“New Search”</strong> text box. Results data should be seen as shown below:</p>
 <p><img alt="splunk_cfg13" src="../images/splunk_cfg13.png" /></p>
 <p>If your search result looks like this (no results found message), then you need to wait a little longer for data to arrive, or there is likely a comms problem between your probe and Splunk:</p>
 <p><img alt="splunk_cfg14" src="../images/splunk_cfg14.png" /></p>
