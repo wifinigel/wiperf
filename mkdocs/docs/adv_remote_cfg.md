@@ -2,3 +2,27 @@ Title: Remote Configuration Server
 Authors: Nigel Bowden
 
 # Remote Configuration Server
+In wiperf V2, we have added a rudimentary remote configuration server to allow the probe's ```config.ini``` file to be changed remotely. The relies on having a private repository in GutHub to store the remote configuration file(s).
+
+To help understand how this can work for you, and to understand the limitations of the solution, here is an overview of the process:
+
+- A private GitHub repo must be created at GitHub
+- An authorization token for the GitHub repo must be created to allow the probe to access it and read its config file
+- Each time test cycle starts (i.e. every 5 mins), wiperf will check its local configuration file ```config.ini``` to see if a remote repository is configured
+- If a remote repo is configured, then the wiperf process will check to see if it is time to check its remote config file - it doesn't check every poll cycle, to keep the network traffic overhead low.
+- If it is time to check the config file, wiperf will pull the config file from the GutHub repo and overwrite its local config file with its newly retrieved file. This will be used for the next test cycle.
+
+The section of the  ```config.ini``` file that controls remote repo usage is shown below:
+
+```
+; central configuration server details
+cfg_url: 
+cfg_username:
+cfg_password:
+cfg_token: 
+cfg_refresh_interval: 
+```
+
+See the following reference guide for an explanation of each field: [config.ini reference guide](config.ini.md#cfg_url)
+
+__Note__: This is an advanced configuration option that requires thorough testing before you deploy your probe. Mis-configuration of your remote config file can cause significant operational issues.
