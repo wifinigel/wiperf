@@ -1215,24 +1215,20 @@ sudo reboot
 <p>You will need CLI access to perform the required configuration steps for wiperf. There are a number of ways of gaining this access that are detailed in this document: <a href="https://www.raspberrypi.org/documentation/remote-access/ssh/" target="_blank">https://www.raspberrypi.org/documentation/remote-access/ssh/</a>. </p>
 <p>My personal favourite is to enable SSH on a headless RPi by adding an 'ssh' file to the SD card prior to boot-up.</p>
 <h4 id="default-login-account-password">Default Login Account Password</h4>
-<p>If using a fresh RPI image (which is recommended), remember to either update the default 'pi' username with a new password so that your are not running with the default login of : <code>pi/raspberry</code> (user/pwd)</p>
+<p>If using a fresh RPI image (which is recommended), remember to update the default 'pi' username with a new password so that your are not running with the default login of : <code>pi/raspberry</code> (user/pwd)</p>
 <ul>
 <li>Change password : <code>sudo passwd pi</code></li>
 </ul>
 <h3 id="hostname-configuration_1">Hostname Configuration</h3>
 <p>By default, the hostname of your RPi is : <code>pi</code>. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices.</p>
 <p><em>(Note that if you decide to skip this step and subsequently change the hostname, historical data from the probe will not be associated with the data sent with the new hostname in your data server)</em></p>
-<p>If you'd like to change this to a more meaningful hostname, then you will need to SSH to your WLAN Pi and update the <code>/etc/hostname</code> and <code>/etc/hosts</code> files, followed by a reboot of the RPi:</p>
+<p>If you'd like to change this to a more meaningful hostname, then you will need to SSH to your RPi and update the <code>/etc/hostname</code> and <code>/etc/hosts</code> files, followed by a reboot of the RPi:</p>
 <p>Edit the /etc/hostname file using the command:</p>
 <div class="highlight"><pre><span></span><code> sudo nano /etc/hostname
 </code></pre></div>
 
 <p>There is a single line that says 'pi'. Change this to your required hostname. Then hit Ctrl-X  and "y" to save your changes.</p>
-<p>Alternatively, you may also use the following CLI command to achieve the same result:</p>
-<div class="highlight"><pre><span></span><code>sudo hostnamectl set-hostname &lt;name&gt;
-</code></pre></div>
-
-<p>Whichever method is used to update the hostname file, next edit the /etc/hosts file:</p>
+<p>Next, edit the /etc/hosts file:</p>
 <p><div class="highlight"><pre><span></span><code> sudo nano /etc/hosts
 </code></pre></div>
 Change each instance of 'pi' to the new hostname (there are usually two instances). Then hit Ctrl-X  and "y" to save your changes.</p>
