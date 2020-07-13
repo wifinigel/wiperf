@@ -899,13 +899,14 @@
                 <h1 id="probe-software-installation">Probe Software Installation</h1>
 <p>This section takes a look at how we install various additional required software packages on to our probe. This includes any pre-requisite software packages and the wiperf software itself.</p>
 <h2 id="wlan-pi">WLAN Pi</h2>
-<p>Good news! If you're using a WLAN Pi (v2.x image), you already have the software you require - it's part of the WLAN Pi software image. Go to the <a href="../probe_configure/">next section of this documentation site</a>.</p>
+<p>Good news! If you're using a WLAN Pi (v2.x image), you already have the software required (it's part of the WLAN Pi software image). Go to the <a href="../probe_configure/">next section of this documentation site</a>.</p>
 <h2 id="raspberry-pi">Raspberry Pi</h2>
 <p>The RPi requires a few pre-requisite Linux packages before we can install the wiperf software itself. Note that the probe must be connected to a network (via ethernet or wireless) that has access to the Internet to download the required code.</p>
 <p>You will need CLI access to the probe to perform the steps detailed below.</p>
 <h3 id="package-updates">Package Updates</h3>
 <p>Before we start adding pre-requisite packages, it's always a good idea to update the existing Linux packages on our RPi to make sure we have the "latest and greatest". This may take a few minutes to complete as many files may be downloaded &amp; updated, depending on when/if your RPi was last updated:</p>
-<div class="highlight"><pre><span></span><code>sudo apt-get update &amp;&amp; sudo apt-get upgrade -y
+<div class="highlight"><pre><span></span><code># download &amp; update latest Linux packages
+sudo apt-get update &amp;&amp; sudo apt-get upgrade -y
 sudo reboot
 </code></pre></div>
 
