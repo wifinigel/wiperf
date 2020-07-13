@@ -970,20 +970,20 @@
 <ul>
 <li><a href="https://github.com/wifinigel/wiperf/tree/main/dashboards" target="_blank">https://github.com/wifinigel/wiperf/tree/main/dashboards</a></li>
 </ul>
-<p>Use an SFTP client to pull the “probe_summary.xml” file from your probe or open the file on the GitHub page and select “Raw” to copy and paste the code in to a local file on your laptop.</p>
-<p>In the Splunk GUI, go to “Apps : Search &amp; Reporting &gt;   Search &amp; Reporting” (top menu bar) and hit the “Dashboards” link:</p>
+<p>Use an SFTP client to pull the <strong>“01 - probe_summary.xml”</strong> file from your probe, or open the file on the GitHub page and select “Raw” to copy and paste the code in to a local file on your laptop.</p>
+<p>In the Splunk GUI, go to <strong>“Apps : Search &amp; Reporting &gt;   Search &amp; Reporting”</strong> (top menu bar) and hit the <strong>“Dashboards”</strong> link:</p>
 <p><img alt="splunk_cfg15" src="../images/splunk_cfg15.png" /></p>
-<p>Hit the "Create New Dashboard" button:</p>
+<p>Hit the <strong>"Create New Dashboard"</strong> button:</p>
 <p><img alt="splunk_cfg16" src="../images/splunk_cfg16.png" /></p>
-<p>In the pop-up panel, enter a dashboard name and hit the "Create Dashboard"  button:</p>
+<p>In the pop-up panel, enter a dashboard name and hit the <strong>"Create Dashboard"</strong>  button:</p>
 <p><img alt="splunk_cfg17" src="../images/splunk_cfg17.png" /></p>
-<p>In the “Edit Dashboard” panel that opens, hit the “Source” button:</p>
+<p>In the <strong>“Edit Dashboard”</strong> panel that opens, hit the <strong>“Source”</strong> button:</p>
 <p><img alt="splunk_cfg18" src="../images/splunk_cfg18.png" /></p>
 <p>By default, some basic XML configuration will exist in the dashboard definition:</p>
 <p><img alt="splunk_cfg19" src="../images/splunk_cfg19.png" /></p>
 <p>Open up the dashboard definition file previously downloaded from your probe or the GitHub site in a text editor. Then simply paste in the code as shown below (make sure the original code was all removed):</p>
 <p><img alt="splunk_cfg20" src="../images/splunk_cfg20.png" /></p>
-<p>After hitting the  Save  button, the dashboard will now be shown:</p>
+<p>After hitting the  <strong>Save</strong>  button, the dashboard will now be shown:</p>
 <p><img alt="splunk_cfg21" src="../images/splunk_cfg21.png" /></p>
 <p>Using the hostname and time period selector above the graphs, different probes and reporting periods may be viewed.</p>
 <p>The process above may be repeated using each of the xml files found in the dashboards folder to create a series of separate dashboards that focus on different aspects of data available using wiperf. </p>
