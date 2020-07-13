@@ -930,7 +930,7 @@
 <p>Grafana &amp; Influx may be provided anywhere that is convenient (e.g. on a server locally, via VPN, cloud etc.). Note that wiperf only needs to be able to send data to InfluxDB - it requires no communication with the Grafana instance.</p>
 <p>In summary, the steps for data collection are as follows:</p>
 <ol>
-<li>A wiperf probe (i.e. a WLAN Pi or Raspberry Pi) is configured to perform tests and send results to ab InfluxDB server</li>
+<li>A wiperf probe (i.e. a WLAN Pi or Raspberry Pi) is configured to perform tests and send results to an InfluxDB server</li>
 <li>The probe performs the configured tests (e.g. speedtest, iperf, http etc.)</li>
 <li>The results of each test are sent over https to the InfluxDB server for storage</li>
 <li>Grafana is configured to use InfluxDB as its data source to allow visualization of performance data</li>
