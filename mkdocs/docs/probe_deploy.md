@@ -13,7 +13,7 @@ When deploying, here are a few things to check and remember:
 2. Is the probe deployed in the topology you originally intended? If the environment is not as you expected and you need to use a different interface for a particular operation, make sure you have updated ```config.ini``` so that wiperf knows where to send traffic (otherwise, you may hit routing issues)
 3. Check the output of ```/var/log/wiperf_agent.log``` to make sure everything is working with no issues once deployed. If there are hitches, they will generally be highlighted in this file, with a detailed explanation of what has failed. 
 
-If you run in to any deployment issues, check out the [troubleshooting](troubeshooting.md) and [FAQ](faq.md) sections of this site.
+If you run in to any deployment issues, check out the [troubleshooting](troubleshooting.md) and [FAQ](faq.md) sections of this site.
 
 
 
