@@ -919,22 +919,22 @@
 <li>A wiperf probe (i.e. a WLAN Pi or Raspberry Pi) is configured to perform tests and send results to a Splunk server</li>
 <li>The probe performs the configured tests (e.g. speedtest, iperf, http etc.)</li>
 <li>The results of each test are sent over https to the Splunk server for storage and later analysis</li>
-<li>The data is analyzed by accessing the dashboard (a web GUI) of the Splunk server</li>
+<li>The data is analyzed by accessing the dashboard (a web GUI) of the Splunk server with a browser</li>
 </ol>
-<p>(Note that the Splunk server acts as both the data repository and reporting platform for collected data)</p>
+<p>(<em>Note that the Splunk server acts as both the data repository and reporting platform for collected data</em>)</p>
 <h3 id="grafanainflux">Grafana/Influx</h3>
 <p><img alt="grafana_overview" src="../images/grafana_overview.png" /></p>
 <p>The graphic above outlines the collection of network performance data and how this is sent to Influx &amp; Grafana by the wiperf probe. </p>
-<p>Grafana is a popular open-source data visualization tool. It is used to graph the performance data collected by wiperf. However, Grafana needs a data source from which to pull its network performance data. To meet this requirement, the Influx database server is used. Like Grafana, InfluxDB is also an open-source package. Note this contrasts with using Splunk, which allows us to use the same package to provide both the data storage and analysis/visualization functions.</p>
-<p>For small-scale instances, Grafana &amp; Influx may be installed on the same server platform and Grafana configured to use the local instance of Influx as its data source.</p>
-<p>Grafana &amp; Influx may be provided anywhere that is convenient (e.g. on a server locally, via VPN, cloud etc.). Note that wiperf only needs to be able to send data to Influx - it requires no communication with the Grafana instance.</p>
+<p>Grafana is a popular open-source data visualization tool. It is used to graph the performance data collected by wiperf. However, Grafana needs a data source from which to pull its network performance data. To meet this requirement, a InfluxDB database server is used. Like Grafana, InfluxDB is also an open-source package. (<em>Note that this setup contrasts with using Splunk, which allows us to use the same package to provide both the data storage and analysis/visualization functions</em>)</p>
+<p>For small-scale instances, Grafana &amp; Influx may be installed on the same server platform and Grafana configured to use the local instance of InfluxDB as its data source.</p>
+<p>Grafana &amp; Influx may be provided anywhere that is convenient (e.g. on a server locally, via VPN, cloud etc.). Note that wiperf only needs to be able to send data to InfluxDB - it requires no communication with the Grafana instance.</p>
 <p>In summary, the steps for data collection are as follows:</p>
 <ol>
-<li>A wiperf probe (i.e. a WLAN Pi or Raspberry Pi) is configured to perform tests and send results to a Splunk server</li>
+<li>A wiperf probe (i.e. a WLAN Pi or Raspberry Pi) is configured to perform tests and send results to ab InfluxDB server</li>
 <li>The probe performs the configured tests (e.g. speedtest, iperf, http etc.)</li>
-<li>The results of each test are sent over https to the Influx server for storage</li>
-<li>Grafana is configured to use Influx as its data source to allow visualization of performance data</li>
-<li>Data is analysed by accessing the dashboard (a web GUI) of the Grafana server, which pull the required dashboard data from Influx.</li>
+<li>The results of each test are sent over https to the InfluxDB server for storage</li>
+<li>Grafana is configured to use InfluxDB as its data source to allow visualization of performance data</li>
+<li>Data is analysed by accessing the dashboard (a web GUI) of the Grafana server, which pulls the required dashboard data from InfluxDB.</li>
 </ol>
                 
                   
