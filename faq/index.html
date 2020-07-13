@@ -492,17 +492,17 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
     
     <label class="md-nav__link" for="nav-6">
-      Advance Configuration
+      Advanced Configuration
       <span class="md-nav__icon md-icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
       </span>
     </label>
-    <nav class="md-nav" aria-label="Advance Configuration" data-md-level="1">
+    <nav class="md-nav" aria-label="Advanced Configuration" data-md-level="1">
       <label class="md-nav__title" for="nav-6">
         <span class="md-nav__icon md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
         </span>
-        Advance Configuration
+        Advanced Configuration
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -1040,17 +1040,7 @@
                 
                 <h1 id="faq">FAQ</h1>
 <h2 id="how-do-i-use-wiperf-with-a-proxy-in-my-network">How do I use wiperf with a proxy in my network?</h2>
-<p>If you need to deal with using a proxy on your network, please complete the details of your proxy by completing the following section in your <code>/etc/wiperf/config.ini</code> file:</p>
-<div class="highlight"><pre><span></span><code>; If proxy server access is required to run a speedtest, enter the proxy server details here for https &amp; https
-; e.g. https_proxy: http://10.1.1.1:8080
-;
-; For sites that are not accessed via proxy, use no_proxy (make sure value enclosed in quotes &amp; comma separated for mutiple values)
-; e.g. no_proxy: &quot;mail.local, intranet.local&quot;
-http_proxy: 
-https_proxy:
-no_proxy:
-</code></pre></div>
-
+<p>Please see this advanced configuration note: <a href="../adv_proxy/">link</a></p>
 <h2 id="my-probe-only-needs-to-hit-internal-network-targets-how-do-i-stop-the-dns-check-to-googlecom">My probe only needs to hit internal network targets. How do I stop the DNS check to google.com?</h2>
 <p>Before commencing tests, wiperf will perform a test DNS lookup to ensure that DNS is working OK. By default, the DNS target in <code>/etc/wiperf/config.ini</code> is set to 'google.com'. If your DNS is internal to your network and does not resolve public Internet targets, yo can change the section below to point at an internal target.</p>
 <div class="highlight"><pre><span></span><code>; connectivity DNS lookup - site used for initial DNS lookup when assessing if DNS working OK
