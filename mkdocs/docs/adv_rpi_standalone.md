@@ -10,7 +10,7 @@ However, it may be useful to run the probe as a standalone device with the repor
 
 This has been tested with an RPi 3B+, but will likely be fine with all subsequent models of RPi. It is not recommended to install Grafana and InfluxDB on to an RPi to act as a centralised server for multiple probes, but providing reporting for a local probe on the same RPi seems to work OK on initial testing. The only caveat is that I would recommend setting a data retention policy as outlined below to ensure the InfluxDB does not consume too much space on the RPi as data is gathered.
 
-__Note:__ The steps outlined below are notes taken from initial testing. This is an advanced level topic that requires that you are familiar with Linux command and the operation of wiperf. Apologies there is very concise information provided, but this really is an advanced level topic that I cannot generally provide support for. 
+__Note:__ The steps outlined below are notes taken from initial testing. This is an advanced level topic that requires that you are familiar with Linux commands and the operation of wiperf. Apologies there is very concise information provided, but this really is an advanced level topic that I cannot generally provide support for. 
 
 ```
 #############################
