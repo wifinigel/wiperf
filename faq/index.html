@@ -549,8 +549,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../adv_rpi_secure/" title="RPi Hardening" class="md-nav__link">
-      RPi Hardening
+    <a href="../adv_secure/" title="Security Hardening" class="md-nav__link">
+      Security Hardening
     </a>
   </li>
 
@@ -636,63 +636,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
-    Security
+  <a href="#how-can-i-harden-the-probe-security" class="md-nav__link">
+    How Can I Harden the Probe Security?
   </a>
-  
-    <nav class="md-nav" aria-label="Security">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#wlan-pi" class="md-nav__link">
-    WLAN Pi
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#rpi" class="md-nav__link">
-    RPi
-  </a>
-  
-    <nav class="md-nav" aria-label="RPi">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#install-ufw" class="md-nav__link">
-    Install ufw
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#add-firewall-rules" class="md-nav__link">
-    Add Firewall Rules
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#activate-firewall" class="md-nav__link">
-    Activate Firewall
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#useful-commands" class="md-nav__link">
-    Useful Commands
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -941,63 +887,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
-    Security
+  <a href="#how-can-i-harden-the-probe-security" class="md-nav__link">
+    How Can I Harden the Probe Security?
   </a>
-  
-    <nav class="md-nav" aria-label="Security">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#wlan-pi" class="md-nav__link">
-    WLAN Pi
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#rpi" class="md-nav__link">
-    RPi
-  </a>
-  
-    <nav class="md-nav" aria-label="RPi">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#install-ufw" class="md-nav__link">
-    Install ufw
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#add-firewall-rules" class="md-nav__link">
-    Add Firewall Rules
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#activate-firewall" class="md-nav__link">
-    Activate Firewall
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#useful-commands" class="md-nav__link">
-    Useful Commands
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1057,42 +949,8 @@ connectivity_lookup: google.com
 <p>If persistent issues are detected, then wiperf will reboot the probe to try to remediate the issue. This will provide the opportunity to the reset all network connectivity and internal processes.</p>
 <p>Note that this is a last ditch mechanism. Wiperf will try bouncing network interfaces to remediate any short-term connectivity issues, which will likely fix many issues without the need for a full reboot.</p>
 <p>If you observe your probe rebooting on a regular basis (e.g. a couple of times a hour), then check its logs as it is very unhappy about something.</p>
-<h2 id="security">Security</h2>
-<h3 id="wlan-pi">WLAN Pi</h3>
-<p>Wiperf employs the following security mechanisms in an attempt to harden the WLAN Pi when deployed in wiperf mode:</p>
-<ul>
-<li>No forwarding is allowed between interfaces</li>
-<li>The internal UFW firewall is configured to only allow incoming connectivity on port 22 on the wlan0 &amp; eth0 interfaces</li>
-</ul>
-<h3 id="rpi">RPi</h3>
-<p>If you'd like to harden the RPi when deployed in a network, a quick solution is to install &amp; activate the 'ufw' firewall. This can be configured to stop all incoming connections except those on SSH, which will still allow remote administration. All outgoing traffic from the probe (i.e. network tests and management traffic) will not be disrupted.</p>
-<h4 id="install-ufw">Install ufw</h4>
-<div class="highlight"><pre><span></span><code>apt-get update
-apt-get install ufw
-</code></pre></div>
-
-<h4 id="add-firewall-rules">Add Firewall Rules</h4>
-<div class="highlight"><pre><span></span><code>ufw allow in on eth0 to any port ssh
-ufw deny in on eth0
-ufw allow in on wlan0 to any port ssh
-ufw deny in on wlan0
-</code></pre></div>
-
-<h4 id="activate-firewall">Activate Firewall</h4>
-<div class="highlight"><pre><span></span><code>ufw enable
-</code></pre></div>
-
-<h4 id="useful-commands">Useful Commands</h4>
-<div class="highlight"><pre><span></span><code># Disable the firewall comletely
-ufw enable
-
-# List fw rules with numbers
-ufw status numbered
-
-# See firewall status
-ufw status
-</code></pre></div>
-
+<h2 id="how-can-i-harden-the-probe-security">How Can I Harden the Probe Security?</h2>
+<p>Please see this note for some suggestions for hardening the probe: <a href="../adv_secure/">link</a></p>
 <h2 id="where-do-i-get-the-dashboard-reports-for-splunk-and-grafana">Where do I get the dashboard reports for Splunk and Grafana?</h2>
 <p>Use SFTP/SCP and pull the xml files in <code>/usr/share/wiperf/dashboards</code> from your probe. </p>
 <h2 id="can-i-make-a-feature-suggestion">Can I make a feature suggestion?</h2>
@@ -1130,7 +988,7 @@ ufw status
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../adv_rpi_secure/" title="RPi Hardening" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../adv_secure/" title="Security Hardening" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -1139,7 +997,7 @@ ufw status
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                RPi Hardening
+                Security Hardening
               </div>
             </div>
           </a>
