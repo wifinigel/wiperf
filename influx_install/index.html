@@ -784,7 +784,7 @@
 <p><div style="float: right;"><img alt="influx_logo" src="../images/influx_logo.png" /></div>Obtaining and installing the InfluxDB software is very straightforward. here is a high-level overview of the steps required:</p>
 <ul>
 <li>SSH to the server that will be used to host InfluxDB</li>
-<li>On your laptop, open a browser and potain the required commands to download &amp; install the software by visiting the following web page and selecting the v1.8 download option: <a href="https://portal.influxdata.com/downloads/" target="_blank">https://portal.influxdata.com/downloads/</a></li>
+<li>On your laptop, open a browser and obtain the required commands to download &amp; install the software by visiting the following web page and selecting the v1.8 download option: <a href="https://portal.influxdata.com/downloads/" target="_blank">https://portal.influxdata.com/downloads/</a></li>
 <li>Copy the install commands provided for your OS</li>
 <li>Make sure your InfluxDB server has Internet connectivity (as it will need to pull down the required software)</li>
 <li>On the CLI of your server (your SSH session), paste in the copied commands to kick-off the software download &amp; install</li>
@@ -792,7 +792,7 @@
 <li>Make sure the InfluxDB service starts after a platform reboot: <code>sudo systemctl enable influxdb</code></li>
 <li>Check the software is installed and running by executing the following command on the server CLI: <code>sudo systemctl status influxdb</code> (ensure the process is "active (running)" )</li>
 </ul>
-<p>The next step is to create a database to drop our incoming data (from wiperf probes) into.</p>
+<p>The next step is to <a href="../influx_configure/">create a database</a> to drop our incoming data (from wiperf probes) into.</p>
                 
                   
                     
