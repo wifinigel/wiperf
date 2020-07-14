@@ -257,9 +257,22 @@ upgrade () {
 
   # install new code
   echo "(ok) Installing latest version of wiperf..."
-  install 
+  curl -s https://raw.githubusercontent.com/wifinigel/wiperf/main/setup.sh | sudo bash -s install $PLATFORM
 
   exit 0
+}
+
+check_ver () {
+
+  # get version file from github main branch
+  current_ver=$VERSION
+  available_ver"`wget -qO- --timeout=1 --tries=2 https://raw.githubusercontent.com/wifinigel/wiperf/main/version.txt`"
+
+  echo ""
+  echo "Installed version: $current_ver"
+  echo "Available version: $available_ver"
+  echo ""
+
 }
 
 case "$1" in
@@ -277,12 +290,16 @@ case "$1" in
   remove)
         uninstall
         ;;
+  check_ver)
+        check_ver
+        ;;
   *)
         echo "Usage: install.sh {-i | -u | -r} {wlanpi | rpi}"
         echo ""
         echo "  setup.sh install [wlanpi|rpi] : run installer"
         echo "  setup.sh upgrade [wlanpi|rpi]: upgrade"
         echo "  setup.sh remove  [wlanpi|rpi] : remove wiperf completely"
+        echo "  setup.sh check_ver : check version of code installed/available"
         echo ""
         exit 0
         ;;
