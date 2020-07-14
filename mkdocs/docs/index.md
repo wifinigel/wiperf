@@ -2,11 +2,12 @@ Title: Wiperf V2 Documentation
 Authors: Nigel Bowden
 
 # wiperf V2: An Open Source UX Performance Probe
-
-![wiperf hardware](images/hardware.png)
-<div style="float: right;">
+<div style="float: left;">
 ![wiperf_logo](images/wiperf_logo.png)
-</div>Wiperf is a utility that can be installed on a [WLAN Pi](https://wlan-pi.github.io/wlanpi-documentation/) or a Raspberry Pi to act as a network probe that runs a series of  network performance tests. It is primarily intended to provide an indication of the end-user experience on a wireless network, but may also be used as an ethernet-connected probe.
+</div>
+![wiperf hardware](images/hardware.png)
+
+Wiperf is a utility that can be installed on a [WLAN Pi](https://wlan-pi.github.io/wlanpi-documentation/) or a Raspberry Pi to act as a network probe that runs a series of  network performance tests. It is primarily intended to provide an indication of the end-user experience on a wireless network, but may also be used as an ethernet-connected probe.
 
 The probe can run the following tests to give an indication of the performance of the network environment into which it has been deployed:
 
