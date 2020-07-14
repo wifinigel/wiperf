@@ -266,7 +266,7 @@ check_ver () {
 
   # get version file from github main branch
   current_ver=$VERSION
-  available_ver"`wget -qO- --timeout=1 --tries=2 https://raw.githubusercontent.com/wifinigel/wiperf/main/version.txt`"
+  available_ver="`wget -qO- --timeout=1 --tries=2 https://raw.githubusercontent.com/wifinigel/wiperf/main/version.txt`"
 
   echo ""
   echo "Installed version: $current_ver"
