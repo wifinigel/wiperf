@@ -176,7 +176,7 @@ install () {
       echo ""
       echo "================================================="
       echo "Don't forget to modify the following files before"
-      echo "trying to use wiperf:"
+      echo "trying to use wiperf (unless this is an upgrade):"
       echo ""
       echo " 1. Edit wireless auth settings: sudo nano /etc/wpa_supplicant/wpa_supplicant.conf"
       echo " 2. Edit wlan0 settings: sudo nano /etc/network/interfaces" 
