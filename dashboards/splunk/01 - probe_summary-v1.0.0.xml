@@ -23,6 +23,13 @@
     </input>
   </fieldset>
   <row>
+   <html>
+    <div align="right">
+     <a href="https://wifinigel.github.io/wiperf/" target="_blank">Wiperf Docs</a> | <a href="https://wifinigel.github.io/wiperf/troubleshooting/" target="_blank">Troubleshooting</a> | <a href="https://wifinigel.github.io/wiperf/db_probe_summary/#splunk" target="_blank">Report Help</a>| (Dashboard V1.0.0)
+    </div>
+   </html>
+  </row>
+  <row>
     <panel>
       <chart>
         <title>Speedtest (Download/Upload) - $host_name$</title>
@@ -93,9 +100,9 @@
     </panel>
     <panel>
       <chart>
-        <title>HTTP Get Time (mS) - $host_name$</title>
+        <title>HTTP Server Response Time (mS) - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=*| timechart avg(lookup_time_ms)  as "HTTP Get (mS)" by http_target</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*| timechart avg(http_server_response_time_ms)  as "HTTP Server Response Time (mS)" by http_target</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
@@ -235,7 +242,7 @@
 | convert ctime(_time) 
 | sort - _time
 |  table _time network ip speedtest ping dns http iperf_tcp iperf_udp dhcp probe_mode mgt_if run_time |rename _time AS "Time" network AS "Network Test" ip AS "IP Address" speedtest as "Speedtest" ping as "Ping Test" dns AS "DNS Test" http as "HTTP Test" iperf_tcp as "TCP iperf" iperf_udp as "UDP iperf" dhcp as "DHCP Test" probe_mode AS "Mode" mgt_if as "Mgt I/F" run_time as "Poll Time (secs)"</query>
-          <earliest>-60m@m</earliest>
+          <earliest>-24h@h</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
           <refresh>1m</refresh>

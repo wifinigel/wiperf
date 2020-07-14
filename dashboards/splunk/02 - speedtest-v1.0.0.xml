@@ -1,5 +1,5 @@
 <form>
-  <label>05 - HTTP Report</label>
+  <label>02 - Speedtest Report</label>
   <fieldset submitButton="false">
     <input type="dropdown" token="host_name" searchWhenChanged="true">
       <label>Hostname</label>
@@ -23,22 +23,28 @@
     </input>
   </fieldset>
   <row>
+   <html>
+    <div align="right">
+     <a href="https://wifinigel.github.io/wiperf/" target="_blank">Wiperf Docs</a> | <a href="https://wifinigel.github.io/wiperf/troubleshooting/" target="_blank">Troubleshooting</a> | <a href="https://wifinigel.github.io/wiperf/db_speedtest/#splunk" target="_blank">Report Help </a> | (Dashboard V1.0.0)
+    </div>
+   </html>
+  </row>
+  <row>
     <panel>
       <chart>
-        <title>HTTP Get Time (ms) - $host_name$</title>
+        <title>Speedtest (Download/Upload) - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=*| timechart avg(lookup_time_ms)  as "HTTP Get (ms)" by http_target</query>
+          <query>host=$host_name$ source="wiperf-speedtest"| timechart avg(download_rate_mbps) as "Avg Download" avg(upload_rate_mbps) as "Avg Upload" by host</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
           <refreshType>delay</refreshType>
         </search>
         <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleY.text">HTTP Get (ms)</option>
+        <option name="charting.axisTitleY.text">Mbps</option>
         <option name="charting.axisY.minimumNumber">0</option>
-        <option name="charting.chart">line</option>
+        <option name="charting.chart">area</option>
         <option name="charting.drilldown">none</option>
-        <option name="charting.layout.splitSeries">0</option>
         <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
         <option name="charting.legend.placement">top</option>
         <option name="refresh.display">progressbar</option>
@@ -46,148 +52,23 @@
     </panel>
     <panel>
       <chart>
-        <title>HTTP Status Codes - $host_name$</title>
+        <title>Wireless Connection Rates/Signal  - $host_name$</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" | timechart count by http_status_code</query>
+          <query>host=$host_name$ source="wiperf-network"| timechart avg(tx_rate_mbps) as "Tx PHY Rate"  avg(rx_rate_mbps) as "Rx PHY Rate" avg(signal_level_dbm) as "Signal Level (dBm)"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
           <refresh>1m</refresh>
           <refreshType>delay</refreshType>
         </search>
         <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleY.text">Status Code Count</option>
-        <option name="charting.axisTitleY2.text">Signal (dBm)</option>
+        <option name="charting.axisTitleY.text">PHY Rate</option>
         <option name="charting.axisY.minimumNumber">0</option>
-        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.enabled">1</option>
         <option name="charting.axisY2.maximumNumber">-20</option>
         <option name="charting.axisY2.minimumNumber">-90</option>
         <option name="charting.axisY2.scale">inherit</option>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.drilldown">none</option>
-        <option name="charting.legend.placement">top</option>
-        <option name="refresh.display">progressbar</option>
-      </chart>
-    </panel>
-  </row>
-  <row>
-    <panel>
-      <chart>
-        <title>Target: google.com</title>
-        <search>
-          <query>host=$host_name$ source="wiperf-http" http_target="https://google.com" | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
-          <earliest>$field1.earliest$</earliest>
-          <latest>$field1.latest$</latest>
-          <refresh>1m</refresh>
-          <refreshType>delay</refreshType>
-        </search>
-        <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleY.text">HTTP Status Code</option>
-        <option name="charting.axisTitleY2.text">HTTP Get Time (ms)</option>
-        <option name="charting.axisY.maximumNumber">600</option>
-        <option name="charting.axisY.minimumNumber">0</option>
-        <option name="charting.axisY2.enabled">1</option>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.overlayFields">"HTTP Get Time (ms)"</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.drilldown">none</option>
-        <option name="charting.legend.placement">top</option>
-        <option name="refresh.display">progressbar</option>
-      </chart>
-    </panel>
-    <panel>
-      <chart>
-        <title>Target: cisco.com</title>
-        <search>
-          <query>host=$host_name$ source="wiperf-http" http_target="https://cisco.com" | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
-          <earliest>$field1.earliest$</earliest>
-          <latest>$field1.latest$</latest>
-          <refresh>1m</refresh>
-          <refreshType>delay</refreshType>
-        </search>
-        <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleY.text">HTTP Status Code</option>
-        <option name="charting.axisTitleY2.text">HTTP Get Time (ms)</option>
-        <option name="charting.axisY.maximumNumber">600</option>
-        <option name="charting.axisY.minimumNumber">0</option>
-        <option name="charting.axisY2.enabled">1</option>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.overlayFields">"HTTP Get Time (ms)"</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.drilldown">none</option>
-        <option name="charting.legend.placement">top</option>
-        <option name="refresh.display">progressbar</option>
-      </chart>
-    </panel>
-  </row>
-  <row>
-    <panel>
-      <chart>
-        <title>Target: TBA</title>
-        <search>
-          <query>host=$host_name$ source="wiperf-http" http_target="https://127.0.0.1" | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
-          <earliest>$field1.earliest$</earliest>
-          <latest>$field1.latest$</latest>
-          <refresh>1m</refresh>
-          <refreshType>delay</refreshType>
-        </search>
-        <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleY.text">HTTP Status Code</option>
-        <option name="charting.axisTitleY2.text">HTTP Get Time (ms)</option>
-        <option name="charting.axisY.maximumNumber">600</option>
-        <option name="charting.axisY.minimumNumber">0</option>
-        <option name="charting.axisY2.enabled">1</option>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.overlayFields">"HTTP Get Time (ms)"</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.drilldown">none</option>
-        <option name="charting.legend.placement">top</option>
-        <option name="refresh.display">progressbar</option>
-      </chart>
-    </panel>
-    <panel>
-      <chart>
-        <title>Target: TBA</title>
-        <search>
-          <query>host=$host_name$ source="wiperf-http" http_target="https://127.0.0.1" | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
-          <earliest>$field1.earliest$</earliest>
-          <latest>$field1.latest$</latest>
-          <refresh>1m</refresh>
-          <refreshType>delay</refreshType>
-        </search>
-        <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleY.text">HTTP Status Code</option>
-        <option name="charting.axisTitleY2.text">HTTP Get Time (ms)</option>
-        <option name="charting.axisY.maximumNumber">600</option>
-        <option name="charting.axisY.minimumNumber">0</option>
-        <option name="charting.axisY2.enabled">1</option>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.overlayFields">"HTTP Get Time (ms)"</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.drilldown">none</option>
-        <option name="charting.legend.placement">top</option>
-        <option name="refresh.display">progressbar</option>
-      </chart>
-    </panel>
-    <panel>
-      <chart>
-        <title>Target: TBA</title>
-        <search>
-          <query>host=$host_name$ source="wiperf-http" http_target="https://127.0.0.1" | timechart avg(http_status_code) as "HTTP Status Code" avg(lookup_time_ms) as "HTTP Get Time (ms)"</query>
-          <earliest>$field1.earliest$</earliest>
-          <latest>$field1.latest$</latest>
-          <refresh>1m</refresh>
-          <refreshType>delay</refreshType>
-        </search>
-        <option name="charting.axisTitleX.text">Time</option>
-        <option name="charting.axisTitleY.text">HTTP Status Code</option>
-        <option name="charting.axisTitleY2.text">HTTP Get Time (ms)</option>
-        <option name="charting.axisY.maximumNumber">600</option>
-        <option name="charting.axisY.minimumNumber">0</option>
-        <option name="charting.axisY2.enabled">1</option>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.overlayFields">"HTTP Get Time (ms)"</option>
-        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.overlayFields">"Signal Level (dBm)"</option>
         <option name="charting.drilldown">none</option>
         <option name="charting.legend.placement">top</option>
         <option name="refresh.display">progressbar</option>
@@ -215,7 +96,7 @@
     </panel>
     <panel>
       <chart>
-        <title>Wireless MCS - $host_name$</title>
+        <title>Wireless MCS (if reported by NIC) - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-network"| timechart avg(tx_mcs) as "Tx MCS"  avg(rx_mcs) as "Rx MCS"</query>
           <earliest>$field1.earliest$</earliest>
@@ -237,7 +118,7 @@
   <row>
     <panel>
       <chart>
-        <title>BSSID - $host_name$</title>
+        <title>BSSID Used - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-network"| timechart count(bssid) by bssid</query>
           <earliest>$field1.earliest$</earliest>
@@ -259,7 +140,7 @@
     </panel>
     <panel>
       <chart>
-        <title>SSID - $host_name$</title>
+        <title>SSID Used - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-network"| timechart count(ssid) by ssid</query>
           <earliest>$field1.earliest$</earliest>
@@ -284,7 +165,7 @@
   <row>
     <panel>
       <chart>
-        <title>Channel - $host_name$</title>
+        <title>Channel Used - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-network"| timechart count(channel) by channel</query>
           <earliest>$field1.earliest$</earliest>
@@ -307,7 +188,7 @@
     </panel>
     <panel>
       <chart>
-        <title>Wi-Fi Band - $host_name$</title>
+        <title>Wi-Fi Band Used - $host_name$</title>
         <search>
           <query>host=$host_name$ source="wiperf-network" | eval band=if(channel&lt;14,"2.4GHz","5GHz") 
 | stats count by band</query>
@@ -326,6 +207,29 @@
         <option name="trellis.enabled">0</option>
         <option name="trellis.size">large</option>
         <option name="trellis.splitBy">_aggregation</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>Speedtest Servers Used - $host_name$</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-speedtest"| stats count(server_name) by server_name</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.axisLabelsY.majorUnit">1</option>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">collapsed</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.placement">top</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
       </chart>
     </panel>
   </row>

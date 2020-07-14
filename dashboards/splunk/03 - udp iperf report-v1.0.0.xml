@@ -23,6 +23,13 @@
     </input>
   </fieldset>
   <row>
+   <html>
+    <div align="right">
+     <a href="https://wifinigel.github.io/wiperf/" target="_blank">Wiperf Docs</a> | <a href="https://wifinigel.github.io/wiperf/troubleshooting/" target="_blank">Troubleshooting</a> | <a href="https://wifinigel.github.io/wiperf/db_udp_iperf3/#splunk" target="_blank">Report Help</a> | (Dashboard V1.0.0)
+    </div>
+   </html>
+  </row>
+  <row>
     <panel>
       <chart>
         <title>UDP iPerf (Throughput) - $host_name$</title>

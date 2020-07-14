@@ -16,6 +16,13 @@
     </input>
   </fieldset>
   <row>
+   <html>
+    <div align="right">
+     <a href="https://wifinigel.github.io/wiperf/" target="_blank">Wiperf Docs</a> | <a href="https://wifinigel.github.io/wiperf/troubleshooting/" target="_blank">Troubleshooting</a> | (Template v1.0.0)
+    </div>
+   </html>
+  </row>
+  <row>
     <panel>
       <title>Live Dashboard</title>
       <single>
@@ -125,7 +132,7 @@
       <single>
         <title>Avg HTTP Response</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=*  | timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*  | timechart span=15m  avg(http_server_response_time_ms)  as "HTTP Get (mS)"</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -197,7 +204,7 @@
       <single>
         <title>Google HTTP Response</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=https://google.com   |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=https://google.com   |  timechart span=15m  avg(http_server_response_time_ms)  as "HTTP Get (mS)"</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -265,7 +272,7 @@
       <single>
         <title>Cisco HTTP Response</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=*cisco.com*   |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*cisco.com*   |  timechart span=15m  avg(http_server_response_time_ms)  as "HTTP Get (mS)"</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -337,7 +344,7 @@
       <single>
         <title>TBA1 HTTP</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=*tba*  |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*tba*  |  timechart span=15m  avg(http_server_response_time_ms)  as "HTTP Get (mS)"</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
@@ -405,7 +412,7 @@
       <single>
         <title>TBA2 HTTP Response</title>
         <search>
-          <query>host=$host_name$ source="wiperf-http" http_target=*tba*  |  timechart span=15m  avg(lookup_time_ms)  as "HTTP Get (mS)"</query>
+          <query>host=$host_name$ source="wiperf-http" http_target=*tba*  |  timechart span=15m  avg(http_server_response_time_ms)  as "HTTP Get (mS)"</query>
           <earliest>-60m@m</earliest>
           <latest>now</latest>
           <refresh>5m</refresh>
