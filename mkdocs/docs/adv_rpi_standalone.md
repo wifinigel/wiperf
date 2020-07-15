@@ -22,7 +22,7 @@ sudo apt upgrade
 sudo reboot
 
 # Install wiperf:
-curl -s https://raw.githubusercontent.com/wifinigel/wiperf/setup.sh | sudo bash -s install rpi
+curl -s https://raw.githubusercontent.com/wifinigel/wiperf/main/setup.sh | sudo bash -s install rpi
 # Add cron job (use entry shown)
 sudo crontab -e
 # add entry: 0-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py > /var/log/wiperf_cron.log 2>&1

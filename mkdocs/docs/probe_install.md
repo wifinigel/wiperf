@@ -40,11 +40,11 @@ sudo reboot
 To install the wiperf code itself on to the RPi, execute the following CLI command:
 
 ```
-curl -s https://raw.githubusercontent.com/wifinigel/wiperf/setup.sh | sudo bash -s install rpi
+curl -s https://raw.githubusercontent.com/wifinigel/wiperf/main/setup.sh | sudo bash -s install rpi
 ```
 
 This will initiate the download and installation of a number of python packages, together with the wiperf code itself. This will take a few minutes to complete.
 
 
-Once installation is complete, our final step is to [configure the wiperf probe](probe_configure.md) to perform the tests we'd like to perform, and provide details of where the probe needs to send its data (i.e. our data server).
+Once installation is complete, our final step is to [configure the wiperf probe](probe_configure.md) to perform the tests we'd like to run, and provide details of where the probe needs to send its data (i.e. our data server).
      

@@ -2,7 +2,7 @@ Title: Probe Configuration
 Authors: Nigel Bowden
 
 # Probe Configuration
-The final step in preparing the probe for deployment is to configure the wiperf software to perform the tests we'd like to perform. We also need to tell wiperf where it can find the data server that will provide reporting.
+The final step in preparing the probe for deployment is to configure the wiperf software to run the tests we'd like to perform. We also need to tell wiperf where it can find the data server that will provide reporting.
 
 The configuration tasks break down as follows:
 
