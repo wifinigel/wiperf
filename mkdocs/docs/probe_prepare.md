@@ -237,7 +237,7 @@ network={
 #   priority=1
 #}
 ```
-Note that the file includes several samples for a variety of security methods. You will need to uncomment the network section that corresponds to the security method for your environment and comment out all other methods. By default, the PSK method is used (and uncommented), bit requires that you enter an SSID and shared key. 
+Note that the file includes several samples for a variety of security methods. You will need to uncomment the network section that corresponds to the security method for your environment and comment out all other methods. By default, the PSK method is used (and uncommented), but requires that you enter an SSID and shared key. 
 
 ##### Test Wireless Connection
 
