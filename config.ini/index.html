@@ -831,27 +831,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#data_format" class="md-nav__link">
-    data_format
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#data_dir" class="md-nav__link">
-    data_dir
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#data_transport" class="md-nav__link">
-    data_transport
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#debug" class="md-nav__link">
     debug
   </a>
@@ -1645,27 +1624,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#data_format" class="md-nav__link">
-    data_format
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#data_dir" class="md-nav__link">
-    data_dir
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#data_transport" class="md-nav__link">
-    data_transport
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#debug" class="md-nav__link">
     debug
   </a>
@@ -2184,9 +2142,6 @@
 <li><a href="#test_offset">test_offset</a></li>
 <li><a href="#connectivity_lookup">connectivity_lookup</a></li>
 <li><a href="#location">location</a></li>
-<li><a href="#data_format">data_format</a></li>
-<li><a href="#data_dir">data_dir</a></li>
-<li><a href="#data_transport">data_transport</a></li>
 <li><a href="#debug">debug</a></li>
 <li><a href="#cfg_url">cfg_url</a> </li>
 <li><a href="#cfg_username">cfg_username</a> </li>
@@ -2432,26 +2387,6 @@
 <p>This is a string that can be added to assist with report filtering, if required. Its default value in an empty string. It could be be used in an expression within your reports to filter units based on a location field (for instance)</p>
 <p>Default setting:
 <div class="highlight"><pre><span></span><code>location: 
-</code></pre></div>
-<a href="#parameter-reference-guide">top</a></p>
-<h3 id="data_format">data_format</h3>
-<p>(Not currently operational) wiperf has the capability to output data in a number of formats. The current options are: csv or json</p>
-<p>However this field is not currently used, as selecting the 'hec' transport mode (the only supported transport currently) over-rides this field. The value in this filed is currently irrelevant, but it s recommended to leave it at the default setting of <code>json</code></p>
-<p>Default setting:
-<div class="highlight"><pre><span></span><code>data_format: json
-</code></pre></div>
-<a href="#parameter-reference-guide">top</a></p>
-<h3 id="data_dir">data_dir</h3>
-<p>This is the directory on the WLAN Pi/RPi where test result data is dumped. <strong>Do not change this value from the default</strong>. This field is provided for future configuration options if required.</p>
-<p>Default setting:
-<div class="highlight"><pre><span></span><code>data_dir: /home/wlanpi/wiperf/data
-</code></pre></div>
-<a href="#parameter-reference-guide">top</a></p>
-<h3 id="data_transport">data_transport</h3>
-<p>The currently supported data transport mode is <code>hec</code>. This is the HTTP Event Collector supported natively within the Splunk server. Other transport modes will be suported in the future, but currently this should be left at the default setting of <code>`hec</code>.</p>
-<p>(Note: the transport method <code>forwarder</code> is also a valid transport method which provides support for very early versions of this code which used the Splunk Univeral Forwarder. Use of this method is deprecated and will be removed in the near future. Anyone still using the UF should move to using hec ASAP)</p>
-<p>Default setting:
-<div class="highlight"><pre><span></span><code>data_transport: hec
 </code></pre></div>
 <a href="#parameter-reference-guide">top</a></p>
 <h3 id="debug">debug</h3>
