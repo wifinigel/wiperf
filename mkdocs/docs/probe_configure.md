@@ -24,7 +24,7 @@ Connect to the CLI of the probe (e.g. via SSH), create a copy of the config temp
 ```
 cd /etc/wiperf
 # take a copy of the default configuration file
-cp ./config.default.ini ./config.ini
+sudo cp ./config.default.ini ./config.ini
 # edit the config file with the required probe settings (ctrl-x to exit the editor)
 sudo nano ./config.ini
 ```
