@@ -56,9 +56,6 @@ We'll take a look at each section of the config file and provide some guidance o
     - [test_offset](#test_offset)
     - [connectivity_lookup](#connectivity_lookup)
     - [location](#location)
-    - [data_format](#data_format)
-    - [data_dir](#data_dir)
-    - [data_transport](#data_transport)
     - [debug](#debug)
     - [cfg_url](#cfg_url) 
     - [cfg_username](#cfg_username) 
@@ -388,39 +385,6 @@ This is a string that can be added to assist with report filtering, if required.
 Default setting:
 ```
 location: 
-```
-[top](#parameter-reference-guide)
-
-### data_format
-(Not currently operational) wiperf has the capability to output data in a number of formats. The current options are: csv or json
-
-However this field is not currently used, as selecting the 'hec' transport mode (the only supported transport currently) over-rides this field. The value in this filed is currently irrelevant, but it s recommended to leave it at the default setting of ```json```
-
-Default setting:
-```
-data_format: json
-```
-[top](#parameter-reference-guide)
-
-### data_dir
-
-This is the directory on the WLAN Pi/RPi where test result data is dumped. __Do not change this value from the default__. This field is provided for future configuration options if required.
-
-Default setting:
-```
-data_dir: /home/wlanpi/wiperf/data
-```
-[top](#parameter-reference-guide)
-
-### data_transport
-
-The currently supported data transport mode is ```hec```. This is the HTTP Event Collector supported natively within the Splunk server. Other transport modes will be suported in the future, but currently this should be left at the default setting of ```hec``.
-
-(Note: the transport method ```forwarder``` is also a valid transport method which provides support for very early versions of this code which used the Splunk Univeral Forwarder. Use of this method is deprecated and will be removed in the near future. Anyone still using the UF should move to using hec ASAP)
-
-Default setting:
-```
-data_transport: hec
 ```
 [top](#parameter-reference-guide)
 
