@@ -1238,6 +1238,7 @@ Change each instance of 'pi' to the new hostname (there are usually two instance
 </code></pre></div>
 
 <h3 id="network-connectivity_1">Network Connectivity</h3>
+<p><strong>Note:</strong> <em>Use the method below to configure network interfaces. DO NOT use the RPI desktop GUI to configure network connectivity (if using the desktop RPi image, which is not recommended anyhow)....it will definitely <strong>not</strong> work if configured via the GUI network utility.</em></p>
 <h4 id="ethernet_1">Ethernet</h4>
 <p>If the RPi is to be connected by Ethernet you will need to make some additions to the <code>/etc/network/interfaces</code> file to ensure you have network connectivity. Add the following lines to configure the Ethernet port for DHCP connectivity:</p>
 <div class="highlight"><pre><span></span><code> # Wired adapter #1
@@ -1336,7 +1337,7 @@ ifconfig
 <div class="md-source-date">
   <small>
     
-      Last update: July 15, 2020
+      Last update: July 17, 2020
     
   </small>
 </div>
