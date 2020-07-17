@@ -146,6 +146,8 @@ Finally, reboot your RPi:
 
 ### Network Connectivity
 
+__Note:__ *Use the method below to configure network interfaces. DO NOT use the RPI desktop GUI to configure network connectivity (if using the desktop RPi image, which is not recommended anyhow)....it will definitely __not__ work if configured via the GUI network utility.*
+
 #### Ethernet
 If the RPi is to be connected by Ethernet you will need to make some additions to the `/etc/network/interfaces` file to ensure you have network connectivity. Add the following lines to configure the Ethernet port for DHCP connectivity:
 
