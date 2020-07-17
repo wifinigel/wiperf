@@ -75,7 +75,9 @@ At this point, the pre-requisite activities for the WLAN Pi are complete. Next, 
 ## Raspberry Pi
 
 ### Software Image
-I would strongly recommend starting with a fresh image using the latest and greatest Raspberry Pi OS (previously called Raspbian): [https://www.raspberrypi.org/downloads/raspberry-pi-os/](https://www.raspberrypi.org/downloads/raspberry-pi-os/){target=_blank}.
+I would strongly recommend starting with a fresh image using the latest and greatest Raspberry Pi OS (previously called Raspbian): [https://www.raspberrypi.org/downloads/raspberry-pi-os/](https://www.raspberrypi.org/downloads/raspberry-pi-os/){target=_blank}. I would also recommend that you use the "headless", Lite version of Raspberry Pi OS rather than the desktop version (this is mainly as I have not tested with the desktop version and am not sure if there will be any resource issues.)
+
+__Note: __*Please use a dedicated RPi platform that is used only as a probe. Please do not install additional packages other than those recommended. Also, please use only one active Ethernet interface and one active wireless interface. Multiple live adapters will likely cause operational issues.*
 
 For the development and testing of the wiperf code, version 10 (Buster) was used. You can check the version on your RPi using the ```cat /etc/os0-release``` command. Here is my sample output:
 
