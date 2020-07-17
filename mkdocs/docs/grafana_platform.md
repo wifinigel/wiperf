@@ -10,7 +10,7 @@ This guide does not cover all installation details of the software package, as t
 
 To install Grafana and use it with a handful of probes, a modest server may be built (e.g. I use a low-end Intel NUC running Ubuntu), so for testing purposes, don’t get too hung up on sourcing a high end server. If you'd like to look into server requirements further, then [check out this page](https://grafana.com/docs/grafana/latest/installation/requirements/){target=_blank}.
 
-Note that InfluxDB is an open-source product. There is no cost for downloading and installing your own instance of the software.
+Note that Grafana is an open-source product. There is no cost for downloading and installing your own instance of the software.
 
 
 
