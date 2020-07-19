@@ -1,3 +1,8 @@
+v2.0.0-beta3
+
+1. improved os file detection
+2. lowered python min req level (3.3 from 3.7)
+
 v2.0.0-beta2
 
 1. Fixed bad URL in setup.sh
