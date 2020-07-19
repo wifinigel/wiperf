@@ -609,6 +609,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#why-does-installation-of-wiperf-fail-with-the-message-fail-pip-installation-of-wiperf_poller-failed-exiting" class="md-nav__link">
+    Why does installation of wiperf fail with the message "(fail) pip installation of wiperf_poller failed. Exiting." ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-do-i-use-wiperf-with-a-proxy-in-my-network" class="md-nav__link">
     How do I use wiperf with a proxy in my network?
   </a>
@@ -860,6 +867,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#why-does-installation-of-wiperf-fail-with-the-message-fail-pip-installation-of-wiperf_poller-failed-exiting" class="md-nav__link">
+    Why does installation of wiperf fail with the message "(fail) pip installation of wiperf_poller failed. Exiting." ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-do-i-use-wiperf-with-a-proxy-in-my-network" class="md-nav__link">
     How do I use wiperf with a proxy in my network?
   </a>
@@ -939,6 +953,10 @@
                 
                 
                 <h1 id="faq">FAQ</h1>
+<h2 id="why-does-installation-of-wiperf-fail-with-the-message-fail-pip-installation-of-wiperf_poller-failed-exiting">Why does installation of wiperf fail with the message "(fail) pip installation of wiperf_poller failed. Exiting." ?</h2>
+<p>This is usually due to the fact that the version of python required for wiperf is python version 3.6 of greater. This means that 3.6, 3.7, 3.8...etc are fine but 3.5, 3.4, 3.3... etc. will not work.</p>
+<p>To check the version of python on your probe, enter the CLI command: <code>python -V</code> (note the uppercase 'V').</p>
+<p>If you cannot upgrade your version of python using "apt-get", then you will need to obtain a more recent image for your probe.</p>
 <h2 id="how-do-i-use-wiperf-with-a-proxy-in-my-network">How do I use wiperf with a proxy in my network?</h2>
 <p>Please see this advanced configuration note: <a href="../adv_proxy/">link</a></p>
 <h2 id="my-probe-only-needs-to-hit-internal-network-targets-how-do-i-stop-the-dns-check-to-googlecom">My probe only needs to hit internal network targets. How do I stop the DNS check to google.com?</h2>
