@@ -22,17 +22,19 @@ sudo reboot
 ```
 
 ### Pre-requisite Packages
-Next, we need to install additional Linux packages that are not included as part of the standard RPi distribution: 
+Next, we need to install additional Linux packages that may not be included as part of the standard RPi distribution: 
 
 - pip3
 - iperf3
 - git 
+- curl
+- netcat
 
 These are installed with the following CLI commands:
 
 ```
 sudo apt-get update
-sudo apt-get install python3-pip iperf3 git -y
+sudo apt-get install python3-pip iperf3 git curl netcat -y
 sudo reboot
 ```
 

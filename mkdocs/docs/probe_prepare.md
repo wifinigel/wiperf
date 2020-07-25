@@ -118,6 +118,18 @@ If using a fresh RPI image (which is recommended), remember to update the defaul
 
 - Change password : ```sudo passwd pi```
 
+
+### Set Country Code
+If you're starting with a freshly burned image for your RPi, the country code for your internal Wi-Fi adapter needs to be configured before it will activate. To configure the country code. Enter the following on the RPi CLI:
+
+```
+sudo raspi-config
+```
+
+A textual menu system will open and the following options need to be selected to set the country code: ```4. Localization Options > I4 Change WLAN Country > <Select Country> > OK > Finish```
+
+(Note that if this step is not completed, your wireless adapter will likely not work)
+
 ### Hostname Configuration
 By default, the hostname of your RPi is : ```pi```. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices.
 
@@ -131,7 +143,7 @@ Edit the /etc/hostname file using the command:
  sudo nano /etc/hostname
 ```
 
-There is a single line that says 'pi'. Change this to your required hostname. Then hit Ctrl-X  and "y" to save your changes.
+There is a single line that says 'raspberrypi'. Change this to your required hostname. Then hit Ctrl-X  and "y" to save your changes.
 
 Next, edit the /etc/hosts file:
 
@@ -169,13 +181,20 @@ These lines may be added anywhere in the file, using a CLI editor such as nano:
 The RPi needs to be configured to join the wireless network that you'd like to test. To join a network, we need to configure the wireless interface and provide the network credentials to join the network. To achieve this, we need to edit two files via the CLI of the RPI:
 
 ```
-sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
-sudo nano /etc/network/interfaces
+/etc/wpa_supplicant/wpa_supplicant.conf
+/etc/network/interfaces
 ```
 
 Sample configurations for both files are provided below. 
 
 ##### /etc/network/interfaces
+
+```
+# edit wpa_supplicant.conf file
+sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+```
+
+Sample config:
 
 ```
 # wiperf interface config file
@@ -199,8 +218,18 @@ iface lo inet loopback
 __Note:__ The wireless power off commands are commented out in the file above. One of these needs to be uncommented to stop the wireless NIC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. If it doesn't fix the issue, try the other command. (see this [article for more info](https://www.kalitut.com/2017/11/turn-off-power-saving-mode-of-wlan.html){target=_blank})
 
 ##### /etc/wpa_supplicant/wpa_supplicant.conf
+```
+# configure the interfaces file
+sudo nano /etc/network/interfaces
+```
+
+Sample config:
 
 ```
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+# Note the country code below will be likey be different, depending on what was set using raspi-config
+country=GB
 ap_scan=1
 
 # WPA2 PSK Network sample (highest priority - joined first)
