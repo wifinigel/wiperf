@@ -64,6 +64,16 @@ install () {
     echo "(ok) pip3 looks OK"  | tee -a $LOG_FILE
   fi
 
+  # check that netcat is available
+  echo "(ok) Checking we have netcat available..."
+  nc -h  >> $LOG_FILE 2>&1
+  if [ "$?" != '0' ]; then
+    echo "(fail) Unable to proceed as netwcat not installed...please install with command 'apt-get install netcat' " | tee -a $LOG_FILE
+    exit 1
+  else
+    echo "(ok) netcat looks OK"  | tee -a $LOG_FILE
+  fi
+
   ### install the wiperf poller from PyPi - exit if errors
   echo "(ok) Installing wiperf python module (please wait)..."  | tee -a $LOG_FILE
   pip3 install wiperf_poller==$POLLER_VERSION >> $LOG_FILE 2>&1
@@ -182,7 +192,7 @@ install () {
       echo " 2. Edit wlan0 settings: sudo nano /etc/network/interfaces" 
       echo " 3. Copy default cfg file to live cfg:  sudo cp $CFG_DIR/config.default.ini $CFG_DIR/config.ini"
       echo " 4. Edit the cfg file for your env: nano $CFG_DIR/config.ini"
-      echo " 5. Add a cron job to run wiperf regularly, e.g. crontab -e (add line below)"
+      echo " 5. Add a cron job to run wiperf regularly, e.g. sudo crontab -e (add line below)"
       echo "    0-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py > /var/log/wiperf_cron.log 2>&1"
       echo " 6. If you are running several probes on a network, change their hostnames to be unique:"
       echo "    sudo nano /etc/hostname (change raspberrypi to your req hostname)"
