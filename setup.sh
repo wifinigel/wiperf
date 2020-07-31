@@ -1,7 +1,7 @@
 #!/bin/bash
 # Installer for wiperf on WLAN Pi & RPi
-VERSION='2.0.0-beta2'
-POLLER_VERSION='0.1.15'
+VERSION='2.0.0-beta3'
+POLLER_VERSION='0.1.21'
 
 # Installation script log file
 LOG_FILE="/var/log/wiperf_install.log"
@@ -34,6 +34,16 @@ install () {
     exit 1
   fi
 
+  ### Check python is 3.7 or better
+  echo "(ok) Checking we have a compatible python version..."
+  python3 -V | egrep '3\.7|3\.8|3\.9|3\.10|3\.11|3\.12'
+  if [ "$?" != '0' ]; then
+    echo "(fail) Compatible version of python3 not installed (3.7+). Please upgrade to a newer version, though this may require a new platform image." | tee -a $LOG_FILE
+    exit 1
+  else
+    echo "(ok) Python3 looks OK"  | tee -a $LOG_FILE
+  fi
+
   ### check git is present
   echo "(ok) Checking we have git available..."
   git --version  >> $LOG_FILE 2>&1
@@ -45,7 +55,7 @@ install () {
   fi
 
   ### check iperf3 is present
-  echo "(ok) Checking we have iperf3 available..."
+   echo "(ok) Checking we have iperf3 available..."
   iperf3 -v  >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
     echo "(fail) Unable to proceed as iperf3 not installed...please install with command 'apt-get install iperf3' " | tee -a $LOG_FILE
