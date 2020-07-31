@@ -1,7 +1,7 @@
 # FAQ
 
 ## Why does installation of wiperf fail with the message "(fail) pip installation of wiperf_poller failed. Exiting." ?
-This is usually due to the fact that the version of python required for wiperf is python version 3.6 or greater. This means that python version 3.6, 3.7, 3.8...etc are fine but 3.5, 3.4, 3.3... etc. will not work.
+This is usually due to the fact that the version of python required for wiperf is python version 3.7 or greater. This means that python version 3.7, 3.8...etc are fine but 3.6, 3.5, 3.4, 3.3... etc. will not work.
 
 To check the version of python on your probe, enter the CLI command: ```python -V``` (note the uppercase 'V').
 
