@@ -21,6 +21,7 @@ nav:
         - probe_install.md
         - probe_configure.md
         - probe_deploy.md
+        - probe_upgrade.md
     - Troubleshooting: troubleshooting.md
     - Advanced Configuration:
         - adv_proxy.md
