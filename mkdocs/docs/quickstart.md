@@ -2,6 +2,9 @@ Title: Quickstart
 Authors: Nigel Bowden
 
 # Quickstart Guide
+<div style="float: right;">
+![wiperf_logo](images/wiperf_logo.png)
+</div>
 Wiperf is a powerful solution, but it is not trivial to setup and configure. Here is a quickstart to outline the component parts and knowledge you'll need to get wiperf going.
 
 __What it is:__ 
