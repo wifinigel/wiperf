@@ -15,7 +15,7 @@
     
     
       
-        <title>TCP iperf3</title>
+        <title>Quickstart</title>
       
     
     
@@ -58,7 +58,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#dashboard-tcp-iperf3" class="md-skip">
+        <a href="#quickstart-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -86,7 +86,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              TCP iperf3
+              Quickstart
             
           </span>
         </div>
@@ -170,11 +170,20 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="../quickstart/" title="Quickstart" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+    <a href="./" title="Quickstart" class="md-nav__link md-nav__link--active">
       Quickstart
     </a>
+    
   </li>
 
     
@@ -608,12 +617,10 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9">
     
     <label class="md-nav__link" for="nav-9">
       Reference Docs
@@ -659,12 +666,10 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9-3" type="checkbox" id="nav-9-3" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9-3" type="checkbox" id="nav-9-3">
     
     <label class="md-nav__link" for="nav-9-3">
       Dashboards
@@ -722,60 +727,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        TCP iperf3
-        <span class="md-nav__icon md-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
-        </span>
-      </label>
-    
-    <a href="./" title="TCP iperf3" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../db_tcp_iperf3/" title="TCP iperf3" class="md-nav__link">
       TCP iperf3
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-      </span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#grafana" class="md-nav__link">
-    Grafana
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#splunk" class="md-nav__link">
-    Splunk
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -830,30 +786,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-      </span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#grafana" class="md-nav__link">
-    Grafana
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#splunk" class="md-nav__link">
-    Splunk
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -868,11 +800,35 @@
                   
                 
                 
-                <h1 id="dashboard-tcp-iperf3">Dashboard - TCP iperf3</h1>
-<h2 id="grafana">Grafana</h2>
-<p>Help page - TBA</p>
-<h2 id="splunk">Splunk</h2>
-<p>Help page - TBA</p>
+                <h1 id="quickstart-guide">Quickstart Guide</h1>
+<p>Wiperf is a powerful solution, but it is not trivial to setup and configure. Here is a quickstart to outline the component parts and knowledge you'll need to get wiperf going.</p>
+<p><strong>What it is:</strong> </p>
+<ul>
+<li>an open source engineering tool that runs a set of network tests and reports in to a completely separate open source reporting tool that is not part of the wiperf project. </li>
+<li>Wiperf is <em>only</em> a probe that runs a series of network tests and makes data available to other tools.</li>
+</ul>
+<p><strong>What it isn't:</strong> </p>
+<ul>
+<li>An Enterprise quality/scale network monitoring tool</li>
+<li>A reporting tool</li>
+<li>A cheap way of providing Enterprise-wide UX monitoring</li>
+</ul>
+<p><strong>Skills You'll Need:</strong> 
+You will need to be comfortable with the following items to get wiperf going:</p>
+<ul>
+<li>Using SBC devices like the RPi, WLAN Pi (including burning images &amp; getting on their CLI) </li>
+<li>Basic Linux administration skills (including editing files on the CLI, running scripts, updating/adding packages)</li>
+</ul>
+<p><strong>Building a Probe:</strong>
+You'll need to build the probe from scratch, which may include burning images on to an SD card, adding new packages and performing administrative tasks such as setting the hostname, network configuration details and the timezone.</p>
+<p>Once the basic probe is built, you will then download the wiperf code using an automated script and then configure its operation using a CLI text editor.</p>
+<p><strong>Reporting:</strong>
+As stated previously, wiperf <strong>is not</strong> a reporting platform. It has been designed to send data to a reporting platform (that you build yourself, separately) such as Splunk or Grafana. </p>
+<p>Details are provided to "get you going" with the reporting platform, but these platforms are not part of this project and detailed customization of these platforms and supporting them is outside of the wiperf project - no support will be provided for these platforms besides the basic report templates that are provided on a best efforts basis. </p>
+<p>Remember, wiperf is a UX network probe - analyzing the data is provides is your responsibility.</p>
+<p><strong>Documentation:</strong>
+I have created a wide range of documentation to help you to get your wiperf probe going, together with the basics of setting up a suitable reporting platform. Please take time to read through this documentation before reaching out for support. </p>
+<p>I recommend that you start <a href="..">here</a> and work sequentially though the <a href="..">documentation provided</a>.</p>
                 
                   
                     
@@ -881,7 +837,7 @@
 <div class="md-source-date">
   <small>
     
-      Last update: July 12, 2020
+      Last update: August 1, 2020
     
   </small>
 </div>
@@ -904,7 +860,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../db_udp_iperf3/" title="UDP iperf3" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href=".." title="Home" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -913,19 +869,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                UDP iperf3
+                Home
               </div>
             </div>
           </a>
         
         
-          <a href="../db_http/" title="HTTP" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../operation/" title="Operation Overview" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                HTTP
+                Operation Overview
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
