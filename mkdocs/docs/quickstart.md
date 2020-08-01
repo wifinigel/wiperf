@@ -9,7 +9,7 @@ Wiperf is a powerful solution, but it is not trivial to setup and configure. Her
 
 __What it is:__ 
 
-- an open source engineering tool that runs a set of network tests and reports in to a separate open source reporting tool that is not part of the wiperf project. 
+- an open source engineering tool that runs a set of network tests and reports in to a separate reporting tool (Splunk or Grafana) that is not part of the wiperf project. 
 - Wiperf is *only* a probe that runs a series of network tests and makes data available to other tools.
 
 __What it isn't:__ 
