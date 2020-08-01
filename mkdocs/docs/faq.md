@@ -18,6 +18,9 @@ Before commencing tests, wiperf will perform a test DNS lookup to ensure that DN
 connectivity_lookup: google.com
 ```
 
+## How do I upgrade to the latest version of wiperf?
+Please see the details in this page: [link](probe_upgrade.md)
+
 ## How do I change the hostname of my probe?
 Please see the details in this help page: [link](probe_prepare.md)
 
