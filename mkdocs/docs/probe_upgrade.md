@@ -4,7 +4,7 @@ Authors: Nigel Bowden
 # Probe Software Upgrade
 Periodically, new versions of wiperf code may be available to add bug-fixes and new features. The wiperf code must be upgraded from the CLI of the probe.
 
-For the WLAN Pi, it is generally recommend to use the version shipped with the WLAN Pi image, but there may be instances when there is a need to upgrade the wiperf code (e.g. in the case of a bug) before the next WLAN Pi image upgrade. The instructions for each probe type is provided below.
+For the WLAN Pi, it is generally recommend to use the version shipped with the WLAN Pi image, but there may be instances when there is a need to upgrade the wiperf code (e.g. in the case of a bug) before the next WLAN Pi image upgrade. The instructions for each probe type are provided below.
 
 Instructions are also provided for upgrading to the latest 'dev' release. This code will generally be "bleeding edge", so it's best to avoid this option unless directed by the code developers. 
 
