@@ -804,10 +804,10 @@
 <p><div style="float: right;">
 <img alt="wiperf_logo" src="../images/wiperf_logo.png" />
 </div>
-Wiperf is a powerful solution, but it is not trivial to setup and configure. Here is a quickstart to outline the component parts and knowledge you'll need to get wiperf going.</p>
+Wiperf is a powerful solution, but it is not trivial to setup and configure. Here is a quickstart guide to outline the component parts and knowledge you'll need to get wiperf going.</p>
 <p><strong>What it is:</strong> </p>
 <ul>
-<li>an open source engineering tool that runs a set of network tests and reports in to a completely separate open source reporting tool that is not part of the wiperf project. </li>
+<li>an open source engineering tool that runs a set of network tests and reports in to a separate open source reporting tool that is not part of the wiperf project. </li>
 <li>Wiperf is <em>only</em> a probe that runs a series of network tests and makes data available to other tools.</li>
 </ul>
 <p><strong>What it isn't:</strong> </p>
@@ -819,15 +819,15 @@ Wiperf is a powerful solution, but it is not trivial to setup and configure. Her
 <p><strong>Skills You'll Need:</strong> 
 You will need to be comfortable with the following items to get wiperf going:</p>
 <ul>
-<li>Using SBC devices like the RPi, WLAN Pi (including burning images &amp; getting on their CLI) </li>
+<li>Using SBC devices like the RPi and WLAN Pi (including burning images &amp; getting on their CLI) </li>
 <li>Basic Linux administration skills (including editing files on the CLI, running scripts, updating/adding packages)</li>
 </ul>
 <p><strong>Building a Probe:</strong>
 You'll need to build the probe from scratch, which may include burning images on to an SD card, adding new packages and performing administrative tasks such as setting the hostname, network configuration details and the timezone.</p>
-<p>Once the basic probe is built, you will then download the wiperf code using an automated script and then configure its operation using a CLI text editor.</p>
+<p>Once the basic probe is built, you will then download the wiperf code using an automated script and configure its operation using a CLI text editor.</p>
 <p><strong>Reporting:</strong>
 As stated previously, wiperf <strong>is not</strong> a reporting platform. It has been designed to send data to a reporting platform (that you build yourself, separately) such as Splunk or Grafana. </p>
-<p>Details are provided to "get you going" with the reporting platform, but these platforms are not part of this project and detailed customization of these platforms and supporting them is outside of the wiperf project - no support will be provided for these platforms besides the basic report templates that are provided on a best efforts basis. </p>
+<p>Details are provided to "get you going" with the reporting platform, but these platforms are not part of this project and detailed customization of these platforms and supporting them is outside of the wiperf project. No support will be provided for these platforms besides the basic report templates that are provided on a best efforts basis. </p>
 <p>Remember, wiperf is a UX network probe - analyzing the data is provides is your responsibility.</p>
 <p><strong>Documentation:</strong>
 I have created a wide range of documentation to help you to get your wiperf probe going, together with the basics of setting up a suitable reporting platform. Please take time to read through this documentation before reaching out for support. </p>
