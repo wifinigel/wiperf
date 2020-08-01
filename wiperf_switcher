@@ -4,22 +4,11 @@
 #
 # Written by Nigel Bowden <wifinigel@gmail.com>.
 #
-# History:
-#
-# v0.01 - 8th Dec 2019 - Initial version
-# v0.02 - 11th Dec 2019 - Fixed awk for multiple spaces, command ordrering, ufw rules 
-# v0.03 - 14th Dec 2019 - Lots of updates for eth0 static routes, wlan0 check etc.
-# v0.04 - 11th Jan 2020 - Fixed WLANPi name to WLAN Pi.
-# v0.05 - 27th Feb 2020 - added tcp/80 to ufw rules
-# v0.06 - 29th Mar 2020 - added support for ethernet tests & InfluxDB 
-# v0.07 - 1st Apr 2020 - added 
-# v0.08 - Added support for new status file & new directory locations
 
 set -e
 
 NAME=wiperf_switcher
 DESC="Script to switch wiperf mode on/off"
-VERSION=0.08
 STATUS_FILE="/etc/wlanpi-state"
 
 HOME_DIR="/usr/share/wiperf"
@@ -298,12 +287,6 @@ status () {
     exit 0
   fi
 }
-version () {
-    N=$NAME
-        echo "Version: $N $VERSION" >&2
-        exit 1
-
-}
 
 case "$1" in
   on)
@@ -315,8 +298,6 @@ case "$1" in
   status)
         status
         ;;
-  version)
-        version;;
   *)
         N=/usr/share/wiperf/$NAME
         echo "Usage: $N {on|off|status|version}" >&2
