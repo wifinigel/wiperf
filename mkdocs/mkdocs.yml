@@ -1,6 +1,7 @@
 site_name: Wiperf V2 Documentation
 nav:
     - Home: index.md
+    - Quickstart: quickstart.md
     - Operation Overview: operation.md
     - Data Server:
         - Splunk:
