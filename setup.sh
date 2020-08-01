@@ -178,11 +178,11 @@ install () {
       cp "${INTERFACES_FILE}" ${CFG_DIR}/conf/network/interfaces  >> $LOG_FILE 2>&1
     fi
 
-    WPA_FILE=${BACKUP_DIR}/conf/wpa_supplicant/wpa_supplicant.conf
+    WPA_FILE=${BACKUP_DIR}/conf/etc/wpa_supplicant/wpa_supplicant.conf
     if [ -e "${WPA_FILE}" ] ; then
       echo "(ok) Restoring supplicant file..." | tee -a $LOG_FILE
       # copy files back in to retain old connectivity
-      cp "${WPA_FILE}" ${CFG_DIR}/conf/wpa_supplicant/wpa_supplicant.conf  >> $LOG_FILE 2>&1
+      cp "${WPA_FILE}" ${CFG_DIR}/conf/etc/wpa_supplicant/wpa_supplicant.conf  >> $LOG_FILE 2>&1
     fi
 
     # copy wiperf_switcher to /usr/bin/wiperf_switcher
