@@ -1,6 +1,6 @@
 #!/bin/bash
 # Installer for wiperf on WLAN Pi & RPi
-VERSION='2.0.0-beta3'
+VERSION='2.0.0-beta 4'
 POLLER_VERSION='0.1.21'
 
 # Installation script log file
@@ -162,12 +162,29 @@ install () {
   # if we have old config files, copy them back im
   if [ -e "${BACKUP_DIR}/config.ini" ] ; then
     echo "(ok) Restoring old config file..." | tee -a $LOG_FILE
-    # copy files back in to retain old config & connectivity
+    # copy files back in to retain old config
     cp "${BACKUP_DIR}/config.ini" ${CFG_DIR}  >> $LOG_FILE 2>&1
   fi
 
-  ### copy across the wiperf switcher if this is a WLAN Pi, remove if rpi 
+  
+  ### copy across the wiperf switcher & restore connectivity files if this is a WLAN Pi
+  ### remove switcher if rpi 
   if [ "$PLATFORM" = 'wlanpi' ]; then
+
+    INTERFACES_FILE=${BACKUP_DIR}/conf/network/interfaces
+    if [ -e "${INTERFACES_FILE}" ] ; then
+      echo "(ok) Restoring interfaces file..." | tee -a $LOG_FILE
+      # copy files back in to retain old connectivity
+      cp "${INTERFACES_FILE}" ${CFG_DIR}/conf/network/interfaces  >> $LOG_FILE 2>&1
+    fi
+
+    WPA_FILE=${BACKUP_DIR}/conf/wpa_supplicant/wpa_supplicant.conf
+    if [ -e "${WPA_FILE}" ] ; then
+      echo "(ok) Restoring supplicant file..." | tee -a $LOG_FILE
+      # copy files back in to retain old connectivity
+      cp "${WPA_FILE}" ${CFG_DIR}/conf/wpa_supplicant/wpa_supplicant.conf  >> $LOG_FILE 2>&1
+    fi
+
     # copy wiperf_switcher to /usr/bin/wiperf_switcher
     echo "(ok) Moving wiperf_switcher to /usr/bin/wiperf_switcher..." | tee -a $LOG_FILE
     mv "$INSTALL_DIR/wiperf_switcher" /usr/bin/wiperf_switcher  >> $LOG_FILE 2>&1
@@ -180,6 +197,7 @@ install () {
       # make sure it can be executed
       chmod 755 /usr/bin/wiperf_switcher
     fi
+
   else
       # remove the conf dir if rpi, as don't need it
       echo "(ok) Removing wiperf_switcher file...(not needed on RPi)" | tee -a $LOG_FILE
