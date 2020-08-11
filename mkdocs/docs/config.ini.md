@@ -206,7 +206,7 @@ exporter_type: splunk
 
 ### splunk_host
 
-This is the hostname or IP address of the Splunk platform where test result data is sent to. If the hostname of the Splunk server is used, it must be resolvable by the probe. 
+This is the hostname or IP address (ipv4 or ipv6) of the Splunk platform where test result data is sent to. If the hostname of the Splunk server is used, it must be resolvable by the probe. 
 
 (Note: If using Zerotier, make sure this is the address of the IP assigned to your Splunk server in the Zerotier dashboard for your network)
 
@@ -240,7 +240,7 @@ splunk_token:
 
 ### influx_host
 
-This is the hostname or IP address of the Influx (v1.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the probe. 
+This is the hostname or IP address (ipv4 or ipv6) of the Influx (v1.x) platform where test result data is sent to. If the hostname of the Influx server is used, it must be resolvable by the probe. 
 
 (Note: If using Zerotier, make sure this is the address of the IP assigned to your Splunk server in the Zerotier dashboard for your network)
 
