@@ -1,8 +1,6 @@
-v2.0.0-beta 5
-1. Added initial ipv6 support for mgt traffic
-
 v2.0.0-beta 4
 1. Added network connectivity files restore during upgrade
+2. Added initial ipv6 support for mgt traffic
 
 v2.0.0-beta 3
 1. Added checks for sudo operation
