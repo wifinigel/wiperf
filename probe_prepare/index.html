@@ -1304,8 +1304,8 @@ Change each instance of 'pi' to the new hostname (there are usually two instance
 
 <p>Sample configurations for both files are provided below. </p>
 <h5 id="etcnetworkinterfaces">/etc/network/interfaces</h5>
-<div class="highlight"><pre><span></span><code># edit wpa_supplicant.conf file
-sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+<div class="highlight"><pre><span></span><code># configure the interfaces file
+sudo nano /etc/network/interfaces
 </code></pre></div>
 
 <p>Sample config:</p>
@@ -1329,8 +1329,8 @@ iface lo inet loopback
 
 <p><strong>Note:</strong> The wireless power off commands are commented out in the file above. One of these needs to be uncommented to stop the wireless NIC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. If it doesn't fix the issue, try the other command. (see this <a href="https://www.kalitut.com/2017/11/turn-off-power-saving-mode-of-wlan.html" target="_blank">article for more info</a>)</p>
 <h5 id="etcwpa_supplicantwpa_supplicantconf">/etc/wpa_supplicant/wpa_supplicant.conf</h5>
-<div class="highlight"><pre><span></span><code># configure the interfaces file
-sudo nano /etc/network/interfaces
+<div class="highlight"><pre><span></span><code># edit wpa_supplicant.conf file
+sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 </code></pre></div>
 
 <p>Sample config:</p>
