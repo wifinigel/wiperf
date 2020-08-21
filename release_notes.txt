@@ -1,3 +1,7 @@
+v2.0.0-beta 5
+1. Move to using iperf3 python module to fix ongoing iperf3 test issues
+2. Poller module v0.1.24
+
 v2.0.0-beta 4
 1. Added network connectivity files restore during upgrade
 2. Added initial ipv6 support for mgt traffic
