@@ -190,8 +190,8 @@ Sample configurations for both files are provided below.
 ##### /etc/network/interfaces
 
 ```
-# edit wpa_supplicant.conf file
-sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+# configure the interfaces file
+sudo nano /etc/network/interfaces
 ```
 
 Sample config:
@@ -219,8 +219,8 @@ __Note:__ The wireless power off commands are commented out in the file above. O
 
 ##### /etc/wpa_supplicant/wpa_supplicant.conf
 ```
-# configure the interfaces file
-sudo nano /etc/network/interfaces
+# edit wpa_supplicant.conf file
+sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 ```
 
 Sample config:
