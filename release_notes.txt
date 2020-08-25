@@ -1,3 +1,6 @@
+v2.0.0-beta 6
+1. Using timeout_decorator module to timeout iperf3 sessions that hang whole poller process
+
 v2.0.0-beta 5
 1. Move to using iperf3 python module to fix ongoing iperf3 test issues
 2. Poller module v0.1.24
