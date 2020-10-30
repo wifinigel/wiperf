@@ -2,7 +2,7 @@
 
 ## When using wiperf on the WLAN Pi, how can I remotely flip between classic and wiper modes via the CLI?
 
-**Warning** : Although it is possible to flip modes remotely (via an SSH session), be aware that you may hit network connectivity issues unless you are very careful. Remember that in classic mode the file `/etc/network/interfaces` and `/etc/wpa_supplicant/wpa_supplicant.wpa` are used for network connectivity configuration. In wiperf mode, the files `/etc/wiperf/conf/etc/network/interfaces` and `/etc/wiperf/conf/etc/wpa_supplicant/wpa_supplicant.wpa` are used for network connectivity configuration.
+**Warning** : Although it is possible to flip modes remotely (via an SSH session), be aware that you may hit network connectivity issues unless you are very careful. Remember that in classic mode the file `/etc/network/interfaces` and `/etc/wpa_supplicant/wpa_supplicant.conf` are used for network connectivity configuration. In wiperf mode, the files `/etc/wiperf/conf/etc/network/interfaces` and `/etc/wiperf/conf/etc/wpa_supplicant/wpa_supplicant.conf` are used for network connectivity configuration.
 
 To check the current mode of the wiperf, enter the following command:
 
