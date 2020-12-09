@@ -1,6 +1,6 @@
 # FAQ
 
-## How can I report a bug / ask a question / make a suggestion?
+## How can I report a bug / ask a question / make a suggestion for wiperf?
 
 Please checkout the [discussion section](https://github.com/wifinigel/wiperf/discussions) of the wiperf site of [GitHub](https://github.com/wifinigel/wiperf/discussions)
 
