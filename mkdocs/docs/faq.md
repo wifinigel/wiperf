@@ -85,5 +85,8 @@ Use SFTP/SCP and pull the xml files in ```/usr/share/wiperf/dashboards``` from y
 ## Can I make a feature suggestion?
 Yes, get along to the GitHub site and post your suggestion in the ['Issues' section](https://github.com/wifinigel/wiperf/issues){target=_blank}. It will be added to my "todo" list.
 
+## Can I contribute some code for a new feature for wiperf?
+Please, get in touch before starting work on any code you'd like to submit as a PR. I love feedback and ideas, but each new feature costs me more cycles to support. Let's agree it can be included before submitting.
+
 ## Can I run tests over the Ethernet interface of the WLAN Pi?
 Yes, from wiperf v2 onwards.
