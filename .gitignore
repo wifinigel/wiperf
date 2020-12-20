@@ -4,6 +4,7 @@ config.ini
 dashboards/*.zip
 dashboards/grafana/_samples
 mkdocs/site
+.vscode
 
 
 
