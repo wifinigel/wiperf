@@ -1,0 +1,440 @@
+<form>
+  <label>06 - Live Dashboard</label>
+  <fieldset submitButton="false">
+    <input type="dropdown" token="host_name" searchWhenChanged="true">
+      <label>Hostname</label>
+      <selectFirstChoice>true</selectFirstChoice>
+      <fieldForLabel>host</fieldForLabel>
+      <fieldForValue>host</fieldForValue>
+      <search>
+        <query>source=*
+| dedup host
+| table host</query>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </search>
+    </input>
+  </fieldset>
+  <row>
+   <html>
+    <div align="right">
+     <a href="https://wifinigel.github.io/wiperf/" target="_blank">Wiperf Docs</a> | <a href="https://wifinigel.github.io/wiperf/troubleshooting/" target="_blank">Troubleshooting</a> | (Template v1.0.0)
+    </div>
+   </html>
+  </row>
+  <row>
+    <panel>
+      <title>Live Dashboard</title>
+      <single>
+        <title>Avg Speedtest Download</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-speedtest" | timechart span=15m avg(download_rate_mbps) as "Avg Download"</query>
+          <earliest>-60m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0xdc4e41","0xf1813f","0xf8be34","0x53a051"]</option>
+        <option name="rangeValues">[10,20,30]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="trendInterval">-15m</option>
+        <option name="underLabel">Compared to previous 15 mins</option>
+        <option name="unit">Mbps</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">0</option>
+      </single>
+      <single>
+        <title>Avg Speedtest Upload</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-speedtest"   | timechart span=15m  avg(upload_rate_mbps) as "Avg Upload"</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0xdc4e41","0xf1813f","0xf8be34","0x53a051"]</option>
+        <option name="rangeValues">[10,20,30]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="trendInterval">-15m</option>
+        <option name="underLabel">Compared to previous 15 mins</option>
+        <option name="unit">Mbps</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">0</option>
+      </single>
+      <single>
+        <title>Avg DNS Response</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-dns" dns_target=* |  timechart span=15m  avg(lookup_time_ms)</query>
+          <earliest>-60m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0x53a051","0xf1813f","0xdc4e41"]</option>
+        <option name="rangeValues">[35,100]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="trendInterval">-15m</option>
+        <option name="underLabel">Compared to previous 15 mins</option>
+        <option name="unit">ms</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">0</option>
+      </single>
+      <single>
+        <title>Avg Ping Time</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-ping"  |  timechart span=15m  avg(rtt_avg_ms)</query>
+          <earliest>-60m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0x53a051","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="rangeValues">[30,45,60]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="trendInterval">-15m</option>
+        <option name="underLabel">Compared to previous 15 mins</option>
+        <option name="unit">ms</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">0</option>
+      </single>
+      <single>
+        <title>Avg HTTP Response</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-http" http_target=*  | timechart span=15m  avg(http_server_response_time_ms)  as "HTTP Get (mS)"</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0x53a051","0xf8be34","0xdc4e41"]</option>
+        <option name="rangeValues">[500,1000]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="trendInterval">-15m</option>
+        <option name="underLabel">Compared to previous 15 mins</option>
+        <option name="unit">ms</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">0</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <single>
+        <title>Google Status Code</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-http" http_target="https://google.com"  |  stats last(http_status_code) as "Status"</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0xdc4e41","0x53a051","0xdc4e41"]</option>
+        <option name="rangeValues">[199,200]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+      </single>
+      <single>
+        <title>Google DNS Time</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-dns" dns_target=google.com |  timechart span=15m  avg(lookup_time_ms)</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0x53a051","0xf8be34","0x53a051"]</option>
+        <option name="rangeValues">[35,100]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="trendInterval">-15m</option>
+        <option name="underLabel">Compared to previous 15 mins</option>
+        <option name="unit">ms</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">0</option>
+      </single>
+      <single>
+        <title>Google HTTP Response</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-http" http_target=https://google.com   |  timechart span=15m  avg(http_server_response_time_ms)  as "HTTP Get (mS)"</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0x53a051","0xf1813f","0xdc4e41"]</option>
+        <option name="rangeValues">[500,1000]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="trendInterval">-15m</option>
+        <option name="underLabel">Compared to previous 15 mins</option>
+        <option name="unit">ms</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">0</option>
+      </single>
+      <single>
+        <title>Cisco Status</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-http" http_target=*cisco.com*  |  stats last(http_status_code) as "Status"</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0xdc4e41","0x53a051","0xdc4e41"]</option>
+        <option name="rangeValues">[199,200]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+      </single>
+      <single>
+        <title>Cisco DNS Time</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-dns" dns_target="cisco.com" |  timechart span=15m  avg(lookup_time_ms)</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0x53a051","0xf8be34","0x53a051"]</option>
+        <option name="rangeValues">[35,100]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="trendInterval">-15m</option>
+        <option name="underLabel">Compared to previous 15 mins</option>
+        <option name="unit">ms</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">0</option>
+      </single>
+      <single>
+        <title>Cisco HTTP Response</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-http" http_target=*cisco.com*   |  timechart span=15m  avg(http_server_response_time_ms)  as "HTTP Get (mS)"</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0x53a051","0xf1813f","0xdc4e41"]</option>
+        <option name="rangeValues">[500,1000]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="trendInterval">-15m</option>
+        <option name="underLabel">Compared to previous 15 mins</option>
+        <option name="unit">ms</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">0</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <single>
+        <title>TBA1 Status</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-http" http_target=*tba*  |  stats last(http_status_code) as "Status"</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0xdc4e41","0x53a051","0xdc4e41"]</option>
+        <option name="rangeValues">[199,200]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+      </single>
+      <single>
+        <title>TBA1 DNS</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-dns" dns_target=*tba*  |  timechart span=15m  avg(lookup_time_ms)</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0x53a051","0xf8be34","0x53a051"]</option>
+        <option name="rangeValues">[35,100]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="trendInterval">-15m</option>
+        <option name="underLabel">Compared to previous 15 mins</option>
+        <option name="unit">ms</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">0</option>
+      </single>
+      <single>
+        <title>TBA1 HTTP</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-http" http_target=*tba*  |  timechart span=15m  avg(http_server_response_time_ms)  as "HTTP Get (mS)"</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0x53a051","0xf1813f","0xdc4e41"]</option>
+        <option name="rangeValues">[500,1000]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="trendInterval">-15m</option>
+        <option name="underLabel">Compared to previous 15 mins</option>
+        <option name="unit">ms</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">0</option>
+      </single>
+      <single>
+        <title>TBA2 Status Code</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-http" http_target=*tba*  |  stats last(http_status_code) as "Status"</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0xdc4e41","0x53a051","0xdc4e41"]</option>
+        <option name="rangeValues">[199,200]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+      </single>
+      <single>
+        <title>TBA2 DNS Time</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-dns" dns_target=*tba*  |  timechart span=15m  avg(lookup_time_ms)</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0x53a051","0xf8be34","0x53a051"]</option>
+        <option name="rangeValues">[35,100]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="trendInterval">-15m</option>
+        <option name="underLabel">Compared to previous 15 mins</option>
+        <option name="unit">ms</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">0</option>
+      </single>
+      <single>
+        <title>TBA2 HTTP Response</title>
+        <search>
+          <query>host=$host_name$ source="wiperf-http" http_target=*tba*  |  timechart span=15m  avg(http_server_response_time_ms)  as "HTTP Get (mS)"</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">109</option>
+        <option name="rangeColors">["0x53a051","0xf1813f","0xdc4e41"]</option>
+        <option name="rangeValues">[500,1000]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="trendInterval">-15m</option>
+        <option name="underLabel">Compared to previous minutes</option>
+        <option name="unit">ms</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">0</option>
+      </single>
+    </panel>
+  </row>
+</form>
