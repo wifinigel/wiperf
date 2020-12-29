@@ -2,6 +2,7 @@ v2.1
 
 1. Added new dashboard for SMB tests
 2. Updated summary dashboard to support new SMB & authentication tests
+3. Updated speedtest dashboard to support librespeed and additional data points
 
 v2.0.0-beta 6
 1. Using timeout_decorator module to timeout iperf3 sessions that hang whole poller process
