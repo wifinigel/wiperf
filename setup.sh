@@ -1,7 +1,7 @@
 #!/bin/bash
 # Installer for wiperf on WLAN Pi & RPi
-VERSION='2.0.0-beta6'
-POLLER_VERSION='0.1.25'
+VERSION='2.1'
+POLLER_VERSION='0.2'
 
 # Installation script log file
 LOG_FILE="/var/log/wiperf_install.log"
@@ -98,8 +98,7 @@ install () {
   echo "(ok) Cloning the Splunk Event collector class..." | tee -a $LOG_FILE
   # take out existing dir (if there)
   rm -rf /tmp/Splunk-Class-httpevent
-  repo_src="https://github.com/wifinigel/Splunk-Class-httpevent.git"
-  #repo_src="https://github.com/georgestarcher/Splunk-Class-httpevent.git"
+    repo_src="https://github.com/georgestarcher/Splunk-Class-httpevent.git"
   git -C /tmp clone $repo_src >> $LOG_FILE 2>&1
 
   if [ "$?" != '0' ]; then
