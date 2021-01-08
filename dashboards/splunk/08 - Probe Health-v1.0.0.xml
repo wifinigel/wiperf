@@ -17,6 +17,15 @@
   </fieldset>
   <row>
     <panel>
+      <html>
+    <div align="right">
+      <a href="/app/search/01">Probe Summary</a> | <a href="https://wifinigel.github.io/wiperf/" target="_blank">Wiperf Docs</a> | <a href="https://wifinigel.github.io/wiperf/troubleshooting/" target="_blank">Troubleshooting</a> | <a href="https://wifinigel.github.io/wiperf/db_speedtest/#health" target="_blank">Report Help </a> | (Dashboard V1.0.0)
+    </div>
+   </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
       <title>Poller Status Info</title>
       <table>
         <search>
