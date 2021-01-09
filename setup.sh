@@ -20,6 +20,7 @@ PLATFORM=$2
 install () {
 
   echo "(ok) Starting wiperf install process for $PLATFORM (see $LOG_FILE for details)" | tee -a $LOG_FILE 
+  echo "(ok) Version: ${VERSION} (poller ver: ${POLLER_VERSION}, branch: ${GITHUB_BRANCH})" | tee -a $LOG_FILE
 
   # Check which platform we're installing for
   if ! [[ $PLATFORM =~ ^(wlanpi|rpi)$ ]]; then
