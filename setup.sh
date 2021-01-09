@@ -186,8 +186,7 @@ install () {
   echo "(ok) Checking we have librespeed-cli available..."
   librespeed-cli --version  >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
-    echo "(fail) Does not look as if librespeed-cli is installed which will cause issues if you choose to use it for speedtests." | tee -a $LOG_FILE
-    exit 1
+    echo "(warn) Does not look as if librespeed-cli is installed which will cause issues if you choose to use it for speedtests." | tee -a $LOG_FILE
   else
     echo "(ok) librespeed-cli looks OK"  | tee -a $LOG_FILE
   fi
@@ -196,8 +195,7 @@ install () {
   echo "(ok) Checking we have mount.cifs available..."
   mount.cifs --version  >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
-    echo "(fail) Does not look as if mount.cifs is installed which will cause issues if you choose to run cifs/smb tests." | tee -a $LOG_FILE
-    exit 1
+    echo "(warn) Does not look as if mount.cifs is installed which will cause issues if you choose to run cifs/smb tests." | tee -a $LOG_FILE
   else
     echo "(ok) mount.cifs looks OK"  | tee -a $LOG_FILE
   fi
@@ -206,8 +204,7 @@ install () {
   echo "(ok) Checking we have umount available..."
   umount --version  >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
-    echo "(fail) Does not look as if umount is installed which will cause issues if you choose to run cifs/smb tests." | tee -a $LOG_FILE
-    exit 1
+    echo "(warn) Does not look as if umount is installed which will cause issues if you choose to run cifs/smb tests." | tee -a $LOG_FILE
   else
     echo "(ok) umount looks OK"  | tee -a $LOG_FILE
   fi
