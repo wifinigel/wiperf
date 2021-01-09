@@ -32,7 +32,7 @@
           <query>host=$host_name$ source="wiperf-poll-status" 
 | convert ctime(_time) 
 | sort - _time
-|  table _time network ip speedtest ping dns http iperf_tcp iperf_udp dhcp smb auth probe_mode mgt_if run_time |rename _time AS "Time" network AS "Network Test" ip AS "IP Address" speedtest as "Speedtest" ping as "Ping Test" dns AS "DNS Test" http as "HTTP Test" iperf_tcp as "TCP iperf" iperf_udp as "UDP iperf" dhcp as "DHCP Test" smb as "SMB Test" auth as "Auth Test" probe_mode AS "Mode" mgt_if as "Mgt I/F" run_time as "Poll Time (secs)"</query>
+|  table _time network ip speedtest ping dns http iperf_tcp iperf_udp dhcp smb probe_mode mgt_if run_time |rename _time AS "Time" network AS "Network Test" ip AS "IP Address" speedtest as "Speedtest" ping as "Ping Test" dns AS "DNS Test" http as "HTTP Test" iperf_tcp as "TCP iperf" iperf_udp as "UDP iperf" dhcp as "DHCP Test" smb as "SMB Test" probe_mode AS "Mode" mgt_if as "Mgt I/F" run_time as "Poll Time (secs)"</query>
           <earliest>-4h@m</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
