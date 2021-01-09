@@ -298,7 +298,7 @@ upgrade () {
 
   # install new code
   echo "(ok) Installing latest version of wiperf..."
-  curl -s https://raw.githubusercontent.com/wifinigel/wiperf/main/setup.sh | sudo bash -s install $PLATFORM
+  curl -s https://raw.githubusercontent.com/wifinigel/wiperf/${GITHUB_BRANCH}/setup.sh | sudo bash -s install $PLATFORM
 
   exit 0
 }
