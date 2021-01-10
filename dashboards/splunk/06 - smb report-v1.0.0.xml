@@ -107,6 +107,7 @@
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
+        <option name="charting.axisTitleY.text">L2 Retries</option>
         <option name="charting.chart">line</option>
         <option name="charting.drilldown">none</option>
         <option name="charting.legend.placement">top</option>
