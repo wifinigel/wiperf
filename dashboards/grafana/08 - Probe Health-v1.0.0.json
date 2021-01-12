@@ -48,7 +48,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1610118569649,
+  "iteration": 1610460936696,
   "links": [
     {
       "$$hashKey": "object:2031",
@@ -302,24 +302,6 @@
               {
                 "params": [
                   "SMB Test"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "auth"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "Auth Test"
                 ],
                 "type": "alias"
               }
@@ -1273,7 +1255,7 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -1296,5 +1278,5 @@
   "variables": {
     "list": []
   },
-  "version": 11
+  "version": 12
 }
