@@ -48,7 +48,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1610460936696,
+  "iteration": 1610565517486,
   "links": [
     {
       "$$hashKey": "object:2031",
@@ -110,14 +110,7 @@
       ],
       "targets": [
         {
-          "groupBy": [
-            {
-              "params": [
-                "5m"
-              ],
-              "type": "time"
-            }
-          ],
+          "groupBy": [],
           "measurement": "wiperf-poll-status",
           "orderByTime": "ASC",
           "policy": "default",
@@ -134,10 +127,6 @@
                 "type": "field"
               },
               {
-                "params": [],
-                "type": "last"
-              },
-              {
                 "params": [
                   "Network"
                 ],
@@ -150,10 +139,6 @@
                   "ip"
                 ],
                 "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
               },
               {
                 "params": [
@@ -170,10 +155,6 @@
                 "type": "field"
               },
               {
-                "params": [],
-                "type": "last"
-              },
-              {
                 "params": [
                   "Speedtest"
                 ],
@@ -186,10 +167,6 @@
                   "ping"
                 ],
                 "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
               },
               {
                 "params": [
@@ -206,10 +183,6 @@
                 "type": "field"
               },
               {
-                "params": [],
-                "type": "last"
-              },
-              {
                 "params": [
                   "DNS Test"
                 ],
@@ -222,10 +195,6 @@
                   "http"
                 ],
                 "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
               },
               {
                 "params": [
@@ -242,10 +211,6 @@
                 "type": "field"
               },
               {
-                "params": [],
-                "type": "last"
-              },
-              {
                 "params": [
                   "TCP iperf"
                 ],
@@ -258,10 +223,6 @@
                   "iperf_udp"
                 ],
                 "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
               },
               {
                 "params": [
@@ -278,10 +239,6 @@
                 "type": "field"
               },
               {
-                "params": [],
-                "type": "last"
-              },
-              {
                 "params": [
                   "DHCP Test"
                 ],
@@ -294,10 +251,6 @@
                   "smb"
                 ],
                 "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
               },
               {
                 "params": [
@@ -314,10 +267,6 @@
                 "type": "field"
               },
               {
-                "params": [],
-                "type": "last"
-              },
-              {
                 "params": [
                   "Mode"
                 ],
@@ -332,10 +281,6 @@
                 "type": "field"
               },
               {
-                "params": [],
-                "type": "last"
-              },
-              {
                 "params": [
                   "Mgt I/F"
                 ],
@@ -348,10 +293,6 @@
                   "run_time"
                 ],
                 "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
               },
               {
                 "params": [
@@ -1278,5 +1219,5 @@
   "variables": {
     "list": []
   },
-  "version": 12
+  "version": 13
 }
