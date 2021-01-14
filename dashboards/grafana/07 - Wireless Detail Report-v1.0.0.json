@@ -54,7 +54,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1608669376919,
+  "iteration": 1610616903614,
   "links": [
     {
       "$$hashKey": "object:167",
@@ -831,78 +831,56 @@
       }
     },
     {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
+      "columns": [],
       "datasource": "${DS_WIPERFDB}",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 3,
-      "fillGradient": 0,
+      "fontSize": "100%",
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
         "y": 17
       },
-      "hiddenSeries": false,
-      "id": 29,
-      "interval": "",
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "total": false,
-        "values": true
+      "id": 23,
+      "pageSize": null,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
       },
-      "lines": false,
-      "linewidth": 2,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": false,
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.1",
-      "pointradius": 1,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "styles": [
+        {
+          "$$hashKey": "object:1573",
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "$$hashKey": "object:1574",
+          "alias": "",
+          "align": "right",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
       "targets": [
         {
           "alias": "$col",
-          "groupBy": [
-            {
-              "params": [
-                "5m"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "wiperf-auth",
+          "groupBy": [],
+          "measurement": "wiperf-network",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT distinct(\"auth_time\") AS \"authenticate\" FROM \"wiperf-auth\" WHERE (\"host\" =~ /^$WLANPi$/) AND $timeFilter GROUP BY time(5m) fill(null)",
+          "query": "SELECT \"bssid\" AS \"BSSID\", \"ssid\" AS \"SSID\", \"channel\" AS \"Channel\", \"channel_width\" AS \"Channel Width\", \"tx_rate_mbps\" AS \"Tx Phy Rate (Mbps)\", \"rx_rate_mbps\" AS \"Rx Phy Rate (Mbps)\", \"signal_level_dbm\" AS \"RSSI (dBm)\" FROM \"wiperf-network\" WHERE (\"host\" =~ /^$WLANPi$/) AND $timeFilter",
           "rawQuery": false,
           "refId": "A",
           "resultFormat": "time_series",
@@ -910,17 +888,97 @@
             [
               {
                 "params": [
-                  "auth_time"
+                  "bssid"
                 ],
                 "type": "field"
               },
               {
-                "params": [],
-                "type": "last"
+                "params": [
+                  "BSSID"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "ssid"
+                ],
+                "type": "field"
               },
               {
                 "params": [
-                  "authenticate"
+                  "SSID"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "channel"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "Channel"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "channel_width"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "Width (MHz)"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "tx_rate_mbps"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "Tx Rate (Mbps)"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "rx_rate_mbps"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "Rx Rate (Mbps)"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "signal_level_dbm"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "RSSI (dBm)"
                 ],
                 "type": "alias"
               }
@@ -935,49 +993,11 @@
           ]
         }
       ],
-      "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
-      "title": "Time to authenticate - $WLANPi ",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:1852",
-          "decimals": null,
-          "format": "none",
-          "label": "Seconds",
-          "logBase": 1,
-          "max": "5",
-          "min": "0",
-          "show": true
-        },
-        {
-          "$$hashKey": "object:1853",
-          "format": "Mbits",
-          "label": "Avg rate",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "title": "Wireless Connection Details - $WLANPi",
+      "transform": "timeseries_to_columns",
+      "type": "table"
     },
     {
       "aliasColors": {},
@@ -1149,189 +1169,6 @@
         "align": false,
         "alignLevel": null
       }
-    },
-    {
-      "collapsed": false,
-      "datasource": "${DS_WIPERFDB}",
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 25
-      },
-      "id": 25,
-      "panels": [],
-      "title": "Network Information",
-      "type": "row"
-    },
-    {
-      "columns": [],
-      "datasource": "${DS_WIPERFDB}",
-      "fontSize": "100%",
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 26
-      },
-      "id": 23,
-      "pageSize": null,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": true
-      },
-      "styles": [
-        {
-          "$$hashKey": "object:1573",
-          "alias": "Time",
-          "align": "auto",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "pattern": "Time",
-          "type": "date"
-        },
-        {
-          "$$hashKey": "object:1574",
-          "alias": "",
-          "align": "right",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 2,
-          "pattern": "/.*/",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
-        }
-      ],
-      "targets": [
-        {
-          "alias": "$col",
-          "groupBy": [],
-          "measurement": "wiperf-network",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"bssid\" AS \"BSSID\", \"ssid\" AS \"SSID\", \"channel\" AS \"Channel\", \"channel_width\" AS \"Channel Width\", \"tx_rate_mbps\" AS \"Tx Phy Rate (Mbps)\", \"rx_rate_mbps\" AS \"Rx Phy Rate (Mbps)\", \"signal_level_dbm\" AS \"RSSI (dBm)\" FROM \"wiperf-network\" WHERE (\"host\" =~ /^$WLANPi$/) AND $timeFilter",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "bssid"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "BSSID"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "ssid"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "SSID"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "channel"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "Channel"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "channel_width"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "Width (MHz)"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "tx_rate_mbps"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "Tx Rate (Mbps)"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "rx_rate_mbps"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "Rx Rate (Mbps)"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "signal_level_dbm"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "RSSI (dBm)"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "host",
-              "operator": "=~",
-              "value": "/^$WLANPi$/"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Wireless Connection Details - $WLANPi",
-      "transform": "timeseries_to_columns",
-      "type": "table"
     }
   ],
   "schemaVersion": 22,
@@ -1893,5 +1730,5 @@
   "variables": {
     "list": []
   },
-  "version": 10
+  "version": 11
 }
