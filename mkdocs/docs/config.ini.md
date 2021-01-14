@@ -11,6 +11,8 @@ Many options will be fine using the defaults that are supplied with the installe
 
 The config.ini file is located in the directory : /etc/wiperf
 
+Note that an initial sample configuration file is supplied which is named: `config.default.ini`. This file should be copied to `config.ini` and this new file customised with the settings required for your environment. (Note: the `config.default.ini` file is not used by wiperf)
+
 The file is organised in a number of sections that relate to different areas of operation. Each section begins with a name enclosed is square brackets, like this:
 
 ```
@@ -39,6 +41,11 @@ We'll take a look at each section of the config file and provide some guidance o
     - [mgt_if](#mgt_if)
     - [platform](#platform)
     - [exporter_type](#exporter_type)
+    - [results_spool_enabled](#results_spool_enabled)
+    - [results_spool_max_age](#results_spool_max_age)
+    - [error_messages_enabled](#error_messages_enabled)
+    - [error_messages_limit](#error_messages_limit)
+    - [poller_reporting_enabled](#poller_reporting_enabled)
     - [splunk_host](#splunk_host)
     - [splunk_port](#splunk-port)
     - [splunk_token](#splunk_token)
@@ -52,6 +59,10 @@ We'll take a look at each section of the config file and provide some guidance o
     - [influx2_token](#influx2_token)
     - [influx2_bucket](#influx2_bucket)
     - [influx2_org](#influx2_org)
+    - [cache_enabled](#cache_enabled)
+    - [cache_data_format](#cache_data_format)
+    - [cache_retention_period](#cache_retention_period)
+    - [cache_filter](#cache_filter)
     - [test_interval](#test_interval)
     - [test_offset](#test_offset)
     - [connectivity_lookup](#connectivity_lookup)
@@ -67,7 +78,9 @@ We'll take a look at each section of the config file and provide some guidance o
     - [network_data_file](#network_data_file)
 - [Speetest Section](#speedtest-section)
     - [enabled](#enabled)
+    - [provider](#provider)
     - [server_id](#server_id)
+    - [librespeed_args](#librespeed_args)
     - [http_proxy](#http_proxy)
     - [https_proxy](#https_proxy)
     - [no_proxy](#no_proxy)
@@ -114,6 +127,16 @@ We'll take a look at each section of the config file and provide some guidance o
     - [enabled](#enabled-6)
     - [mode](#mode)
     - [dhcp_data_file](#dhcp_data_file)
+- [SMB_test Section](#smb_test-section)
+    - [enabled](#enabled-7)
+    - [smb_global_username](#smb_global_username)
+    - [smb_global_password](#smb_global_password)
+    - [smb_hostX](#smb_hostX)
+    - [smb_usernameX](#smb_usernameX) 
+    - [smb_passwordX](#smb_passwordX) 
+    - [smb_pathX](#smb_pathX])
+    - [smb_filenameX](#smb_filenameX) 
+    - [smb_data_file](#smb_data_file)
 
 ## [General] Section
 
@@ -164,9 +187,10 @@ The available options are:
 
 - wlan0 (the first available WLAN port - usually a USB dongle plugged in to the WLAN Pi, or the internal wireless NIC on the RPi)
 - eth0 (the internal Ethernet port of the probe)
-- zt  (Zerotier (the virtual network service) is installed and used to connect to the reporting server)
+- ztxxxxxxxx  (Zerotier (the virtual network service) is installed and used to connect to the reporting server - note that the 'xxxxxxx' string needs to be replaced with the actual detail of your Zerotier interface, which will vary on each probe)
+- lo (Local loopback interface 0 - this may be used on an RPi when running Influx and Grafana on the probe...yes, it can be done, but this isn't the intended way of running wiperf...your mileage may vary.)
 
-The WANPi is configured to assign a higher cost default route to eth0 by default so that all traffic (tests & test results) will choose the default route provided by wlan0. If eth0 is used as the path to return test results to the reporting server, then a static route is injected in to the probe route table on start-up to ensure correct routing.
+The WLANPi is configured to assign a higher cost default route to eth0 by default so that all traffic (tests & test results) will choose the default route provided by wlan0. If eth0 is used as the path to return test results to the reporting server, then a static route is injected in to the probe route table on start-up to ensure correct routing.
 
 If this parameter is not correctly set, then results data may not make it back to the reporting server.
 
@@ -201,6 +225,83 @@ Wiperf supports a number of remote data repositories that can be used as targets
 Default setting:
 ```
 exporter_type: splunk
+```
+[top](#parameter-reference-guide)
+
+### results_spool_enabled
+
+!!! Note
+    New for V2.1
+
+If the mgt platform becomes unavailable, results may be spooled to a local directory for later upload when connectivity is restored.This is enabled by default, but may be disabled for purposes of management traffic bandwidth reduction if required.
+
+Data files are spooled in to the directory: `/etc/spool/wiperf`.
+
+Options: yes or no. If set to no, no results are save for later transmission to the management server.
+
+Default setting:
+```
+results_spool_enabled: yes
+```
+[top](#parameter-reference-guide)
+
+### results_spool_max_age
+
+!!! Note
+    New for V2.1
+
+If results spooling is enabled, it may be desirable to set the duration for which files are retained (e.g. to avoid running out of storage space). This parameter defines the amount of time (in minutes) that data files are retained.
+
+By default, this parameter is set to 60 minutes. This means that if communication to the management server is lost for more than 60 minutes, locally stored data files older than 60 minutes are deleted.
+
+Default setting:
+```
+results_spool_max_age: 60
+```
+[top](#parameter-reference-guide)
+
+### error_messages_enabled
+
+!!! Note
+    New for V2.1
+
+Errors experienced by the poller are reported back as data to the management platform by default. This allows visibility of failing tests and may provide useful diagnostics information.
+
+If this data is not required (e.g. to preserve bandwitdh), then the export of these message to the management server may be disabled.
+
+Options: yes or no. If set to no, no poller error data is exported to the management platform.
+
+Default setting:
+```
+error_messages_enabled: yes
+```
+[top](#parameter-reference-guide)
+
+### error_messages_limit
+
+!!! Note
+    New for V2.1
+
+To prevent overwhelming the management platform with error messages, this parameter set the maximum number of error messages which may be exported per poll cycle.
+
+Default setting:
+```
+error_messages_limit: 5
+```
+[top](#parameter-reference-guide)
+
+### poller_reporting_enabled
+
+!!! Note
+    New for V2.1
+
+At the end of each poll cycle, a summary of which tests passed/failed may be returned to allow reporting. This may be disabled for purposes of management traffic bandwidth reduction, if required.
+
+Options: yes or no. If set to no, no summary data is exported to the management platform.
+
+Default setting:
+```
+poller_reporting_enabled: yes
 ```
 [top](#parameter-reference-guide)
 
@@ -344,6 +445,64 @@ influx2_org:
 ```
 [top](#parameter-reference-guide)
 
+### cache_enabled
+
+!!! Note
+    New for V2.1
+
+Results data may be cached in the local file system of the probe for later inspection or retrieval by user defined methods. By default, files are stored in local probe directory: /var/cache/wiperf.
+
+Note: This mechanism is different to the spooling feature which is purely for store and forward of data during breaks in comms to the management platform. 
+
+Options: yes or no. If set to no, no test data is cached on the local probe file system
+
+Default setting:
+```
+cache_enabled: no 
+```
+[top](#parameter-reference-guide)
+
+### cache_data_format
+
+!!! Note
+    New for V2.1
+
+If data caching is enabled, it may be stored in CSV of JSON format.
+
+Options: csv or json
+
+Default setting:
+```
+cache_data_format: csv 
+```
+[top](#parameter-reference-guide)
+
+### cache_retention_period
+
+!!! Note
+    New for V2.1
+
+This is the number of days of data that will be retained local cache files before being deleted. This is to conserve local storage space.
+
+Default setting:
+```
+cache_retention_period: 3
+```
+[top](#parameter-reference-guide)
+
+### cache_filter
+
+!!! Note
+    New for V2.1
+
+This provides a data source filter so that only specific data sources are locally cached (e.g. to cache only http & ping data, specify: `wiperf-http, wiperf-ping`)
+
+Default setting (none):
+```
+cache_filter:
+```
+[top](#parameter-reference-guide)
+
 ### test_interval
 
 (WLAN Pi only) This is the interval (in minutes) at which we would like to run the performance tests. The recommened minimum is 5, which is also the default.
@@ -385,16 +544,6 @@ This is a string that can be added to assist with report filtering, if required.
 Default setting:
 ```
 location: 
-```
-[top](#parameter-reference-guide)
-
-### debug
-
-To enable enhanced logging in the agent.log file, change this setting to "on"
-
-Default setting:
-```
-debug: off
 ```
 [top](#parameter-reference-guide)
 
@@ -454,6 +603,16 @@ cfg_refresh_interval:
 ```
 [top](#parameter-reference-guide)
 
+### debug
+
+To enable enhanced logging in the agent.log file, change this setting to "on"
+
+Default setting:
+```
+debug: off
+```
+[top](#parameter-reference-guide)
+
 ### unit_bouncer
 
 If you need to bounce (reboot) the unit for some reason on a regular basis, this field can be used to signal to the WLAN Pi each hour at which it must reboot.
@@ -464,7 +623,7 @@ Example: the following config will reboot at midnight, 04:00, 08:00, 12:00, 16:0
 ```
  unit_bouncer: 00, 06, 12, 18
 ```
-This parameter is commented out by default as it is obviously not something you necessarilly want to switch on accidentally.
+This parameter is commented out by default as it is obviously not something you necessarily want to switch on accidentally.
 
 Default setting:
 ```
@@ -490,7 +649,7 @@ network_data_file: wiperf-network
 
 ### enabled
 
-Options: yes or no. If set to no, entire section is ignored and no Speedtest is run. When enabled, a speedtest to the Ookla speedtest service is run each test cycle.
+Options: yes or no. If set to no, entire section is ignored and no Speedtest is run. When enabled, a speedtest to the speedtest service is run each test cycle.
 
 Default setting:
 ```
@@ -498,17 +657,52 @@ enabled: yes
 ```
 [top](#parameter-reference-guide)
 
+### provider
+
+!!! Note
+    New for V2.1
+
+Starting in version 2.1 a choice of speedtest provider is available. Tests may be run against the Ookla or Librespeed speedtest services
+
+Options: ookla or librespeed
+
+(__Note__: ensure that the Librespeed client is installed on your probe if using the librespeed option - it is not installed as part of the probe package - see wiperf.net for more details)
+
+Default setting:
+```
+provider: ookla
+```
+[top](#parameter-reference-guide)
+
 ### server_id
+
+!!! Note
+    Updated for V2.1
 
 If you wish to specify a particular Ookla speedtest server that the test needs to be run against, you can enter its ID here. This must be the (numeric) server ID of a specific Ookla server taken from : https://c.speedtest.net/speedtest-servers-static.php
 
 **Note this must be the number (NOT url!) taken from the field id="xxxxx".**
 
-If no value is specified, best server is used (default)
+If you wish to specify a Librespeed server, enter the numeric server ID of the server listed in the available servers seen by running the Librespeed CLI command: `librespeed-cli --list`
+
+If no value is specified, best server is used (default) - __Note__: testing has shown that some versions of the Librespeed client will not successfully choose a best server - specify a server ID if you are having issues with the test not running as expected.
 
 Default setting:
 ```
 server_id:
+```
+[top](#parameter-reference-guide)
+
+### librespeed_args
+
+!!! Note
+    New for V2.1
+
+If you wish to pass additional args to pass to Librespeed CLI command, then add them to this configuration parameter (e.g. --local-json /etc/wipef/localserver.json --duration 20) - __Note: Librespeed only__
+
+Default setting (no value):
+```
+librespeed_args:
 ```
 [top](#parameter-reference-guide)
 
@@ -526,7 +720,7 @@ For sites that are not accessed via proxy, use ```no_proxy``` (make sure value e
 no_proxy: "mail.local, intranet.local"
 ```
 
-Default settings:
+Default settings (no value):
 ```
 http_proxy: 
 https_proxy:
@@ -947,5 +1141,104 @@ mode: passive
 Default setting:
 ```
 dhcp_data_file: wiperf-dhcp
+```
+[top](#parameter-reference-guide)
+
+## [SMB_test] Section
+
+(Changes made in this section will be used in next test cycle and may be made on the fly while in wiperf mode on the WLAN Pi)
+
+### enabled
+
+!!! Note
+    New for V2.1
+
+Options: yes or no. If set to no, entire section is ignored and no SMB tests are run.  Note that the DHCP test has 2 modes :
+
+Default setting:
+```
+enabled: no
+```
+[top](#parameter-reference-guide)
+
+### smb_global_username
+### smb_global_password
+
+!!! Note
+    New for V2.1
+
+These are the username and password credentials to be used for all SMB tests where a test-specific username/password has not been provided.
+
+Default setting (no value):
+```
+smb_global_username: 
+smb_global_passwrod:
+```
+[top](#parameter-reference-guide)
+
+### smb_hostX
+
+!!! Note
+    New for V2.1
+
+The hostname or IP address to be used for SMB test number 'X' (1-5)
+
+Default setting:
+```
+smb_hostX 
+```
+[top](#parameter-reference-guide)
+
+### smb_usernameX 
+### smb_passwordX 
+
+!!! Note
+    New for V2.1
+
+The username & password to be used for SMB test number 'X' (1-5). Note the global username/password credential is use if a per-test credential is not provided.
+
+Default setting (no value):
+```
+smb_usernameX: 
+smb_passwordX:  
+```
+[top](#parameter-reference-guide)
+
+### smb_pathX
+
+!!! Note
+    New for V2.1
+
+The volume path to be used for SMB test number 'X' (1-5)
+
+Default setting (no value):
+```
+smb_pathX: 
+```
+[top](#parameter-reference-guide)
+
+### smb_filenameX 
+
+!!! Note
+    New for V2.1
+
+The filename to be used for SMB test number 'X' (1-5)
+
+Default setting (no value):
+```
+smb_filenameX: 
+```
+[top](#parameter-reference-guide)
+
+### smb_data_file
+
+!!! Note
+    New for V2.1
+
+(Advanced setting, do not change) The name used for SMB the file/data group/data source.
+
+Default setting (no value):
+```
+smb_data_file: 
 ```
 [top](#parameter-reference-guide)
