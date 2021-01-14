@@ -1,6 +1,7 @@
 site_name: Wiperf V2 Documentation
 nav:
     - Home: index.md
+    - What's New in V2.1: whats_new_v2.1.md
     - Quickstart: quickstart.md
     - Operation Overview: operation.md
     - Data Server:
