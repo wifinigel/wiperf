@@ -6,9 +6,9 @@ Authors: Nigel Bowden
 !!! Note
     __New in V2.1__
 
-There were a number of requests from folks for results data to be made available on the local file system of the wiperf probe, in addition t being forwarded to a reporting platform.. To meet these requests, results caching has been implemented.
+There were a number of requests from folks for results data to be made available on the local file system of the wiperf probe, in addition to being forwarded to a reporting platform. To meet these requests, results caching has been implemented.
 
-This feature is disabled by default, but when enabled all test results are stored on the local file system in either CSV or JSON format. To limit the amount of local file storage consumed, a maximum age limit is configured to age-out older date and prevent the local file system filling up.
+This feature is disabled by default, but when enabled all test results are stored on the local file system in either CSV or JSON format. To limit the amount of local file storage consumed, a maximum age limit is configured to age-out older date and prevent the local file system filling up. Note that test results are still sent to the configured reporting platform when caching is enabled.
 
 The data files are stored in the local directory `/var/cache/wiperf` for a configurable period of time (*3 days by default*).
 
@@ -30,6 +30,8 @@ total 40
 ```
 
 The day-specific folder (and all of its data) is removed once its age exceeds the defined age-out threshold.
+
+If only subset of results need to be cached, then they can be filtered using the `cache_filter` [configuration field](config.ini.md#cache_filter).
 
 ## Configuration
 
@@ -64,7 +66,7 @@ cache_filter:
 
 Each of the configuration parameters are detailed in the [config.ini reference document](config.ini.md#cache_enabled).
 
-Note that this data cannot be exported to a reporting server, it is just provided for local inspection or remote retrieval by some other user-defined method.
+Note that this data cannot be exported to a reporting server, it is only provided for local inspection or remote retrieval by some other user-defined method.
 
 ## Example Output
 
