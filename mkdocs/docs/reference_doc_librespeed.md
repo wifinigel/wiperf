@@ -9,7 +9,9 @@ Authors: Nigel Bowden
 !!! Attention
     Make sure you checkout the ["Known Issues"](#known-issues) section at the end of this page
 
-In addition to performing a speedtest using the public Ookla service, it is now possible to add support for performing speedtesting [Librespeed](https://librespeed.org/).
+In addition to performing a speedtest using the public Ookla service, it is now possible to add support for performing speedtesting to [Librespeed](https://librespeed.org/) servers. 
+
+One useful point to note is that in addition to testing against public Librespeed servers,it is also possible to test against your own instance of the Librespeed server. This allows testing within your own environment, without hitting the Internet (and associated bottlenecks)
 
 Switching between using Ookla and Librespeed is achieved by modifying the `provider` parameter in the [Speedtest] section of config.ini:
 
