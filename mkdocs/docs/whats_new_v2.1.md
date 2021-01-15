@@ -55,12 +55,21 @@ This feature is enabled by default, but may be disabled if there are concerns ab
 A new "Probe Health" dashboard has bene provided to allow viewing of error messages.
 
 ## Installing
-Installation is not required for the WLAN Pi as wiperf is ncluded in the WLAN Pi packages. To upgrade, see the next section.
+Installation is not required for the WLAN Pi as wiperf is included in the WLAN Pi packages. To upgrade, see the next section.
 
 To install on to an RPi (or other platform), see our [installation document](probe_install.md).
 
 ## Upgrading
-To upgrade from a previous release of wiperf, please consult this instructions in our [upgrade document](probe_upgrade.md).
+To upgrade from a previous release of wiperf, please consult these instructions in our [upgrade document](probe_upgrade.md).
+
+!!! Attention
+    * Don't forget to also update your management platform dashboard files to make sure you have the latest & greatest that are compatible with this release
+        * [Splunk link](splunk_configure.md#create-a-dashboard)
+        * [Grafana link](grafana_configure.md#adding-wiperf-dashboards)
+    * When upgrading on the WLAN Pi *make sure your WLAN Pi is in classic mode prior to upgrading*
+    * Make sure you are aware of [this advisory](#ping-issue) about existing ping test results when moving to version 2.1
+    * Several new options have been added to config.ini - see the note below to make sure you don't miss out on them.
+
 
 __NOTE__: Several new options have been added to the `config.ini` configuration file. Use the new config.default.ini file as a template to create a new copy of `config.ini`. Copy across you existing settings in to the new copy of `config.ini`. For example:
 
@@ -87,16 +96,17 @@ sudo nano config.ini
 2.  Fixed bad config variable names for InfluxDB2 in config.py (thanks Konstantin - issue #1)
 3.  Added SMB tests provided by Mario Gingras
 4.  Improved route injection for tests when required interface not selected by default routing
-5.  Fixed issue with incorrect data types in Influx DB for ping tests (some numeric values were created
+5.  <a id="ping-issue"></a>Fixed issue with incorrect data types in Influx DB for ping tests (some numeric values were created
     as strings, preventing calculations on their values.)
 
-    This fixed isue will cause failures for ping test results on existing data. To correct the issue,
+    __This fixed issue will cause failures for ping test results on existing data. To correct the issue,
     existing ping test data in the Influx DB must be dropped using the following command in the InfluxDB
-    CLI utility:
-
+    CLI utility:__
+    ```
     sudo influx -username admin -password letmein
     use wiperf
     drop series from "wiperf-ping"
+    ```
 
 6.  Added support for librespeed to speedtest in addition to existing Ookla support. Also
     made more data points available to reports including latency, jitter & data volume for
