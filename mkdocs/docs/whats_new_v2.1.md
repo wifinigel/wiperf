@@ -54,6 +54,33 @@ This feature is enabled by default, but may be disabled if there are concerns ab
 
 A new "Probe Health" dashboard has bene provided to allow viewing of error messages.
 
+## Installing
+Installation is not required for the WLAN Pi as wiperf is ncluded in the WLAN Pi packages. To upgrade, see the next section.
+
+To install on to an RPi (or other platform), see our [installation document](probe_install.md).
+
+## Upgrading
+To upgrade from a previous release of wiperf, please consult this instructions in our [upgrade document](probe_upgrade.md).
+
+__NOTE__: Several new options have been added to the `config.ini` configuration file. Use the new config.default.ini file as a template to create a new copy of `config.ini`. Copy across you existing settings in to the new copy of `config.ini`. For example:
+
+```
+# after upgrade
+cd /etc/wiperf
+
+# backup existing config file
+sudo cp config.ini config.ini.orig
+
+# create new config file from template
+sudo cp config.defaut.ini config.ini
+
+# view old config file
+cat config.ini.orig
+
+# edit new file to transpose old config settings
+sudo nano config.ini
+```
+
 ## Release Notes
 
 1.  Added fix for bad read of remote config file when downloaded (thanks Ben Roeder)
