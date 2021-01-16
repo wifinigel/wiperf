@@ -2,6 +2,8 @@
 
 *(Looking for the old pre-v2 docs? Try this: [link](https://github.com/wifinigel/wiperf/tree/v0.10))*
 
+*(Version 2.1 is hot off the presses, check out the new features & fixes [here](https://wifinigel.github.io/wiperf/whats_new_v2.1/)*)
+
 ![wiperf hardware](mkdocs/docs/images/hardware.png)
 
 (Main wiperf documentation site : https://wifinigel.github.io/wiperf/)
@@ -11,12 +13,13 @@ Wiperf is a utility that can be installed on to a WLAN Pi or a Raspberry Pi to a
 The probe can run the following tests to give an indication of the performance of the network environment into which it has been deployed:
 
 - Wireless connection health check (if wireless connected)
-- Speedtest (Ookla)
+- Speedtest (Ookla/Librespeed)
 - iperf3 (TCP & UDP tests)
 - ICMP ping
 - HTTP
 - DNS
 - DHCP
+- SMB
 
 ![Probe Report](mkdocs/docs/images/probe_summary.jpg)
 
@@ -40,6 +43,9 @@ For more information about wiperf, please visit the [wiperf documentation site](
 - Thanks to [Kristian Roberts](https://uk.linkedin.com/in/krisalexroberts) for his invaluable input, testing and guidance on Splunk. He kicked this whole thing off and it definitely wouldn't have happened without him. A top bloke.
 - Thank you to Eric Garnel & James Whitehead for their invaluable contributions to the Grafana dashboards included in this distribution. I could not have put them together without your ideas and JSON code - thank you so much!
 - The MOS score code in the UDP iperf test results was kindly donated by Mario Gingras - his time and effort in developing this are very much appreciated. (I wish I'd thought of that!!! Lol).
+- Thanks again to Mario Gingras for the SMB testing idea and code - another valuable addition to the feature set of the tool.
+- A special mention to Tris Kipling who has been valuable source of feedback and ideas through his field experience of using wiperf. Your efforts, ideas and patience are very much appreciated my fiend, thank you.
+- Thanks to Neil Mac for constantly kicking the tyres on wiperf and making me think twice about stuff ;-)
 
 # Contributions
 
