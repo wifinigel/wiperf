@@ -1,0 +1,1734 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_WIPERFDB",
+      "label": "WiperfDB",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "6.7.2"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "$$hashKey": "object:1410",
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "High Level Summary of Performance Data",
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1610616903614,
+  "links": [
+    {
+      "$$hashKey": "object:167",
+      "icon": "dashboard",
+      "tags": [],
+      "title": "Probe Summary Dashboard",
+      "tooltip": "",
+      "type": "link",
+      "url": "dashboard/db/01-probe-summary"
+    },
+    {
+      "$$hashKey": "object:168",
+      "icon": "info",
+      "tags": [],
+      "title": "Help",
+      "tooltip": "Help Page",
+      "type": "link",
+      "url": "https://wifinigel.github.io/wiperf/db_wireless/#grafana"
+    }
+  ],
+  "panels": [
+    {
+      "collapsed": false,
+      "datasource": "${DS_WIPERFDB}",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 27,
+      "panels": [],
+      "repeat": null,
+      "title": "Wireless  Performance Data",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_WIPERFDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 4,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 1
+      },
+      "hiddenSeries": false,
+      "id": 28,
+      "interval": "",
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true,
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 0.5,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:5532",
+          "alias": "Tx PHY Rate",
+          "color": "#CA95E5"
+        },
+        {
+          "$$hashKey": "object:5533",
+          "alias": "Rx PHY Rate",
+          "color": "#56A64B"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-network",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "tx_rate_mbps"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "Tx PHY Rate"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-network",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "rx_rate_mbps"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "Rx PHY Rate"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Wireless Connection Rates - $WLANPi",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:5558",
+          "format": "short",
+          "label": "Phy Rate (Mbps)",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:5559",
+          "decimals": null,
+          "format": "short",
+          "label": "Signal (dBm)",
+          "logBase": 1,
+          "max": "-20",
+          "min": "-100",
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_WIPERFDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 4,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 1
+      },
+      "hiddenSeries": false,
+      "id": 6,
+      "interval": "",
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true,
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 0.5,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:5734",
+          "alias": "Signal Level (dBm)"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-network",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "signal_level_dbm"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "Signal Level (dBm)"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Wireless Connection Signal - $WLANPi",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:5745",
+          "decimals": null,
+          "format": "short",
+          "label": "Signal (dBm)",
+          "logBase": 1,
+          "max": "-15",
+          "min": "-100",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:5746",
+          "decimals": null,
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_WIPERFDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 8,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 19,
+      "interval": "",
+      "legend": {
+        "alignAsTable": false,
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true,
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 0.5,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "TX Retry Count",
+          "color": "#CA95E5"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "measurement": "wiperf-network",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT difference(last(\"tx_retries\")) AS \"TX Retry Count\" FROM \"wiperf-network\" WHERE (\"host\" =~ /^$WLANPi$/) AND $timeFilter GROUP BY time($__interval)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "tx_retries"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "TX Retry Count"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "measurement": "wiperf-network",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT difference(last(\"tx_retries\")) AS \"TX Retry Count\" FROM \"wiperf-network\" WHERE (\"host\" =~ /^$WLANPi$/) AND $timeFilter GROUP BY time($__interval)",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "tx_retries"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "TX Retry Count"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Layer 2 TX Retries - $WLANPi",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": null,
+          "format": "short",
+          "label": "L2 Retry Count",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_WIPERFDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 21,
+      "interval": "",
+      "legend": {
+        "avg": false,
+        "current": true,
+        "hideEmpty": true,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true,
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-network",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "tx_mcs"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "Tx MCS"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-network",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "rx_mcs"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "Rx MCS"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Wireless MCS (if supported by NIC) - $WLANPi",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "MCS",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "columns": [],
+      "datasource": "${DS_WIPERFDB}",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 17
+      },
+      "id": 23,
+      "pageSize": null,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "$$hashKey": "object:1573",
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "$$hashKey": "object:1574",
+          "alias": "",
+          "align": "right",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [],
+          "measurement": "wiperf-network",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"bssid\" AS \"BSSID\", \"ssid\" AS \"SSID\", \"channel\" AS \"Channel\", \"channel_width\" AS \"Channel Width\", \"tx_rate_mbps\" AS \"Tx Phy Rate (Mbps)\", \"rx_rate_mbps\" AS \"Rx Phy Rate (Mbps)\", \"signal_level_dbm\" AS \"RSSI (dBm)\" FROM \"wiperf-network\" WHERE (\"host\" =~ /^$WLANPi$/) AND $timeFilter",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "bssid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "BSSID"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "ssid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "SSID"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "channel"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "Channel"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "channel_width"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "Width (MHz)"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "tx_rate_mbps"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "Tx Rate (Mbps)"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "rx_rate_mbps"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "Rx Rate (Mbps)"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "signal_level_dbm"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "RSSI (dBm)"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Wireless Connection Details - $WLANPi",
+      "transform": "timeseries_to_columns",
+      "type": "table"
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_WIPERFDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 10,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 17
+      },
+      "hiddenSeries": false,
+      "id": 13,
+      "interval": "",
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 2,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": false,
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:1179",
+          "alias": "Channel",
+          "color": "#FFF899"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "wiperf-network",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"lookup_time_ms\" AS \"${HTTP_TARGET1}\" FROM \"wiperf-http\" WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=1)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "channel"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "Channel"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Wireless Channel - $WLANPi",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:2340",
+          "decimals": null,
+          "format": "none",
+          "label": "Channel",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:2341",
+          "format": "Mbits",
+          "label": "Avg rate",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "schemaVersion": 22,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=1)",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "DNS_TARGET1",
+        "options": [],
+        "query": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=1)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=2)",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "DNS_TARGET2",
+        "options": [],
+        "query": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=2)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=3)",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "DNS_TARGET3",
+        "options": [],
+        "query": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=3)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=4)",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "DNS_TARGET4",
+        "options": [],
+        "query": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=4)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=5)",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "DNS_TARGET5",
+        "options": [],
+        "query": "SELECT last(\"dns_target\") FROM \"wiperf-dns\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"dns_index\"=5)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=1)",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "HTTP_TARGET1",
+        "options": [],
+        "query": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=1)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=2)",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "HTTP_TARGET2",
+        "options": [],
+        "query": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=2)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=3)",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "HTTP_TARGET3",
+        "options": [],
+        "query": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=3)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=4)",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "HTTP_TARGET4",
+        "options": [],
+        "query": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=4)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=5)",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "HTTP_TARGET5",
+        "options": [],
+        "query": "SELECT last(\"http_target\") FROM \"wiperf-http\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=5)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 1) ",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "PING_TARGET1",
+        "options": [],
+        "query": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 1) ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 2) ",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "PING_TARGET2",
+        "options": [],
+        "query": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 2) ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 3) ",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "PING_TARGET3",
+        "options": [],
+        "query": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 3) ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 4) ",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "PING_TARGET4",
+        "options": [],
+        "query": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 4) ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 5) ",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "PING_TARGET5",
+        "options": [],
+        "query": "SELECT last(\"ping_host\") FROM \"wiperf-ping\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"ping_index\" = 5) ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "select  \"host\", \"network\" from \"wiperf-poll-status\" where time >= now() - 14d",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "index": -1,
+        "label": "Select Probe:",
+        "multi": false,
+        "name": "WLANPi",
+        "options": [],
+        "query": "select  \"host\", \"network\" from \"wiperf-poll-status\" where time >= now() - 14d",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "SMB_TARGET",
+        "options": [],
+        "query": "SELECT last(\"Smb_host\") FROM \"wiperf-smb\"  WHERE (\"host\" =~ /^$WLANPi$/) ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "SMB_FILENAME1",
+        "options": [],
+        "query": "SELECT \"filename\" FROM \"wiperf-smb\"  WHERE (\"host\" =~ /^$WLANPi$/ AND \"Smb_index\"=1)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "SMB_FILENAME2",
+        "options": [],
+        "query": "SELECT \"filename\" FROM \"wiperf-smb\"  WHERE (\"host\" =~ /^$WLANPi$/ AND \"Smb_index\"=2)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "SMB_FILENAME3",
+        "options": [],
+        "query": "SELECT \"filename\" FROM \"wiperf-smb\"  WHERE (\"host\" =~ /^$WLANPi$/ AND \"Smb_index\"=3)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "SMB_FILENAME4",
+        "options": [],
+        "query": "SELECT \"filename\" FROM \"wiperf-smb\"  WHERE (\"host\" =~ /^$WLANPi$/ AND \"Smb_index\"=4)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "SMB_FILENAME5",
+        "options": [],
+        "query": "SELECT \"filename\" FROM \"wiperf-smb\"  WHERE (\"host\" =~ /^$WLANPi$/ AND \"Smb_index\"=5)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "07 - Wireless detail",
+  "uid": "1mbeJd2Mz",
+  "variables": {
+    "list": []
+  },
+  "version": 11
+}

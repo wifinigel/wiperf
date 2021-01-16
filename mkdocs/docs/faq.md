@@ -1,5 +1,42 @@
 # FAQ
 
+## How can I report a bug / ask a question / make a suggestion for wiperf?
+
+Please checkout the [discussion section](https://github.com/wifinigel/wiperf/discussions) of the wiperf site of [GitHub](https://github.com/wifinigel/wiperf/discussions)
+
+## When using wiperf on the WLAN Pi, how can I remotely flip between classic and wiper modes via the CLI?
+
+**Warning** : Although it is possible to flip modes remotely (via an SSH session), be aware that you may hit network connectivity issues unless you are very careful. Remember that in classic mode the file `/etc/network/interfaces` and `/etc/wpa_supplicant/wpa_supplicant.conf` are used for network connectivity configuration. In wiperf mode, the files `/etc/wiperf/conf/etc/network/interfaces` and `/etc/wiperf/conf/etc/wpa_supplicant/wpa_supplicant.conf` are used for network connectivity configuration.
+
+To check the current mode of the wiperf, enter the following command:
+
+```
+# this files shows the current mode state (i.e. wiperf, wconsole, hotspot or classic)
+cat /etc/wlanpi-state
+```
+
+To check the current mode of wiperf using the wiper switcher script:
+
+``` 
+sudo /usr/bin/wiperf_switcher status
+```
+
+To toggle from classic mode to wiperf:
+
+```
+sudo /usr/bin/wiperf_switcher on
+```
+
+To toggle from wiperf mode to classic:
+
+```
+sudo /usr/bin/wiperf_switcher off
+```
+
+__(Remember, when switching modes, the wlanpi will reset and you will lose comms for around a minute)__
+
+
+
 ## Why does installation of wiperf fail with the message "(fail) pip installation of wiperf_poller failed. Exiting." ?
 This is usually due to the fact that the version of python required for wiperf is python version 3.7 or greater. This means that python version 3.7, 3.8...etc are fine but 3.6, 3.5, 3.4, 3.3... etc. will not work.
 
@@ -45,8 +82,15 @@ Please see this note for some suggestions for hardening the probe: [link](adv_se
 ## Where do I get the dashboard reports for Splunk and Grafana?
 Use SFTP/SCP and pull the xml files in ```/usr/share/wiperf/dashboards``` from your probe. Or, visit the wiperf GitHub site [here](https://github.com/wifinigel/wiperf/tree/main/dashboards){target=_blank}
 
+## How can I fix my probe to only connect to one specific wireless access point for testing?
+
+Checkout [this note](adv_fixed_bssid.md) for specific instructions on this configuration.
+
 ## Can I make a feature suggestion?
 Yes, get along to the GitHub site and post your suggestion in the ['Issues' section](https://github.com/wifinigel/wiperf/issues){target=_blank}. It will be added to my "todo" list.
+
+## Can I contribute some code for a new feature for wiperf?
+Please, get in touch before starting work on any code you'd like to submit as a PR. I love feedback and ideas, but each new feature costs me more cycles to support. Let's agree it can be included before submitting.
 
 ## Can I run tests over the Ethernet interface of the WLAN Pi?
 Yes, from wiperf v2 onwards.

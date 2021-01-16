@@ -1,6 +1,7 @@
 site_name: Wiperf V2 Documentation
 nav:
     - Home: index.md
+    - What's New in V2.1: whats_new_v2.1.md
     - Quickstart: quickstart.md
     - Operation Overview: operation.md
     - Data Server:
@@ -29,16 +30,23 @@ nav:
         - adv_remote_cfg.md
         - adv_rpi_standalone.md
         - adv_secure.md
+        - adv_fixed_bssid.md
     - FAQ: faq.md
     - Reference Docs:
         - config.ini.md
         - data_points.md
+        - reference_doc_smb.md
+        - reference_doc_librespeed.md
+        - reference_doc_caching.md
         - Dashboards:
             - db_probe_summary.md
             - db_speedtest.md
             - db_udp_iperf3.md
             - db_tcp_iperf3.md
             - db_http.md
+            - db_smb.md 
+            - db_wireless.md
+            - db_health.md
     - About: about.md
 theme:
     name: 'material'

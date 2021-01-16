@@ -18,6 +18,9 @@ The probe may collect data for the following network tests, depending upon its c
 - [iperf3 TCP test to a nominated iperf3 server](#iperf3-tcp-results)
 - [iperf3 UDP test to a nominated iperf3 server](#iperf3-udp-results)
 - [DHCP renewal test to test DHCP performance on network to which the WLAN Pi is connected](#dhcp-test-results)
+- [SMB/CIFS file copy tests from various desinations](#smb-results)
+- [Poller Errors](#poller-errors)
+- [Poll Status Information](#poll-status-info)
 
 The tests are run each time the wiperf process is triggered (usually every 5 minutes from a local cron job). The tests that are run, together with test configuration parameters are configured in the config.ini file.
 
@@ -120,6 +123,43 @@ Here are the data points that may be collected, displayed by test type:
 
 * time : Unix timestamp of time test was performed
 * renewal_time_ms : The time taken for the probe to renew it's IP address in milliseconds
+
+### SMB Results
+
+**(Data source: wiperf-smb)**
+
+* time : Unix timestamp of time test was performed
+* smb_index: test index number
+* smb_host: name/IP of host under test
+* filename: name of file being copied during the test
+* smb_time: the file transfer time in mS
+* smb_rate: the file transfer rate in Mbps
+
+### Poller Errors
+
+**(Data source: wiperf-poll-errors)**
+
+* time : Unix timestamp of time test was performed
+* error_message: text string containing error message
+
+### Poll Status Info
+
+**(Data source: wiperf-poll-status)**
+
+* time : Unix timestamp of time test was performed
+* network: text string indicating if network connection up OK
+* ip: IP address being used by probe network connection
+* speedtest: text string indicating if test completed/failed/disabled
+* ping: text string indicating if test completed/failed/disabled
+* dns: text string indicating if test completed/failed/disabled
+* http: text string indicating if test completed/failed/disabled
+* iperf_tcp: text string indicating if test completed/failed/disabled
+* iperf_udp: text string indicating if test completed/failed/disabled
+* dhcp: text string indicating if test completed/failed/disabled
+* smb: text string indicating if test completed/failed/disabled
+* probe_mode: string indicating if probe in wireless or ethernet mode
+* mgt_if: name of management interface (e.g. eth0, wlan0)
+* run_time: time is secs that poll cycle took to run
 
 
 

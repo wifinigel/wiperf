@@ -7,6 +7,12 @@ This section takes a look at how we install various additional required software
 ## WLAN Pi
 Good news! If you're using a WLAN Pi (v2.x image), you already have the software required (it's part of the WLAN Pi software image). Go to the [next section of this documentation site](probe_configure.md).
 
+!!! Note
+    __New in V2.1:__ For SMB test support or to use Librespeed for speedtest, you will need to install a couple of optional extra packages as detailed in these reference documents:
+
+    * [SMB test Support](reference_doc_smb.md)
+    * [Librespeed Support](reference_doc_librespeed.md)
+
 ## Raspberry Pi
 The RPi requires a few pre-requisite Linux packages before we can install the wiperf software itself. Note that the probe must be connected to a network (via ethernet or wireless) that has access to the Internet to download the required code.
 
@@ -37,6 +43,12 @@ sudo apt-get update
 sudo apt-get install python3-pip iperf3 git curl netcat -y
 sudo reboot
 ```
+
+!!! Note
+    __New in V2.1:__ For SMB test support or to use Librespeed for speedtest, you will need to install a couple of optional extra packages as detailed in these reference documents:
+
+    * [SMB test Support](reference_doc_smb.md)
+    * [Librespeed Support](reference_doc_librespeed.md)
 
 ### wiperf Software Installation
 To install the wiperf code itself on to the RPi, execute the following CLI command:

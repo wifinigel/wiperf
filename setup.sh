@@ -1,7 +1,7 @@
 #!/bin/bash
 # Installer for wiperf on WLAN Pi & RPi
-VERSION='2.0.0-beta6'
-POLLER_VERSION='0.1.25'
+VERSION='2.1.0'
+POLLER_VERSION='0.2.2'
 
 # Installation script log file
 LOG_FILE="/var/log/wiperf_install.log"
@@ -20,6 +20,7 @@ PLATFORM=$2
 install () {
 
   echo "(ok) Starting wiperf install process for $PLATFORM (see $LOG_FILE for details)" | tee -a $LOG_FILE 
+  echo "(ok) Version: ${VERSION} (poller ver: ${POLLER_VERSION}, branch: ${GITHUB_BRANCH})" | tee -a $LOG_FILE
 
   # Check which platform we're installing for
   if ! [[ $PLATFORM =~ ^(wlanpi|rpi)$ ]]; then
@@ -94,31 +95,6 @@ install () {
       echo "(ok) wiperf_poller module python installed" | tee -a $LOG_FILE 
   fi
 
-  ### pull & install the Splunk Event collector class
-  echo "(ok) Cloning the Splunk Event collector class..." | tee -a $LOG_FILE
-  # take out existing dir (if there)
-  rm -rf /tmp/Splunk-Class-httpevent
-  repo_src="https://github.com/wifinigel/Splunk-Class-httpevent.git"
-  #repo_src="https://github.com/georgestarcher/Splunk-Class-httpevent.git"
-  git -C /tmp clone $repo_src >> $LOG_FILE 2>&1
-
-  if [ "$?" != '0' ]; then
-    echo "(fail) Clone of Splunk Python module failed." | tee -a $LOG_FILE
-    exit 1
-  else
-    echo "(ok) Python Splunk module cloned OK." | tee -a $LOG_FILE
-  fi 
-
-  ### Install the Splunk collector module
-  echo "(ok) Installing the Splunk Event collector class (please wait)..." | tee -a $LOG_FILE
-  pip3 install /tmp/Splunk-Class-httpevent >> $LOG_FILE 2>&1
-  if [ -z "$?" ]; then
-    echo "(fail) Install of Splunk Python module failed." | tee -a $LOG_FILE
-    exit 1
-  else
-    echo "(ok) Splunk Python module installed OK." | tee -a $LOG_FILE
-  fi
-
   ### Pull in the wiperf github code
   echo "(ok) Cloning GitHub wiperf repo (please wait)..." | tee -a $LOG_FILE
   # get rid of the local copy if already exists (in case installing over the top)
@@ -159,9 +135,9 @@ install () {
     rm -rf $CFG_DIR/conf >> $LOG_FILE 2>&1
   fi 
 
-  # if we have old config files, copy them back im
+  # if we have old config files, copy them back in to cfg dir
   if [ -e "${BACKUP_DIR}/config.ini" ] ; then
-    echo "(ok) Restoring old config file..." | tee -a $LOG_FILE
+    echo "(ok) Restoring old config file... (if upgrading check release notes to see if this may need updating)" | tee -a $LOG_FILE
     # copy files back in to retain old config
     cp "${BACKUP_DIR}/config.ini" ${CFG_DIR}  >> $LOG_FILE 2>&1
   fi
@@ -199,12 +175,39 @@ install () {
     fi
 
   else
-      # remove the conf dir if rpi, as don't need it
+      # remove the wiperf_switcher file if rpi, as don't need it
       echo "(ok) Removing wiperf_switcher file...(not needed on RPi)" | tee -a $LOG_FILE
       rm -f $INSTALL_DIR/wiperf_switcher >> $LOG_FILE 2>&1
   fi
 
-  #TODO: Add series of tests to check out the final env
+  ################ Env checks ###############
+
+  ### check librespeed-cli is present
+  echo "(ok) Checking we have librespeed-cli available..."
+  librespeed-cli --version  >> $LOG_FILE 2>&1
+  if [ "$?" != '0' ]; then
+    echo "(warn) Does not look as if librespeed-cli is installed which will cause issues if you choose to use it for speedtests." | tee -a $LOG_FILE
+  else
+    echo "(ok) librespeed-cli looks OK"  | tee -a $LOG_FILE
+  fi
+
+  ### check mount.cifs is present
+  echo "(ok) Checking we have mount.cifs available..."
+  mount.cifs --version  >> $LOG_FILE 2>&1
+  if [ "$?" != '0' ]; then
+    echo "(warn) Does not look as if mount.cifs is installed which will cause issues if you choose to run cifs/smb tests." | tee -a $LOG_FILE
+  else
+    echo "(ok) mount.cifs looks OK"  | tee -a $LOG_FILE
+  fi
+
+  ### check umount is present
+  echo "(ok) Checking we have umount available..."
+  umount --version  >> $LOG_FILE 2>&1
+  if [ "$?" != '0' ]; then
+    echo "(warn) Does not look as if umount is installed which will cause issues if you choose to run cifs/smb tests." | tee -a $LOG_FILE
+  else
+    echo "(ok) umount looks OK"  | tee -a $LOG_FILE
+  fi
   
   echo "(ok) Install complete." | tee -a $LOG_FILE
 
@@ -219,7 +222,7 @@ install () {
       echo " 1. Edit wireless auth settings: sudo nano /etc/wpa_supplicant/wpa_supplicant.conf"
       echo " 2. Edit wlan0 settings: sudo nano /etc/network/interfaces" 
       echo " 3. Copy default cfg file to live cfg:  sudo cp $CFG_DIR/config.default.ini $CFG_DIR/config.ini"
-      echo " 4. Edit the cfg file for your env: nano $CFG_DIR/config.ini"
+      echo " 4. Edit the cfg file for your env: sudo nano $CFG_DIR/config.ini"
       echo " 5. Add a cron job to run wiperf regularly, e.g. sudo crontab -e (add line below)"
       echo "    0-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py > /var/log/wiperf_cron.log 2>&1"
       echo " 6. If you are running several probes on a network, change their hostnames to be unique:"
@@ -229,19 +232,19 @@ install () {
       echo "================================================="
       echo ""
     fi
-  #else
-  #  echo ""
-  #  echo "================================================="
-  #  echo "Don't forget to modify the following files before"
-  #  echo "switching in to wiperf mode:"
-  #  echo ""
-  #  echo " 1. Copy default cfg file to live cfg:  sudo cp $CFG_DIR/config.default.ini $CFG_DIR/config.ini"
-  #  echo " 2. Edit the cfg file for your env: sudo nano $CFG_DIR/config.ini"
-  #  echo " 3. Edit the WLAN config file for your env: sudo nano $CFG_DIR/conf/etc/wpa_supplicant/wpa_supplicant.conf" 
-  #  echo "    (add WLAN info)"
-  #  echo " 4. Reboot the WLAN Pi before first-use from fpms: sudo sync; sudo reboot"
-  #  echo "================================================="
-  #  echo ""
+  else
+     echo ""
+     echo "================================================="
+     echo "Don't forget to modify the following files before"
+     echo "switching in to wiperf mode:"
+     echo ""
+     echo " 1. Copy default cfg file to live cfg:  sudo cp $CFG_DIR/config.default.ini $CFG_DIR/config.ini"
+     echo " 2. Edit the cfg file for your env: sudo nano $CFG_DIR/config.ini"
+     echo " 3. Edit the WLAN config file for your env: sudo nano $CFG_DIR/conf/etc/wpa_supplicant/wpa_supplicant.conf" 
+     echo "    (add WLAN info)"
+     echo " 4. Reboot the WLAN Pi before first-use from fpms: sudo sync; sudo reboot"
+     echo "================================================="
+     echo ""
   fi
 }
 
@@ -251,8 +254,6 @@ uninstall () {
 
   # remove python modules
   echo "(ok) Removing Python modules" | tee -a $LOG_FILE
-  echo "(ok) ...splunk_http_event_collector" | tee -a $LOG_FILE
-  pip3 uninstall -y Splunk-HEC  >> $LOG_FILE 2>&1
   echo "(ok) ...wiperf_poller" | tee -a $LOG_FILE
   pip3 uninstall -y wiperf_poller  >> $LOG_FILE 2>&1
 
@@ -295,7 +296,7 @@ upgrade () {
 
   # install new code
   echo "(ok) Installing latest version of wiperf..."
-  curl -s https://raw.githubusercontent.com/wifinigel/wiperf/main/setup.sh | sudo bash -s install $PLATFORM
+  curl -s https://raw.githubusercontent.com/wifinigel/wiperf/${GITHUB_BRANCH}/setup.sh | sudo bash -s install $PLATFORM
 
   exit 0
 }

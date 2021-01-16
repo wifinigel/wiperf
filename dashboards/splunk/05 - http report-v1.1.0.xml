@@ -25,7 +25,7 @@
   <row>
    <html>
     <div align="right">
-     <a href="https://wifinigel.github.io/wiperf/" target="_blank">Wiperf Docs</a> | <a href="https://wifinigel.github.io/wiperf/troubleshooting/" target="_blank">Troubleshooting</a> | <a href="https://wifinigel.github.io/wiperf/db_http/#splunk" target="_blank">Report Help</a> | (Template v1.0.0)
+     <a href="/app/search/01">Probe Summary</a> | <a href="https://wifinigel.github.io/wiperf/" target="_blank">Wiperf Docs</a> | <a href="https://wifinigel.github.io/wiperf/troubleshooting/" target="_blank">Troubleshooting</a> | <a href="https://wifinigel.github.io/wiperf/db_http/#splunk" target="_blank">Report Help</a> | (Template v1.1.0)
     </div>
    </html>
   </row>

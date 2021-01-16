@@ -11,7 +11,11 @@ Instructions are also provided for upgrading to the latest 'dev' release. This c
 ## WLAN Pi
 
 ### Upgrade To Latest Stable Release
-Execute the following commands on the WLAN Pi CLI:
+
+!!! Attention
+    __Make sure your WLAN Pi is in "Classic" mode before upgrading (not wiperf mode)__
+
+To perform an upgrade of wiperf, execute the following commands on the WLAN Pi CLI:
 
 ```
 # check the curent installed version and latest available version:

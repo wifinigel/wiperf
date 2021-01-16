@@ -10,12 +10,13 @@ Wiperf is a utility that can be installed on to a WLAN Pi or a Raspberry Pi to a
 The probe can run the following tests to give an indication of the performance of the network environment into which it has been deployed:
 
 - Wireless connection health check (if wireless connected)
-- Speedtest (Ookla)
+- Speedtest (Ookla/Librespeed)
 - iperf3 (TCP & UDP tests)
 - ICMP ping
 - HTTP
 - DNS
 - DHCP
+- SMB
 
 Tests may be performed over the wireless or ethernet interface of the probe unit. The results must then be sent back to a Splunk or InfluxDB server (which we'll call the "data server") to provide a reporting capability. (*NOTE: There is no graphing/reporting capability on the wiperf probe itself*)
 
