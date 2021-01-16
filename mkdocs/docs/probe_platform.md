@@ -19,7 +19,7 @@ Wiperf on the RPi has been tested on models that have an internal Wi-Fi NIC: 3b+
 
 Earlier versions of the RPi that do not have a an internal NIC will need some type of USB wireless adapter, but as support for external wireless NICs is very poor and many tend to be 2.4GHz only, I've not explored this area in detail. 
 
-Unfortunately, getting a 2 stream 802.11ac NIC going seems nigh-on impossible due to the lack of drivers available, so the internal, single stream NIC is the best we can generally do. 
+Unfortunately, getting a 2 stream 802.11ac NIC going seems very difficult due to the lack of drivers available, so the internal, single stream NIC is often best we can generally do. However, the situation does seem to be improving with more recent kernels, so test out a few NICs and see how you do. 
 
 Using a single stream NIC has its limitations as speed performance is very limited, but as the main aim of wiperf is to monitor user experience (particularly changes in that experience), then it's good enough for many use-cases where we are mainly interested in changes in relation to the usual baseline.
 

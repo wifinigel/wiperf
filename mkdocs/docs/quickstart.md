@@ -27,19 +27,19 @@ You will need to be comfortable with the following items to get wiperf going:
 - Basic Linux administration skills (including editing files on the CLI, running scripts, updating/adding packages)
 
 __Building a Probe:__
-You'll need to build the probe from scratch, which may include burning images on to an SD card, adding new packages and performing administrative tasks such as setting the hostname, network configuration details and the timezone.
+You'll need to build the probe from scratch, which may include burning images on to an SD card, a variety of Linux operations such as adding new packages and performing administrative tasks such as setting the hostname, network configuration details and the timezone.
 
 Once the basic probe is built, you will then download the wiperf code using an automated script and configure its operation using a CLI text editor.
 
 __Reporting:__
 As stated previously, wiperf __is not__ a reporting platform. It has been designed to send data to a reporting platform (that you build yourself, separately) such as Splunk or Grafana. 
 
-Details are provided to "get you going" with the reporting platform, but these platforms are not part of this project and detailed customization of these platforms and supporting them is outside of the wiperf project. No support will be provided for these platforms besides the basic report templates that are provided on a best efforts basis. 
+Details are provided to "get you going" with the reporting platform, but these platforms are not part of this project and detailed customization of these platforms and supporting them is outside of the wiperf project. No support will be provided for these platforms besides the basic report templates that are provided on a best-efforts basis. 
 
-Remember, wiperf is a UX network probe - analyzing the data is provides is your responsibility.
+Remember, wiperf is a UX network probe - analyzing the data it provides is your responsibility.
 
 __Documentation:__
 I have created a wide range of documentation to help you to get your wiperf probe going, together with the basics of setting up a suitable reporting platform. Please take time to read through this documentation before reaching out for support. 
 
-I recommend that you start [here](index.md) and work sequentially though the [documentation provided](index.md).
+I recommend that you start [here](operation.md) and work sequentially though the [documentation provided](operation.md).
 

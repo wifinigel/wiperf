@@ -70,12 +70,15 @@ There are a number of sample configurations included in the default file provide
 
 (__Note:__ *This wireless configuration is only used when the WLAN Pi is flipped in to wiperf mode, not for standard (classic mode) wireless connectivity*)
 
+!!! Note
+    If you'd like to fix the AP that the probe associates with, check out [this note](adv_fixed_bssid.md)
+
 At this point, the pre-requisite activities for the WLAN Pi are complete. Next, move on to the [probe configuration](probe_configure.md).
 
 ## Raspberry Pi
 
 ### Software Image
-I would strongly recommend starting with a fresh image using the latest and greatest Raspberry Pi OS (previously called Raspbian): [https://www.raspberrypi.org/downloads/raspberry-pi-os/](https://www.raspberrypi.org/downloads/raspberry-pi-os/){target=_blank}. I would also recommend that you use the "headless", Lite version of Raspberry Pi OS rather than the desktop version (this is mainly as I have not tested with the desktop version and am not sure if there will be any resource issues.)
+I would strongly recommend starting with a fresh image using the latest and greatest Raspberry Pi OS (previously called Raspbian): [https://www.raspberrypi.org/downloads/raspberry-pi-os/](https://www.raspberrypi.org/downloads/raspberry-pi-os/){target=_blank}. I would also recommend that you use the "headless", Lite version of Raspberry Pi OS rather than the desktop version (this is mainly as I have not tested with the desktop version and am not sure if there will be any resource or package conflict issues.)
 
 __Note:__ *A Python version of 3.6 or greater is required to wiperf. The Python version installed as part of the distribution you are using used must be Python 3.6 or higher (check with ```python3 -V```). Going with a recent RPi image is strongly advised to ensure this requirement is met*
 
@@ -109,9 +112,9 @@ sudo reboot
 ```
 
 ### Probe CLI Access
-You will need CLI access to perform the required configuration steps for wiperf. There are a number of ways of gaining this access that are detailed in this document: [https://www.raspberrypi.org/documentation/remote-access/ssh/](https://www.raspberrypi.org/documentation/remote-access/ssh/){target=_blank}. 
+You will need CLI access to perform the required configuration steps for wiperf. There are a number of ways of gaining this access that are detailed in this document: [https://www.raspberrypi.org/documentation/remote-access/ssh/](https://www.raspberrypi.org/documentation/remote-access/ssh/){target=_blank} (see the section *"Enable SSH on a headless Raspberry Pi"*). 
 
-My personal favourite is to enable SSH on a headless RPi by adding an 'ssh' file to the SD card prior to boot-up.
+My personal favourite is to enable SSH on a headless RPi by adding an 'ssh' file to the SD card prior to boot-up (see section *"Enable SSH on a headless Raspberry Pi"* in the link above).
 
 #### Default Login Account Password
 If using a fresh RPI image (which is recommended), remember to update the default 'pi' username with a new password so that your are not running with the default login of : ```pi/raspberry``` (user/pwd)
@@ -284,5 +287,8 @@ To test if the wireless connection has come up OK, use the following commands to
 iwconfig
 ifconfig
 ```
+
+!!! Note
+    If you'd like to fix the AP that the probe associates with, check out [this note](adv_fixed_bssid.md)
 
 Next, we need to [install a few software packages on to the RPi probe](probe_install.md#raspberry-pi).

@@ -95,8 +95,10 @@ The output is quite verbose and detailed, but it will provide a good indication 
 
 ## Miscellaneous Checks
 
-### NTP
-Make sure your probe and Splunk servers are NTP sync'ed and are showing the same data and time. Check the time and date of the probe using the CLI command ```date```
+### NTP / Time Sync
+Make sure your probe and reporting server are time synchronized and are showing the same data and time. Check the time and date of the probe using the CLI command `date`. If your probe and reporting server are in different timezones, check the UTC time on both to make sure you are comparing apples with apples: `date -u`
+
+The WLAN Pi and RPi will generally synchronized to a time source out of the box using a process such as Chrony or NTP, so will not need any specific intervention. However, if they do not have access to the Internet, the synchronization process may be compromised and may need you to [manually configure time sources](https://pimylifeup.com/using-ntp-on-linux-with-chrony/){target=_blank}.
 
 ### Hostname
 If you have changed the probe hostname from its default, make sure you have updated both the `/etc/hosts` **AND** the `/etc/hostname` files with the new name (if done incorrectly, this can cause some very weird issues!)
