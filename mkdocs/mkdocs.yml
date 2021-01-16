@@ -30,6 +30,7 @@ nav:
         - adv_remote_cfg.md
         - adv_rpi_standalone.md
         - adv_secure.md
+        - adv_fixed_bssid.md
     - FAQ: faq.md
     - Reference Docs:
         - config.ini.md
