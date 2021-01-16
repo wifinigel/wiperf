@@ -13,7 +13,7 @@
     
     
       
-        <title>Probe Software Installation - Wiperf V2 Documentation</title>
+        <title>SMB/CIFS Test - Wiperf V2 Documentation</title>
       
     
     
@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#probe-software-installation" class="md-skip">
+        <a href="#smbcifs-test" class="md-skip">
           Skip to content
         </a>
       
@@ -90,7 +90,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Probe Software Installation
+              SMB/CIFS Test
             
           </span>
         </div>
@@ -406,12 +406,10 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
     
     <label class="md-nav__link" for="nav-6">
       Probe
@@ -453,83 +451,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Probe Software Installation
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-    
-    <a href="./" title="Probe Software Installation" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../probe_install/" title="Probe Software Installation" class="md-nav__link">
       Probe Software Installation
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#wlan-pi" class="md-nav__link">
-    WLAN Pi
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#raspberry-pi" class="md-nav__link">
-    Raspberry Pi
-  </a>
-  
-    <nav class="md-nav" aria-label="Raspberry Pi">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#package-updates" class="md-nav__link">
-    Package Updates
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pre-requisite-packages" class="md-nav__link">
-    Pre-requisite Packages
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#wiperf-software-installation" class="md-nav__link">
-    wiperf Software Installation
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -688,10 +614,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-10" type="checkbox" id="nav-10">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-10" type="checkbox" id="nav-10" checked>
     
     <label class="md-nav__link" for="nav-10">
       Reference Docs
@@ -733,11 +661,63 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../reference_doc_smb/" title="SMB/CIFS Test" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        SMB/CIFS Test
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" title="SMB/CIFS Test" class="md-nav__link md-nav__link--active">
       SMB/CIFS Test
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisites" class="md-nav__link">
+    Pre-requisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    Configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-smb-testing-supplementary-info" class="md-nav__link">
+    General SMB Testing (Supplementary Info)
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -928,43 +908,23 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#wlan-pi" class="md-nav__link">
-    WLAN Pi
+  <a href="#pre-requisites" class="md-nav__link">
+    Pre-requisites
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#raspberry-pi" class="md-nav__link">
-    Raspberry Pi
-  </a>
-  
-    <nav class="md-nav" aria-label="Raspberry Pi">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#package-updates" class="md-nav__link">
-    Package Updates
+  <a href="#configuration" class="md-nav__link">
+    Configuration
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#pre-requisite-packages" class="md-nav__link">
-    Pre-requisite Packages
+      
+        <li class="md-nav__item">
+  <a href="#general-smb-testing-supplementary-info" class="md-nav__link">
+    General SMB Testing (Supplementary Info)
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#wiperf-software-installation" class="md-nav__link">
-    wiperf Software Installation
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -981,58 +941,88 @@
               
                 
                 
-                <h1 id="probe-software-installation">Probe Software Installation</h1>
-<p>This section takes a look at how we install various additional required software packages on to our probe. This includes any pre-requisite software packages and the wiperf software itself.</p>
-<h2 id="wlan-pi">WLAN Pi</h2>
-<p>Good news! If you're using a WLAN Pi (v2.x image), you already have the software required (it's part of the WLAN Pi software image). Go to the <a href="../probe_configure/">next section of this documentation site</a>.</p>
+                <h1 id="smbcifs-test">SMB/CIFS Test</h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><strong>New in V2.1:</strong> For SMB test support or to use Librespeed for speedtest, you will need to install a couple of optional extra packages as detailed in these reference documents:</p>
-<ul>
-<li><a href="../reference_doc_smb/">SMB test Support</a></li>
-<li><a href="../reference_doc_librespeed/">Librespeed Support</a></li>
-</ul>
+<p><strong>New in V2.1</strong></p>
 </div>
-<h2 id="raspberry-pi">Raspberry Pi</h2>
-<p>The RPi requires a few pre-requisite Linux packages before we can install the wiperf software itself. Note that the probe must be connected to a network (via ethernet or wireless) that has access to the Internet to download the required code.</p>
-<p>You will need CLI access to the probe to perform the steps detailed below.</p>
-<h3 id="package-updates">Package Updates</h3>
-<p>Before we start adding pre-requisite packages, it's always a good idea to update the existing Linux packages on our RPi to make sure we have the "latest and greatest". This may take a few minutes to complete as many files may be downloaded &amp; updated, depending on when/if your RPi was last updated:</p>
-<div class="highlight"><pre><span></span><code># download &amp; update latest Linux packages
-sudo apt-get update &amp;&amp; sudo apt-get upgrade -y
-sudo reboot
-</code></pre></div>
-
-<h3 id="pre-requisite-packages">Pre-requisite Packages</h3>
-<p>Next, we need to install additional Linux packages that may not be included as part of the standard RPi distribution: </p>
+<p>The SMB/CIFS benchmarking test performs a simple copy of a file from a server to the local wiperf host. This may be useful to simulate a standard Windows file copy from a server.</p>
+<p>Once each test is completed, data is reported that shows the file copied, the transfer time and the data rate achieved. Note that transfers that take longer than one minute will time out, so please consider this when setting up tests.</p>
+<p>Up to 5 tests may be performed during each wiperf poll cycle. For each test, the following information must be configured:</p>
 <ul>
-<li>pip3</li>
-<li>iperf3</li>
-<li>git </li>
-<li>curl</li>
-<li>netcat</li>
+<li>smb_host: name of IP of he remote server</li>
+<li>smb_username: username for login credentials on remote server </li>
+<li>smb_password: password for login credentials on remote server </li>
+<li>smb_path: the shared remote server path </li>
+<li>smb_filename: the remote file to be copied during the test</li>
 </ul>
-<p>These are installed with the following CLI commands:</p>
+<p>(See the following reference document for more detailed configuration information: <a href="../config.ini/#smb_test-section">config.ini</a></p>
+<h2 id="pre-requisites">Pre-requisites</h2>
+<p>As the SMB/CIFS test suite is an optional test module, some prerequisite linux packages may be missing from your wiper probe software (both WLAN Pi and RPi). </p>
+<p>To ensure that you have the required packages on your wiper probe, please run the following commands:</p>
 <div class="highlight"><pre><span></span><code>sudo apt-get update
-sudo apt-get install python3-pip iperf3 git curl netcat -y
-sudo reboot
+sudo apt-get install cifs-utils
 </code></pre></div>
 
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><strong>New in V2.1:</strong> For SMB test support or to use Librespeed for speedtest, you will need to install a couple of optional extra packages as detailed in these reference documents:</p>
-<ul>
-<li><a href="../reference_doc_smb/">SMB test Support</a></li>
-<li><a href="../reference_doc_librespeed/">Librespeed Support</a></li>
-</ul>
-</div>
-<h3 id="wiperf-software-installation">wiperf Software Installation</h3>
-<p>To install the wiperf code itself on to the RPi, execute the following CLI command:</p>
-<div class="highlight"><pre><span></span><code>curl -s https://raw.githubusercontent.com/wifinigel/wiperf/main/setup.sh | sudo bash -s install rpi
-</code></pre></div>
+<p>If you get a message advising that <code>cifs-utils</code> is already installed, do not worry.</p>
+<h2 id="configuration">Configuration</h2>
+<p>Once the pre-requisite packages are installed, as with all other wiperf tests, please configure the relevant section of the wiperf probe <code>/etc/wiperf/config.ini</code> file. Please visit this document for detail information about the configuration options: <a href="../config.ini/#smb_test-section">config.ini</a>)</p>
+<h2 id="general-smb-testing-supplementary-info">General SMB Testing (Supplementary Info)</h2>
+<p>If you are not too familiar with using SMB/CIFS file shares and would like to set up and perform your own testing (e.g. in your lab), here are some useful notes on setting up a basic SMB server and client using some test Linux devices. <strong>Note:</strong> <em>these are unsupported reference notes which may/may not be helpful to you.</em></p>
+<p><strong>Server side (Linux server):</strong></p>
+<ol>
+<li>Install samba: sudo apt-get update &amp;&amp; sudo apt-get install samba</li>
+<li>Create samba account to access share:
+    <div class="highlight"><pre><span></span><code>sudo userdd smbuser
+sudo smbpasswd -a smbuser
+</code></pre></div></li>
+<li>Create dir to be shared (adjust this for your user account - 'wlanpi' usr account used in this example)
+    <div class="highlight"><pre><span></span><code>sudo mkdir /home/wlanpi/share
+sudo chown wlanpi:wlanpi /home/wlanpi/share
+</code></pre></div></li>
+<li>Edit smb.conf to add share:
+    <div class="highlight"><pre><span></span><code>sudo nano /etc/samba/smb.conf
 
-<p>This will initiate the download and installation of a number of python packages, together with the wiperf code itself. This will take a few minutes to complete.</p>
-<p>Once installation is complete, our final step is to <a href="../probe_configure/">configure the wiperf probe</a> to perform the tests we'd like to run, and provide details of where the probe needs to send its data (i.e. our data server).</p>
+# Add this to end of smb.conf - adjust path for your instance
+[shared]
+path = /home/wlanpi/share
+available = yes
+valid users = smbuser
+read only = no
+create mask = 0755
+browsable = yes
+public = yes
+writable = yes
+</code></pre></div></li>
+<li>
+<p>Restart samba: 
+    <div class="highlight"><pre><span></span><code>systemctl restart smbd
+systemctl status smbd
+# make sure our firewall doesn&#39;t get in the way (if installed)
+# ** do not leave firewall disabled!!! **
+ufw disable
+</code></pre></div>
+<strong>Client side (WLAN Pi/RPi):</strong></p>
+</li>
+<li>
+<p>Install cifs-utils: : sudo apt-get update &amp;&amp; sudo apt-get install cifs-utils</p>
+</li>
+<li>
+<p>Create local mount point:
+    <div class="highlight"><pre><span></span><code>mkdir /tmp/share
+</code></pre></div></p>
+</li>
+<li>Mount the remote volume - adjust IP address for your remote server(s):
+    <div class="highlight"><pre><span></span><code>/sbin/mount.cifs //192.168.0.52/shared /tmp/share -o user=smbuser,pass=&#39;smbuser&#39;
+/sbin/mount.cifs //192.168.0.193/shared /tmp/share -o user=smbuser,pass=&#39;smbuser&#39;
+</code></pre></div></li>
+<li>Copy a file from the remote mount:
+    <div class="highlight"><pre><span></span><code>/bin/cp -f /tmp/share/file.txt ~/.
+</code></pre></div></li>
+<li>Unmount volume:
+    <div class="highlight"><pre><span></span><code>/bin/umount /tmp/share
+</code></pre></div></li>
+</ol>
                 
                   
                     
@@ -1064,7 +1054,7 @@ sudo reboot
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../probe_prepare/" title="Probe Preparation" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../data_points/" title="Data Points Reference Guide" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -1073,19 +1063,19 @@ sudo reboot
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Probe Preparation
+                Data Points Reference Guide
               </div>
             </div>
           </a>
         
         
-          <a href="../probe_configure/" title="Probe Configuration" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../reference_doc_librespeed/" title="Librespeed Speedtest" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Probe Configuration
+                Librespeed Speedtest
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
