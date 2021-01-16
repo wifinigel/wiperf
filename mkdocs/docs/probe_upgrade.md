@@ -18,14 +18,12 @@ Instructions are also provided for upgrading to the latest 'dev' release. This c
 To perform an upgrade of wiperf, execute the following commands on the WLAN Pi CLI:
 
 ```
-# check the curent installed version and latest available version:
-sudo /usr/share/wiperf/setup.sh check_ver
-```
-
-```
 # perform the upgrade (probe must be connected to Internet)
 curl -s https://raw.githubusercontent.com/wifinigel/wiperf/main/setup.sh | sudo bash -s upgrade wlanpi
 ```
+
+!!! Attention
+    __Ensure that you re-create your config.ini file using the new config.default.ini file supplied during the upgrade__
 
 ### Upgrade To Latest Dev Release
 Execute the following commands on the WLAN Pi CLI:
@@ -49,6 +47,9 @@ sudo /usr/share/wiperf/setup.sh check_ver
 # perform the upgrade (probe must be connected to Internet)
 curl -s https://raw.githubusercontent.com/wifinigel/wiperf/main/setup.sh | sudo bash -s upgrade rpi
 ```
+
+!!! Attention
+    __Ensure that you re-create your config.ini file using the new config.default.ini file supplied during the upgrade__
 
 ### Upgrade To Latest Dev Release
 Execute the following commands on the RPi CLI:
