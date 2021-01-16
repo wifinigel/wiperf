@@ -1018,10 +1018,6 @@
 <p><strong>Make sure your WLAN Pi is in "Classic" mode before upgrading (not wiperf mode)</strong></p>
 </div>
 <p>To perform an upgrade of wiperf, execute the following commands on the WLAN Pi CLI:</p>
-<div class="highlight"><pre><span></span><code># check the curent installed version and latest available version:
-sudo /usr/share/wiperf/setup.sh check_ver
-</code></pre></div>
-
 <div class="highlight"><pre><span></span><code># perform the upgrade (probe must be connected to Internet)
 curl -s https://raw.githubusercontent.com/wifinigel/wiperf/main/setup.sh | sudo bash -s upgrade wlanpi
 </code></pre></div>
