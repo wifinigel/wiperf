@@ -82,6 +82,10 @@ Please see this note for some suggestions for hardening the probe: [link](adv_se
 ## Where do I get the dashboard reports for Splunk and Grafana?
 Use SFTP/SCP and pull the xml files in ```/usr/share/wiperf/dashboards``` from your probe. Or, visit the wiperf GitHub site [here](https://github.com/wifinigel/wiperf/tree/main/dashboards){target=_blank}
 
+## How can I fix my probe to only connect to one specific wireless access point for testing?
+
+Checkout [this note](adv_fixed_bssid.md) for specific instructions on this configuration.
+
 ## Can I make a feature suggestion?
 Yes, get along to the GitHub site and post your suggestion in the ['Issues' section](https://github.com/wifinigel/wiperf/issues){target=_blank}. It will be added to my "todo" list.
 
