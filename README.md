@@ -4,6 +4,8 @@
 
 ![wiperf hardware](mkdocs/docs/images/hardware.png)
 
+(Main wiperf documentation site : https://wifinigel.github.io/wiperf/)
+
 Wiperf is a utility that can be installed on to a WLAN Pi or a Raspberry Pi to act as a network probe running a series of  network performance tests. It is primarily intended to provide an indication of the end-user experience on a wireless network, but may also be used as a standalone ethernet-connected probe to allow a wired experience to also be tested.
 
 The probe can run the following tests to give an indication of the performance of the network environment into which it has been deployed:
@@ -39,10 +41,14 @@ For more information about wiperf, please visit the [wiperf documentation site](
 - Thank you to Eric Garnel & James Whitehead for their invaluable contributions to the Grafana dashboards included in this distribution. I could not have put them together without your ideas and JSON code - thank you so much!
 - The MOS score code in the UDP iperf test results was kindly donated by Mario Gingras - his time and effort in developing this are very much appreciated. (I wish I'd thought of that!!! Lol).
 
+# Contributions
+
+Please, get in touch before starting work on any code you'd like to submit as a PR. I love feedback and ideas, but each new feature costs me more cycles to support. Let's agree it can be included before submitting.
+
 # Caveats
 
 This free software is provided for you to use at your own risk. There are no guarantees around its operation, suitability or the data that it provides. Please consult the [license file][license] shipped with this software.
 
 # Developer
 
-Nigel Bowden (WifiNigel): https://twitter.com/wifinigel
+Nigel Bowden (WifiNigel): https://wifinigel.blogspot.com
