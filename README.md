@@ -53,7 +53,7 @@ Please, get in touch before starting work on any code you'd like to submit as a 
 
 # Caveats
 
-This free software is provided for you to use at your own risk. There are no guarantees around its operation, suitability or the data that it provides. Please consult the [license file][license] shipped with this software.
+This free software is provided for you to use at your own risk. There are no guarantees around its operation, suitability or the data that it provides. Please consult the [license file](License.txt) shipped with this software.
 
 # Developer
 
