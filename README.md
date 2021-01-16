@@ -44,7 +44,7 @@ For more information about wiperf, please visit the [wiperf documentation site](
 - Thank you to Eric Garnel & James Whitehead for their invaluable contributions to the Grafana dashboards included in this distribution. I could not have put them together without your ideas and JSON code - thank you so much!
 - The MOS score code in the UDP iperf test results was kindly donated by Mario Gingras - his time and effort in developing this are very much appreciated. (I wish I'd thought of that!!! Lol).
 - Thanks again to Mario Gingras for the SMB testing idea and code - another valuable addition to the feature set of the tool.
-- A special mention to Tris Kipling who has been valuable source of feedback and ideas through his field experience of using wiperf. Your efforts, ideas and patience are very much appreciated my fiend, thank you.
+- A special mention to Tris Kipling who has been valuable source of feedback and ideas through his field experience of using wiperf. Your efforts, ideas and patience are very much appreciated my friend, thank you.
 - Thanks to Neil Mac for constantly kicking the tyres on wiperf and making me think twice about stuff ;-)
 
 # Contributions
