@@ -149,6 +149,20 @@ Next, with the editor open, add following line to the open file:
 ```
 This command will run the main wiperf script to run the tests configured within config.ini at an interval of 5 minutes. It will also dump all script output to the file  ```/var/log/wiperf_cron.log``` (this is a good place to look if you hit any issues with wiperf not running as expected)
 
+!!! Attention
+    The cron command provided above  will run every 5 minutes from the top of the hour (i.e. 0, 5, 10, 15, 20...etc. minutes as the hour.)
+
+    If you would like to offset the run time to be something other than the top of the hour, simply change the first digit from '0' to another number between 1 and 4. 
+
+    For example, changing the '0' to '1' will run the cron job at 1, 6, 11, 16...etc. minutes past the hour:
+
+    ```
+    # run cron at 1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56 minutes past the hour
+    1-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py > /var/log/wiperf_cron.log 2>&1
+    ```
+
+    (Note: you do not have to wait for the top of the hour for the job to run - it will run as soon as it hits the nearest configure time increment.)
+
 ## Initial Probe Testing
 Once the cron job has been configured, the case of the RPi, or the WLAN Pi has been put in to wiperf mode, it's time to check if the probe is working as expected.
 
