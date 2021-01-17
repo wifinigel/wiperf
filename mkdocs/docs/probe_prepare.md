@@ -84,7 +84,7 @@ __Note:__ *A Python version of 3.6 or greater is required to wiperf. The Python 
 
 __Note:__ *Please use a dedicated RPi platform that is used only as a probe. Please do not install additional packages other than those recommended. Also, please use only one active Ethernet interface and one active wireless interface. Multiple live adapters will likely cause operational issues.*
 
-For the development and testing of the wiperf code, version 10 (Buster) was used. You can check the version on your RPi using the ```cat /etc/os0-release``` command. Here is my sample output:
+For the development and testing of the wiperf code, version 10 (Buster) was used. You can check the version on your RPi using the ```cat /etc/os-release``` command. Here is my sample output:
 
 ```
 pi@probe7:~$ cat /etc/os-release 
