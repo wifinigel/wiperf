@@ -161,7 +161,7 @@ This command will run the main wiperf script to run the tests configured within 
     1-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py > /var/log/wiperf_cron.log 2>&1
     ```
 
-    (Note: you do not have to wait for the top of the hour for the job to run - it will run as soon as it hits the nearest configure time increment.)
+    (Note: you do not have to wait for the top of the hour for the job to run - it will run as soon as it hits the nearest configured time increment.)
 
 ## Initial Probe Testing
 Once the cron job has been configured, the case of the RPi, or the WLAN Pi has been put in to wiperf mode, it's time to check if the probe is working as expected.
