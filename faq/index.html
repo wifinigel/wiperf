@@ -642,6 +642,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#why-do-i-get-a-message-saying-switch-failed-wiperf-mode-when-i-try-to-switch-on-to-wiperf-mode-on-the-wlan-pi" class="md-nav__link">
+    Why do I get a message saying "Switch : failed wiperf mode" when I try to switch on to wiperf mode on the WLAN Pi?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-using-wiperf-on-the-wlan-pi-how-can-i-remotely-flip-between-classic-and-wiper-modes-via-the-cli" class="md-nav__link">
     When using wiperf on the WLAN Pi, how can I remotely flip between classic and wiper modes via the CLI?
   </a>
@@ -997,6 +1004,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#why-do-i-get-a-message-saying-switch-failed-wiperf-mode-when-i-try-to-switch-on-to-wiperf-mode-on-the-wlan-pi" class="md-nav__link">
+    Why do I get a message saying "Switch : failed wiperf mode" when I try to switch on to wiperf mode on the WLAN Pi?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-using-wiperf-on-the-wlan-pi-how-can-i-remotely-flip-between-classic-and-wiper-modes-via-the-cli" class="md-nav__link">
     When using wiperf on the WLAN Pi, how can I remotely flip between classic and wiper modes via the CLI?
   </a>
@@ -1110,6 +1124,9 @@
                 <h1 id="faq">FAQ</h1>
 <h2 id="how-can-i-report-a-bug-ask-a-question-make-a-suggestion-for-wiperf">How can I report a bug / ask a question / make a suggestion for wiperf?</h2>
 <p>Please checkout the <a href="https://github.com/wifinigel/wiperf/discussions">discussion section</a> of the wiperf site of <a href="https://github.com/wifinigel/wiperf/discussions">GitHub</a></p>
+<h2 id="why-do-i-get-a-message-saying-switch-failed-wiperf-mode-when-i-try-to-switch-on-to-wiperf-mode-on-the-wlan-pi">Why do I get a message saying "Switch : failed wiperf mode" when I try to switch on to wiperf mode on the WLAN Pi?</h2>
+<p>In almost every instance, this is due to the fact that the configuration file for wiperf has not been configured before trying to switch in to wiperf mode.</p>
+<p>Check out the required instructions here: <a href="https://wifinigel.github.io/wiperf/probe_configure/">Probe configuration</a></p>
 <h2 id="when-using-wiperf-on-the-wlan-pi-how-can-i-remotely-flip-between-classic-and-wiper-modes-via-the-cli">When using wiperf on the WLAN Pi, how can I remotely flip between classic and wiper modes via the CLI?</h2>
 <p><strong>Warning</strong> : Although it is possible to flip modes remotely (via an SSH session), be aware that you may hit network connectivity issues unless you are very careful. Remember that in classic mode the file <code>/etc/network/interfaces</code> and <code>/etc/wpa_supplicant/wpa_supplicant.conf</code> are used for network connectivity configuration. In wiperf mode, the files <code>/etc/wiperf/conf/etc/network/interfaces</code> and <code>/etc/wiperf/conf/etc/wpa_supplicant/wpa_supplicant.conf</code> are used for network connectivity configuration.</p>
 <p>To check the current mode of the wiperf, enter the following command:</p>
@@ -1174,7 +1191,7 @@ connectivity_lookup: google.com
 <div class="md-source-date">
   <small>
     
-      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">January 16, 2021</span>
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">January 19, 2021</span>
     
   </small>
 </div>
