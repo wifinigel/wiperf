@@ -50,6 +50,7 @@ nav:
     - About: about.md
 theme:
     name: 'material'
+    custom_dir: overrides
     icon:
         logo: material/wifi
     language: en
