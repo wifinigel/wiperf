@@ -214,5 +214,8 @@ If tests run for longer than the configured poll cycle (e.g. 6 minutes of testin
 
 The wiperf poller also has a fail-safe mechanism to try to fix issues in the event of many test failures being detected. It has a watchdog function that will count various system errors and will reboot the probe if they become too high. In the event that many tests are configured that fail in high numbers, then you many observe the probe rebooting periodically due to the watchdog counter being exceeded. This is not an error - this is built in by design to try to fix issues such as being stuck to a remote access point or other network level issues that require a full reboot to clear unknown issues.
 
+## Upgrading
+To upgrade from a previous release of wiperf, please consult these instructions in our [upgrade document](probe_upgrade.md).
+
 
 
