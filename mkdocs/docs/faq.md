@@ -93,7 +93,10 @@ Use SFTP/SCP and pull the xml files in ```/usr/share/wiperf/dashboards``` from y
 Checkout [this note](adv_fixed_bssid.md) for specific instructions on this configuration.
 
 ## Can I make a feature suggestion?
-Yes, get along to the GitHub site and post your suggestion in the ['Issues' section](https://github.com/wifinigel/wiperf/issues){target=_blank}. It will be added to my "todo" list.
+Yes, get along to the GitHub site and post your suggestion in the [discussion section](https://github.com/wifinigel/wiperf/discussions){target=_blank} of the wiperf GitHub site. It will be added to my "todo" list.
+
+## Can I get some support with wiperf?
+I try my best to support folks who are having difficulty, but it's a best efforts endeavour. Please make sure you checkout all of the documentation I've provided, but if all else fails, post a question in the [discussion section](https://github.com/wifinigel/wiperf/discussions){target=_blank} of the wiperf GitHub site. Please be patient...
 
 ## Can I contribute some code for a new feature for wiperf?
 Please, get in touch before starting work on any code you'd like to submit as a PR. I love feedback and ideas, but each new feature costs me more cycles to support. Let's agree it can be included before submitting.
