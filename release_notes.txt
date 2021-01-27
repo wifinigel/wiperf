@@ -1,3 +1,38 @@
+v2.2
+1. Added support for user-defined number of ping tests
+
+    New config.ini parameter to define number of targets, eg.: ping_targets_total: 10
+
+    Added support for timeout and ping interval parameters in config.ini to optimise
+    ping tests (`ping_timeout` & `ping_interval`)
+    
+    Hosts for all required targets must be defined in config.ini too, e.g.
+
+    ping_targets_count: 7
+    ping_host1: google.com
+    ping_host2: cisco.com
+    ping_host3: bbc.co.uk
+    ping_host4: 8.8.8.8
+    ping_host5: 8.8.4.4 
+    ping_host6: my_site.command
+    ping_host7: my_other_site.com 
+
+    ping_count: 10
+    ping_timeout: 1
+    ping_interval: 0.2
+
+2. Added support for user-defined number of dns tests (no longer has max limit of 5)
+
+   New config.ini parameter: `dns_targets_count`
+
+3. Added support for user-define number of http tests (no longer has max limit of 5)
+
+   New config.ini parameter: `http_targets_count`
+
+4. Add support for user-defined number of smb tests (no longer has max limit of 5)
+
+   New config.ini parameter: `smb_targets_count`
+
 v2.1
 
 1. Added new dashboard for SMB tests
