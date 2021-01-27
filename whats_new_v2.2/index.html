@@ -14,7 +14,7 @@
     
     
       
-        <title>Probe Deployment - Wiperf V2 Documentation</title>
+        <title>What's New in version 2.2 - Wiperf V2 Documentation</title>
       
     
     
@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#probe-deployment" class="md-skip">
+        <a href="#whats-new-in-version-22" class="md-skip">
           Skip to content
         </a>
       
@@ -96,7 +96,7 @@
         <div class="md-header-nav__topic">
           <span class="md-ellipsis">
             
-              Probe Deployment
+              What's New in version 2.2
             
           </span>
         </div>
@@ -191,11 +191,84 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../whats_new_v2.2/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          What's New in V2.2
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         What's New in V2.2
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ping-tests" class="md-nav__link">
+    Ping Tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dns-tests" class="md-nav__link">
+    DNS Tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-tests" class="md-nav__link">
+    HTTP Tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#smb-tests" class="md-nav__link">
+    SMB Tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dashboards" class="md-nav__link">
+    Dashboards
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caveats" class="md-nav__link">
+    Caveats
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -463,14 +536,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7" >
       
       <label class="md-nav__link" for="nav-7">
         Probe
@@ -535,20 +606,11 @@
             
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../probe_deploy/" class="md-nav__link">
         Probe Deployment
       </a>
-      
     </li>
   
 
@@ -945,6 +1007,56 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ping-tests" class="md-nav__link">
+    Ping Tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dns-tests" class="md-nav__link">
+    DNS Tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-tests" class="md-nav__link">
+    HTTP Tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#smb-tests" class="md-nav__link">
+    SMB Tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dashboards" class="md-nav__link">
+    Dashboards
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caveats" class="md-nav__link">
+    Caveats
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -956,20 +1068,189 @@
               
                 
                 
-                <h1 id="probe-deployment">Probe Deployment</h1>
-<p>Once the probe is configured and tested, it's time to deploy it out in the real world.</p>
-<p>When deploying, here are a few things to check and remember:</p>
-<ol>
-<li>Verify that the probe has the network connectivity that you expect once it has been deployed. The following CLI commands will help to check connectivity:<ol>
-<li>Wireless NIC: <code>iwconfig</code> (is the probe joining the wireless network?)</li>
-<li>IP address: <code>ifconfig</code> (do the interfaces being used have an IP address?)</li>
-<li>Internet connectivity: <code>ping google.com</code> (can the probe get to the Internet, if that is expected?)</li>
-</ol>
-</li>
-<li>Is the probe deployed in the topology you originally intended? If the environment is not as you expected and you need to use a different interface for a particular operation, make sure you have updated <code>config.ini</code> so that wiperf knows where to send traffic (otherwise, you may hit routing issues)</li>
-<li>Check the output of <code>/var/log/wiperf_agent.log</code> to make sure everything is working with no issues once deployed. If there are hitches, they will generally be highlighted in this file, with a detailed explanation of what has failed. </li>
-</ol>
-<p>If you run in to any deployment issues, check out the <a href="../troubleshooting/">troubleshooting</a> and <a href="../faq/">FAQ</a> sections of this site.</p>
+                <h1 id="whats-new-in-version-22">What's New in version 2.2</h1>
+<p><div style="float: right;">
+<img alt="wiperf_logo" src="../images/wiperf_logo.png" />
+</div>
+Version 2.2 of the wiperf probe code follows hot on the heels of v2.1, following several requests from the community for removal of limitations on the number of test targets for several of the tests performed by wiperf. Previously, the Ping, HTTP, DNS and SMB tests were limited to 5 test targets. In v2.3, these limits are removed and the number of test targets is now user defined.</p>
+<h2 id="ping-tests">Ping Tests</h2>
+<p>The ping tests section of config.ini is now structured as shown below:</p>
+<div class="highlight"><pre><span></span><code>; ====================================================================
+;  Ping tests settings
+;  (Changes made in this section will be used in next test cycle
+;   and may be made while in Wiperf mode on the WLANPi)
+; ====================================================================
+[Ping_Test]
+; yes = enabled, no = disabled
+enabled: yes
+;
+; Number of targets we&#39;d like to ping
+ping_targets_count: 2
+; first host we&#39;d like to ping
+ping_host1: google.com
+;
+; second host we&#39;d like to ping
+ping_host2: cisco.com
+;
+; add more ping targets to match your &quot;ping_targets_count&quot; value
+; ping_host3: 
+; ping_host4:
+; ping_host5:
+; ping_host6:
+;....etc
+;
+; number of pings to send per test
+ping_count: 10
+;
+; Timeout value for pings (in secs)
+ping_timeout: 1
+;
+; Interval between pings (in secs)
+ping_interval: 0.2
+;
+; ------------ Advanced settings for Ping tests section, do not change -------------
+; Name used for ping_test file/data group/data source
+ping_data_file: wiperf-ping
+;-------------------------------- Ping Section End ---------------------------------
+</code></pre></div>
+
+<p>Note the new <code>ping_targets_count</code> field which allows the number of ping targets to be user-defined. Note that additional <code>ping_host</code> entries need to be added to correspond with the number of targets specified.</p>
+<p>Also new for v2.2 are the <code>ping_timeout</code> and <code>ping_interval</code> fields. These allow for the optimization of ping testing and prevent long delays when pinging large numbers, or poorly performing targets. </p>
+<h2 id="dns-tests">DNS Tests</h2>
+<p>The number of DNS tests that are performed during a poll cycle may now be user-defined, rather than being limited to 5 test entries. A new field within config.ini : <code>dns_targets_count</code> provides the count of the number of tests to be performed.</p>
+<p>Additionally, as many <code>dns_target</code> entries as required may be added to match up with the number of targets defined. </p>
+<p>See the extract from the new config.ini template file below showing the new options:</p>
+<div class="highlight"><pre><span></span><code>; ====================================================================
+;  DNS tests settings
+;  (Changes made in this section will be used in next test cycle
+;   and may be made while in Wiperf mode on the WLANPi)
+; ====================================================================
+[DNS_test]
+; yes = enabled, no = disabled
+enabled: yes
+;
+; Number of DNS targets we&#39;d like to test
+dns_targets_count: 2
+;
+; First DNS target
+dns_target1: google.com
+;
+; Second DNS target
+dns_target2: cisco.com
+;
+; add more DNS targets to match your &quot;dns_targets_count&quot; value
+; dns_target3: 
+; dns_target4:
+; dns_target5:
+; dns_target6:
+;....etc
+;
+; ------------ Advanced settings for DNS tests section, do not change --------------
+; Name used for dns_test file/data group/data source
+dns_data_file: wiperf-dns
+;-------------------------------- DNS Section End ----------------------------------
+</code></pre></div>
+
+<h2 id="http-tests">HTTP Tests</h2>
+<p>The number of HTTP tests that are performed during a poll cycle may now be user-defined, rather than being limited to 5 test entries. A new field within config.ini : <code>http_targets_count</code> provides the count of the number of tests to be performed.</p>
+<p>Additionally, as many <code>http_target</code> entries as required may be added to match up with the number of targets defined. </p>
+<p>See the extract from the new config.ini template file below showing the new options:</p>
+<div class="highlight"><pre><span></span><code>; ====================================================================
+;  HTTP tests settings
+;  (Changes made in this section will be used in next test cycle
+;   and may be made while in Wiperf mode on the WLANPi)
+; ====================================================================
+[HTTP_test]
+; yes = enabled, no = disabled
+enabled: yes
+;
+; Number of HTTP targets we&#39;d like to test
+http_targets_count: 2
+;
+; First HTTP target
+http_target1: https://google.com
+;
+; Second HTTP target
+http_target2: https://cisco.com
+;
+; add more HTTP targets to match your &quot;http_targets_count&quot; value
+; http_target3: 
+; http_target4:
+; http_target5:
+; http_target6:
+;....etc
+;
+; -------------- Advanced settings for HTTP tests section, do not change ----------------
+; Name used for http_test file/data group/data source
+http_data_file: wiperf-http
+;-------------------------------- HTTP Section End ---------------------------------
+</code></pre></div>
+
+<h2 id="smb-tests">SMB Tests</h2>
+<p>The number of SMB tests that are performed during a poll cycle may now be user-defined, rather than being limited to 5 test entries. A new field within config.ini : <code>smb_targets_count</code> provides the count of the number of tests to be performed.</p>
+<p>Additionally, as many SMB entries as required may be added to match up with the number of targets defined. This will require the creation of an <code>smb_host1</code>,<br />
+<code>smb_username</code>, <code>smb_password</code>, <code>smb_path</code> and <code>smb_filename</code> field for each target (see examples below)</p>
+<p>See the extract from the new config.ini template file below showing the new options:</p>
+<div class="highlight"><pre><span></span><code>; ====================================================================
+;  SMB tests settings
+;  (Changes made in this section will be used in next test cycle
+;   and may be made while in Wiperf mode on the WLANPi)
+; ====================================================================
+[SMB_test]
+; yes = enabled, no = disabled
+enabled: no
+;
+; Number of SMB targets we&#39;d like to test
+smb_targets_count: 2
+;
+; username and password to be used for all tests if all
+; tests use same credentials
+smb_global_username: 
+smb_global_password: 
+;
+; first host we&#39;d like to test
+smb_host1: 
+smb_username1: 
+smb_password1: 
+smb_path1: 
+smb_filename1: 
+;
+; second host we&#39;d like to test
+smb_host2: 
+smb_username2: 
+smb_password2: 
+smb_path2: 
+smb_filename2: 
+;
+; add more SMB targets to match your &quot;smb_targets_count&quot; value
+;smb_host3: 
+;smb_username3: 
+;smb_password3: 
+;smb_path3: 
+;smb_filename3: 
+;
+;smb_host4: 
+;smb_username4: 
+;smb_password4: 
+;smb_path4: 
+;smb_filename4: 
+; ...etc
+;
+; ------------ Advanced settings for SMB tests section, do not change --------------
+; Name used for SMB file/data group/data source
+smb_data_file: wiperf-smb
+;-------------------------------- SMB Section End ----------------------------------
+</code></pre></div>
+
+<h2 id="dashboards">Dashboards</h2>
+<p>There are no new dashboards in this release. As the number of test targets is now variable, with no upper limit, it is up to individual users to customize the supplied dashboards for their own use.</p>
+<p>Going forwards, it is likely I will continue to support the existing 5 instances of each target in any dashboards made available.</p>
+<h2 id="caveats">Caveats</h2>
+<p>Creating a large number of tests may be desirable for certain use-cases, but comes with a few caveats.</p>
+<p>Remember that each test is performed sequentially (i.e. no test is started until the previous test completes). The total time taken to finish all tests may become quite long for high numbers of tests, or for tests measuring demanding or poorly performing targets (e.g. large file transfers or targets that time-out).</p>
+<p>By default, the poll cycle defined for wiperf is 5 minutes. This can be modified by re-configuring the system cron job used by wiperf to initiate regular polls.</p>
+<p>If tests run for longer than the configured poll cycle (e.g. 6 minutes of testing time for a 5 minute poll interval), then a new poll cycle will attempt to start after 5 minutes even though a poll cycle is already in progress. However, the new poll process will detect that a poll cycle is already in progress and exit without performing any tests. This means that you will achieve only half the poll cycles expected, as every 2nd poll cycle will exit without running.</p>
+<p>The wiperf poller also has a fail-safe mechanism to try to fix issues in the event of many test failures being detected. It has a watchdog function that will count various system errors and will reboot the probe if they become too high. In the event that many tests are configured that fail in high numbers, then you many observe the probe rebooting periodically due to the watchdog counter being exceeded. This is not an error - this is built in by design to try to fix issues such as being stuck to a remote access point or other network level issues that require a full reboot to clear unknown issues.</p>
                 
                   
                     
@@ -978,7 +1259,7 @@
 <div class="md-source-date">
   <small>
     
-      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 13, 2020</span>
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">January 27, 2021</span>
     
   </small>
 </div>
@@ -1001,7 +1282,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../probe_configure/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href=".." class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -1010,19 +1291,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Probe Configuration
+                Home
               </div>
             </div>
           </a>
         
         
-          <a href="../probe_upgrade/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../whats_new_v2.1/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Probe Software Upgrade
+                What's New in V2.1
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
