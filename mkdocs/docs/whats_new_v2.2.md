@@ -196,6 +196,12 @@ smb_data_file: wiperf-smb
 ;-------------------------------- SMB Section End ----------------------------------
 ```
 
+## Dashboards
+
+There are no new dashboards in this release. As the number of test targets is now variable, with no upper limit, it is up to individual users to customize the supplied dashboards for their own use.
+
+Going forwards, it is likely I will continue to support the existing 5 instances of each target in any dashboards made available.
+
 ## Caveats
 
 Creating a large number of tests may be desirable for certain use-cases, but comes with a few caveats.
