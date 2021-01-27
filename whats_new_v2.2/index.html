@@ -265,6 +265,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#upgrading" class="md-nav__link">
+    Upgrading
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1055,6 +1062,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#upgrading" class="md-nav__link">
+    Upgrading
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1251,6 +1265,8 @@ smb_data_file: wiperf-smb
 <p>By default, the poll cycle defined for wiperf is 5 minutes. This can be modified by re-configuring the system cron job used by wiperf to initiate regular polls.</p>
 <p>If tests run for longer than the configured poll cycle (e.g. 6 minutes of testing time for a 5 minute poll interval), then a new poll cycle will attempt to start after 5 minutes even though a poll cycle is already in progress. However, the new poll process will detect that a poll cycle is already in progress and exit without performing any tests. This means that you will achieve only half the poll cycles expected, as every 2nd poll cycle will exit without running.</p>
 <p>The wiperf poller also has a fail-safe mechanism to try to fix issues in the event of many test failures being detected. It has a watchdog function that will count various system errors and will reboot the probe if they become too high. In the event that many tests are configured that fail in high numbers, then you many observe the probe rebooting periodically due to the watchdog counter being exceeded. This is not an error - this is built in by design to try to fix issues such as being stuck to a remote access point or other network level issues that require a full reboot to clear unknown issues.</p>
+<h2 id="upgrading">Upgrading</h2>
+<p>To upgrade from a previous release of wiperf, please consult these instructions in our <a href="../probe_upgrade/">upgrade document</a>.</p>
                 
                   
                     
