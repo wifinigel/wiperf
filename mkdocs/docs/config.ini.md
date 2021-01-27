@@ -87,12 +87,13 @@ We'll take a look at each section of the config file and provide some guidance o
     - [speedtest_data_file](#speedtest_data_file)
 - [Ping_Test Section](#ping_test-section)
     - [enabled](#enabled-1)
+    - [ping_targets_count](#ping_targets_count)
     - [ping_host1](#ping_host1)
     - [ping_host2](#ping_host2)
-    - [ping_host3](#ping_host3)
-    - [ping_host4](#ping_host4)
-    - [ping_host5](#ping_host5)
+    - [ping_hostN](#ping_hostN)
     - [ping_count](#ping_count)
+    - [ping_timeout](#ping_timeout)
+    - [ping_interval](#ping_interval)
     - [ping_data_file](#ping_data_file)
 - [Iperf3_tcp_test Section](#iperf3_tcp_test-section)
     - [enabled](#enabled-2)
@@ -109,19 +110,17 @@ We'll take a look at each section of the config file and provide some guidance o
     - [iperf3_udp_data_file](#iperf3_udp_data_file)
 - [DNS_test Section](#dns_test-section)
     - [enabled](#enabled-4)
+    - [dns_targets_count](#dns_targets_count)
     - [dns_target1](#dns_target1)
     - [dns_target2](#dns_target2)
-    - [dns_target3](#dns_target3)
-    - [dns_target4](#dns_target4)
-    - [dns_target5](#dns_target5)
+    - [dns_targetN](#dns_target3)
     - [dns_data_file](#dns_data_file)
 - [HTTP_test Section](#http_test-section)
     - [enabled](#enabled-5)
+    - [http_targets_count](#http_targets_count)
     - [http_target1](#http_target1)
     - [http_target2](#http_target2)
-    - [http_target3](#http_target3)
-    - [http_target4](#http_target4)
-    - [http_target5](#http_target5)
+    - [http_targetN](#http_targetN)
     - [http_data_file](#http_data_file)
 - [DHCP_test Section](#dhcp_test-section)
     - [enabled](#enabled-6)
@@ -129,13 +128,14 @@ We'll take a look at each section of the config file and provide some guidance o
     - [dhcp_data_file](#dhcp_data_file)
 - [SMB_test Section](#smb_test-section)
     - [enabled](#enabled-7)
+    - [smb_targets_count](#smb_targets_count)
     - [smb_global_username](#smb_global_username)
     - [smb_global_password](#smb_global_password)
-    - [smb_hostX](#smb_hostX)
-    - [smb_usernameX](#smb_usernameX) 
-    - [smb_passwordX](#smb_passwordX) 
-    - [smb_pathX](#smb_pathX])
-    - [smb_filenameX](#smb_filenameX) 
+    - [smb_hostN](#smb_hostN)
+    - [smb_usernameN](#smb_usernameN) 
+    - [smb_passwordN](#smb_passwordN) 
+    - [smb_pathN](#smb_pathN)
+    - [smb_filenameN](#smb_filenameN) 
     - [smb_data_file](#smb_data_file)
 
 ## [General] Section
@@ -754,6 +754,19 @@ enabled: yes
 ```
 [top](#parameter-reference-guide)
 
+### ping_targets_count
+
+!!! Note
+    New for V2.2
+
+The number of targets hosts/addresses that will be pinged. There should be a corresponding number of `ping_host` entries for this value
+
+Default setting:
+```
+ping_targets_count: 2
+```
+[top](#parameter-reference-guide)
+
 ### ping_host1
 
 IP address or hostname of first ping target. No target details = no test run
@@ -774,33 +787,15 @@ ping_host2: cisco.com
 ```
 [top](#parameter-reference-guide)
 
-### ping_host3
+### ping_hostN
 
-IP address or hostname of third ping target. No target details = no test run
+IP address or hostname of "Nth" ping target. No target details = no test run.
 
-Default setting:
-```
-ping_host3: 
-```
-[top](#parameter-reference-guide)
-
-### ping_host4
-
-IP address or hostname of fourth ping target. No target details = no test run
+As many of these entries as are required may be added (must match number of entries specified in `ping_targets_count` field).
 
 Default setting:
 ```
-ping_host4:
-```
-[top](#parameter-reference-guide)
-
-### ping_host5
-
-IP address or hostname of fifth ping target. No target details = no test run
-
-Default setting:
-```
-ping_host2: 
+ping_hostN: 
 ```
 [top](#parameter-reference-guide)
 
@@ -811,6 +806,32 @@ The number of pings to send for each ping target
 Default setting:
 ```
 ping_count: 10
+```
+[top](#parameter-reference-guide)
+
+### ping_timeout
+
+!!! Note
+    New for V2.2
+
+The timeout in seconds that is used for each ping test.
+
+Default setting:
+```
+ping_count: 1
+```
+[top](#parameter-reference-guide)
+
+### ping_interval
+
+!!! Note
+    New for V2.2
+
+The timeout in seconds that is used between each ping test
+
+Default setting:
+```
+ping_count: 0.2
 ```
 [top](#parameter-reference-guide)
 
@@ -956,6 +977,19 @@ enabled: yes
 ```
 [top](#parameter-reference-guide)
 
+### dns_targets_count
+
+!!! Note
+    New for V2.2
+
+The number of targets hosts that will be tested. There should be a corresponding number of `dns_target` entries for this value
+
+Default setting:
+```
+dns_targets_count: 2
+```
+[top](#parameter-reference-guide)
+
 ### dns_target1
 
 Hostname of first DNS target. No target details = no test run
@@ -976,33 +1010,15 @@ dns_target2: cisco.com
 ```
 [top](#parameter-reference-guide)
 
-### dns_target3
+### dns_targetN
 
-Hostname of third DNS target. No target details = no test run
+Hostname of "Nth" DNS target. No target details = no test run
 
-Default setting:
-```
-dns_target3: 
-```
-[top](#parameter-reference-guide)
-
-### dns_target4
-
-Hostname of fourth DNS target. No target details = no test run
+As many of these entries as are required may be added (must match number of entries specified in `dns_targets_count` field).
 
 Default setting:
 ```
-dns_target4: 
-```
-[top](#parameter-reference-guide)
-
-### dns_target5
-
-Hostname of fifth DNS target. No target details = no test run
-
-Default setting:
-```
-dns_target5: 
+dns_targetN: 
 ```
 [top](#parameter-reference-guide)
 
@@ -1037,6 +1053,19 @@ enabled: yes
 ```
 [top](#parameter-reference-guide)
 
+### http_targets_count
+
+!!! Note
+    New for V2.2
+
+The number of targets hosts that will be tested. There should be a corresponding number of `http_target` entries for this value
+
+Default setting:
+```
+http_targets_count: 2
+```
+[top](#parameter-reference-guide)
+
 ### http_target1
 
 Hostname of first HTTP target. No target details = no test run
@@ -1057,33 +1086,15 @@ http_target2: https://cisco.com
 ```
 [top](#parameter-reference-guide)
 
-### http_target3
+### http_targetN
 
-Hostname of third HTTP target. No target details = no test run
+Hostname of "Nth" HTTP target. No target details = no test run
 
-Default setting:
-```
-http_target3: 
-```
-[top](#parameter-reference-guide)
-
-### http_target4
-
-Hostname of fourth HTTP target. No target details = no test run
+As many of these entries as are required may be added (must match number of entries specified in `http_targets_count` field).
 
 Default setting:
 ```
-http_target4: 
-```
-[top](#parameter-reference-guide)
-
-### http_target5
-
-Hostname of fifth HTTP target. No target details = no test run
-
-Default setting: 
-```
-http_target5: 
+http_targetN: 
 ```
 [top](#parameter-reference-guide)
 
@@ -1161,6 +1172,19 @@ enabled: no
 ```
 [top](#parameter-reference-guide)
 
+### smb_targets_count
+
+!!! Note
+    New for V2.2
+
+The number of SMB target hosts that will be tested. There should be a corresponding number of SMB host target entries for this value
+
+Default setting:
+```
+smb_targets_count: 2
+```
+[top](#parameter-reference-guide)
+
 ### smb_global_username
 ### smb_global_password
 
@@ -1176,57 +1200,57 @@ smb_global_passwrod:
 ```
 [top](#parameter-reference-guide)
 
-### smb_hostX
+### smb_hostN
 
 !!! Note
     New for V2.1
 
-The hostname or IP address to be used for SMB test number 'X' (1-5)
+The hostname or IP address to be used for SMB test number 'N' (1-N)
 
 Default setting:
 ```
-smb_hostX 
+smb_hostN: 
 ```
 [top](#parameter-reference-guide)
 
-### smb_usernameX 
-### smb_passwordX 
+### smb_usernameN
+### smb_passwordN 
 
 !!! Note
     New for V2.1
 
-The username & password to be used for SMB test number 'X' (1-5). Note the global username/password credential is use if a per-test credential is not provided.
+The username & password to be used for SMB test number 'N' (1-N). Note the global username/password credential is use if a per-test credential is not provided.
 
 Default setting (no value):
 ```
-smb_usernameX: 
-smb_passwordX:  
+smb_usernameN: 
+smb_passwordN:  
 ```
 [top](#parameter-reference-guide)
 
-### smb_pathX
+### smb_pathN
 
 !!! Note
     New for V2.1
 
-The volume path to be used for SMB test number 'X' (1-5)
+The volume path to be used for SMB test number 'N' (1-N)
 
 Default setting (no value):
 ```
-smb_pathX: 
+smb_pathN: 
 ```
 [top](#parameter-reference-guide)
 
-### smb_filenameX 
+### smb_filenameN
 
 !!! Note
     New for V2.1
 
-The filename to be used for SMB test number 'X' (1-5)
+The filename to be used for SMB test number 'N' (1-N)
 
 Default setting (no value):
 ```
-smb_filenameX: 
+smb_filenameN: 
 ```
 [top](#parameter-reference-guide)
 

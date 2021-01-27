@@ -1,7 +1,7 @@
 #!/bin/bash
 # Installer for wiperf on WLAN Pi & RPi
-VERSION='2.1.0'
-POLLER_VERSION='0.2.3'
+VERSION='2.2.0'
+POLLER_VERSION='0.3.0'
 
 # Installation script log file
 LOG_FILE="/var/log/wiperf_install.log"
@@ -222,6 +222,7 @@ install () {
       echo " 1. Edit wireless auth settings: sudo nano /etc/wpa_supplicant/wpa_supplicant.conf"
       echo " 2. Edit wlan0 settings: sudo nano /etc/network/interfaces" 
       echo " 3. Copy default cfg file to live cfg:  sudo cp $CFG_DIR/config.default.ini $CFG_DIR/config.ini"
+      echo "    (For upgrades, copy values from your old config.ini file)"
       echo " 4. Edit the cfg file for your env: sudo nano $CFG_DIR/config.ini"
       echo " 5. Add a cron job to run wiperf regularly, e.g. sudo crontab -e (add line below)"
       echo "    0-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py > /var/log/wiperf_cron.log 2>&1"
@@ -236,6 +237,7 @@ install () {
       echo ""
     fi
   else
+<<<<<<< HEAD
       echo ""
       echo "================================================="
       echo "Don't forget to modify the following files before"
@@ -251,6 +253,21 @@ install () {
       echo " !!!!! USING config.default.ini AS A TEMPLATE          !!!!!"
       echo "================================================="
       echo ""
+=======
+     echo ""
+     echo "================================================="
+     echo "Don't forget to modify the following files before"
+     echo "switching in to wiperf mode:"
+     echo ""
+     echo " 1. Copy default cfg file to live cfg:  sudo cp $CFG_DIR/config.default.ini $CFG_DIR/config.ini"
+     echo "    (For upgrades, copy values from your old config.ini file)"
+     echo " 2. Edit the cfg file for your env: sudo nano $CFG_DIR/config.ini"
+     echo " 3. Edit the WLAN config file for your env: sudo nano $CFG_DIR/conf/etc/wpa_supplicant/wpa_supplicant.conf" 
+     echo "    (add WLAN info)"
+     echo " 4. Reboot the WLAN Pi before first-use from fpms: sudo sync; sudo reboot"
+     echo "================================================="
+     echo ""
+>>>>>>> dev
   fi
 }
 
