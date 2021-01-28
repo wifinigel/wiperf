@@ -116,7 +116,7 @@ influx_database:
 ```
 
 ### Network Tests
-Note that all network tests are enabled by default, apart from the iperf3 tests. If there are some tests you'd like to disable (e.g. if you don't want to run HTTP tests), then you'll need to open up the config.ini file and look through each section for the "enabled" parameter for that test and set it to "no". For example, to disable the HTTP tests: 
+Note that all network tests are enabled by default, apart from the iperf3 and SMB tests. If there are some tests you'd like to disable (e.g. if you don't want to run HTTP tests), then you'll need to open up the config.ini file and look through each section for the "enabled" parameter for that test and set it to "no". For example, to disable the HTTP tests: 
 
 ```
 ; ====================================================================

@@ -134,7 +134,7 @@ A textual menu system will open and the following options need to be selected to
 (Note that if this step is not completed, your wireless adapter will likely not work)
 
 ### Hostname Configuration
-By default, the hostname of your RPi is : ```pi```. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices.
+By default, the hostname of your RPi is : ```raspberrypi```. It is strongly advised to change its hostname if you have several probes reporting in to the same data server. If all use the same hostname, there will be no way of distinguishing data between devices.
 
 *(Note that if you decide to skip this step and subsequently change the hostname, historical data from the probe will not be associated with the data sent with the new hostname in your data server)*
 
@@ -153,7 +153,7 @@ Next, edit the /etc/hosts file:
 ```
  sudo nano /etc/hosts
 ```
-Change each instance of 'pi' to the new hostname (there are usually two instances). Then hit Ctrl-X  and "y" to save your changes.
+Change each instance of 'raspberrypi' to the new hostname (there are usually two instances). Then hit Ctrl-X  and "y" to save your changes.
 
 Finally, reboot your RPi:
 
@@ -166,7 +166,7 @@ Finally, reboot your RPi:
 __Note:__ *Use the method below to configure network interfaces. DO NOT use the RPI desktop GUI to configure network connectivity (if using the desktop RPi image, which is not recommended anyhow)....it will definitely __not__ work if configured via the GUI network utility.*
 
 #### Ethernet
-If the RPi is to be connected by Ethernet you will need to make some additions to the `/etc/network/interfaces` file to ensure you have network connectivity. Add the following lines to configure the Ethernet port for DHCP connectivity:
+If the RPi is to be connected by Ethernet you will need to make some additions to the `/etc/network/interfaces` file to ensure you have network connectivity. Add the following lines to configure the Ethernet port for DHCP connectivity (unless they already exist in the file):
 
 ```
  # Wired adapter #1
@@ -181,7 +181,7 @@ These lines may be added anywhere in the file, using a CLI editor such as nano:
 ```
 
 #### Wireless Configuration
-The RPi needs to be configured to join the wireless network that you'd like to test. To join a network, we need to configure the wireless interface and provide the network credentials to join the network. To achieve this, we need to edit two files via the CLI of the RPI:
+The RPi needs to be configured to join the wireless network that you'd like to test (assuming you want to test over a wireless connection - omit this step if you are testing wired only). To join a network, we need to configure the wireless interface and provide the network credentials to join the network. To achieve this, we need to edit two files via the CLI of the RPI:
 
 ```
 /etc/wpa_supplicant/wpa_supplicant.conf
@@ -213,14 +213,14 @@ wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 # wireless-power off
 # post-up iw dev wlan0 set power_save off
 
-# Local loopback
-auto lo
-iface lo inet loopback
 ```
 
-__Note:__ The wireless power off commands are commented out in the file above. One of these needs to be uncommented to stop the wireless NIC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. If it doesn't fix the issue, try the other command. (see this [article for more info](https://www.kalitut.com/2017/11/turn-off-power-saving-mode-of-wlan.html){target=_blank})
+__Note:__ *The wireless power off commands are commented out in the file above. One of these generally needs to be uncommented to stop the wireless NIC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. If it doesn't fix the issue, try the other command. (see this [article for more info](https://www.kalitut.com/2017/11/turn-off-power-saving-mode-of-wlan.html){target=_blank})*
 
 ##### /etc/wpa_supplicant/wpa_supplicant.conf
+
+Editing this file will provide the credentials required to join the wireless network under test:
+
 ```
 # edit wpa_supplicant.conf file
 sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
@@ -279,13 +279,17 @@ Note that the file includes several samples for a variety of security methods. Y
 
 ##### Test Wireless Connection
 
-Once configuration is complete, reboot the RPI. 
-
-To test if the wireless connection has come up OK, use the following commands to see if wireless interface has joined the wireless network and has an IP address:
+Once configuration is complete, reboot the RPI:
 
 ```
-iwconfig
-ifconfig
+sudo reboot
+```
+
+To test if the wireless connection has come up OK, use the following commands to see if wireless interface has joined the wireless network and has an IP address (checkout the info for wlan0 - does it show an ESSID name (your network) and have an IP address?):
+
+```
+sudo iwconfig
+sudo ifconfig
 ```
 
 !!! Note

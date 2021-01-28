@@ -24,6 +24,7 @@ Before we start adding pre-requisite packages, it's always a good idea to update
 ```
 # download & update latest Linux packages
 sudo apt-get update && sudo apt-get upgrade -y
+# Reboot if any new packages were installed
 sudo reboot
 ```
 
