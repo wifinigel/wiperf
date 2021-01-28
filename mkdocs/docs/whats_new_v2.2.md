@@ -5,6 +5,7 @@ Authors: Nigel Bowden
 <div style="float: right;">
 ![wiperf_logo](images/wiperf_logo.png)
 </div>
+<span style="font-size: small; color:gray">*27th January 2021 - Author: Nigel Bowden*</span><br><br>
 Version 2.2 of the wiperf probe code follows hot on the heels of v2.1, following several requests from the community for removal of limitations on the number of test targets for several of the tests performed by wiperf. Previously, the Ping, HTTP, DNS and SMB tests were limited to 5 test targets. In v2.3, these limits are removed and the number of test targets is now user defined.
 
 ## Ping Tests
@@ -216,6 +217,10 @@ The wiperf poller also has a fail-safe mechanism to try to fix issues in the eve
 
 ## Upgrading
 To upgrade from a previous release of wiperf, please consult these instructions in our [upgrade document](probe_upgrade.md).
+
+## Related
+
+Check out this related article: [What's New in version 2.1 ?](whats_new_v2.1.md)
 
 
 

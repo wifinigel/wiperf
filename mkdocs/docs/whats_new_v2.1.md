@@ -5,6 +5,7 @@ Authors: Nigel Bowden
 <div style="float: right;">
 ![wiperf_logo](images/wiperf_logo.png)
 </div>
+<span style="font-size: small; color:gray">*17th January 2021 - Author: Nigel Bowden*</span><br><br>
 Version 2.1 of the wiperf probe code introduces a number of bug-fixes and features. These are outlined below:
 
 ## New Features
