@@ -3,7 +3,24 @@ Authors: Nigel Bowden
 
 # Using the Neo3 as a wiperf Probe
 
+<span style="font-size: small; color:gray">*28th January 2021 - Author: Nigel Bowden*</span>
+
+Although I tend to recommend running wiperf on either a WLAN Pi or A Raspberry Pi, there is no reason you can't try running it up on other Linux-based small board computers.
+
+One of my favourite SBCs is the [Neo3  from Friendly Elec](https://www.friendlyarm.com/index.php?route=product/product&path=69&product_id=279){target=_blank}. It's a very compact, high performance unit. The only downside it has is that it does not have a wireless NIC if you wish to test over wireless. To fix this, you can use a Comfast CF-912AC USB adapter, which will give you a reasonably good 802.11ac, 2 stream connection.
+
+In this article, I'll run through the basic build process to get you going with wiperf using a Neo3 kit. To perform this build, you'll need:
+
+- [NanoPi Neo3-LTS](https://www.friendlyarm.com/index.php?route=product/product&path=69&product_id=279) (Select combo with case when purchasing)
+- A 16Gb or better Micro SD card
+- A [CF-912AC USB wireless NIC](https://www.amazon.com/Comfast-CF-912AC-1200MBPS-Realtek-Network/dp/B01KX1M436/){target=_blank} (checkout eBay & Aliexpress for other sources)
+- Some kind of power source. The Neo3 needs a Type-C power connection (I use a phone charger with a USB-A to Type-C cable - the power requirements are quite low)
+- A USB to micro-SD adapter to burn the image (for example: https://www.amazon.com/Vanja-Adapter-Portable-Memory-Reader/dp/B00W02VHM6)
+- A copy of [balenaEtcher](https://www.balena.io/etcher/){target_blank} (free) to burn the image on to your SD card
+
 ![Probe Report](images/neo3.jpg)
+
+Here are the steps I followed to build wiperf on  Neo3:
 
 1. Go to the image download page for the Neo3 on the Armbian site:
 
@@ -11,7 +28,7 @@ Authors: Nigel Bowden
 
 2. Select the "Armbian Buster" direct download link.
 
-3. Burn the image on to an SD card (16G or better recommended) using balenaEtcher (https://www.balena.io/etcher/)
+3. Burn the image on to an SD card (16G or better recommended) using balenaEtcher (https://www.balena.io/etcher/){target=_blank}
 
 4. Once the image is burned on to the SD card, put the SD card in to the Neo3 and power it on
 
@@ -73,8 +90,8 @@ Authors: Nigel Bowden
     pip3 install setuptools wheel
     ```
 
-14. At this stage, the Neo3 is prepared ready for the installation of required packages and scripts. Follow the instructions for the Raspberry Pi installation starting on this page:
+14. At this stage, the Neo3 is prepared ready for the installation of required packages and scripts. To complete the installation and configuration of wiperf, follow the instructions provided for the Raspberry Pi installation starting on this page:
 
     [Raspberry Pi Hostname Configuration](https://wifinigel.github.io/wiperf/probe_prepare/#hostname-configuration_1) (Note that the default hostname for the Neo3 is `nanopineo3`, rather than `raspberrypi` that is specified in the RPi instructions)
 
-Configuration and operation of the probe will be the same as specified for the RPi. 
+Once you have complete the wiperf installation, you may use it in the same manner as the instructions provided for the Raspberry Pi on the wiperf web site. Have fun!
