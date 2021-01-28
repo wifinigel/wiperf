@@ -1014,19 +1014,19 @@
 <ol>
 <li>
 <p>Go to the image download page for the Neo3 on the Armbian site:</p>
-<p>https://www.armbian.com/nanopineo3/</p>
+<p><a href="https://www.armbian.com/nanopineo3/">https://www.armbian.com/nanopineo3/</a></p>
 </li>
 <li>
 <p>Select the "Armbian Buster" direct download link.</p>
 </li>
 <li>
-<p>Burn the image on to an SD card (16G or better recommended) using balenaEtcher (https://www.balena.io/etcher/){target=_blank}</p>
+<p>Put the micro-SD card in to your SD to USB adapter and plug it in to your computer, ready to burn an image. Burn the image on to the micro-SD card using balenaEtcher (https://www.balena.io/etcher/){target=_blank}. This takes a few minutes to complete.</p>
 </li>
 <li>
-<p>Once the image is burned on to the SD card, put the SD card in to the Neo3 and power it on</p>
+<p>Once the image is burned on to the micro-SD card, put the micro-SD card in to the slot on the back of the Neo3, plug in your wireless USB NIC and power up the Neo3.</p>
 </li>
 <li>
-<p>Plug the Neo3 in to an Ethernet port so that it can get an IP address (You will likely need to look on your DHCP server or switch MAC/ARP table to figure out the IP address assigned. The default hostname you may see listed on your DCP server is <code>nanopineo3</code>). The Ethernet port used will also need Internet access to allow package downloads.</p>
+<p>Plug the Neo3 in to a switch Ethernet port so that it can get an IP address (You will likely need to look on your DHCP server or switch MAC/ARP table to figure out the IP address assigned(). The default hostname you may see listed on your DHCP server client list is <code>nanopineo3</code>. The Ethernet port used will also need Internet access to allow package downloads.</p>
 </li>
 <li>
 <p>Once you have the IP address of the Neo3, SSH to it and login with the following credentials:
@@ -1036,8 +1036,9 @@ password: 1234
 </li>
 <li>
 <p>During this initial login, you will be prompted to provide:
-    a. New root password
-    b. optionally configure your locale
+    a. New root password to replace the default (don't forget this once you set it!)
+    b. Configure your locale
+    c. Choose a default shell (go with bash)
     c. Create an "every day" user account that should be used to administer the probe. Suggested settings:</p>
 <pre><code>username: wiperf
 password: [select your own]
@@ -1045,20 +1046,22 @@ real name: wiperf user
 </code></pre>
 </li>
 <li>
-<p>Drop the SSH session and establish a new session using the new "every day" account username.</p>
+<p>Drop the SSH session and establish a new session using the new "every day" account username (wiperf).</p>
 </li>
 <li>
 <p>The NetworkManager package can be very problematic for networking, so we need to disable it. Follow these steps to disable it and create a static configuration file for eth0:</p>
-<p>a. Create a static config file to ensure eth0 gets an IP address from DHCP</p>
+<p>a. Create a static config file to ensure eth0 gets an IP address from DHCP (you will be prompted to enter your everyday user password again)</p>
 <div class="highlight"><pre><span></span><code>sudo sh -c &quot;printf &#39;\n\nallow-hotplug eth0 \nauto eth0\niface eth0 inet dhcp\n&#39; &gt;&gt; /etc/network/interfaces&quot;
 </code></pre></div>
 
-<p>b. Disable NetworkManager
+<p>b. Disable NetworkManager</p>
+<p>Disable the NetworkManager process and prevent it from staring at boot-up:</p>
 <div class="highlight"><pre><span></span><code>sudo systemctl stop NetworkManager
 sudo systemctl disable NetworkManager
-</code></pre></div></p>
-<p>c. By default, traditional interface names are not used for wireless NICs....lets fix that</p>
-<div class="highlight"><pre><span></span><code># add update to use traditional interface names (e.g. wlan0)
+</code></pre></div>
+
+<p>c. By default, traditional interface names are not used for wireless NICs....lets fix that. Add this command:</p>
+<div class="highlight"><pre><span></span><code># Comment: add update to use traditional interface names (e.g. wlan0)
 sudo sh -c &quot;echo &#39;extraargs=net.ifnames=0&#39; &gt;&gt; /boot/armbianEnv.txt&quot;
 </code></pre></div>
 
@@ -1066,16 +1069,20 @@ sudo sh -c &quot;echo &#39;extraargs=net.ifnames=0&#39; &gt;&gt; /boot/armbianEn
 <div class="highlight"><pre><span></span><code>sudo reboot
 </code></pre></div>
 
+<p>Log back in to the Neo3 over an SSH session once it has come back up (may take a couple of minutes)</p>
 </li>
 <li>
-<p>Perform an update of all packages before adding any new software, followed by a reboot of the probe:
-    <div class="highlight"><pre><span></span><code>sudo apt-get update &amp;&amp; sudo apt-get -y upgrade
+<p>Perform an update of all packages before adding any new software, followed by a reboot of the probe by entering these commands:
+    <div class="highlight"><pre><span></span><code># Comment: the update may take a few minutes to complete...go get a coffee
+sudo apt-get update &amp;&amp; sudo apt-get -y upgrade
 sudo sync; sudo reboot
 </code></pre></div></p>
+<p>Log back in to the Neo3 over an SSH session once it has come back up (may take a couple of minutes)</p>
 </li>
 <li>
 <p>Add a couple of package that we need to install python modules (these may already exist):</p>
-<div class="highlight"><pre><span></span><code>pip3 install setuptools wheel
+<div class="highlight"><pre><span></span><code>sudo apt install python3-pip
+sudo pip3 install setuptools wheel
 </code></pre></div>
 
 </li>
