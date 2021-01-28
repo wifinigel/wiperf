@@ -237,23 +237,6 @@ install () {
       echo ""
     fi
   else
-<<<<<<< HEAD
-      echo ""
-      echo "================================================="
-      echo "Don't forget to modify the following files before"
-      echo "switching in to wiperf mode (unless this is an upgrade):"
-      echo ""
-      echo " 1. Copy default cfg file to live cfg:  sudo cp $CFG_DIR/config.default.ini $CFG_DIR/config.ini"
-      echo " 2. Edit the cfg file for your env: sudo nano $CFG_DIR/config.ini"
-      echo " 3. Edit the WLAN config file for your env: sudo nano $CFG_DIR/conf/etc/wpa_supplicant/wpa_supplicant.conf" 
-      echo "    (add WLAN info)"
-      echo " 4. Reboot the WLAN Pi: sudo sync; sudo reboot"
-      echo ""
-      echo " !!!!! FOR UPGRADES, MAKE SURE TO RE-CREATE config.ini !!!!!" 
-      echo " !!!!! USING config.default.ini AS A TEMPLATE          !!!!!"
-      echo "================================================="
-      echo ""
-=======
      echo ""
      echo "================================================="
      echo "Don't forget to modify the following files before"
@@ -265,9 +248,11 @@ install () {
      echo " 3. Edit the WLAN config file for your env: sudo nano $CFG_DIR/conf/etc/wpa_supplicant/wpa_supplicant.conf" 
      echo "    (add WLAN info)"
      echo " 4. Reboot the WLAN Pi before first-use from fpms: sudo sync; sudo reboot"
+     echo ""
+     echo " !!!!! FOR UPGRADES, MAKE SURE TO RE-CREATE config.ini !!!!!" 
+     echo " !!!!! USING config.default.ini AS A TEMPLATE          !!!!!"
      echo "================================================="
      echo ""
->>>>>>> dev
   fi
 }
 
