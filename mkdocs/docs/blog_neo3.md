@@ -1,4 +1,4 @@
-Title: Blog Post - Using the Neo3 as a wiperf Probe
+Title: Using the Neo3 as a wiperf Probe
 Authors: Nigel Bowden
 
 # Using the Neo3 as a wiperf Probe
