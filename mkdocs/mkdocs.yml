@@ -5,6 +5,13 @@ nav:
     - What's New in V2.1: whats_new_v2.1.md
     - Quickstart: quickstart.md
     - Operation Overview: operation.md
+    - Probe:
+        - probe_platform.md
+        - probe_prepare.md
+        - probe_install.md
+        - probe_configure.md
+        - probe_deploy.md
+        - probe_upgrade.md
     - Data Server:
         - Splunk:
             - splunk_platform.md
@@ -18,13 +25,8 @@ nav:
             - grafana_platform.md
             - grafana_install.md
             - grafana_configure.md
-    - Probe:
-        - probe_platform.md
-        - probe_prepare.md
-        - probe_install.md
-        - probe_configure.md
-        - probe_deploy.md
-        - probe_upgrade.md
+    - Blog Posts:
+            - blog_neo3.md
     - Troubleshooting: troubleshooting.md
     - Advanced Configuration:
         - adv_proxy.md
