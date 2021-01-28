@@ -15,7 +15,7 @@ In this article, I'll run through the basic build process to get you going with 
 - A 16Gb or better Micro SD card
 - A [CF-912AC USB wireless NIC](https://www.amazon.com/Comfast-CF-912AC-1200MBPS-Realtek-Network/dp/B01KX1M436/){target=_blank} (checkout eBay & Aliexpress for other sources)
 - Some kind of power source. The Neo3 needs a Type-C power connection (I use a phone charger with a USB-A to Type-C cable - the power requirements are quite low)
-- A USB to micro-SD adapter to burn the image (for example: https://www.amazon.com/Vanja-Adapter-Portable-Memory-Reader/dp/B00W02VHM6)
+- A USB to micro-SD adapter to burn the image (for example: [an adapter like this](https://www.amazon.com/Vanja-Adapter-Portable-Memory-Reader/dp/B00W02VHM6){target=_blank}
 - A copy of [balenaEtcher](https://www.balena.io/etcher/){target_blank} (free) to burn the image on to your SD card
 
 ![Probe Report](images/neo3.jpg)
