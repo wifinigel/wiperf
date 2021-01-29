@@ -1478,7 +1478,7 @@ Change each instance of 'raspberrypi' to the new hostname (there are usually two
 <h3 id="network-connectivity_1">Network Connectivity</h3>
 <p><strong>Note:</strong> <em>Use the method below to configure network interfaces. DO NOT use the RPI desktop GUI to configure network connectivity (if using the desktop RPi image, which is not recommended anyhow)....it will definitely <strong>not</strong> work if configured via the GUI network utility.</em></p>
 <h4 id="ethernet_1">Ethernet</h4>
-<p>If the RPi is to be connected by Ethernet you will need to make some additions to the <code>/etc/network/interfaces</code> file to ensure you have network connectivity. Add the following lines to configure the Ethernet port for DHCP connectivity:</p>
+<p>If the RPi is to be connected by Ethernet you will need to make some additions to the <code>/etc/network/interfaces</code> file to ensure you have network connectivity. Add the following lines to configure the Ethernet port for DHCP connectivity (unless they already exist in the file):</p>
 <div class="highlight"><pre><span></span><code> # Wired adapter #1
  allow-hotplug eth0
  iface eth0 inet dhcp
@@ -1489,7 +1489,7 @@ Change each instance of 'raspberrypi' to the new hostname (there are usually two
 </code></pre></div>
 
 <h4 id="wireless-configuration">Wireless Configuration</h4>
-<p>The RPi needs to be configured to join the wireless network that you'd like to test. To join a network, we need to configure the wireless interface and provide the network credentials to join the network. To achieve this, we need to edit two files via the CLI of the RPI:</p>
+<p>The RPi needs to be configured to join the wireless network that you'd like to test (assuming you want to test over a wireless connection - omit this step if you are testing wired only). To join a network, we need to configure the wireless interface and provide the network credentials to join the network. To achieve this, we need to edit two files via the CLI of the RPI:</p>
 <div class="highlight"><pre><span></span><code>/etc/wpa_supplicant/wpa_supplicant.conf
 /etc/network/interfaces
 </code></pre></div>
@@ -1513,14 +1513,11 @@ iface wlan0 inet dhcp
 wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 # wireless-power off
 # post-up iw dev wlan0 set power_save off
-
-# Local loopback
-auto lo
-iface lo inet loopback
 </code></pre></div>
 
-<p><strong>Note:</strong> The wireless power off commands are commented out in the file above. One of these needs to be uncommented to stop the wireless NIC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. If it doesn't fix the issue, try the other command. (see this <a href="https://www.kalitut.com/2017/11/turn-off-power-saving-mode-of-wlan.html" target="_blank">article for more info</a>)</p>
+<p><strong>Note:</strong> <em>The wireless power off commands are commented out in the file above. One of these generally needs to be uncommented to stop the wireless NIC dropping in to power save mode. If you see huge drops in the wireless connection speed in the wireless connection graph, it is being caused by power save mode. Unfortunately, the command to use seems to vary between RPi model and operating system version. When you see the connection speed issue, try uncommenting one of the commands and reboot. If it doesn't fix the issue, try the other command. (see this <a href="https://www.kalitut.com/2017/11/turn-off-power-saving-mode-of-wlan.html" target="_blank">article for more info</a>)</em></p>
 <h5 id="etcwpa_supplicantwpa_supplicantconf">/etc/wpa_supplicant/wpa_supplicant.conf</h5>
+<p>Editing this file will provide the credentials required to join the wireless network under test:</p>
 <div class="highlight"><pre><span></span><code># edit wpa_supplicant.conf file
 sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 </code></pre></div>
@@ -1574,10 +1571,13 @@ network={
 </code></pre></div>
 Note that the file includes several samples for a variety of security methods. You will need to uncomment the network section that corresponds to the security method for your environment and comment out all other methods. By default, the PSK method is used (and uncommented), but requires that you enter an SSID and shared key. </p>
 <h5 id="test-wireless-connection">Test Wireless Connection</h5>
-<p>Once configuration is complete, reboot the RPI. </p>
-<p>To test if the wireless connection has come up OK, use the following commands to see if wireless interface has joined the wireless network and has an IP address:</p>
-<div class="highlight"><pre><span></span><code>iwconfig
-ifconfig
+<p>Once configuration is complete, reboot the RPI:</p>
+<div class="highlight"><pre><span></span><code>sudo reboot
+</code></pre></div>
+
+<p>To test if the wireless connection has come up OK, use the following commands to see if wireless interface has joined the wireless network and has an IP address (checkout the info for wlan0 - does it show an ESSID name (your network) and have an IP address?):</p>
+<div class="highlight"><pre><span></span><code>sudo iwconfig
+sudo ifconfig
 </code></pre></div>
 
 <div class="admonition note">
@@ -1593,7 +1593,7 @@ ifconfig
 <div class="md-source-date">
   <small>
     
-      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">January 17, 2021</span>
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">January 28, 2021</span>
     
   </small>
 </div>
