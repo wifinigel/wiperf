@@ -50,6 +50,7 @@ nav:
             - db_smb.md 
             - db_wireless.md
             - db_health.md
+    - Contact: https://github.com/wifinigel/wiperf/discussions
     - About: about.md
 theme:
     name: 'material'
