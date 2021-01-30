@@ -1103,63 +1103,47 @@
 <p>You'll need to burn a fresh image by downloading a copy of the latest <a href="https://www.raspberrypi.org/software/operating-systems/">Raspberry Pi OS</a>. I'd advise using the 'Lite' version of the image, as this is a simple, headless probe device (and that is what I have tested). Use <a href="https://www.balena.io/etcher/" target_blank="target_blank">balenaEtcher</a> to burn the image on to your micro-SD card. Put it in to the SD slot of the RPi and boot it. You can find more extensive <a href="../probe_prepare/#raspberry-pi">instructions here</a> about building and accessing the RPi to use as a wiperf probe - the focus of this document is the all-in-one software build.</p>
 <h2 id="setup-procedure">Setup Procedure</h2>
 <p><strong>All of the steps below are performed from the RPi CLI (this guide assumes you are running Raspbian Buster and that you have remote access to the RPI, with all networking configured and ready to go (if not, <a href="../probe_prepare/#raspberry-pi">see here</a> )):</strong></p>
-<ol>
-<li>Update RPi packages and reboot (unless already done as part of the probe build process).</li>
-</ol>
+<p>1.Update RPi packages and reboot (unless already done as part of the probe build process).</p>
 <div class="highlight"><pre><span></span><code>sudo apt update
 sudo apt upgrade
 sudo reboot
 </code></pre></div>
 
-<ol>
-<li>Install wiperf:</li>
-</ol>
+<p>2.Install wiperf:</p>
 <div class="highlight"><pre><span></span><code>curl -s https://raw.githubusercontent.com/wifinigel/wiperf/main/setup.sh | sudo bash -s install rpi
 </code></pre></div>
 
-<ol>
-<li>Add a cron job as show below:</li>
-</ol>
+<p>3.Add a cron job as show below:</p>
 <div class="highlight"><pre><span></span><code>line=&quot;0-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py &gt; /var/log/wiperf_cron.log 2&gt;&amp;1&quot;
 USERNAME=root  
 (sudo crontab -u $USERNAME -l; echo &quot;$line&quot; ) | sudo crontab -u $USERNAME -
 </code></pre></div>
 
-<ol>
-<li>Add the required InfluxDB key &amp; repo details:</li>
-</ol>
+<p>4.Add the required InfluxDB key &amp; repo details:</p>
 <div class="highlight"><pre><span></span><code>sudo wget -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
 echo &quot;deb https://repos.influxdata.com/debian buster stable&quot; | sudo tee /etc/apt/sources.list.d/influxdb.list
 sudo apt update
 sudo apt install influxdb
 </code></pre></div>
 
-<ol>
-<li>Once installed, start up InfluxDB &amp; set InfluxDB to start-up on boot</li>
-</ol>
+<p>5.Once installed, start up InfluxDB &amp; set InfluxDB to start-up on boot</p>
 <div class="highlight"><pre><span></span><code>sudo systemctl unmask influxdb
 sudo systemctl enable influxdb
 sudo systemctl start influxdb
 </code></pre></div>
 
-<ol>
-<li>Add pre-requisite packages for Grafana, get &amp; install the Grafana package:</li>
-</ol>
+<p>6.Add pre-requisite packages for Grafana, get &amp; install the Grafana package:</p>
 <div class="highlight"><pre><span></span><code>sudo apt-get install -y adduser libfontconfig1
 wget https://dl.grafana.com/oss/release/grafana-rpi_6.7.4_armhf.deb
 sudo dpkg -i grafana-rpi_6.7.4_armhf.deb
 </code></pre></div>
 
-<ol>
-<li>Once Grafana installed, set it to startup on boot &amp; start the Grafana process:</li>
-</ol>
+<p>7.Once Grafana installed, set it to startup on boot &amp; start the Grafana process:</p>
 <div class="highlight"><pre><span></span><code>sudo systemctl enable grafana-server
 sudo systemctl start grafana-server
 </code></pre></div>
 
-<ol>
-<li>On the RPI CLI, prepare Influx DB for data using Influx CLI client (you may want to set your own credentials here!):</li>
-</ol>
+<p>8.On the RPI CLI, prepare Influx DB for data using Influx CLI client (you may want to set your own credentials here!):</p>
 <div class="highlight"><pre><span></span><code>influx
 create database wiperf
 create retention policy &quot;wiperf_30_days&quot; on &quot;wiperf&quot; duration 30d replication 1
@@ -1167,16 +1151,12 @@ CREATE USER admin WITH PASSWORD &#39;letmein&#39; WITH ALL PRIVILEGES
 exit
 </code></pre></div>
 
-<ol>
-<li>Edit InfluxDB to use login authentication &amp; restart its processes to activate the change:</li>
-</ol>
+<p>9.Edit InfluxDB to use login authentication &amp; restart its processes to activate the change:</p>
 <div class="highlight"><pre><span></span><code>sudo nano /etc/influxdb/influxdb.conf (uncomment &quot;# auth-enabled = false&quot; -&gt; &quot;auth-enabled = true&quot;)
 sudo systemctl restart influxdb
 </code></pre></div>
 
-<ol>
-<li>On RPI CLI, drop in to the Influx CLI client again and create some credentials for the probe login (you may want to set your own credentials here!)</li>
-</ol>
+<p>10.On RPI CLI, drop in to the Influx CLI client again and create some credentials for the probe login (you may want to set your own credentials here!)</p>
 <div class="highlight"><pre><span></span><code>influx -username admin -password letmein
 CREATE USER &quot;wiperf_probe&quot; WITH PASSWORD &#39;s3cr3tpwd99&#39;
 GRANT WRITE ON &quot;wiperf&quot; TO &quot;wiperf_probe&quot;
@@ -1185,9 +1165,7 @@ GRANT read ON &quot;wiperf&quot; TO &quot;grafana&quot;
 exit
 </code></pre></div>
 
-<ol>
-<li>Edit the wiperf configuration file to use the loopback interface as the management interface and set the InfluxDB details (use the probe credentials you created for InfluxDB)</li>
-</ol>
+<p>11.Edit the wiperf configuration file to use the loopback interface as the management interface and set the InfluxDB details (use the probe credentials you created for InfluxDB)</p>
 <div class="highlight"><pre><span></span><code>sudo nano /etc/wiperf/config.ini
 mgt_if: lo
 exporter_type: influxdb
@@ -1198,33 +1176,30 @@ influx_password: s3cr3tpwd99
 influx_database: wiperf
 </code></pre></div>
 
-<ol>
-<li>
-<p>Grafana GUI (these steps are completed using a browser):</p>
-<p>Browser: http:<ip>:3000 (login admin/admin, changed on first login)</p>
-<p>In web GUI, add datasource: Configuration &gt; Datasources</p>
-<ul>
-<li>Type: InfluxDB</li>
-<li>Name: WiperfDB</li>
-<li>URL: htttp://127.0.0.1:8086</li>
-<li>Access: Server</li>
-<li>Database: wiperf</li>
-<li>User: grafana</li>
-<li>Password: R34dth3DB</li>
-<li>HTTP Method: GET</li>
-</ul>
-</li>
-<li>
-<p>Obtain the Grafana dashboard files from the wiperf dashboards folder and place on your browser machine (/usr/share/wiperf/dashboards)</p>
-<p>Using the web GUI, import dashboards using these menu options: </p>
-<pre><code>"+" &gt; Create &gt; Import &gt; Upload .json file &gt; select dashboard file
+<p>12.Grafana GUI (these steps are completed using a browser):</p>
+<pre><code>Browser: http:&lt;ip&gt;:3000 (login admin/admin, changed on first login)
 
-Select folder (General by default)
-Select WiperfDB
+In web GUI, add datasource: Configuration &gt; Datasources
+
+- Type: InfluxDB
+- Name: WiperfDB
+- URL: htttp://127.0.0.1:8086
+- Access: Server
+- Database: wiperf
+- User: grafana
+- Password: R34dth3DB
+- HTTP Method: GET
 </code></pre>
-<p>Repeat for each dashboard required.</p>
-</li>
-</ol>
+<p>13.Obtain the Grafana dashboard files from the wiperf dashboards folder and place on your browser machine (/usr/share/wiperf/dashboards)</p>
+<pre><code>Using the web GUI, import dashboards using these menu options:
+
+    "+" &gt; Create &gt; Import &gt; Upload .json file &gt; select dashboard file
+
+    Select folder (General by default)
+    Select WiperfDB
+
+Repeat for each dashboard required.
+</code></pre>
 <p>At this point, you should be good to go! Verify the status of polling using the usual wiperf log file (runs every 5 minutes):</p>
 <div class="highlight"><pre><span></span><code>tail -f /var/log/wiperf_agent.log
 </code></pre></div>
@@ -1236,7 +1211,7 @@ Select WiperfDB
 <div class="md-source-date">
   <small>
     
-      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 15, 2020</span>
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">January 30, 2021</span>
     
   </small>
 </div>
