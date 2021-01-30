@@ -31,7 +31,7 @@ You'll need to burn a fresh image by downloading a copy of the latest [Raspberry
 
 __All of the steps below are performed from the RPi CLI (this guide assumes you are running Raspbian Buster and that you have remote access to the RPI, with all networking configured and ready to go (if not, [see here](probe_prepare.md#raspberry-pi) )):__
 
-1. Update RPi packages and reboot (unless already done as part of the probe build process).
+1.Update RPi packages and reboot (unless already done as part of the probe build process).
 
 ```
 sudo apt update
@@ -39,13 +39,13 @@ sudo apt upgrade
 sudo reboot
 ```
 
-2. Install wiperf:
+2.Install wiperf:
 
 ```
 curl -s https://raw.githubusercontent.com/wifinigel/wiperf/main/setup.sh | sudo bash -s install rpi
 ```
 
-3. Add a cron job as show below:
+3.Add a cron job as show below:
 
 ```
 line="0-59/5 * * * * /usr/bin/python3 /usr/share/wiperf/wiperf_run.py > /var/log/wiperf_cron.log 2>&1"
@@ -53,7 +53,7 @@ USERNAME=root
 (sudo crontab -u $USERNAME -l; echo "$line" ) | sudo crontab -u $USERNAME -
 ```
 
-4. Add the required InfluxDB key & repo details:
+4.Add the required InfluxDB key & repo details:
 
 ```
 sudo wget -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
@@ -62,7 +62,7 @@ sudo apt update
 sudo apt install influxdb
 ```
 
-5. Once installed, start up InfluxDB & set InfluxDB to start-up on boot
+5.Once installed, start up InfluxDB & set InfluxDB to start-up on boot
 
 ```
 sudo systemctl unmask influxdb
@@ -70,7 +70,7 @@ sudo systemctl enable influxdb
 sudo systemctl start influxdb
 ```
 
-6. Add pre-requisite packages for Grafana, get & install the Grafana package:
+6.Add pre-requisite packages for Grafana, get & install the Grafana package:
 
 ```
 sudo apt-get install -y adduser libfontconfig1
@@ -78,14 +78,14 @@ wget https://dl.grafana.com/oss/release/grafana-rpi_6.7.4_armhf.deb
 sudo dpkg -i grafana-rpi_6.7.4_armhf.deb
 ```
 
-7. Once Grafana installed, set it to startup on boot & start the Grafana process:
+7.Once Grafana installed, set it to startup on boot & start the Grafana process:
 
 ```
 sudo systemctl enable grafana-server
 sudo systemctl start grafana-server
 ```
 
-8. On the RPI CLI, prepare Influx DB for data using Influx CLI client (you may want to set your own credentials here!):
+8.On the RPI CLI, prepare Influx DB for data using Influx CLI client (you may want to set your own credentials here!):
 
 ```
 influx
@@ -95,14 +95,14 @@ CREATE USER admin WITH PASSWORD 'letmein' WITH ALL PRIVILEGES
 exit
 ```
 
-9. Edit InfluxDB to use login authentication & restart its processes to activate the change:
+9.Edit InfluxDB to use login authentication & restart its processes to activate the change:
 
 ```
 sudo nano /etc/influxdb/influxdb.conf (uncomment "# auth-enabled = false" -> "auth-enabled = true")
 sudo systemctl restart influxdb
 ```
 
-10. On RPI CLI, drop in to the Influx CLI client again and create some credentials for the probe login (you may want to set your own credentials here!)
+10.On RPI CLI, drop in to the Influx CLI client again and create some credentials for the probe login (you may want to set your own credentials here!)
 
 ```
 influx -username admin -password letmein
@@ -113,7 +113,7 @@ GRANT read ON "wiperf" TO "grafana"
 exit
 ```
 
-11. Edit the wiperf configuration file to use the loopback interface as the management interface and set the InfluxDB details (use the probe credentials you created for InfluxDB)
+11.Edit the wiperf configuration file to use the loopback interface as the management interface and set the InfluxDB details (use the probe credentials you created for InfluxDB)
 
 ```
 sudo nano /etc/wiperf/config.ini
@@ -126,7 +126,7 @@ influx_password: s3cr3tpwd99
 influx_database: wiperf
 ```
 
-12. Grafana GUI (these steps are completed using a browser):
+12.Grafana GUI (these steps are completed using a browser):
 
     Browser: http:<ip>:3000 (login admin/admin, changed on first login)
 
@@ -141,7 +141,7 @@ influx_database: wiperf
     - Password: R34dth3DB
     - HTTP Method: GET
 
-13. Obtain the Grafana dashboard files from the wiperf dashboards folder and place on your browser machine (/usr/share/wiperf/dashboards)
+13.Obtain the Grafana dashboard files from the wiperf dashboards folder and place on your browser machine (/usr/share/wiperf/dashboards)
 
     Using the web GUI, import dashboards using these menu options: 
 
