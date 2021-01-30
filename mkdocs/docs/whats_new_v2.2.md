@@ -6,7 +6,7 @@ Authors: Nigel Bowden
 ![wiperf_logo](images/wiperf_logo.png)
 </div>
 <span style="font-size: small; color:gray">*27th January 2021 - Author: Nigel Bowden*</span><br><br>
-Version 2.2 of the wiperf probe code follows hot on the heels of v2.1, following several requests from the community for removal of limitations on the number of test targets for several of the tests performed by wiperf. Previously, the Ping, HTTP, DNS and SMB tests were limited to 5 test targets. In v2.3, these limits are removed and the number of test targets is now user defined.
+Version 2.2 of the wiperf probe code follows hot on the heels of v2.1, following several requests from the community for removal of limitations on the number of test targets for several of the tests performed by wiperf. Previously, the Ping, HTTP, DNS and SMB tests were limited to 5 test targets. In v2.2, these limits are removed and the number of test targets is now user defined.
 
 ---
 
