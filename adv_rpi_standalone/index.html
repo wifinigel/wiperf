@@ -711,6 +711,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#what-youll-need" class="md-nav__link">
+    What You'll Need
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setup-procedure" class="md-nav__link">
     Setup Procedure
   </a>
@@ -1051,6 +1058,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#what-youll-need" class="md-nav__link">
+    What You'll Need
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setup-procedure" class="md-nav__link">
     Setup Procedure
   </a>
@@ -1077,6 +1091,16 @@
 <p>However, it may be useful to run the probe as a standalone device with the reporting features also installed on the probe. This cannot be done with Splunk, as it cannot run its server software on the RPi. Testing has shown that InfluxDB and Grafana can be successfully installed on to an RPi so that the probe and reporting features can co-exist on one device.</p>
 <p>This has been tested with an RPi 3B+, but will likely be fine with all subsequent models of RPi. It is not recommended to install Grafana and InfluxDB on to an RPi to act as a centralised server for multiple probes, but providing reporting for a local probe on the same RPi seems to work OK based on initial testing. The only caveat is that I would recommend setting a data retention policy as outlined below to ensure the InfluxDB does not consume too much space on the RPi as data is gathered over time.</p>
 <p><strong>Note:</strong> The steps outlined below are notes taken from initial testing. This is an advanced level topic that requires that you are familiar with Linux commands and the operation of wiperf. Apologies that there is very concise information provided, but this really is an advanced level topic that I cannot generally provide support for. </p>
+<h2 id="what-youll-need">What You'll Need</h2>
+<p>In this article, I'll run through the build process to get all all-in-one wiperf probe built (wiperf + InfluxDB + Grafana on the same RPi). To perform this build, you'll need:</p>
+<ul>
+<li><a href="https://www.friendlyarm.com/index.php?route=product/product&amp;path=69&amp;product_id=279">NanoPi Neo3-LTS</a> (Select combo with case when purchasing)</li>
+<li>A 16Gb or better Micro SD card</li>
+<li>A <a href="https://www.amazon.com/Comfast-CF-912AC-1200MBPS-Realtek-Network/dp/B01KX1M436/" target="_blank">CF-912AC USB wireless NIC</a> (checkout eBay &amp; Aliexpress for other sources)</li>
+<li>Some kind of power source. The Neo3 needs a Type-C power connection (I use a phone charger with a USB-A to Type-C cable - the power requirements are quite low)</li>
+<li>A USB to micro-SD adapter to burn the image (for example: <a href="https://www.amazon.com/Vanja-Adapter-Portable-Memory-Reader/dp/B00W02VHM6" target="_blank">an adapter like this</a></li>
+<li>A copy of <a href="https://www.balena.io/etcher/" target_blank="target_blank">balenaEtcher</a> (free) to burn the image on to your SD card</li>
+</ul>
 <h2 id="setup-procedure">Setup Procedure</h2>
 <p><strong>All of the steps below are performed from the RPi CLI (this guide assumes you are running Raspbian Buster):</strong></p>
 <ol>
