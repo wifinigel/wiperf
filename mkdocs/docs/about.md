@@ -28,3 +28,11 @@ Tests are run on the wiperf probe at a configured interval (usually 5 minutes) a
 
 - Splunk, or
 - InfluxDB with Grafana  
+
+## Developer
+
+The primary developer for this project is Nigel Bowden. Check me out in the following places:
+
+- [LinkedIn](https://www.linkedin.com/in/nigelbowden){target=_blank}
+- [Twitter](https://twitter.com/wifinigel){target=_blank}
+- [Blog](https://wifinigel.com){target=_blank}
