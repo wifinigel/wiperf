@@ -54,7 +54,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1610566546508,
+  "iteration": 1615929057980,
   "links": [
     {
       "$$hashKey": "object:286",
@@ -230,6 +230,8 @@
           "measurement": "wiperf-speedtest",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT last(\"download_rate_mbps\") AS \"Download Rate\" FROM \"wiperf-speedtest\" WHERE (\"host\" =~ /^$WLANPi$/ AND \"target_index\" = 1) AND $timeFilter GROUP BY time(5m) fill(none)",
+          "rawQuery": false,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -257,6 +259,12 @@
               "key": "host",
               "operator": "=~",
               "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "target_name",
+              "operator": "=~",
+              "value": "/^$SPEEDTEST_TARGET1$/"
             }
           ]
         },
@@ -279,6 +287,8 @@
           "measurement": "wiperf-speedtest",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT last(\"upload_rate_mbps\") AS \"Upload Rate\" FROM \"wiperf-speedtest\" WHERE (\"host\" =~ /^$WLANPi$/ AND \"target_index\" = 1) AND $timeFilter GROUP BY time(5m) fill(none)",
+          "rawQuery": false,
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -306,6 +316,12 @@
               "key": "host",
               "operator": "=~",
               "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "target_name",
+              "operator": "=~",
+              "value": "/^$SPEEDTEST_TARGET1$/"
             }
           ]
         }
@@ -314,7 +330,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Speedtest (Download/Upload) - $WLANPi",
+      "title": "Speedtest (Download/Upload) - $WLANPi (Ookla)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1079,7 +1095,7 @@
           "measurement": "wiperf-http",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"lookup_time_ms\" AS \"${HTTP_TARGET1}\" FROM \"wiperf-http\" WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=1)",
+          "query": "SELECT last(\"http_server_response_time_ms\") AS \"${HTTP_TARGET1} - \" FROM \"wiperf-http\" WHERE (\"host\" =~ /^$WLANPi$/ AND \"http_index\" = '1') AND $timeFilter GROUP BY time(5m) fill(null)",
           "rawQuery": false,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1137,7 +1153,7 @@
           "measurement": "wiperf-http",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"lookup_time_ms\" AS \"${HTTP_TARGET1}\" FROM \"wiperf-http\" WHERE (\"host\" =~ /^$WLANPi$/) AND (\"http_index\"=1)",
+          "query": "SELECT last(\"http_server_response_time_ms\") AS \"${HTTP_TARGET2} -  \" FROM \"wiperf-http\" WHERE (\"host\" =~ /^$WLANPi$/ AND \"http_index\" = '2') AND $timeFilter GROUP BY time(5m) fill(null)",
           "rawQuery": false,
           "refId": "B",
           "resultFormat": "time_series",
@@ -2068,6 +2084,12 @@
               "key": "host",
               "operator": "=~",
               "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "target_server",
+              "operator": "=~",
+              "value": "/^$IPERF3_TCP_TARGET1$/"
             }
           ]
         }
@@ -2215,6 +2237,12 @@
               "key": "host",
               "operator": "=~",
               "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "target_server",
+              "operator": "=~",
+              "value": "/^$IPERF3_UDP_TARGET1$/"
             }
           ]
         }
@@ -2389,6 +2417,12 @@
               "key": "host",
               "operator": "=~",
               "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "target_server",
+              "operator": "=~",
+              "value": "/^$IPERF3_UDP_TARGET1$/"
             }
           ]
         }
@@ -2436,7 +2470,7 @@
       }
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "datasource": null,
       "gridPos": {
         "h": 1,
@@ -2445,829 +2479,828 @@
         "y": 41
       },
       "id": 27,
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_WIPERFDB}",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {},
-              "links": []
-            },
-            "overrides": []
-          },
-          "fill": 0,
-          "fillGradient": 10,
-          "gridPos": {
-            "h": 10,
-            "w": 12,
-            "x": 0,
-            "y": 27
-          },
-          "hiddenSeries": false,
-          "id": 24,
-          "interval": "",
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [
-            {
-              "title": "SMB Dashboard",
-              "url": "dashboard/db/06-smb-report"
-            }
-          ],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true,
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pluginVersion": "7.3.1",
-          "pointradius": 0.5,
-          "points": true,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "$$hashKey": "object:1127",
-              "alias": "/rate/"
-            }
-          ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "alias": "$col",
-              "groupBy": [
-                {
-                  "params": [
-                    "5m"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "wiperf-smb",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "smb_rate"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "last"
-                  },
-                  {
-                    "params": [
-                      "${SMB_TARGET1} ${SMB_FILENAME1} "
-                    ],
-                    "type": "alias"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "host",
-                  "operator": "=~",
-                  "value": "/^$WLANPi$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "smb_host",
-                  "operator": "=~",
-                  "value": "/^$SMB_TARGET1$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "filename",
-                  "operator": "=~",
-                  "value": "/^$SMB_FILENAME1$/"
-                }
-              ]
-            },
-            {
-              "alias": "$col",
-              "groupBy": [
-                {
-                  "params": [
-                    "5m"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "wiperf-smb",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "B",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "smb_rate"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "last"
-                  },
-                  {
-                    "params": [
-                      "${SMB_TARGET2} ${SMB_FILENAME2} "
-                    ],
-                    "type": "alias"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "host",
-                  "operator": "=~",
-                  "value": "/^$WLANPi$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "smb_host",
-                  "operator": "=~",
-                  "value": "/^$SMB_TARGET2$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "filename",
-                  "operator": "=~",
-                  "value": "/^$SMB_FILENAME2$/"
-                }
-              ]
-            },
-            {
-              "alias": "$col",
-              "groupBy": [
-                {
-                  "params": [
-                    "5m"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "wiperf-smb",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "C",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "smb_rate"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "last"
-                  },
-                  {
-                    "params": [
-                      "${SMB_TARGET3} ${SMB_FILENAME3} "
-                    ],
-                    "type": "alias"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "host",
-                  "operator": "=~",
-                  "value": "/^$WLANPi$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "smb_host",
-                  "operator": "=~",
-                  "value": "/^$SMB_TARGET3$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "filename",
-                  "operator": "=~",
-                  "value": "/^$SMB_FILENAME3$/"
-                }
-              ]
-            },
-            {
-              "alias": "$col",
-              "groupBy": [
-                {
-                  "params": [
-                    "5m"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "wiperf-smb",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "D",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "smb_rate"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "last"
-                  },
-                  {
-                    "params": [
-                      "${SMB_TARGET4} ${SMB_FILENAME4} "
-                    ],
-                    "type": "alias"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "host",
-                  "operator": "=~",
-                  "value": "/^$WLANPi$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "smb_host",
-                  "operator": "=~",
-                  "value": "/^$SMB_TARGET4$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "filename",
-                  "operator": "=~",
-                  "value": "/^$SMB_FILENAME4$/"
-                }
-              ]
-            },
-            {
-              "alias": "$col",
-              "groupBy": [
-                {
-                  "params": [
-                    "5m"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "wiperf-smb",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "E",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "smb_rate"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "last"
-                  },
-                  {
-                    "params": [
-                      "${SMB_TARGET5} ${SMB_FILENAME5} "
-                    ],
-                    "type": "alias"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "host",
-                  "operator": "=~",
-                  "value": "/^$WLANPi$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "smb_host",
-                  "operator": "=~",
-                  "value": "/^$SMB_TARGET5$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "filename",
-                  "operator": "=~",
-                  "value": "/^$SMB_FILENAME5$/"
-                }
-              ]
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "SMB Transfer Rate - $WLANPi",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:1138",
-              "format": "Mbits",
-              "label": "Time to transfert",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "$$hashKey": "object:1139",
-              "decimals": null,
-              "format": "Mbits",
-              "label": "Rate in Mbps",
-              "logBase": 1,
-              "max": "1000",
-              "min": "0",
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_WIPERFDB}",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {},
-              "links": []
-            },
-            "overrides": []
-          },
-          "fill": 10,
-          "fillGradient": 4,
-          "gridPos": {
-            "h": 10,
-            "w": 12,
-            "x": 12,
-            "y": 27
-          },
-          "hiddenSeries": false,
-          "id": 25,
-          "interval": "",
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": true,
-            "min": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [
-            {
-              "title": "SMB Dashboard",
-              "url": "dashboard/db/06-smb-report"
-            }
-          ],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true,
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pluginVersion": "6.7.2",
-          "pointradius": 0.5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "alias": "$col",
-              "groupBy": [
-                {
-                  "params": [
-                    "5m"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "wiperf-smb",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "smb_time"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "last"
-                  },
-                  {
-                    "params": [
-                      "${SMB_TARGET1} $SMB_FILENAME1"
-                    ],
-                    "type": "alias"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "host",
-                  "operator": "=~",
-                  "value": "/^$WLANPi$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "smb_host",
-                  "operator": "=~",
-                  "value": "/^$SMB_TARGET1$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "filename",
-                  "operator": "=~",
-                  "value": "/^$SMB_FILENAME1$/"
-                }
-              ]
-            },
-            {
-              "alias": "$col",
-              "groupBy": [
-                {
-                  "params": [
-                    "5m"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "wiperf-smb",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "B",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "smb_time"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "last"
-                  },
-                  {
-                    "params": [
-                      "${SMB_TARGET2} $SMB_FILENAME2 "
-                    ],
-                    "type": "alias"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "host",
-                  "operator": "=~",
-                  "value": "/^$WLANPi$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "smb_host",
-                  "operator": "=~",
-                  "value": "/^$SMB_TARGET2$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "filename",
-                  "operator": "=~",
-                  "value": "/^$SMB_FILENAME2$/"
-                }
-              ]
-            },
-            {
-              "alias": "$col",
-              "groupBy": [
-                {
-                  "params": [
-                    "5m"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "wiperf-smb",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "C",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "smb_time"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "last"
-                  },
-                  {
-                    "params": [
-                      "${SMB_TARGET3} $SMB_FILENAME3"
-                    ],
-                    "type": "alias"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "host",
-                  "operator": "=~",
-                  "value": "/^$WLANPi$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "smb_host",
-                  "operator": "=~",
-                  "value": "/^$SMB_TARGET3$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "filename",
-                  "operator": "=~",
-                  "value": "/^$SMB_FILENAME3$/"
-                }
-              ]
-            },
-            {
-              "alias": "$col",
-              "groupBy": [
-                {
-                  "params": [
-                    "5m"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "wiperf-smb",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "D",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "smb_time"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "last"
-                  },
-                  {
-                    "params": [
-                      "${SMB_TARGET4} $SMB_FILENAME4"
-                    ],
-                    "type": "alias"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "host",
-                  "operator": "=~",
-                  "value": "/^$WLANPi$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "smb_host",
-                  "operator": "=~",
-                  "value": "/^$SMB_TARGET4$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "filename",
-                  "operator": "=~",
-                  "value": "/^$SMB_FILENAME4$/"
-                }
-              ]
-            },
-            {
-              "alias": "$col",
-              "groupBy": [
-                {
-                  "params": [
-                    "5m"
-                  ],
-                  "type": "time"
-                },
-                {
-                  "params": [
-                    "null"
-                  ],
-                  "type": "fill"
-                }
-              ],
-              "measurement": "wiperf-smb",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "refId": "E",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "smb_time"
-                    ],
-                    "type": "field"
-                  },
-                  {
-                    "params": [],
-                    "type": "last"
-                  },
-                  {
-                    "params": [
-                      "${SMB_TARGET5} $SMB_FILENAME5"
-                    ],
-                    "type": "alias"
-                  }
-                ]
-              ],
-              "tags": [
-                {
-                  "key": "host",
-                  "operator": "=~",
-                  "value": "/^$WLANPi$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "smb_host",
-                  "operator": "=~",
-                  "value": "/^$SMB_TARGET5$/"
-                },
-                {
-                  "condition": "AND",
-                  "key": "filename",
-                  "operator": "=~",
-                  "value": "/^$SMB_FILENAME5$/"
-                }
-              ]
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "SMB Transfer Time - $WLANPi",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:603",
-              "format": "s",
-              "label": "Transfer Time (s)",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "$$hashKey": "object:604",
-              "decimals": null,
-              "format": "Mbits",
-              "label": "Rate in Mbps",
-              "logBase": 1,
-              "max": "1000",
-              "min": "0",
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        }
-      ],
+      "panels": [],
       "title": "SMB",
       "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_WIPERFDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 10,
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 42
+      },
+      "hiddenSeries": false,
+      "id": 24,
+      "interval": "",
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [
+        {
+          "title": "SMB Dashboard",
+          "url": "dashboard/db/06-smb-report"
+        }
+      ],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true,
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 0.5,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:1127",
+          "alias": "/rate/"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-smb",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "smb_rate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${SMB_TARGET1} ${SMB_FILENAME1} "
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "smb_host",
+              "operator": "=~",
+              "value": "/^$SMB_TARGET1$/"
+            },
+            {
+              "condition": "AND",
+              "key": "filename",
+              "operator": "=~",
+              "value": "/^$SMB_FILENAME1$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-smb",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "smb_rate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${SMB_TARGET2} ${SMB_FILENAME2} "
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "smb_host",
+              "operator": "=~",
+              "value": "/^$SMB_TARGET2$/"
+            },
+            {
+              "condition": "AND",
+              "key": "filename",
+              "operator": "=~",
+              "value": "/^$SMB_FILENAME2$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-smb",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "smb_rate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${SMB_TARGET3} ${SMB_FILENAME3} "
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "smb_host",
+              "operator": "=~",
+              "value": "/^$SMB_TARGET3$/"
+            },
+            {
+              "condition": "AND",
+              "key": "filename",
+              "operator": "=~",
+              "value": "/^$SMB_FILENAME3$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-smb",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "smb_rate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${SMB_TARGET4} ${SMB_FILENAME4} "
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "smb_host",
+              "operator": "=~",
+              "value": "/^$SMB_TARGET4$/"
+            },
+            {
+              "condition": "AND",
+              "key": "filename",
+              "operator": "=~",
+              "value": "/^$SMB_FILENAME4$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-smb",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "smb_rate"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${SMB_TARGET5} ${SMB_FILENAME5} "
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "smb_host",
+              "operator": "=~",
+              "value": "/^$SMB_TARGET5$/"
+            },
+            {
+              "condition": "AND",
+              "key": "filename",
+              "operator": "=~",
+              "value": "/^$SMB_FILENAME5$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "SMB Transfer Rate - $WLANPi",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1138",
+          "format": "Mbits",
+          "label": "Time to transfert",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1139",
+          "decimals": null,
+          "format": "Mbits",
+          "label": "Rate in Mbps",
+          "logBase": 1,
+          "max": "1000",
+          "min": "0",
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_WIPERFDB}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 10,
+      "fillGradient": 4,
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 42
+      },
+      "hiddenSeries": false,
+      "id": 25,
+      "interval": "",
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [
+        {
+          "title": "SMB Dashboard",
+          "url": "dashboard/db/06-smb-report"
+        }
+      ],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true,
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "6.7.2",
+      "pointradius": 0.5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-smb",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "smb_time"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${SMB_TARGET1} $SMB_FILENAME1"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "smb_host",
+              "operator": "=~",
+              "value": "/^$SMB_TARGET1$/"
+            },
+            {
+              "condition": "AND",
+              "key": "filename",
+              "operator": "=~",
+              "value": "/^$SMB_FILENAME1$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-smb",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "smb_time"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${SMB_TARGET2} $SMB_FILENAME2 "
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "smb_host",
+              "operator": "=~",
+              "value": "/^$SMB_TARGET2$/"
+            },
+            {
+              "condition": "AND",
+              "key": "filename",
+              "operator": "=~",
+              "value": "/^$SMB_FILENAME2$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-smb",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "smb_time"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${SMB_TARGET3} $SMB_FILENAME3"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "smb_host",
+              "operator": "=~",
+              "value": "/^$SMB_TARGET3$/"
+            },
+            {
+              "condition": "AND",
+              "key": "filename",
+              "operator": "=~",
+              "value": "/^$SMB_FILENAME3$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-smb",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "smb_time"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${SMB_TARGET4} $SMB_FILENAME4"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "smb_host",
+              "operator": "=~",
+              "value": "/^$SMB_TARGET4$/"
+            },
+            {
+              "condition": "AND",
+              "key": "filename",
+              "operator": "=~",
+              "value": "/^$SMB_FILENAME4$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "5m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "wiperf-smb",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "smb_time"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "${SMB_TARGET5} $SMB_FILENAME5"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "host",
+              "operator": "=~",
+              "value": "/^$WLANPi$/"
+            },
+            {
+              "condition": "AND",
+              "key": "smb_host",
+              "operator": "=~",
+              "value": "/^$SMB_TARGET5$/"
+            },
+            {
+              "condition": "AND",
+              "key": "filename",
+              "operator": "=~",
+              "value": "/^$SMB_FILENAME5$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "SMB Transfer Time - $WLANPi",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:603",
+          "format": "s",
+          "label": "Transfer Time (s)",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:604",
+          "decimals": null,
+          "format": "Mbits",
+          "label": "Rate in Mbps",
+          "logBase": 1,
+          "max": "1000",
+          "min": "0",
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "collapsed": false,
@@ -3276,7 +3309,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 52
       },
       "id": 21,
       "panels": [],
@@ -3297,7 +3330,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 53
       },
       "id": 19,
       "interval": "",
@@ -4170,6 +4203,102 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"target_name\") FROM \"wiperf-speedtest\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"target_index\" = 1) ",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "SPEEDTEST_TARGET1",
+        "options": [],
+        "query": "SELECT last(\"target_name\") FROM \"wiperf-speedtest\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"target_index\" = 1) ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"target_name\") FROM \"wiperf-speedtest\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"target_index\" = 2) ",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "SPEEDTEST_TARGET2",
+        "options": [],
+        "query": "SELECT last(\"target_name\") FROM \"wiperf-speedtest\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"target_index\" = 2) ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"target_server\") FROM \"wiperf-iperf3-tcp\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"target_index\" = 1) ",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "IPERF3_TCP_TARGET1",
+        "options": [],
+        "query": "SELECT last(\"target_server\") FROM \"wiperf-iperf3-tcp\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"target_index\" = 1) ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_WIPERFDB}",
+        "definition": "SELECT last(\"target_server\") FROM \"wiperf-iperf3-udp\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"target_index\" = 1) ",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "index": -1,
+        "label": "",
+        "multi": false,
+        "name": "IPERF3_UDP_TARGET1",
+        "options": [],
+        "query": "SELECT last(\"target_server\") FROM \"wiperf-iperf3-udp\"  WHERE (\"host\" =~ /^$WLANPi$/) AND (\"target_index\" = 1) ",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       }
     ]
   },
@@ -4197,5 +4326,5 @@
   "variables": {
     "list": []
   },
-  "version": 30
+  "version": 38
 }
