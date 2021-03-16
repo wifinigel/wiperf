@@ -1,7 +1,7 @@
 #!/bin/bash
 # Installer for wiperf on WLAN Pi & RPi
-VERSION='2.2.0'
-POLLER_VERSION='0.3.0'
+VERSION='3.0.0-alpha-0.01'
+POLLER_VERSION='0.4.0'
 
 # Installation script log file
 LOG_FILE="/var/log/wiperf_install.log"
@@ -15,6 +15,12 @@ GITHUB_REPO="https://github.com/wifinigel/wiperf.git"
 GITHUB_BRANCH='main'
 OPERATION=$1
 PLATFORM=$2
+BRANCH=$3
+
+# use the branch arg if passed (default=main if not passed)
+if ! [ -z "$BRANCH"]; then
+  GITHUB_BRANCH = $BRANCH
+function
 
 # install function
 install () {
@@ -79,20 +85,32 @@ install () {
   echo "(ok) Checking we have netcat available..."
   nc -h  >> $LOG_FILE 2>&1
   if [ "$?" != '0' ]; then
-    echo "(fail) Unable to proceed as netwcat not installed...please install with command 'apt-get install netcat' " | tee -a $LOG_FILE
+    echo "(fail) Unable to proceed as netcat not installed...please install with command 'apt-get install netcat' " | tee -a $LOG_FILE
     exit 1
   else
     echo "(ok) netcat looks OK"  | tee -a $LOG_FILE
   fi
 
   ### install the wiperf poller from PyPi - exit if errors
-  echo "(ok) Installing wiperf python module (please wait)..."  | tee -a $LOG_FILE
-  pip3 install wiperf_poller==$POLLER_VERSION >> $LOG_FILE 2>&1
-  if [ "$?" != '0' ]; then
-      echo "(fail) pip installation of wiperf_poller failed. Exiting." | tee -a $LOG_FILE 
-      exit 1
+  
+  if [ $GITHUB_BRANCH == 'dev']; then
+    echo "(ok) Installing wiperf python module from GitHub (please wait)..."  | tee -a $LOG_FILE
+    pip install git+${GITHUB_REPO}@${GITHUB_BRANCH}
+    if [ "$?" != '0' ]; then
+        echo "(fail) pip installation of wiperf_poller from GitHub failed. Exiting." | tee -a $LOG_FILE 
+        exit 1
+    else
+        echo "(ok) wiperf_poller module python installed" | tee -a $LOG_FILE 
+    fi
   else
-      echo "(ok) wiperf_poller module python installed" | tee -a $LOG_FILE 
+    echo "(ok) Installing wiperf python module (please wait)..."  | tee -a $LOG_FILE
+    pip3 install wiperf_poller==$POLLER_VERSION >> $LOG_FILE 2>&1
+    if [ "$?" != '0' ]; then
+        echo "(fail) pip installation of wiperf_poller failed. Exiting." | tee -a $LOG_FILE 
+        exit 1
+    else
+        echo "(ok) wiperf_poller module python installed" | tee -a $LOG_FILE 
+    fi
   fi
 
   ### Pull in the wiperf github code
