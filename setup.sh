@@ -95,7 +95,7 @@ install () {
   
   if [ $GITHUB_BRANCH == 'dev' ]; then
     echo "(ok) Installing wiperf python module from GitHub (please wait)..."  | tee -a $LOG_FILE
-    pip install git+${GITHUB_REPO}@${GITHUB_BRANCH}
+    pip3 install git+${GITHUB_REPO}@${GITHUB_BRANCH}
     if [ "$?" != '0' ]; then
         echo "(fail) pip installation of wiperf_poller from GitHub failed. Exiting." | tee -a $LOG_FILE 
         exit 1
