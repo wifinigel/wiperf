@@ -15,7 +15,9 @@ GITHUB_REPO="https://github.com/wifinigel/wiperf.git"
 GITHUB_BRANCH='main'
 OPERATION=$1
 PLATFORM=$2
+
 BRANCH=$3
+POLLER_REPO="https://github.com/wifinigel/wiperf_poller.git"
 
 # use the branch arg if passed (default=main if not passed)
 if ! [ -z "$BRANCH" ]; then
@@ -95,7 +97,7 @@ install () {
   
   if [ $GITHUB_BRANCH == 'dev' ]; then
     echo "(ok) Installing wiperf python module from GitHub (please wait)..."  | tee -a $LOG_FILE
-    pip3 install git+${GITHUB_REPO}@${GITHUB_BRANCH}
+    pip3 install git+${POLLER_REPO}@${GITHUB_BRANCH}
     if [ "$?" != '0' ]; then
         echo "(fail) pip installation of wiperf_poller from GitHub failed. Exiting." | tee -a $LOG_FILE 
         exit 1
