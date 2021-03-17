@@ -18,7 +18,7 @@ PLATFORM=$2
 BRANCH=$3
 
 # use the branch arg if passed (default=main if not passed)
-if ! [ -z "$BRANCH"]; then
+if ! [ -z "$BRANCH" ]; then
   GITHUB_BRANCH=$BRANCH
 fi
 
@@ -93,7 +93,7 @@ install () {
 
   ### install the wiperf poller from PyPi - exit if errors
   
-  if [ $GITHUB_BRANCH == 'dev']; then
+  if [ $GITHUB_BRANCH == 'dev' ]; then
     echo "(ok) Installing wiperf python module from GitHub (please wait)..."  | tee -a $LOG_FILE
     pip install git+${GITHUB_REPO}@${GITHUB_BRANCH}
     if [ "$?" != '0' ]; then
