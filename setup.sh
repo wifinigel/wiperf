@@ -20,7 +20,7 @@ BRANCH=$3
 # use the branch arg if passed (default=main if not passed)
 if ! [ -z "$BRANCH"]; then
   GITHUB_BRANCH = $BRANCH
-function
+fi
 
 # install function
 install () {
