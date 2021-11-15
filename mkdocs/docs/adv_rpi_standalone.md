@@ -45,6 +45,7 @@ sudo reboot
 
 ```
 curl -s https://raw.githubusercontent.com/wifinigel/wiperf/main/setup.sh | sudo bash -s install rpi
+sudo cp /etc/wiperf/config.default.ini /etc/wiperf/config.ini
 ```
 
 3.Add a cron job as show below:
@@ -136,7 +137,7 @@ influx_database: wiperf
 
     - Type: InfluxDB
     - Name: WiperfDB
-    - URL: htttp://127.0.0.1:8086
+    - URL: http://127.0.0.1:8086
     - Access: Server
     - Database: wiperf
     - User: grafana
