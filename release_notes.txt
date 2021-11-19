@@ -1,3 +1,6 @@
+v2.2.3
+1. Merged PR with influx2 https & utctime fixes. Thanks jyoung15!
+
 v2.2.2
 1. Fix influx2 data port naming issue
 
