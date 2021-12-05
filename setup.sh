@@ -1,7 +1,7 @@
 #!/bin/bash
 # Installer for wiperf on WLAN Pi & RPi
-VERSION='2.2.3'
-POLLER_VERSION='0.3.5'
+VERSION='2.2.4'
+POLLER_VERSION='0.3.6'
 
 # Installation script log file
 LOG_FILE="/var/log/wiperf_install.log"

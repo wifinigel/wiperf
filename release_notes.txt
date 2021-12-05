@@ -1,3 +1,7 @@
+v2.2.4
+1. Allow use of hostname for mgt platform in config.ini
+2. Fix static route addition for mgt platform to include interface GW address
+
 v2.2.3
 1. Merged PR with influx2 https & utctime fixes. Thanks jyoung15!
 
